@@ -97,12 +97,6 @@
                             action="list">Clase de Obra</g:link> para distinguir entre varios clases de obra civiles y viales.
                 </div><br>
 
-%{--
-                <div class="item" texto="prsp">
-                    <g:link controller="presupuesto"
-                            action="list">Partida Presupuestaria</g:link> con la cual se financia o construye a obra.
-                </div><br>
---}%
 
                 <div class="item" texto="edob">
                     <g:link controller="estadoObra"
@@ -131,11 +125,16 @@
                     <g:link controller="valoresAnuales" action="list">Valores Anuales</g:link>
                 </div><br>
 
-%{--
-                <div class="item" texto="tpbn">
-                    <g:link controller="tipoDeBien" action="list">Tipo de Bien</g:link> Detalle de si el bien se halla dentro de la lista de bienes producidos a nivel nacional.
+                <div class="item" texto="prsp">
+                    <g:link controller="inicio"
+                            action="formArchivo">Cargar datos de items</g:link> desde archivos excel XLS.
                 </div><br>
---}%
+
+                %{--
+                                <div class="item" texto="tpbn">
+                                    <g:link controller="tipoDeBien" action="list">Tipo de Bien</g:link> Detalle de si el bien se halla dentro de la lista de bienes producidos a nivel nacional.
+                                </div><br>
+                --}%
 
             </div>
 
