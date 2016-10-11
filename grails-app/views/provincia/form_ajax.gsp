@@ -7,13 +7,13 @@
                 
         <div class="control-group">
             <div>
-                <span class="control-label label label-inverse">
+                <span class="control-label label label-inverse" style="width: 120px">
                     Nombre
                 </span>
             </div>
 
             <div class="controls">
-                <g:textField name="nombre" maxlength="63" style="width: 310px" class=" required" value="${provinciaInstance?.nombre}"/>
+                <g:textField name="nombre" maxlength="63" style="width: 280px" class=" allCaps required" value="${provinciaInstance?.nombre}"/>
                 <span class="mandatory">*</span>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
@@ -21,7 +21,7 @@
                 
         <div class="control-group">
             <div>
-                <span class="control-label label label-inverse">
+                <span class="control-label label label-inverse" style="width: 120px">
                     Número
                 </span>
             </div>
@@ -33,33 +33,33 @@
             </div>
         </div>
                 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Latitud
-                </span>
-            </div>
+        %{--<div class="control-group">--}%
+            %{--<div>--}%
+                %{--<span class="control-label label label-inverse">--}%
+                    %{--Latitud--}%
+                %{--</span>--}%
+            %{--</div>--}%
 
-            <div class="controls">
-                <g:field type="number" name="latitud" class=" required" value="${fieldValue(bean: provinciaInstance, field: 'latitud')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Longitud
-                </span>
-            </div>
+            %{--<div class="controls">--}%
+                %{--<g:field type="number" name="latitud" class=" required" value="${fieldValue(bean: provinciaInstance, field: 'latitud')}"/>--}%
+                %{--<span class="mandatory">*</span>--}%
+                %{--<p class="help-block ui-helper-hidden"></p>--}%
+            %{--</div>--}%
+        %{--</div>--}%
+                %{----}%
+        %{--<div class="control-group">--}%
+            %{--<div>--}%
+                %{--<span class="control-label label label-inverse">--}%
+                    %{--Longitud--}%
+                %{--</span>--}%
+            %{--</div>--}%
 
-            <div class="controls">
-                <g:field type="number" name="longitud" class=" required" value="${fieldValue(bean: provinciaInstance, field: 'longitud')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
+            %{--<div class="controls">--}%
+                %{--<g:field type="number" name="longitud" class=" required" value="${fieldValue(bean: provinciaInstance, field: 'longitud')}"/>--}%
+                %{--<span class="mandatory">*</span>--}%
+                %{--<p class="help-block ui-helper-hidden"></p>--}%
+            %{--</div>--}%
+        %{--</div>--}%
                 
     </g:form>
 

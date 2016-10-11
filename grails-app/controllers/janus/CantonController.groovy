@@ -18,9 +18,7 @@ class CantonController extends janus.seguridad.Shield {
     def saveFromTree = {
 
         switch (params.tipo) {
-
             case "canton":
-
                 def cantonInstance
                 if (params.id) {
                     cantonInstance = Canton.get(params.id)
@@ -38,7 +36,6 @@ class CantonController extends janus.seguridad.Shield {
                 if (!cantonInstance.save(flush: true)) {
                     flash.clase = "alert-error"
                     def str = "<h4>No se pudo guardar Canton " + (cantonInstance.id ? cantonInstance.id : "") + "</h4>"
-
                     str += "<ul>"
                     cantonInstance.errors.allErrors.each { err ->
                         def msg = err.defaultMessage
@@ -48,23 +45,13 @@ class CantonController extends janus.seguridad.Shield {
                         str += "<li>" + msg + "</li>"
                     }
                     str += "</ul>"
-
                     flash.message = str
-//                    redirect(action: 'list')
-
-//                    loadTreePart()
-
                     return
                 }
 
                 if (params.id) {
                     flash.clase = "alert-success"
                     flash.message = "Se ha actualizado correctamente Canton " + cantonInstance.nombre
-
-
-
-
-
                 } else {
                     flash.clase = "alert-success"
                     flash.message = "Se ha creado correctamente Canton " + cantonInstance.nombre
@@ -190,107 +177,43 @@ class CantonController extends janus.seguridad.Shield {
             case "canton":
                 def canton = Canton.get(params.id)
                 def parroquias = Parroquia.findAllByCanton(canton)
-
 //                println(parroquias.size())
-
                 def band = true
                 def p = [:]
                 p.actionName = "deleteFromTree: Canton"
                 p.controllerName = "Zona"
                 if (parroquias.size() != 0  ){
-
-
                     render ("No se puede borrar el Cantón " + canton?.nombre)
-
-
-
                 }else {
-
                     canton.delete(flush:  true)
                     render ("OK")
-
-//                    parroquias.each { parroquia ->
-////                    p.id = parroquia.id
-//                        parroquia.delete(flush: true)
-//
-//                    }
-//
-//                    if (canton.delete(flush: true)) {
-//                        render("OK")
-//                    } else {
-//                        render("NO")
-//                    }
-
-
                 }
-
 
                 break;
             case "parroquia":
 
-
                 def parroquia = Parroquia.get(params.id)
-
                 def obra = Obra.findAllByParroquia(parroquia)
-
                 def comunidad = Comunidad.findAllByParroquia(parroquia)
-
                 params.actionName = "deleteFromTree: Parroquia"
-
                 if (comunidad.size() != 0 && obra.size() != 0 ){
-
                     render("No se puede borrar la Parroquia " + parroquia.nombre)
-
                 } else {
-
-
                     parroquia.delete(flush: true)
                     render ("OK")
-
-//
-//                    if (parroquia.delete(flush: true)) {
-//                        render("OK")
-//                    } else {
-//                        render("NO")
-//                    }
-
                 }
-
-
                 break;
-
 
             case "comunidad":
-
                 def comunidad = Comunidad.get(params.id)
-
                 def obra = Obra.findAllByComunidad(comunidad)
-
                 params.actionName = "deleteFromTree: Comunidad"
-
                 comunidad.delete(flush:  true)
                 render ("OK")
-
-//                if (comunidad.size() != 0 && obra.size() != 0 ){
-//
-//                    render("No se puede borrar la Parroquia " + parroquia.nombre)
-//
-//                } else {
-//
-//
-//                    comunidad.delete(flush: true)
-//                    render ("OK")
-//
-//                }
-
-
                 break;
-
         }
 
     }
-
-
 
 
     def editarCanton = {
@@ -324,18 +247,12 @@ class CantonController extends janus.seguridad.Shield {
         if (params.id){
             obj =  Comunidad.get(params.id)
             crear = false
-
         }else {
             obj = new Comunidad();
             obj.parroquia = Parroquia.get(params.padre)
             crear = true
-
-
         }
-
         return [comunidadInstance: obj, tipo: params.tipo, crear: crear]
-
-
     }
 
 
@@ -353,6 +270,25 @@ class CantonController extends janus.seguridad.Shield {
                 tree += "</ul>"
                 break;
 
+            case "pais": // cargar provincias
+
+                def provincias = Provincia.list([sort: 'nombre'])
+
+                clase = (provincias.size() > 0) ? "jstree-closed" : ""
+
+                if (provincias.size() > 0) {
+                    tree += "<ul type='provincia'>" // < ul provincias
+                    provincias.each { provincia ->
+                        def cantones = Canton.findAllByProvincia(provincia, [sort: 'nombre'])
+
+                        clase = (cantones.size() > 0) ? "jstree-closed" : ""
+                        tree += "<li id='provincia_" + provincia.id + "' class='provincia " + clase + "' rel='provincia'>" // <li provincia
+                        tree += "<a href='#' id='link_provincia_" + provincia.id + "' class='label_arbol'>" + provincia.nombre + "</a>" // </> a href provincia
+                        tree += "</li>" // </> li provincia
+                    }
+                    tree += "</ul>" // </> ul provincias
+                }
+                break;
 
             case "provincia": // cargo los cantones de la provincia
                 def provincia = Provincia.get(params.id)
@@ -426,7 +362,13 @@ class CantonController extends janus.seguridad.Shield {
     def infoForTree = {
         redirect(action: 'info' + (params.tipo).capitalize(), params: params)
     }
-//
+
+
+    def infoPais = {
+
+    }
+
+
     def infoProvincia = {
         def obj = Provincia.get(params.id)
         return [provinciaInstance: obj]
@@ -447,16 +389,9 @@ class CantonController extends janus.seguridad.Shield {
 
     }
 
-
-
     def arbol () {
 
-
-
     }
-
-
-
 
     def index() {
         redirect(action: "list", params: params)

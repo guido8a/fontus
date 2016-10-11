@@ -35,18 +35,20 @@ class ProvinciaController extends janus.seguridad.Shield {
             provinciaInstance = Provincia.get(params.id)
             if(!provinciaInstance) {
                 flash.clase = "alert-error"
-                flash.message = "No se encontró Provincia con id " + params.id
-                redirect(action: 'list')
+                flash.message = "No se encontró la Provincia " + params.id
+//                redirect(action: 'list')
+                redirect(controller: 'canton' , action: 'arbol')
                 return
             }//no existe el objeto
             provinciaInstance.properties = params
         }//es edit
         else {
             provinciaInstance = new Provincia(params)
+            provinciaInstance.nombre = params.nombre.toUpperCase()
         } //es create
         if (!provinciaInstance.save(flush: true)) {
             flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Provincia " + (provinciaInstance.id ? provinciaInstance.id : "") + "</h4>"
+            def str = "<h4>No se pudo guardar la Provincia " + (provinciaInstance.id ? provinciaInstance.nombre : "") + "</h4>"
 
             str += "<ul>"
             provinciaInstance.errors.allErrors.each { err ->
@@ -59,18 +61,19 @@ class ProvinciaController extends janus.seguridad.Shield {
             str += "</ul>"
 
             flash.message = str
-            redirect(action: 'list')
+//            redirect(action: 'list')
+            redirect(controller: 'canton' , action: 'arbol')
             return
         }
 
         if(params.id) {
             flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Provincia " + provinciaInstance.id
+            flash.message = "Se ha actualizado correctamente la Provincia " + provinciaInstance.nombre
         } else {
             flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Provincia " + provinciaInstance.id
+            flash.message = "Se ha creado correctamente la Provincia " + provinciaInstance.nombre
         }
-        redirect(action: 'list')
+        redirect(controller: 'canton' , action: 'arbol')
     } //save
 
     def show_ajax() {
@@ -88,21 +91,21 @@ class ProvinciaController extends janus.seguridad.Shield {
         def provinciaInstance = Provincia.get(params.id)
         if (!provinciaInstance) {
             flash.clase = "alert-error"
-            flash.message =  "No se encontró Provincia con id " + params.id
-            redirect(action: "list")
+            flash.message =  "No se encontró la Provincia "
+            redirect(controller: 'canton', action: "arbol")
             return
         }
 
         try {
             provinciaInstance.delete(flush: true)
             flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Provincia " + provinciaInstance.id
-            redirect(action: "list")
+            flash.message =  "Se ha eliminado correctamente la Provincia "
+            redirect(controller: 'canton', action: "arbol")
         }
         catch (DataIntegrityViolationException e) {
             flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Provincia " + (provinciaInstance.id ? provinciaInstance.id : "")
-            redirect(action: "list")
+            flash.message =  "No se pudo eliminar la Provincia " + (provinciaInstance.id ? provinciaInstance.nombre : "")
+            redirect(controller: 'canton', action: "arbol")
         }
     } //delete
 } //fin controller

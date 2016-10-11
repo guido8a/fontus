@@ -23,8 +23,7 @@ class Provincia implements Serializable {
     static constraints = {
         nombre(size: 1..63, blank: false, nullable: false, attributes: [title: 'nombre'])
         numero(maxSize: 2, blank: false, nullable: false, attributes: [title: 'numero'])
-                latitud(blank: true, nullable: true, attributes: [title: 'latitud'])
+        latitud(blank: true, nullable: true, attributes: [title: 'latitud'])
         longitud(blank: true, nullable: true, attributes: [title: 'longitud'])
-
     }
 }
