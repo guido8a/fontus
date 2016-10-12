@@ -56,9 +56,14 @@ class InicioController extends janus.seguridad.Shield {
         return [obra: params.id]
     }
 
-    def uploadFile() {
-        def obra = Obra.get(params.id)
-        def path = servletContext.getRealPath("/") + "xlsComposicion/"   //web-app/archivos
+    def cargaArch() {
+        println "cargaArch $params"
+        def tipo = params.tipo
+        def lgar
+        def rbpc
+        def itva
+        def fcha = new Date()
+        def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -102,75 +107,78 @@ class InicioController extends janus.seguridad.Shield {
                 Workbook workbook = Workbook.getWorkbook(file)
 
                 workbook.getNumberOfSheets().times { sheet ->
-                    if (sheet == 0) {
+                    if (sheet == 0) {  // primera hoja Equipo
                         Sheet s = workbook.getSheet(sheet)
                         if (!s.getSettings().isHidden()) {
-//                            println s.getName() + "  " + sheet
+                            println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
                             htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                             Cell[] row = null
                             s.getRows().times { j ->
                                 def ok = true
-//                                if (j > 19) {
-//                                println ">>>>>>>>>>>>>>>" + (j + 1)
                                 row = s.getRow(j)
-//                                println row*.getContents()
+                                println row*.getContents()
 //                                println row.length
+
                                 if (row.length >= 5) {
-                                    def cod = row[0].getContents()
+                                    def cod =    row[0].getContents()
                                     def nombre = row[1].getContents()
-                                    def cant = row[3].getContents()
-                                    def nuevaCant = row[4].getContents()
+                                    def unidad = row[2].getContents()
+                                    def costo  = row[3].getContents()
+                                    def cpc    = row[4].getContents()
+                                    def vae   = row[5].getContents()
+                                    if(vae == 'EP') {
+                                        vae = '100'
+                                    } else if(vae == 'ND') {
+                                        vae = '40'
+                                    } else {
+                                        vae = '0'
+                                    }
 
-//                                    println "\t\tcod:" + cod + "\tnombre:" + nombre + "\tcant:" + cant + "\tnCant:" + nuevaCant
-
-                                    if (cod != "CODIGO") {
-//                                        println "\t\t**"
+                                    if (cod != "CODIGO") {  // no es el título
                                         def item = Item.findAllByCodigo(cod)
-//                                        println "\t\t???" + item
-                                        if (item.size() == 1) {
+                                        if (item.size() == 0) {
                                             //ok
-                                            item = item[0]
-                                        } else if (item.size() == 0) {
-                                            errores += "<li>No se encontró item con código ${cod} (l. ${j + 1})</li>"
-                                            println "No se encontró item con código ${cod}"
-                                            ok = false
-                                        } else {
-                                            println "Se encontraron ${item.size()} items con código ${cod}!! ${item.id}"
-                                            errores += "<li>Se encontraron ${item.size()} items con código ${cod}!! (l. ${j + 1})</li>"
-                                            ok = false
-                                        }
-                                        if (ok) {
-                                            def comp = Composicion.withCriteria {
-                                                eq("item", item)
-                                                eq("obra", obra)
+                                            item = new Item()
+                                            item.codigo = tipo + cod
+                                            item.nombre = nombre
+                                            item.unidad = Unidad.findByCodigo(unidad)
+                                            try {
+                                                item.save(flush: true)
+                                            } catch (e) {
+                                                println e
                                             }
-                                            if (comp.size() == 1) {
-                                                comp = comp[0]
-                                                comp.cantidad = nuevaCant.toDouble()
 
-                                                if (comp.save(flush: true)) {
-                                                    done++
-//                                                    println "Modificado comp: ${comp.id}"
-                                                    doneHtml += "<li>Se ha modificado la cantidad para el item ${nombre}</li>"
-                                                } else {
-                                                    println "No se pudo guardar comp ${comp.id}: " + comp.errors
-                                                    errores += "<li>Ha ocurrido un error al guardar la cantidad para el item ${nombre} (l. ${j + 1})</li>"
-                                                }
-//                                            println comp
-//                                            /** **/
-//                                            row.length.times { k ->
-//                                                if (!row[k].isHidden()) {
-//                                                    println "k:" + k + "      " + row[k].getContents()
-//                                                }// row ! hidden
-//                                            } //row.legth.each
-                                            } else if (comp.size() == 0) {
-                                                println "No se encontró composición para el item ${nombre}"
-                                                errores += "<li>No se encontró composición para el item ${nombre} (l. ${j + 1})</li>"
-                                            } else {
-                                                println "Se encontraron ${comp.size()} composiciones para el item ${nombre}: ${comp.id}"
-                                                errores += "<li>Se encontraron ${comp.size()} composiciones para el item ${nombre} (l. ${j + 1})</li>"
-                                            }
+                                            item.refresh()
+                                            println "pasa item.."
+
+                                            lgar = Lugar.findByCodigo(10)
+                                            rbpc = new PrecioRubrosItems()
+                                            rbpc.lugar = lgar
+                                            rbpc.item = item
+                                            rbpc.fecha = fcha
+                                            rbpc.fechaIngreso = fcha
+                                            rbpc.precioUnitario = costo.toDouble()
+                                            rbpc.registrado = 'N'
+                                            rbpc.save(flush: true)
+                                            println "pasa rbpc.."
+
+                                            itva = new VaeItems()
+                                            itva.item = item
+                                            itva.fecha = fcha
+                                            itva.fechaIngreso = fcha
+                                            itva.registrado = 'N'
+                                            itva.porcentaje = vae.toInteger()
+                                            itva.save(flush: true)
+                                            println "pasa itva.."
+
+                                            println " se ha grabado el item: $item"
+
+                                        } else if (item.size() == 1) {
+                                            errores += "<li>Ya existe el item con código ${cod} (l. ${j + 1})</li>"
+                                            println "Ya existe el item con código ${cod}"
+                                            ok = false
                                         }
+
                                     }
                                 } //row ! empty
 //                                }//row > 7 (fila 9 + )
@@ -203,5 +211,11 @@ class InicioController extends janus.seguridad.Shield {
 //            println "NO FILE"
         }
     }
+
+    def mensajeUpload() {
+        return [obra: params.id]
+    }
+
+
 
 }

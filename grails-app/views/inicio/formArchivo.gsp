@@ -14,7 +14,7 @@
             </div>
         </g:if>
 
-        <g:uploadForm action="uploadFile" method="post" name="frmUpload" id="${obra}">
+        <g:uploadForm action="cargaArch" method="post" name="cargaArch">
             <div id="list-grupo" class="span12" role="main" style="margin: 10px 0 0 0;">
                 <div class="row-fluid" style="margin: 0 0 20px 0;">
                     <div class="span9">
@@ -46,9 +46,15 @@
                 </div>
 
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span6">
+                    <div class="span12">
                         <div class="span2"><b>Archivo:</b></div>
                         <input type="file" class="required" id="file" name="file"/>
+                    </div>
+                </div>
+                <div class="row-fluid" style="margin-top: 20px">
+                    <div class="span12">
+                        <div class="span5"><b>Tipo: Civil:C, Mecánica M, Eléctrico: E, Electrónico: D, Hidrostático: H</b></div>
+                        <input type="text" class="required span1" id="tipo" name="tipo"/>
                     </div>
                 </div>
             </div>
@@ -62,14 +68,14 @@
 
         <script type="text/javascript">
             $(function () {
-                $("#frmUpload").validate({
+                $("#cargaArch").validate({
 
                 });
 
                 $("#btnSubmit").click(function () {
-                    if ($("#frmUpload").valid()) {
+                    if ($("#cargaArch").valid()) {
                         $(this).replaceWith(spinner);
-                        $("#frmUpload").submit();
+                        $("#cargaArch").submit();
                     }
                 });
             });
