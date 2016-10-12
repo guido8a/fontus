@@ -60,6 +60,7 @@ class CantonController extends janus.seguridad.Shield {
             case "parroquia":
 
                 def parroquiaInstance
+                def comunidad
                 if (params.id) {
                     parroquiaInstance = Parroquia.get(params.id)
                     if (!parroquiaInstance) {
@@ -72,6 +73,14 @@ class CantonController extends janus.seguridad.Shield {
                 }//es edit
                 else {
                     parroquiaInstance = new Parroquia(params)
+                    parroquiaInstance.save(flush: true)
+                    comunidad = new Comunidad()
+                    comunidad.nombre = params.nombre.toUpperCase()
+                    comunidad.numero = 0
+                    comunidad.latitud = 0
+                    comunidad.longitud = 0
+                    comunidad.parroquia = parroquiaInstance
+                    comunidad.save(flush: true)
                 } //es create
                 if (!parroquiaInstance.save(flush: true)) {
                     flash.clase = "alert-error"
@@ -89,11 +98,9 @@ class CantonController extends janus.seguridad.Shield {
 
                     flash.message = str
                     render str
-//                    redirect(action: 'list')
-
-//                    loadTreePart()
-
                     return
+                }else{
+
                 }
 
                 if (params.id) {
@@ -194,9 +201,15 @@ class CantonController extends janus.seguridad.Shield {
 
                 def parroquia = Parroquia.get(params.id)
                 def obra = Obra.findAllByParroquia(parroquia)
-                def comunidad = Comunidad.findAllByParroquia(parroquia)
+//                def comunidad = Comunidad.findAllByParroquia(parroquia)
+                def comunidad = Comunidad.findByParroquia(parroquia)
+
+                comunidad.delete(flush: true)
+
+
                 params.actionName = "deleteFromTree: Parroquia"
-                if (comunidad.size() != 0 && obra.size() != 0 ){
+//                if (comunidad.size() != 0 && obra.size() != 0 ){
+                if (comunidad && obra.size() != 0 ){
                     render("No se puede borrar la Parroquia " + parroquia.nombre)
                 } else {
                     parroquia.delete(flush: true)

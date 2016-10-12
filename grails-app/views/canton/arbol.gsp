@@ -292,57 +292,58 @@
                             }); //ajax
                         }, //action parroquia
                         "icon"   : icons.parroquia
-                    }, //parroquia
-                    "comunidad" : {
-                        "label"  : "Comunidad",
-                        "action" : function (obj) {
-                            var url = "${createLink(controller: 'canton', action: 'editar')}";
-                            $.ajax({
-                                "type"    : "POST",
-                                "url"     : url,
-                                "data"    : {
-                                    "tipo"  : "comunidad",
-                                    "crear" : true,
-                                    "padre" : idNode
-                                },
-                                "success" : function (msg) {
-                                    $("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);
-                                    $("#dlg_editar").html(msg);
-                                    $("#dlg_editar").dialog("open");
-                                }
-                            }); //ajax
-                        },
-                        "icon"   : icons.comunidad
-                    } //parroquia
+                    }
+                    %{--, //parroquia--}%
+                    %{--"comunidad" : {--}%
+                        %{--"label"  : "Comunidad",--}%
+                        %{--"action" : function (obj) {--}%
+                            %{--var url = "${createLink(controller: 'canton', action: 'editar')}";--}%
+                            %{--$.ajax({--}%
+                                %{--"type"    : "POST",--}%
+                                %{--"url"     : url,--}%
+                                %{--"data"    : {--}%
+                                    %{--"tipo"  : "comunidad",--}%
+                                    %{--"crear" : true,--}%
+                                    %{--"padre" : idNode--}%
+                                %{--},--}%
+                                %{--"success" : function (msg) {--}%
+                                    %{--$("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);--}%
+                                    %{--$("#dlg_editar").html(msg);--}%
+                                    %{--$("#dlg_editar").dialog("open");--}%
+                                %{--}--}%
+                            %{--}); //ajax--}%
+                        %{--},--}%
+                        %{--"icon"   : icons.comunidad--}%
+                    %{--} //parroquia--}%
                 };
                 break;
-            case "comunidad":
-                submenu = {
-                    "comunidad" : {
-                        "label"  : "Comunidad",
-                        "action" : function (obj) {
-                            var url = "${createLink(controller: 'canton', action: 'editar')}";
-                            $.ajax({
-                                "type"    : "POST",
-                                "url"     : url,
-                                "data"    : {
-                                    "tipo"      : "comunidad",
-                                    "crear"     : true,
-                                    "padre"     : idParent,
-                                    "tipoPadre" : tipoParent
+            %{--case "comunidad":--}%
+                %{--submenu = {--}%
+                    %{--"comunidad" : {--}%
+                        %{--"label"  : "Comunidad",--}%
+                        %{--"action" : function (obj) {--}%
+                            %{--var url = "${createLink(controller: 'canton', action: 'editar')}";--}%
+                            %{--$.ajax({--}%
+                                %{--"type"    : "POST",--}%
+                                %{--"url"     : url,--}%
+                                %{--"data"    : {--}%
+                                    %{--"tipo"      : "comunidad",--}%
+                                    %{--"crear"     : true,--}%
+                                    %{--"padre"     : idParent,--}%
+                                    %{--"tipoPadre" : tipoParent--}%
 
-                                },
-                                "success" : function (msg) {
-                                    $("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);
-                                    $("#dlg_editar").html(msg);
-                                    $("#dlg_editar").dialog("open");
-                                }
-                            }); //ajax
-                        },
-                        "icon"   : icons.comunidad
-                    } //parroquia
+                                %{--},--}%
+                                %{--"success" : function (msg) {--}%
+                                    %{--$("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);--}%
+                                    %{--$("#dlg_editar").html(msg);--}%
+                                    %{--$("#dlg_editar").dialog("open");--}%
+                                %{--}--}%
+                            %{--}); //ajax--}%
+                        %{--},--}%
+                        %{--"icon"   : icons.comunidad--}%
+                    %{--} //parroquia--}%
 
-                }
+                %{--}--}%
         }
 
         var nuevo = {
@@ -449,7 +450,7 @@
             };//eliminar
         }
 
-        if (tipoNode != "provincia" && tipoNode != 'pais') {
+        if (tipoNode != "provincia" && tipoNode != 'pais' && tipoNode != 'comunidad') {
             items.editar = {
                 // The item label
                 "label"            : "Editar",
@@ -606,7 +607,8 @@
                             "image" : icons.parroquia
                         },
                         "valid_children" : ["comunidad"]
-                    },
+                    }
+                    ,
                     "comunidad" : {
                         "icon"           : {
 
