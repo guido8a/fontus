@@ -93,13 +93,13 @@
 <div class="span12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;float: left;height: 35px;">
     <button class="btn" id="lista"><i class="icon-book"></i> Lista</button>
     <button class="btn" id="listaLq"><i class="icon-book"></i> Liquidación</button>
-    <button class="btn" id="nuevo"><i class="icon-plus"></i> Nuevo</button>
+    <button class="btn btn-info" id="nuevo"><i class="icon-plus"></i> Nuevo</button>
 
     <g:if test="${persona?.departamento?.codigo != 'UTFPU'}">
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
-                <button class="btn" id="btn-aceptar"><i class="icon-ok"></i> Grabar
+                <button class="btn btn-success" id="btn-aceptar"><i class="icon-ok"></i> Grabar
                 </button>
             </g:if>
         </g:if>
@@ -110,7 +110,7 @@
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${obra?.estado != 'R'}">
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
-                    <button class="btn" id="eliminarObra"><i class="icon-remove"></i> Eliminar la Obra</button>
+                    <button class="btn btn-danger" id="eliminarObra"><i class="icon-remove"></i> Eliminar la Obra</button>
                 </g:if>
             </g:if>
 
@@ -194,9 +194,9 @@
             </g:if>
 
             <g:if test="${obra?.id != null}">
-                %{--<g:if test="${duenoObra == 1 || obra?.id == null}">--}%
-                    <button class="btn" id="copiarObra"><i class="icon-copy"></i> Copiar Obra</button>
-                %{--</g:if>--}%
+            %{--<g:if test="${duenoObra == 1 || obra?.id == null}">--}%
+                <button class="btn" id="copiarObra"><i class="icon-copy"></i> Copiar Obra</button>
+            %{--</g:if>--}%
             </g:if>
 
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
@@ -554,35 +554,28 @@
 
         <div class="span12">
 
-            <div class="span1" style="margin-top: 15px; width: 90px;"><button class="btn btn-buscar btn-info"
-                                                                              id="btn-buscar"><i
-                        class="icon-globe"></i> Buscar
-            </button>
+            <div class="span1" style="margin-top: 15px; width: 90px;"><button class="btn btn-buscar btn-info" id="btn-buscar"><i class="icon-globe"></i> Buscar </button>
             </div>
 
             <div class="span2" style="width: 220px; margin-left: 10px;">Cantón
             <g:hiddenField name="canton.id" id="hiddenCanton" value="${obra?.comunidad?.parroquia?.canton?.id}"/>
-            %{--<div class="span2"><g:textField name="cantonkk.id" id="cantNombre" class="canton required error" value="${obra?.comunidad?.parroquia?.canton?.nombre}" style="width: 175px" readonly="true" title="Cantón"/></div>--}%
             <g:textField style="width: 210px;" name="cantonkk.id" id="cantNombre" class="canton required"
                          value="${obra?.comunidad?.parroquia?.canton?.nombre}" readonly="true" title="Cantón"/>
             </div>
 
             <div class="span2" style="width: 200px; margin-left: 10px;">Parroquia
             <g:hiddenField name="parroquia.id" id="hiddenParroquia" value="${obra?.comunidad?.parroquia?.id}"/>
-            %{--<div class="span2"><g:textField name="parroquiakk.id" id="parrNombre" class="parroquia required" value="${obra?.comunidad?.parroquia?.nombre}" style="width: 175px" readonly="true" title="Parroquia"/>--}%
             <g:textField style="width: 190px;" name="parroquiakk.id" id="parrNombre" class="parroquia required"
                          value="${obra?.comunidad?.parroquia?.nombre}" readonly="true" title="Parroquia"/>
             </div>
 
             <div class="span2" style="width: 200px; margin-left: 10px;">Comunidad
             <g:hiddenField name="comunidad.id" id="hiddenComunidad" value="${obra?.comunidad?.id}"/>
-            %{--<div class="span2"><g:textField name="comunidadkk.id" id="comuNombre" class="comunidad required" value="${obra?.comunidad?.nombre}" style="width: 175px" readonly="true" title="Comunidad"/>--}%
             <g:textField style="width: 190px;" name="comunidadkk.id" id="comuNombre" class="comunidad required"
                          value="${obra?.comunidad?.nombre}" readonly="true" title="Comunidad"/>
             </div>
 
             <div class="span2" style="width: 355px; margin-left: 10px;">Sitio
-            %{--<div class="span4"><g:textField name="sitio" class="sitio" value="${obra?.sitio}" style="width: 200px; margin-left: 0px;" maxlength="63" title="Sitio urbano o rural"/></div>--}%
             <g:textField style="width: 355px;margin-left:0px;" name="sitio" class="sitio" value="${obra?.sitio}" maxlength="63" title="Sitio urbano o rural"/>
             </div>
 
@@ -1131,7 +1124,7 @@
 
         <div class="modal-body" id="modal_body_formula">
             <div id="msg_formula">
-                %{--<g:if test="${!obra.desgloseTransporte}">--}%
+            %{--<g:if test="${!obra.desgloseTransporte}">--}%
                 <g:if test="${!matrizOk}">
                     <p style="font-size: 14px; text-align: center;">No existe una matriz de la fórmula polinómica</p>
                 </g:if>
@@ -2050,79 +2043,79 @@
 
             var idObra = ${obra?.id}
 
-            $.box({
-                imageClass: "box_info",
-                text: "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",
-                title: "Imprimir Rubros de la Obra",
-                iconClose: true,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    width: 600,
-                    height: 280,
-                    buttons: {
+                    $.box({
+                        imageClass: "box_info",
+                        text: "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",
+                        title: "Imprimir Rubros de la Obra",
+                        iconClose: true,
+                        dialog: {
+                            resizable: false,
+                            draggable: false,
+                            width: 600,
+                            height: 280,
+                            buttons: {
 
-                        "Con desglose de Trans.": function () {
-                            url += "1";
-                            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-                        },
-                        "Sin desglose de Trans.": function () {
-                            url += "0";
-                            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-                        },
-                        "Exportar Rubros a Excel": function () {
-                            var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
-                            url += "1";
-                            location.href = url;
-                        },
-                        "VAE con desglose de Trans.": function () {
-                            urlVae += "1";
-                            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae
-                        },
-                        "VAE sin desglose de Trans.": function () {
-                            urlVae += "0";
-                            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae
-                        },
-                        "Exportar VAE a Excel": function () {
-                            var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";
-                            urlVaeEx += "1";
-                            location.href = urlVaeEx;
-                        },
-                        "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {
-                            %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
-                            %{--location.href = url;--}%
-
-                            $.ajax({
-                                type: "POST",
-                                url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                                data: {
-                                    id: idObra,
-                                    tipo: "ie"
+                                "Con desglose de Trans.": function () {
+                                    url += "1";
+                                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                                 },
-                                success: function (msg) {
+                                "Sin desglose de Trans.": function () {
+                                    url += "0";
+                                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                                },
+                                "Exportar Rubros a Excel": function () {
+                                    var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
+                                    url += "1";
+                                    location.href = url;
+                                },
+                                "VAE con desglose de Trans.": function () {
+                                    urlVae += "1";
+                                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae
+                                },
+                                "VAE sin desglose de Trans.": function () {
+                                    urlVae += "0";
+                                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae
+                                },
+                                "Exportar VAE a Excel": function () {
+                                    var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";
+                                    urlVaeEx += "1";
+                                    location.href = urlVaeEx;
+                                },
+                                "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {
+                                    %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
+                                    %{--location.href = url;--}%
 
-                                    var parts = msg.split('*');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
+                                        data: {
+                                            id: idObra,
+                                            tipo: "ie"
+                                        },
+                                        success: function (msg) {
 
-                                    if (parts[0] == 'SI') {
-                                        $("#divError").hide();
-                                        var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
-                                        location.href = url;
-                                    } else {
-                                        $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                                        $("#divError").show()
-                                    }
+                                            var parts = msg.split('*');
+
+                                            if (parts[0] == 'SI') {
+                                                $("#divError").hide();
+                                                var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
+                                                location.href = url;
+                                            } else {
+                                                $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
+                                                $("#divError").show()
+                                            }
+
+                                        }
+                                    });
+
+                                },
+
+                                "Cancelar": function () {
 
                                 }
-                            });
-
-                        },
-
-                        "Cancelar": function () {
-
+                            }
                         }
-                    }
-                }
-            });
+                    });
             return false;
         });
 
@@ -2587,10 +2580,6 @@
                             }
                         });
                         return false;
-//                        }else{
-//                            alert('No ingreso ningun código!')
-//                        }
-
                     });
 
                     $("#modalHeader_tipo").removeClass("btn-edit btn-show btn-delete");
@@ -2747,15 +2736,9 @@
         });
 
         function busqueda() {
-
             var buscarPor = $("#buscarPor").val();
             var criterio = $(".criterio").val();
-
             var ordenar = $("#ordenar").val();
-
-//                   ////console.log("buscar" + buscarPor)
-//                    ////console.log("criterio" + criterio)
-//                    ////console.log("ordenar" + ordenar)
 
             $.ajax({
                 type: "POST",
@@ -2764,7 +2747,6 @@
                     buscarPor: buscarPor,
                     criterio: criterio,
                     ordenar: ordenar
-
                 },
                 success: function (msg) {
 
@@ -2772,9 +2754,7 @@
                     $("#dlgLoad").dialog("close");
                 }
             });
-
         }
-
     });
 
     $("#errorDialog").dialog({

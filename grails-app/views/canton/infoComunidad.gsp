@@ -8,10 +8,11 @@
 
         </td>
         <td class="campo">
-            <g:link class="linkArbol" tipo="parroquia_${comunidadInstance.parroquia.id}" controller="parroquia" action="show"
-            id="${comunidadInstance?.parroquia?.id}">
+            %{--<g:link class="linkArbol" tipo="parroquia_${comunidadInstance.parroquia.id}" controller="parroquia" action="show"--}%
+            %{--id="${comunidadInstance?.parroquia?.id}">--}%
+            %{--${comunidadInstance?.parroquia?.nombre?.encodeAsHTML()}--}%
+            %{--</g:link>--}%
             ${comunidadInstance?.parroquia?.nombre?.encodeAsHTML()}
-            </g:link>
         </td>
     </tr>
 

@@ -1194,7 +1194,7 @@ class ObraController extends janus.seguridad.Shield {
     }
 
     def situacionGeografica() {
-//        println "situacionGeografica" + params
+        println "situacionGeografica" + params
         def comunidades
         def orden;
         def colorProv, colorCant, colorParr, colorComn;

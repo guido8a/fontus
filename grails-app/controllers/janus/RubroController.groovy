@@ -944,8 +944,6 @@ class RubroController extends janus.seguridad.Shield {
                 copias = Item.findAllByCodigo(codigo+rubro.codigo)
             }
         }
-
-
         rubro.codigo=codigo+rubro.codigo;
         rubro.fechaModificacion=new Date()
         rubro.save(flush: true)
@@ -973,6 +971,10 @@ class RubroController extends janus.seguridad.Shield {
         if(error==false)
             error=nuevo.id
         render error
+    }
+
+
+    def revisar_ajax () {
 
     }
 
