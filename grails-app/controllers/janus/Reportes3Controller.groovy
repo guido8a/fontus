@@ -962,7 +962,7 @@ class Reportes3Controller {
         tablaMano += "<thead><tr><th colspan='7' class='tituloHeader'>MANO DE OBRA</th></tr><tr><th colspan='7' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>CANTIDAD</th><th style='width:70px'>JORNAL(\$/H)</th><th>COSTO(\$)</th><th>RENDIMIENTO</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='7' class='theaderup'></th></tr> </thead><tbody>"
 
         if(params.trans == 'no'){
-            tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES INCLUIDO TRANSPORTE</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
+            tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
 
         }else {
             tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
@@ -979,7 +979,6 @@ class Reportes3Controller {
             if (r["grpocdgo"] == 3) {
                 tablaHer += "<tr>"
                 tablaHer += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
-//                tablaHer += "<td>" + r["itemnmbr"] + "</td>"
                 tablaHer += "<td>" + tx + "</td>"
                 tablaHer += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaHer += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -992,7 +991,6 @@ class Reportes3Controller {
             if (r["grpocdgo"] == 2) {
                 tablaMano += "<tr>"
                 tablaMano += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
-//                tablaMano += "<td>" + r["itemnmbr"] + "</td>"
                 tablaMano += "<td>" + tx + "</td>"
                 tablaMano += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaMano += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1009,7 +1007,6 @@ class Reportes3Controller {
                 tablaMat += "<tr>"
                 if (params.trans != 'no') {
                     tablaMat += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
-//                    tablaMat += "<td>" + r["itemnmbr"] + "</td>"
                     tablaMat += "<td>" + tx + "</td>"
                     tablaMat += "<td style='width: 50px;text-align: center'>${r['unddcdgo']}</td>"
                     tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1022,7 +1019,6 @@ class Reportes3Controller {
                 if(params.trans == 'no'){
 
                     tablaMat += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
-//                    tablaMat += "<td>" + r["itemnmbr"] + "</td>"
                     tablaMat += "<td>" + tx + "</td>"
                     tablaMat += "<td style='width: 50px;text-align: center'>${r['unddcdgo']}</td>"
                     tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1036,7 +1032,6 @@ class Reportes3Controller {
             if (r["grpocdgo"]== 1 && params.trans != 'no') {
                 tablaTrans += "<tr>"
                 tablaTrans += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
-//                tablaTrans += "<td>" + r["itemnmbr"] + "</td>"
                 tablaTrans += "<td>" + tx + "</td>"
                 if(r["tplscdgo"].trim() =='P' || r["tplscdgo"].trim() =='P1' ){
                     tablaTrans += "<td style='width: 50px;text-align: right'>" + "ton-km" + "</td>"
@@ -1061,13 +1056,13 @@ class Reportes3Controller {
             }
 
         }
-        tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
+        tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
         tablaTrans += "</tbody></table>"
-        tablaHer += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalHer, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
+        tablaHer += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalHer, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
         tablaHer += "</tbody></table>"
-        tablaMano += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMan, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
+        tablaMano += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMan, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
         tablaMano += "</tbody></table>"
-        tablaMat += "<tr><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMat, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
+        tablaMat += "<tr><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMat, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
         tablaMat += "</tbody></table>"
         tablaTrans2 += "</tbody></table>"
         tablaMat2 += "</tbody></table>"
@@ -1100,11 +1095,9 @@ class Reportes3Controller {
     //VAE
 
     def imprimirRubroVae() {
-//        println "imprimir rubro "+params
+        println "imprimir rubro "+params
 
         def rubro = Item.get(params.id)
-
-//        println("rubro " + rubro)
 
         def corregido
         def text = (rubro.nombre ?: '')
@@ -1160,16 +1153,30 @@ class Reportes3Controller {
         def band = 0
         def bandMat = 0
         def bandTrans = params.trans
-        tablaTrans += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px;text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
-        tablaHer += "<thead><tr><th colspan='12' class='tituloHeader'>EQUIPOS</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th> <th style='width:60px'>CANTIDAD</th><th style='width:60px'>TARIFA(\$/H)</th><th style='width:60px'>COSTO(\$)</th><th style='width:60x'>RENDIMIENTO</th><th style='width:50px'>C.TOTAL(\$)</th><th style='width:60px;text-align: center'>PESO RELAT(%)</th><th style='width:60px;text-align: center'>CPC</th><th style='width:45px;text-align: center'>NP/EP/  ND</th><th style='width:60px;text-align: right'>VAE(%)</th><th style='width:60px;text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
-        tablaMano += "<thead><tr><th colspan='12' class='tituloHeader'>MANO DE OBRA</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width:60px'>CANTIDAD</th><th style='width:60px'>JORNAL(\$/H)</th><th style='width:60px'>COSTO(\$)</th><th style='width:60px'>RENDIMIENTO</th><th style='width:50px'>C.TOTAL(\$)</th><th style='width:60px;text-align: center'>PESO RELAT(%)</th><th style='width:60px;text-align: center'>CPC</th><th style='width:45px;text-align: center'>NP/EP/  ND</th><th style='width:60px;text-align: right'>VAE(%)</th><th style='width:60px;text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
-        if(params.trans == 'no'){
-            tablaMat += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES INCLUIDO TRANSPORTE</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th></th> <th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>UNITARIO(\$)</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
-        }else {
-            tablaMat += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'></th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>UNITARIO(\$)</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width:45px; text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+        if(params.codigoCheck == 'true'){
+            tablaTrans += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px;text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
+            tablaHer += "<thead><tr><th colspan='12' class='tituloHeader'>EQUIPOS</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th> <th style='width:60px'>CANTIDAD</th><th style='width:60px'>TARIFA(\$/H)</th><th style='width:60px'>COSTO(\$)</th><th style='width:60x'>RENDIMIENTO</th><th style='width:50px'>C.TOTAL(\$)</th><th style='width:60px;text-align: center'>PESO RELAT(%)</th><th style='width:60px;text-align: center'>CPC</th><th style='width:45px;text-align: center'>NP/EP/  ND</th><th style='width:60px;text-align: right'>VAE(%)</th><th style='width:60px;text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            tablaMano += "<thead><tr><th colspan='12' class='tituloHeader'>MANO DE OBRA</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width:60px'>CANTIDAD</th><th style='width:60px'>JORNAL(\$/H)</th><th style='width:60px'>COSTO(\$)</th><th style='width:60px'>RENDIMIENTO</th><th style='width:50px'>C.TOTAL(\$)</th><th style='width:60px;text-align: center'>PESO RELAT(%)</th><th style='width:60px;text-align: center'>CPC</th><th style='width:45px;text-align: center'>NP/EP/  ND</th><th style='width:60px;text-align: right'>VAE(%)</th><th style='width:60px;text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            if(params.trans == 'no'){
+                tablaMat += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th></th> <th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>UNITARIO(\$)</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            }else {
+                tablaMat += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'></th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>UNITARIO(\$)</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width:45px; text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            }
+            tablaTrans2 += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
+            tablaMat2 += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th></th><th style='width: 45px;'>UNIDAD</th><th style='width: 45px;'>CANTIDAD</th><th style='width: 45px;'>UNITARIO(\$)</th><th style='width: 45px;'>C.TOTAL(\$)</th><th style='width: 45px;text-align: center'>PESO RELAT(%)</th><th style='width: 45px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr></thead><tbody>"
+
+        }else{
+            tablaTrans += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px;text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
+            tablaHer += "<thead><tr><th colspan='12' class='tituloHeader'>EQUIPOS</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th> <th style='width:60px'>CANTIDAD</th><th style='width:60px'>TARIFA(\$/H)</th><th style='width:60px'>COSTO(\$)</th><th style='width:60x'>RENDIMIENTO</th><th style='width:50px'>C.TOTAL(\$)</th><th style='width:60px;text-align: center'>PESO RELAT(%)</th><th style='width:60px;text-align: center'>CPC</th><th style='width:45px;text-align: center'>NP/EP/  ND</th><th style='width:60px;text-align: right'>VAE(%)</th><th style='width:60px;text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            tablaMano += "<thead><tr><th colspan='12' class='tituloHeader'>MANO DE OBRA</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th><th style='width:60px'>CANTIDAD</th><th style='width:60px'>JORNAL(\$/H)</th><th style='width:60px'>COSTO(\$)</th><th style='width:60px'>RENDIMIENTO</th><th style='width:50px'>C.TOTAL(\$)</th><th style='width:60px;text-align: center'>PESO RELAT(%)</th><th style='width:60px;text-align: center'>CPC</th><th style='width:45px;text-align: center'>NP/EP/  ND</th><th style='width:60px;text-align: right'>VAE(%)</th><th style='width:60px;text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            if(params.trans == 'no'){
+                tablaMat += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th><th></th> <th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>UNITARIO(\$)</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            }else {
+                tablaMat += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th><th style='width: 60px;'></th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>UNITARIO(\$)</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width:45px; text-align: center'>VAE(%) ELEMENTO</th></tr>  <tr><th colspan='12' class='theaderup'></th></tr> </thead><tbody>"
+            }
+            tablaTrans2 += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
+            tablaMat2 += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width:420px'>DESCRIPCIÓN</th><th style='width:100px'></th><th></th><th style='width: 45px;'>UNIDAD</th><th style='width: 45px;'>CANTIDAD</th><th style='width: 45px;'>UNITARIO(\$)</th><th style='width: 45px;'>C.TOTAL(\$)</th><th style='width: 45px;text-align: center'>PESO RELAT(%)</th><th style='width: 45px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr></thead><tbody>"
         }
-        tablaTrans2 += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
-        tablaMat2 += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th></th><th style='width: 45px;'>UNIDAD</th><th style='width: 45px;'>CANTIDAD</th><th style='width: 45px;'>UNITARIO(\$)</th><th style='width: 45px;'>C.TOTAL(\$)</th><th style='width: 45px;text-align: center'>PESO RELAT(%)</th><th style='width: 45px;text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr></thead><tbody>"
 
 
         vae.eachWithIndex { r, i ->
@@ -1181,9 +1188,13 @@ class Reportes3Controller {
 
             if (r["grpocdgo"] == 3) {
                 tablaHer += "<tr>"
-                tablaHer += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
-//                tablaHer += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
-                tablaHer += "<td style='width: 420px;'>" + tx + "</td>"
+                if(params.codigoCheck == 'true'){
+                    tablaHer += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
+                    tablaHer += "<td style='width: 420px;'>" + tx + "</td>"
+                }else{
+                    tablaHer += "<td style='width: 420px;'>" + tx + "</td>"
+                    tablaHer += "<td style='width: 120px;'></td>"
+                }
                 tablaHer += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaHer += "<td style='width: 65px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaHer += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"] * r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1202,9 +1213,14 @@ class Reportes3Controller {
             }
             if (r["grpocdgo"] == 2) {
                 tablaMano += "<tr>"
-                tablaMano += "<td style='width: 140px;'>" + r["itemcdgo"] + "</td>"
-//                tablaMano += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
-                tablaMano += "<td style='width: 420px;'>" + tx + "</td>"
+                if(params.codigoCheck == 'true'){
+                    tablaMano += "<td style='width: 140px;'>" + r["itemcdgo"] + "</td>"
+                    tablaMano += "<td style='width: 420px;'>" + tx + "</td>"
+                }else{
+                    tablaMano += "<td style='width: 420px;'>" + tx + "</td>"
+                    tablaMano += "<td style='width: 140px;'></td>"
+                }
+
                 tablaMano += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaMano += "<td style='width: 65px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaMano += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"] * r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1224,9 +1240,13 @@ class Reportes3Controller {
                 bandMat = 1
                 tablaMat += "<tr>"
                 if (params.trans != 'no') {
-                    tablaMat += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
-//                    tablaMat += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
-                    tablaMat += "<td style='width: 420px;'>" + tx + "</td>"
+                    if(params.codigoCheck == 'true'){
+                        tablaMat += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
+                        tablaMat += "<td style='width: 420px;'>" + tx + "</td>"
+                    }else{
+                        tablaMat += "<td style='width: 420px;'>" + tx + "</td>"
+                        tablaMat += "<td style='width: 120px;'></td>"
+                    }
 
                     tablaMat += "<td style='width: 50px;'>" + '' +  "</td>"
                     tablaMat += "<td style='width: 65px;text-align: right'>" + r["unddcdgo"] + "</td>"
@@ -1246,9 +1266,14 @@ class Reportes3Controller {
 
                 }
                 if(params.trans == 'no'){
-                    tablaMat += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
-//                    tablaMat += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
-                    tablaMat += "<td style='width: 420px;'>" + tx + "</td>"
+                    if(params.codigoCheck == 'true'){
+                        tablaMat += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
+                        tablaMat += "<td style='width: 420px;'>" + tx + "</td>"
+                    }else{
+                        tablaMat += "<td style='width: 420px;'>" + tx + "</td>"
+                        tablaMat += "<td style='width: 120px;'></td>"
+                    }
+
                     tablaMat += "<td style='width: 50px;text-align: right'></td>"
                     tablaMat += "<td style='width: 65px;text-align: right'>" + r["unddcdgo"] + "</td>"
                     tablaMat += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1267,9 +1292,14 @@ class Reportes3Controller {
             }
             if (r["grpocdgo"]== 1 && params.trans != 'no') {
                 tablaTrans += "<tr>"
-                tablaTrans += "<td style='width: 140px;'>" + r["itemcdgo"] + "</td>"
-//                tablaTrans += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
-                tablaTrans += "<td style='width: 420px;'>" + tx + "</td>"
+                if(params.codigoCheck == 'true'){
+                    tablaTrans += "<td style='width: 140px;'>" + r["itemcdgo"] + "</td>"
+                    tablaTrans += "<td style='width: 420px;'>" + tx + "</td>"
+                }else{
+                    tablaTrans += "<td style='width: 420px;'>" + tx + "</td>"
+                    tablaTrans += "<td style='width: 140px;'></td>"
+                }
+
                 if(r["tplscdgo"].trim() =='P' || r["tplscdgo"].trim() =='P1' ){
                     tablaTrans += "<td style='width: 50px;text-align: right'>" + "ton-km" + "</td>"
                 } else{
@@ -1294,13 +1324,17 @@ class Reportes3Controller {
                 totalTRel += r["relativo_t"]
                 totalTVae += r["vae_vlor_t"]
                 tablaTrans += "</tr>"
-
             }
             else {
-
                 tablaTrans2 += "<tr>"
-                tablaTrans2 += "<td style='width: 140px;'></td>"
-                tablaTrans2 += "<td style='width: 420px;'></td>"
+                if(params.codigoCheck == 'true'){
+                    tablaTrans2 += "<td style='width: 140px;'></td>"
+                    tablaTrans2 += "<td style='width: 420px;'></td>"
+                }else{
+                    tablaTrans2 += "<td style='width: 420px;'></td>"
+                    tablaTrans2 += "<td style='width: 140px;'></td>"
+                }
+
                 tablaTrans2 += "<td style='width: 50px;'></td>"
                 tablaTrans2 += "<td style='width: 65px;text-align: right'></td>"
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
@@ -1313,25 +1347,22 @@ class Reportes3Controller {
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
                 tablaTrans2 += "</tr>"
-
             }
-
-
         }
 
-        tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td> <td style='width: 50px;text-align: right'>" +
+        tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td> <td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalTRel, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td><td></td><td></td><td></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalTVae, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td></tr>"
         tablaTrans += "</tbody></table>"
-        tablaHer += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalHer, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td><td style='width: 50px;text-align: right'>" +
+        tablaHer += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalHer, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalHerRel, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td><td></td><td></td><td></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalHerVae, format: "##,#####0", minFractionDigit1s: "2", maxFractionDigits: "2", locale: "ec")}</b></td></tr>"
         tablaHer += "</tbody></table>"
-        tablaMano += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMan, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td><td style='width: 50px;text-align: right'>" +
+        tablaMano += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMan, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalManRel, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td><td></td><td></td><td></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalManVae, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td></tr>"
         tablaMano += "</tbody></table>"
-        tablaMat += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMat, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td><td style='width: 50px;text-align: right'>" +
+        tablaMat += "<tr><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>SUBTOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: totalMat, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalMatRel, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td><td></td><td></td><td></td><td style='width: 50px;text-align: right'>" +
                 "<b>${g.formatNumber(number: totalMatVae, format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec")}</b></td></tr>"
         tablaMat += "</tbody></table>"

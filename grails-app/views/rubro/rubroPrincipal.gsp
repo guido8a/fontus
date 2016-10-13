@@ -645,22 +645,22 @@
     <div class="modal-footer" id="modal_trans_footer">
         <a href="#" data-dismiss="modal" class="btn btn-primary">OK</a>
     </div>
-    %{--03.001.00--}%
-    <div id="imprimirTransporteDialog">
 
+
+    <div id="imprimirTransporteDialog" style="height: 150px !important;">
         <fieldset>
-
-            <div class="span2" style="margin-top: 10px">
+            <div class="span2" style="margin-top: 5px">
                 Fecha:
-                <elm:datepicker name="fechaSalida" class="span24" id="fechaSalidaId" value="${rubro?.fechaModificacion}" style="width: 100px"/>
+                <elm:datepicker name="fechaSalida" class="span24" id="fechaSalidaId" value="${rubro?.fechaModificacion}" style="width: 100px" tabindex="-1"/>
             </div>
-
-            <div class="span3" style="margin-top: 20px;">
+            <div class="span3" style="margin-top: 5px;">
                 ¿Desea imprimir el reporte desglosando el transporte?
             </div>
+            <div class="span3" style="margin-top: 5px;">
 
+            <g:checkBox name="columnaCodigo" class="codigoId"/> Imprimir columna de código
+            </div>
         </fieldset>
-
     </div>
 
 
@@ -672,10 +672,9 @@
 </div>
 <script type="text/javascript">
 
-
     $("#revision").click(function () {
-        var idRubro = ${rubro?.id}
-                if(confirm("Esta seguro de cambiar el estado de este rubro a 'REVISADO'? ")){
+        var idRubro = '${rubro?.id}'
+                if(confirm("Está seguro de cambiar el estado de este rubro a 'REVISADO'? ")){
                     $.ajax({
                         type: 'POST',
                         url: '${createLink(controller: 'rubro', action: 'revisar_ajax')}',
@@ -1072,14 +1071,8 @@
 
             var precio = 0
             var listas = "" + $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" + $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val()
-
             var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=C" + "&listas=" + listas + "&ids=" + str_replace("i_", "", h.attr("id"))
-//            $.each(items, function () {
-//                datos += $(this).attr("id") + "#"
-//            });
-//            var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&ids="+ str_replace("i_","",h.attr("id"))
-//            ////console.log("si h",h,h.attr("id"))
-//            ////console.log("si h",str_replace("i_","",h.attr("id")) )
+
             $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPreciosItem')}",
                 data     : datos,
                 success  : function (msg) {
@@ -1090,9 +1083,7 @@
 //                        ////console.log(parts,parts.length)
                         if (parts.length > 1) {
                             precio = parseFloat(parts[1].trim())
-
                         }
-
                     }
                     var padre = h.parent()
                     var rend = padre.find(".rend")
@@ -1109,10 +1100,8 @@
                     total.html(number_format(parseFloat(hora.html()) * parseFloat(rend.html()), 5, ".", ""))
                     totalEquipos()
 //                    ////console.log("total herramienta",parseFloat(hora.html())*parseFloat(rend.html()),total)
-
                 }
             });
-
         } else {
             totalEquipos()
         }
@@ -1174,18 +1163,6 @@
 //        ////console.log(totalMa)
         $("#totMat_h").val(totalMa)
         calculaHerramientas()
-//        window.setTimeout(vacio,2000)
-//
-//        equipos.each(function(){
-//            totalE+=parseFloat($(this).find(".col_total").html())
-//        })
-//
-//        td=$("<td class='valor_total'  style='text-align: right;;font-weight: bold'>")
-//        td.html(number_format(totalE, 5, ".", ""))
-//        trE.append(td)
-
-//        $("#tabla_equipo").append(trE)
-
     }
 
     function tablaIndirectos() {
@@ -1214,10 +1191,6 @@
     }
 
     $(function () {
-//                $("#detalle").click(function () {
-//                    $("#modal-detalle").modal("show");
-//                });
-
 
         $("#save-espc").click(function () {
             if ($("#especificaciones").val().trim().length < 1024) {
@@ -1399,17 +1372,7 @@
         });
 
         $("#excel").click(function () {
-            %{--var dsps=$("#dist_peso").val()--}%
-            %{--var dsvs=$("#dist_vol").val()--}%
-            %{--var volqueta=$("#costo_volqueta").val()--}%
-            %{--var chofer=$("#costo_chofer").val()--}%
-            %{--var datos = "?dsps="+dsps+"&dsvs="+dsvs+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()--}%
-            %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}"+datos--}%
-            %{--var datos = "?dsps="+dsps+"&dsvs="+dsvs+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&indi="+$("#costo_indi").val()--}%
-            %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}"+datos--}%
-            %{--location.href=url--}%
-
-            var dsp0 = $("#dist_p1").val()
+            var dsp0 = $("#dist_p1").val();
             var dsp1 = $("#dist_p2").val()
             var dsv0 = $("#dist_v1").val()
             var dsv1 = $("#dist_v2").val()
@@ -1422,44 +1385,10 @@
 
             var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}" + datos
             location.href = url
-
         });
 
         $("#imprimir").click(function () {
-//            var dsps=$("#dist_peso").val()
-//            var dsvs=$("#dist_vol").val()
-//            var volqueta=$("#costo_volqueta").val()
-//            var chofer=$("#costo_chofer").val()
-
             $("#imprimirTransporteDialog").dialog("open");
-
-//            var dsp0=$("#dist_p1").val()
-//            var dsp1=$("#dist_p2").val()
-//            var dsv0=$("#dist_v1").val()
-//            var dsv1=$("#dist_v2").val()
-//            var dsv2=$("#dist_v3").val()
-//            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-//            var volqueta=$("#costo_volqueta").val()
-//            var chofer=$("#costo_chofer").val()
-
-            %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'transporte')}",--}%
-            %{--data     : "dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+"&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val(),--}%
-            %{--success  : function (msg) {--}%
-            %{--$("#tabla_transporte").html(msg)--}%
-            %{--tablaIndirectos();--}%
-            %{--}--}%
-            %{--});--}%
-
-            %{--"dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+"&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()--}%
-            %{--var datos = "?dsps="+dsps+"Wdsvs="+dsvs+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()--}%
-            %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}"+datos--}%
-            %{--var datos = "?dsps="+dsps+"Wdsvs="+dsvs+"Wprvl="+volqueta+"Wprch="+chofer+"Wfecha="+$("#fecha_precios").val()+"Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+"Windi="+$("#costo_indi").val()--}%
-
-
-
-            %{--datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+"Wprch="+chofer+"Wfecha="+$("#fecha_precios").val()+"Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()--}%
-            %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos--}%
-            %{--location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url--}%
         });
 
         $("#transporte").click(function () {
@@ -1816,24 +1745,7 @@
                                         "Cancelar":function(){
 
                                         }
-                                        %{--"Aceptar" : function () {--}%
-                                        %{--$("#dlgLoad").dialog("open");--}%
-                                        %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'copiaRubro')}",--}%
-                                        %{--data     : "id=${rubro?.id}",--}%
-                                        %{--success  : function (msg) {--}%
-                                        %{--$("#dlgLoad").dialog("close");--}%
-                                        %{--if(msg=="true"){--}%
-                                        %{--alert("Error al generar historico del rubro, comunique este error al administrador del sistema")--}%
-                                        %{--}else{--}%
-                                        %{--console.log("es historico",msg)--}%
-                                        %{--$("#boxHiddenDlg").dialog("close");--}%
-                                        %{--agregar(msg,"H");--}%
-
-                                        %{--}--}%
-                                        %{--}--}%
-                                        %{--});--}%
-                                        %{--}--}%
-                                    }
+                                      }
                                 }
                             });
                         }else{
@@ -2007,43 +1919,7 @@
         });
 
 
-        %{--function revisarCodigo (espec) {--}%
-        %{--$.ajax({--}%
-        %{--type: 'POST',--}%
-        %{--url: "${createLink(controller: 'rubro', action: 'revisarCodigo_ajax')}",--}%
-        %{--data:{--}%
-        %{--id: '${rubro?.id}',--}%
-        %{--codigo: espec--}%
-        %{--},--}%
-        %{--success: function (msg){--}%
-        %{--console.log(msg)--}%
-        %{--if(msg == 'ok'){--}%
-        %{--$.box({--}%
-        %{--imageClass : "box_info",--}%
-        %{--text       : "Código de especificación duplicado!",--}%
-        %{--title      : "Alerta",--}%
-        %{--iconClose  : false,--}%
-        %{--dialog     : {--}%
-        %{--resizable : false,--}%
-        %{--draggable : false,--}%
-        %{--buttons   : {--}%
-        %{--"Aceptar" : function () {--}%
-        %{--}--}%
-        %{--}--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}else{--}%
-        %{--console.log("Sin error")--}%
-        %{--}--}%
-        %{--}--}%
-        %{--})--}%
-
-        %{--}--}%
-
-
-
         $("#guardar").click(function () {
-
 
             var cod = $("#input_codigo").val()
             var desc = $("#input_descripcion").val()
@@ -2051,9 +1927,6 @@
             var msg = ""
             var resp = $("#selResponsable").val();
             var espec = $("#input_codigo_es").val();
-
-//            revisarCodigo(espec);
-
 
             console.log('reponsable:',resp)
             if (cod.trim().length > 30 || cod.trim().length < 1) {
@@ -2120,20 +1993,14 @@
                         });
 
                     } else {
-//                        console.log("sub")
                         $("#frmRubro").submit()
                     }
 
                 }
             });
-
-//            console.log("fin")
         });
 
         <g:if test="${rubro}">
-
-
-
 
 
         $("#btn_agregarItem").click(function () {
@@ -2245,6 +2112,13 @@
         });
         </g:else>
 
+
+        var codigoCheck
+
+        $(".codigoId").click(function () {
+            codigoCheck = $(this).prop("checked")
+        });
+
         $("#imprimirTransporteDialog").dialog({
 
             autoOpen  : false,
@@ -2255,13 +2129,9 @@
             height    : 220,
             position  : 'center',
             title     : 'Imprimir Rubro',
-            /*
-             open: function( event, ui ) {
-             $( "#fechaSalidaId" ).datepicker( "hide" );
-             },
-             */
+
             buttons   : {
-                "Si VAE" : function () {
+                'Si VAE' : function () {
                     var dsp0 = $("#dist_p1").val()
                     var dsp1 = $("#dist_p2").val()
                     var dsv0 = $("#dist_v1").val()
@@ -2272,7 +2142,7 @@
                     var chofer = $("#costo_chofer").val()
                     var fechaSalida = $("#fechaSalidaId").val();
                     datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq="
-                            + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida
+                            + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck
                     var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?" + datos
                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                     $("#imprimirTransporteDialog").dialog("close");
@@ -2289,12 +2159,11 @@
                     var fechaSalida = $("#fechaSalidaId").val();
                     datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val()
                             + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val()
-                            + "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida
+                            + "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck
                     var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?" + datos
                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                     $("#imprimirTransporteDialog").dialog("close");
                 },
-
 
                 "Si" : function () {
                     var dsp0 = $("#dist_p1").val()
@@ -2307,10 +2176,8 @@
                     var chofer = $("#costo_chofer").val()
                     var fechaSalida = $("#fechaSalidaId").val();
 
-//                    console.log(fechaSalida)
-
                     datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq="
-                            + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida
+                            + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck
                     var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?" + datos
                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                     $("#imprimirTransporteDialog").dialog("close");
@@ -2328,25 +2195,15 @@
 
                     datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val()
                             + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val()
-                            + "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida
+                            + "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck
                     var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?" + datos
                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                     $("#imprimirTransporteDialog").dialog("close");
                 },
                 "Cancelar" :  function () {
-
-
                     $("#imprimirTransporteDialog").dialog("close");
-
-
                 }
-
-
-
             }
-
-
-
         });
 
     });

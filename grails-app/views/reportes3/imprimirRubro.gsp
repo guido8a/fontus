@@ -150,11 +150,11 @@
 
             <div class="tituloPdf tituloHeader">
                 <p class="grande">
-                    <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
+                    <b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>
                 </p>
 
                 <p style="font-size: 14px">
-                    <b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b>
+                    <b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b>
                 </p>
 
                 <p style="font-size: 14px">
@@ -199,8 +199,6 @@
 
                 <div class="row-fluid">
                     <div class="span12">
-                        %{--<g:set var="nombre" value="${rubro.nombre.replaceAll('<', '(menor)')}"></g:set>--}%
-                        %{--<g:set var="nombre" value="${rubro.nombre.replaceAll('<', '(mayor)')}"></g:set>--}%
                         <b>Descripción:</b> ${rubro.nombre}
                     </div>
                 </div>
@@ -215,8 +213,8 @@
                     ${tablaMat2}
                 </g:if>
                 ${tablaTrans}
-                <g:if test="${band == 0 && bandTrans != 'no'}">
-
+                %{--<g:if test="${band == 0 && bandTrans != 'no'}">--}%
+                <g:if test="${band == 0}">
                     ${tablaTrans2}
                 </g:if>
                 ${tablaIndi}

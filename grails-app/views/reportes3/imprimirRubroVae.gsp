@@ -144,11 +144,11 @@
 
     <div class="tituloPdf tituloHeader">
         <p style="font-size: 18px">
-            <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
+            <b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>
         </p>
 
         <p style="font-size: 14px; margin-top: -15px;">
-            <b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>
+            <b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b><br/>
             <b>ANÁLISIS DE PRECIOS UNITARIOS</b>
         </p>
     </div>
@@ -210,8 +210,8 @@
             ${tablaMat2}
         </g:if>
         ${tablaTrans}
-        <g:if test="${band == 0 && bandTrans == '1'}">
-
+        %{--<g:if test="${band == 0 && bandTrans == '1'}">--}%
+        <g:if test="${band == 0}">
             ${tablaTrans2}
         </g:if>
         ${tablaIndi}

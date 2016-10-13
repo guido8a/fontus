@@ -153,19 +153,11 @@ class CantonController extends janus.seguridad.Shield {
                 if (params.id) {
                     flash.clase = "alert-success"
                     flash.message = "Se ha actualizado correctamente la Comunidad " + comunidadInstance.nombre
-
-
-
                 } else {
                     flash.clase = "alert-success"
                     flash.message = "Se ha creado correctamente la Comunidad " + comunidadInstance.nombre
                 }
-
-
-
                 break;
-
-
         }
 
 
@@ -350,19 +342,19 @@ class CantonController extends janus.seguridad.Shield {
                 def comunidades = Comunidad.findAllByParroquia(parroquia, [sort: 'nombre'])
 
                 clase = ""
-                if (comunidades.size() > 0) {
-
-
-                    tree += "<ul type='comunidad'>" // < ul parroquias
-                    comunidades.each { comunidad ->
-                        tree += "<li id='comunidad_" + comunidad.id + "' class='comunidad " + clase + "' rel='comunidad'>" // <li parroquia
-                        tree += "<a href='#' id='link_comunidad_" + comunidad.id + "' class='label_arbol'>" + comunidad.nombre + "</a>" // </> a href parroquia
-                        tree += "</li>" // </> li parroquia
-
-                    }
-                    tree += "</ul>"
-
-                }
+//                if (comunidades.size() > 0) {
+//
+//
+//                    tree += "<ul type='comunidad'>" // < ul parroquias
+//                    comunidades.each { comunidad ->
+//                        tree += "<li id='comunidad_" + comunidad.id + "' class='comunidad " + clase + "' rel='comunidad'>" // <li parroquia
+//                        tree += "<a href='#' id='link_comunidad_" + comunidad.id + "' class='label_arbol'>" + comunidad.nombre + "</a>" // </> a href parroquia
+//                        tree += "</li>" // </> li parroquia
+//
+//                    }
+//                    tree += "</ul>"
+//
+//                }
 
 
                 break;

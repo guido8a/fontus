@@ -416,6 +416,7 @@ class RubroController extends janus.seguridad.Shield {
             rubro = new Item(params)
             params.rubro.fecha = new Date()
             rubro.tipoItem = TipoItem.get(2)
+            rubro.estadoSuper = 'N'
         }
 
         if (params.rubro.registro != "R") {
