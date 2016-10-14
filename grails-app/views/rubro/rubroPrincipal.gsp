@@ -48,14 +48,16 @@
             <i class="icon-file-alt"></i>
             Nuevo
         </a>
-        <a href="#" class="btn btn-ajax btn-new btn-success" id="guardar">
-            <i class="icon-save"></i>
-            Guardar
-        </a>
-        <a href="#" class="btn btn-ajax btn-new btn-danger" id="borrar">
-            <i class="icon-trash"></i>
-            Borrar
-        </a>
+        <g:if test="${rubro?.estadoSuper != 'R'}">
+            <a href="#" class="btn btn-ajax btn-new btn-success" id="guardar">
+                <i class="icon-save"></i>
+                Guardar
+            </a>
+            <a href="#" class="btn btn-ajax btn-new btn-danger" id="borrar">
+                <i class="icon-trash"></i>
+                Borrar
+            </a>
+        </g:if>
     </g:if>
     <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
         <i class="icon-remove"></i>
@@ -237,11 +239,14 @@
             </div>
 
             <g:if test="${rubro && modifica}">
-                <div class="span2" style="margin-left: -10px">
-                    <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
-                        Copiar composición
-                    </a>
-                </div>
+                <g:if test="${rubro?.estadoSuper != 'R'}">
+                    <div class="span2" style="margin-left: -10px">
+                        <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
+                            Copiar composición
+                        </a>
+                    </div>
+                </g:if>
+
                 <div class="span1" style="margin-left: -10px">
                     <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información">
                         <i class="icon-exclamation"></i> Info</a>
@@ -279,12 +284,14 @@
             </div>
 
             <g:if test="${modifica}">
-                <div class="span1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 10px">
-                    <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
-                        <i class="icon-plus"></i>
-                    </a>
+                <g:if test="${rubro?.estadoSuper != 'R'}">
+                    <div class="span1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 10px">
+                        <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
+                            <i class="icon-plus"></i>
+                        </a>
 
-                </div>
+                    </div>
+                </g:if>
             </g:if>
 
         </div>
@@ -333,8 +340,10 @@
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
                             <g:if test="${modifica}">
-                                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                    <i class="icon-trash"></i></a>
+                                <g:if test="${rubro?.estadoSuper != 'R'}">
+                                    <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                        <i class="icon-trash"></i></a>
+                                </g:if>
                             </g:if>
                         </td>
                     </tr>
@@ -380,8 +389,10 @@
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
                             <g:if test="${modifica}">
-                                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                    <i class="icon-trash"></i></a>
+                                <g:if test="${rubro?.estadoSuper != 'R'}">
+                                    <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                        <i class="icon-trash"></i></a>
+                                </g:if>
                             </g:if>
                         </td>
                     </tr>
@@ -424,8 +435,10 @@
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
                             <g:if test="${modifica}">
-                                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                    <i class="icon-trash"></i></a>
+                                <g:if test="${rubro?.estadoSuper != 'R'}">
+                                    <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                        <i class="icon-trash"></i></a>
+                                </g:if>
                             </g:if>
                         </td>
                     </tr>
