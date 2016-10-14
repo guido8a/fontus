@@ -53,8 +53,20 @@
                 </div>
                 <div class="row-fluid" style="margin-top: 20px">
                     <div class="span12">
-                        <div class="span5"><b>Tipo: Civil:C, Mecánica M, Eléctrico: E, Electrónico: D, Hidrostático: H</b></div>
+                        <div class="span5"><b>Tipo: Civil:C, Mecánica M, Eléctrico: E, Electrónico: D, Hidrosanitario: H</b></div>
                         <input type="text" class="required span1" id="tipo" name="tipo"/>
+                    </div>
+                </div>
+                <div class="row-fluid" style="margin-top: 20px">
+                    <div class="span12">
+                        <div class="span6"><b>Subgrupo Equipo: Civil:101, Mecánica: 104, Eléctrico: 102, Electrónico: 103, Sanitario: 105</b></div>
+                        <input type="text" class="required span1" id="sbgr" name="sbgr"/>
+                    </div>
+                </div>
+                <div class="row-fluid" style="margin-top: 20px">
+                    <div class="span12">
+                        <div class="span6"><b>Subgrupo Materiales: Civil:001, Mecánica: 004, Eléctrico: 002, Electrónico: 003, Sanitario: 005</b></div>
+                        <input type="text" class="required span1" id="sbgr_mt" name="sbgr_mt"/>
                     </div>
                 </div>
             </div>

@@ -140,7 +140,7 @@
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
 
-                <div class="span6" style="width: 550px; margin-left: 10px">
+                <div class="span6" style="width: 550px; margin-left: 10px;" maxlength="1000">
                     Descripción
                     <input type="text" name="rubro.nombre" class="span72" value="${rubro?.nombre}" id="input_descripcion">
                 </div>
@@ -1972,11 +1972,11 @@
             if (cod.trim().length > 30 || cod.trim().length < 1) {
                 msg = "<br>Error: La propiedad código debe tener entre 1 y 30 caracteres."
             }
-            if (desc.trim().length > 160 || desc.trim().length < 1) {
+            if (desc.trim().length > 1000 || desc.trim().length < 1) {
                 if (msg == "")
-                    msg = "<br>Error: La propiedad descripción debe tener entre 1 y 160 caracteres."
+                    msg = "<br>Error: La propiedad descripción debe tener entre 1 y 1000 caracteres."
                 else
-                    msg = "<br>Error: La propiedad descripción debe tener entre 1 y 160 caracteres."
+                    msg = "<br>Error: La propiedad descripción debe tener entre 1 y 1000 caracteres."
             }
             if (resp == "-1") {
                 if (msg == "")
@@ -1999,11 +1999,11 @@
                             msg += "<br>Error: el código " + cod.toUpperCase() + " está repetido"
 
                     }
-                    if (desc.trim().length > 160 || desc.trim().length < 1) {
+                    if (desc.trim().length > 1000 || desc.trim().length < 1) {
                         if (msg == "")
-                            msg = "<br>Error: La propiedad descripción debe tener entre 1 y 160 caracteres."
+                            msg = "<br>Error: La propiedad descripción debe tener entre 1 y 1000 caracteres."
                         else
-                            msg += "<br>La propiedad descripción debe tener entre 1 y 160 caracteres."
+                            msg += "<br>La propiedad descripción debe tener entre 1 y 1000 caracteres."
                     }
 
                     if (isNaN(subGr) || subGr * 1 < 1) {

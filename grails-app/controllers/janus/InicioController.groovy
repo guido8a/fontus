@@ -1,9 +1,12 @@
 package janus
 
+import janus.pac.CodigoComprasPublicas
 import janus.seguridad.Prfl
 import jxl.Cell
 import jxl.Sheet
 import jxl.Workbook
+import jxl.WorkbookSettings
+import org.springframework.dao.DataIntegrityViolationException
 
 
 class InicioController extends janus.seguridad.Shield {
@@ -56,13 +59,19 @@ class InicioController extends janus.seguridad.Shield {
         return [obra: params.id]
     }
 
+
     def cargaArch() {
         println "cargaArch $params"
         def tipo = params.tipo
+        def dprt
+        def sbgr
+        def tpls
+        def tpit = TipoItem.findByCodigo('I')
         def lgar
-        def rbpc
-        def itva
-        def fcha = new Date()
+        def contador = 0
+        def repetidos = 0
+        def cargar
+        def lugares = []
         def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
         new File(path).mkdirs()
 
@@ -102,92 +111,140 @@ class InicioController extends janus.seguridad.Shield {
                 f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
 
                 //procesar excel
-                def htmlInfo = "", errores = "", doneHtml = "", done = 0
+                def htmlInfo = "", errores = "", doneHtml = ""
                 def file = new File(pathFile)
-                Workbook workbook = Workbook.getWorkbook(file)
-
+                WorkbookSettings ws = new WorkbookSettings();
+                ws.setEncoding("Cp1252");
+                Workbook workbook = Workbook.getWorkbook(file, ws)
                 workbook.getNumberOfSheets().times { sheet ->
-                    if (sheet == 0) {  // primera hoja Equipo
+
+                    /** ------------------- carga equipos ----------------- **/
+                    if (sheet == 0) {  // primera hoja Equipo -- no tiene categoria
                         Sheet s = workbook.getSheet(sheet)
                         if (!s.getSettings().isHidden()) {
                             println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
                             htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                             Cell[] row = null
+
+                            dprt = DepartamentoItem.findByCodigo(params.sbgr)
+                            lgar = Lugar.findByCodigo(100)
+                            tpls = TipoLista.get(6)
+                            sbgr = SubgrupoItems.findByCodigo(params.sbgr)
+
                             s.getRows().times { j ->
-                                def ok = true
+                                row = s.getRow(j)
+                                println row*.getContents()
+//                                println row.length
+
+                                if (row.length >= 6) {
+                                    def cod =    row[0].getContents().toUpperCase()
+                                    def nombre = row[1].getContents()
+                                    def unidad = Unidad.findByCodigo(row[2].getContents())
+                                    def costo  = row[3].getContents()
+                                    def cpc    = row[4].getContents()
+                                    def vae   = row[5].getContents()
+
+                                    if (cod != "CODIGO") {  // no es el título
+                                        //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt,
+                                        // lgar, vae, costos, lugares, tpls)
+                                        cargar = cargaItem(cod, tipo, nombre, unidad, null, null, costo, cpc, tpit, dprt,
+                                                lgar, vae, null, null, tpls)
+                                        if(cargar.contador) contador++ else repetidos++
+                                    }
+                                } //row ! empty
+                            } //rows.each
+                        } //sheet ! hidden
+                        htmlInfo += "<p>Se han cargado $contador registros<p><br>Registros repetidos: $repetidos"
+                    }// sheet 0
+
+                    /** ------------------- Mano de Obra ----------------- **/
+                    if (sheet == 1) {
+                        Sheet s = workbook.getSheet(sheet)
+                        def unidad = Unidad.findByCodigo('h')
+                        dprt = DepartamentoItem.findByCodigo('006')
+                        println "departamento: --- $dprt, unidad: ${unidad.descripcion}"
+                        lgar = Lugar.findByCodigo(100)
+                        sbgr = SubgrupoItems.findByCodigo('001')
+                        tpls = TipoLista.get(6)
+
+                        if (!s.getSettings().isHidden()) {
+                            println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+                            Cell[] row = null
+                            s.getRows().times { j ->
                                 row = s.getRow(j)
                                 println row*.getContents()
 //                                println row.length
 
                                 if (row.length >= 5) {
-                                    def cod =    row[0].getContents()
-                                    def nombre = row[1].getContents()
-                                    def unidad = row[2].getContents()
-                                    def costo  = row[3].getContents()
-                                    def cpc    = row[4].getContents()
-                                    def vae   = row[5].getContents()
-                                    if(vae == 'EP') {
-                                        vae = '100'
-                                    } else if(vae == 'ND') {
-                                        vae = '40'
-                                    } else {
-                                        vae = '0'
-                                    }
+                                    def cod        = row[0].getContents().toUpperCase()
+                                    def nombre     = row[1].getContents()
+                                    def categoria  = row[2].getContents()
+                                    def costo      = row[3].getContents()
+                                    def cpc        = row[4].getContents()
+                                    def vae        = row[5].getContents()
 
                                     if (cod != "CODIGO") {  // no es el título
-                                        def item = Item.findAllByCodigo(cod)
-                                        if (item.size() == 0) {
-                                            //ok
-                                            item = new Item()
-                                            item.codigo = tipo + cod
-                                            item.nombre = nombre
-                                            item.unidad = Unidad.findByCodigo(unidad)
-                                            try {
-                                                item.save(flush: true)
-                                            } catch (e) {
-                                                println e
-                                            }
-
-                                            item.refresh()
-                                            println "pasa item.."
-
-                                            lgar = Lugar.findByCodigo(10)
-                                            rbpc = new PrecioRubrosItems()
-                                            rbpc.lugar = lgar
-                                            rbpc.item = item
-                                            rbpc.fecha = fcha
-                                            rbpc.fechaIngreso = fcha
-                                            rbpc.precioUnitario = costo.toDouble()
-                                            rbpc.registrado = 'N'
-                                            rbpc.save(flush: true)
-                                            println "pasa rbpc.."
-
-                                            itva = new VaeItems()
-                                            itva.item = item
-                                            itva.fecha = fcha
-                                            itva.fechaIngreso = fcha
-                                            itva.registrado = 'N'
-                                            itva.porcentaje = vae.toInteger()
-                                            itva.save(flush: true)
-                                            println "pasa itva.."
-
-                                            println " se ha grabado el item: $item"
-
-                                        } else if (item.size() == 1) {
-                                            errores += "<li>Ya existe el item con código ${cod} (l. ${j + 1})</li>"
-                                            println "Ya existe el item con código ${cod}"
-                                            ok = false
-                                        }
-
+                                        //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit,
+                                        // dprt, lgar, vae, costos, lugares, tpls)
+                                        cargar = cargaItem(cod, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit,
+                                                dprt, lgar, vae, null, null, tpls)
+                                        if(cargar.contador) contador++ else repetidos++
                                     }
                                 } //row ! empty
-//                                }//row > 7 (fila 9 + )
                             } //rows.each
                         } //sheet ! hidden
+                        htmlInfo += "<p>Se han cargado $contador registros<p><br>Registros repetidos: $repetidos"
+                    }// sheet 1
+
+                    /** ------------------- Materiales ----------------- **/
+                    if (sheet == 2) {
+                        Sheet s = workbook.getSheet(sheet)
+                        dprt = DepartamentoItem.findByCodigo('001')
+                        sbgr = SubgrupoItems.findByCodigo(params.sbgr_mt)
+                        tpls = TipoLista.get(1)
+
+                        if (!s.getSettings().isHidden()) {
+                            println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+                            Cell[] row = null
+                            s.getRows().times { j ->
+//                            (900..1000).each { j ->
+                                row = s.getRow(j)
+                                println "cargando: ${row*.getContents()}"
+//                                println row.length
+
+                                if (row.length >= 10) {
+                                    def cod =    row[0].getContents().toUpperCase()
+                                    def nombre = row[1].getContents()
+                                    def unidad = Unidad.findByCodigo(row[2].getContents())
+                                    def categoria  = row[3].getContents()
+                                    def cpc    = row[4].getContents().replaceAll(~/\./, "")
+                                    def vae   = row[5].getContents()
+                                    if (cod != "CODIGO" && cod) {  // no es el título
+                                        def costos = []
+                                        lugares = []
+                                        (0..10).each {
+//                                            println "pone lugares y costos con it: $it"
+                                            lugares.add(Lugar.findByCodigo(it+1))
+                                            costos.add(row[it+6].getContents())
+                                        }
+//                                        println "lugares y precios: $lugares\n$costos"
+                                        //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt,
+                                        // lgar, vae, costos, lugares, tpls)
+                                        cargar = cargaItem(cod, tipo, nombre, unidad, categoria, sbgr, null, cpc, tpit, dprt,
+                                                lgar, vae, costos, lugares, tpls)
+                                        if(cargar.contador) contador++ else repetidos++
+                                    }
+                                } //row ! empty
+                            } //rows.each
+                        } //sheet ! hidden
+                        htmlInfo += "<p>Se han cargado $contador registros<p><br>Registros repetidos: $repetidos"
                     }//solo sheet 0
+
                 } //sheets.each
-                if (done > 0) {
-                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
+                if (contador > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente $contador registros</div>"
                 }
 
                 def str = doneHtml
@@ -199,8 +256,8 @@ class InicioController extends janus.seguridad.Shield {
 
                 flash.message = str
 
-                println "DONE!!"
-                redirect(action: "mensajeUpload", id: params.id)
+                println "DONE!! --> $str"
+                redirect(action: 'mensajeUpload')
             } else {
                 flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
                 redirect(action: 'formArchivo')
@@ -213,9 +270,112 @@ class InicioController extends janus.seguridad.Shield {
     }
 
     def mensajeUpload() {
-        return [obra: params.id]
+
     }
 
+    def cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt, lgar, vae, costos, lugares, tpls) {
+        def cn = dbConnectionService.getConnection()
+        def item = Item.findAllByNombreIlike(nombre)
+        def rbpc
+        def cpac
+        def itva
+        def fcha = new Date()
+        def vvae = 100
+        def contador = 0
+        def errores = ""
 
+        if(vae == 'EP') {
+            vvae = 100
+        } else if(vae == 'ND') {
+            vvae = 40
+        } else {
+            vvae = 0
+        }
+
+
+        if (item.size() == 0) {
+            cpac = CodigoComprasPublicas.findByNumero(cpc)
+            item = new Item()
+            item.codigo = tipo + itemcdgo
+            item.nombre = nombre
+            item.unidad = unidad
+            item.tipoItem = tpit
+            item.tipoLista = tpls
+            if(categoria){
+                def tx = "select coalesce(max(cast(dprtcdgo as integer)), 0) maximo from dprt where sbgr__id = ${sbgr.id}"
+                def ctgr = DepartamentoItem.findByDescripcion(categoria)
+                if(!ctgr){
+                    println "sql: $tx"
+                    def nmro = cn.rows(tx.toString())[0].maximo + 1
+                    cn.close()
+                    println "numero: $nmro, codigo: ${tipo + nmro}"
+                    ctgr = new DepartamentoItem()
+                    ctgr.codigo = nmro
+                    ctgr.descripcion = categoria
+                    ctgr.subgrupo = sbgr
+                    ctgr.save(flush: true)
+                    ctgr.refresh()
+                    item.departamento = ctgr
+                } else {
+                    item.departamento = ctgr
+                }
+            } else {
+                item.departamento = dprt
+            }
+            item.codigoComprasPublicas = cpac?:null
+            try {
+                item.save(flush: true)
+//                println "........ ${item.codigo}, ${item.nombre}, ${item.unidad.id}, ${item.tipoItem}, ${item.departamento}"
+            } catch (DataIntegrityViolationException e) {
+                println "ERROR: $e"
+            }
+
+            item.refresh()
+//            println "pasa item.."
+
+            if(!costos) {
+                rbpc = new PrecioRubrosItems()
+                rbpc.lugar = lgar
+                rbpc.item = item
+                rbpc.fecha = fcha
+                rbpc.fechaIngreso = fcha
+                rbpc.precioUnitario = costo.toDouble()
+                rbpc.registrado = 'N'
+                rbpc.save(flush: true)
+//            println "pasa rbpc.."
+            } else {
+                (0..10).each {
+                    if(costos[it]) {
+                        rbpc = new PrecioRubrosItems()
+                        rbpc.lugar = lugares[it]
+                        rbpc.item = item
+                        rbpc.fecha = fcha
+                        rbpc.fechaIngreso = fcha
+                        rbpc.precioUnitario = costos[it].toDouble()
+                        rbpc.registrado = 'N'
+                        rbpc.save(flush: true)
+                    }
+                }
+//            println "pasa rbpc.."
+            }
+
+            itva = new VaeItems()
+            itva.item = item
+            itva.fecha = fcha
+            itva.fechaIngreso = fcha
+            itva.registrado = 'N'
+            itva.porcentaje = vvae
+            itva.save(flush: true)
+//            println "pasa itva.."
+
+//            println " se ha grabado el item: $item"
+            contador++
+
+        } else {
+            errores += "<li>Ya existe el item con código ${itemcdgo}</li>"
+            println "Ya existe el item con código ${itemcdgo}"
+        }
+        return [errores: errores, contador: contador]
+    }
 
 }

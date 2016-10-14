@@ -20,7 +20,7 @@ class MantenimientoItemsController extends Shield {
     } //index
 
     String makeBasicTree(params) {
-//        println "PARAMS  "+params
+//        println "makeBasicTree ---  "+params
         def id = params.id
         def tipo = params.tipo
         def precios = params.precios
@@ -214,7 +214,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     String makeBasicTree_bck(params) {
-//        println "PARAMS: "+params
+        println "PARAMS: "+params
         def id = params.id
         def tipo = params.tipo
         def precios = params.precios
