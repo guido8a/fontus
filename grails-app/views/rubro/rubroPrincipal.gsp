@@ -660,12 +660,12 @@
                 <elm:datepicker name="fechaSalida" class="span24" id="fechaSalidaId" value="${rubro?.fechaModificacion}" style="width: 100px" tabindex="-1"/>
             </div>
             <div class="span3" style="margin-top: 5px;">
-                ¿Desea imprimir el reporte desglosando el transporte?
+                <g:checkBox name="columnaCodigo" class="codigoId"/> Imprimir columna de código
             </div>
             <div class="span3" style="margin-top: 5px;">
-
-            <g:checkBox name="columnaCodigo" class="codigoId"/> Imprimir columna de código
+                ¿Desea imprimir el reporte desglosando el transporte?
             </div>
+
         </fieldset>
     </div>
 
