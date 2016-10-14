@@ -112,7 +112,12 @@
             Registrar
         </a>
     </g:if>
-
+    <g:if test="${session.perfil.codigo == 'CSTO' && rubro?.estadoSuper == 'R'}">
+        <a href="#" class="btn btn-ajax btn-new btn-warning" id="registrar" title="Quitar el registro del rubro">
+            <i class="icon-check"></i>
+            Desregistrar
+        </a>
+    </g:if>
 </div>
 
 
