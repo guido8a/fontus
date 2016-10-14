@@ -896,6 +896,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def formIt_ajax() {
+        println("params " + params)
         def departamento = DepartamentoItem.get(params.departamento)
         def itemInstance = new Item()
         if (params.id) {
@@ -1042,20 +1043,21 @@ class MantenimientoItemsController extends Shield {
     }
 
     def saveIt_ajax() {
-        println 'SAVE ITEM: ' + params
-        def dep = DepartamentoItem.get(params.departamento.id)
+//        println 'SAVE ITEM: ' + params
+//        def dep = DepartamentoItem.get(params.departamento.id)
+        def dep = DepartamentoItem.get(params.departamento_name)
+
         params.tipoItem = TipoItem.findByCodigo("I")
         params.fechaModificacion = new Date()
         params.nombre = params.nombre.toString().toUpperCase()
         params.campo = params.campo.toString().toUpperCase()
         params.observaciones = params.observaciones.toString().toUpperCase()
         params.codigo = params.codigo.toString().toUpperCase()
+
         if (!params.id) {
             if (!params.codigo.contains(".")) {
                 if (dep.subgrupo.grupoId == 2) {
-//                println "?"
                     params.codigo = dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
-//                println params.codigo
                 } else {
                     params.codigo = dep.subgrupo.codigo.toString().padLeft(3, '0') + "." + dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
                 }
@@ -1063,11 +1065,11 @@ class MantenimientoItemsController extends Shield {
         } else {
             params.remove("codigo")
         }
+
         if (params.fecha) {
             params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         } else {
             params.fecha = new Date()
-
         }
 
         if (!params.tipoLista) {
@@ -1075,13 +1077,15 @@ class MantenimientoItemsController extends Shield {
         }
 
         def accion = "create"
+
         def item = new Item()
         if (params.id) {
             item = Item.get(params.id)
             accion = "edit"
         }
-//        println "ITEM: " + params
         item.properties = params
+        item.departamento = dep
+
         if (item.save(flush: true)) {
             render "OK_" + accion + "_" + item.id + "_" + item.codigo + " " + item.nombre
         } else {
@@ -1657,6 +1661,12 @@ class MantenimientoItemsController extends Shield {
                 render "No se pudo eliminar el vae."
             }
         }
+    }
+
+    def departamento_ajax () {
+        def subgrupo = SubgrupoItems.get(params.subgrupo)
+        def item = Item.get(params.item)
+        return[subgrupo: subgrupo,item: item]
     }
 
 

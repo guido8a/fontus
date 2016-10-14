@@ -24,6 +24,20 @@
     </g:if>
 </div>
 
+<div class="span12 hide" style="margin-bottom: 10px;" id="divError">
+    <div class="alert alert-error" role="status">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        <span id="spanError"></span>
+    </div>
+</div>
+
+<div class="span12 hide" style="margin-bottom: 10px;" id="divOk">
+    <div class="alert alert-success" role="status">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        <span id="spanOk"></span>
+    </div>
+</div>
+
 <div class="span12 btn-group" role="navigation">
     <a href="#" class="btn  " id="btn_lista">
         <i class="icon-list-ul"></i>
@@ -206,14 +220,6 @@
         <div class="linea" style="height: 100px;"></div>
 
         <div class="row-fluid" style="color: #248">
-            %{--<div class="span3">--}%
-            %{--<div style="height: 40px;float: left;width: 100px">Lista de precios</div>--}%
-
-            %{--<div class="btn-group span7" data-toggle="buttons-radio" style="float: right;">--}%
-            %{--<button type="button" class="btn btn-info active tipoPrecio" id="C">Civiles</button>--}%
-            %{--<button type="button" class="btn btn-info tipoPrecio" id="V">Viales</button>--}%
-            %{--</div>--}%
-            %{--</div>--}%
 
             <div class="span6" style="width: 500px;">
                 Lista de precios: MO y Equipos
@@ -492,7 +498,7 @@
             </div>
 
             <div class="span5">
-                <g:select name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol" noSelection="${['-1': 'Seleccione']}" value="${aux.volquete.id}"></g:select>
+                <g:select name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol" noSelection="${['-1': 'Seleccione']}" value="${aux?.volquete?.id}"></g:select>
             </div>
 
             <div class="span2">
@@ -682,10 +688,44 @@
                             id: idRubro
                         },
                         success: function (msg) {
-
+                        if(msg == 'ok'){
+                            $("#spanOk").html("Rubro revisado correctamente");
+                            $("#divOk").show()
+                            setTimeout(function () {
+                                location.reload(true)
+                            }, 1000);
+                        }else{
+                            $("#spanError").html("Error al cambiar el estado del rubro a revisado");
+                            $("#divError").show()
+                        }
                         }
                     })
                 }
+    });
+
+    $("#registrar").click(function () {
+        var idRubro = '${rubro?.id}'
+        if(confirm("Está seguro de cambiar el estado de este rubro a 'REGISTRADO'? ")){
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'rubro', action: 'registrar_ajax')}',
+                data:{
+                    id: idRubro
+                },
+                success: function (msg) {
+                    if(msg == 'ok'){
+                        $("#spanOk").html("Rubro regsitrado correctamente");
+                        $("#divOk").show()
+                        setTimeout(function () {
+                            location.reload(true)
+                        }, 1000);
+                    }else{
+                        $("#spanError").html("Error al cambiar el estado del rubro a registrado");
+                        $("#divError").show()
+                    }
+                }
+            })
+        }
     });
 
 

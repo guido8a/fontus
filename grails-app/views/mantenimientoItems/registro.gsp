@@ -6,23 +6,12 @@
 
         <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>
         <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>
-
         <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
         <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-
         <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
         <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
         <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
-
         <link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>
-
-        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/css', file: 'jquery.jstree.js')}"></script>--}%
-        %{--<link href="${resource(dir: 'js/jquery/css/bw', file: 'jquery-ui-1.10.2.custom.min.css')}" rel="stylesheet"/>--}%
-        %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.2.custom.min.js')}"></script>--}%
-        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-        %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet"/>--}%
     </head>
 
     <body>
@@ -57,49 +46,34 @@
                 <span id="cantRes"></span>
                 <input type="button" class="btn " value="Cerrar todo" onclick="$('#tree').jstree('close_all');">
             </form>
-
         </div>
 
         <div id="loading" style="text-align:center;">
             <img src="${resource(dir: 'images', file: 'spinner_24.gif')}" alt="Cargando..."/>
-
             <p>Cargando... Por favor espere.</p>
         </div>
 
-
         <div id="treeArea" class="hide">
-
             <div id="tree" class="ui-corner-all"></div>
-
             <div id="info" class="ui-corner-all"></div>
         </div>
 
         <div class="modal longModal hide fade" id="modal-tree">
             <div class="modal-header" id="modalHeader">
                 <button type="button" class="close" data-dismiss="modal">×</button>
-
                 <h3 id="modalTitle"></h3>
             </div>
-
-            <div class="modal-body" id="modalBody">
-            </div>
-
-            <div class="modal-footer" id="modalFooter">
-            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
         </div>
 
         <div class="modal hide fade" id="modal-small">
             <div class="modal-header" id="modalHeaderSmall">
                 <button type="button" class="close" data-dismiss="modal">×</button>
-
                 <h3 id="modalTitleSmall"></h3>
             </div>
-
-            <div class="modal-body" id="modalBodySmall">
-            </div>
-
-            <div class="modal-footer" id="modalFooterSmall">
-            </div>
+            <div class="modal-body" id="modalBodySmall"></div>
+            <div class="modal-footer" id="modalFooterSmall"></div>
         </div>
 
         <script type="text/javascript">
@@ -118,22 +92,16 @@
                 info                     : "${resource(dir: 'images/tree', file: 'info.png')}",
                 copiar                   : "${resource(dir: 'images/tree', file: 'copiar.png')}",
 
-                %{--grupo_material : "${resource(dir: 'images/tree', file: 'grupo_material.png')}",--}%
                 grupo_material           : "${resource(dir: 'images/tree', file: 'carpeta2.png')}",
-                %{--grupo_manoObra : "${resource(dir: 'images/tree', file: 'grupo_manoObra.png')}",--}%
                 grupo_manoObra           : "${resource(dir: 'images/tree', file: 'carpeta5.png')}",
-                %{--grupo_equipo   : "${resource(dir: 'images/tree', file: 'grupo_equipo.png')}",--}%
                 grupo_equipo             : "${resource(dir: 'images/tree', file: 'carpeta6.png')}",
                 grupo_consultoria        : "${resource(dir: 'images/tree', file: 'carpeta5.png')}",
 
-                %{--subgrupo_material : "${resource(dir: 'images/tree', file: 'subgrupo_material.png')}",--}%
                 subgrupo_material        : "${resource(dir: 'images/tree', file: 'carpeta.png')}",
                 subgrupo_manoObra        : "${resource(dir: 'images/tree', file: 'subgrupo_manoObra.png')}",
-                %{--subgrupo_equipo   : "${resource(dir: 'images/tree', file: 'subgrupo_equipo.png')}",--}%
                 subgrupo_equipo          : "${resource(dir: 'images/tree', file: 'item_equipo.png')}",
                 subgrupo_consultoria     : "${resource(dir: 'images/tree', file: 'subgrupo_manoObra.png')}",
 
-                %{--departamento_material : "${resource(dir: 'images/tree', file: 'departamento_material.png')}",--}%
                 departamento_material    : "${resource(dir: 'images/tree', file: 'carpeta3.png')}",
                 departamento_manoObra    : "${resource(dir: 'images/tree', file: 'departamento_manoObra.png')}",
                 departamento_equipo      : "${resource(dir: 'images/tree', file: 'departamento_equipo.png')}",
@@ -249,6 +217,9 @@
                                                         $("#modal-tree").modal("hide");
                                                         log(params.log + parts[3] + " editado correctamente");
                                                         showInfo();
+                                                        setTimeout(function () {
+                                                            location.reload(true)
+                                                        }, 800);
                                                     }
                                                 } else {
                                                     $("#modal-tree").modal("hide");
@@ -257,7 +228,6 @@
                                             }
                                         });
                                     }
-//                                            $("#frmSave").submit();
                                     return false;
                                 });
                                 if (params.action == "create") {
@@ -267,15 +237,12 @@
                                 }
                                 $("#modalTitle").html(params.title);
                                 $("#modalBody").html(msg);
-//                                console.log("Botones", btnOk, btnSave)
                                 $("#modalFooter").html("").append(btnOk).append(btnSave);
-//                                console.log("Footer:", $("#modalFooter"))
                                 $("#modal-tree").modal("show");
                             },
                             complete : function () {
                                 $('#modalBody').animate({scrollTop : $('#frmSave').offset().top}, 'slow');
-//                                console.log($('#nombre').focus())
-//                                $('input').first().focus();
+
                             }
                         });
                     }
@@ -373,12 +340,10 @@
                         break;
                 }
 
-//                console.log(nodeNivel);
 
                 switch (nodeNivel) {
                     case "grupo":
                         if (current == 2) {
-//                            nodeId = 21;
                             menuItems.crearHijo = createUpdate({
                                 action    : "create",
                                 label     : "Nuevo subgrupo",
@@ -486,10 +451,6 @@
                         });
                         break;
                     case "departamento":
-
-//                        if (current == 2) {
-//                            parentId = 21;
-//                        }
 
                         menuItems.editar = createUpdate({
                             action    : "update",
@@ -630,21 +591,6 @@
                             }
                         };
                         if (!nodeHasChildren) {
-                            %{--menuItems.eliminar = remove({--}%
-                            %{--label       : "Eliminar " + item.toLowerCase(),--}%
-                            %{--sepBefore   : false,--}%
-                            %{--sepAfter    : false,--}%
-                            %{--icon        : icons.delete,--}%
-                            %{--title       : "Eliminar " + item.toLowerCase(),--}%
-                            %{--confirm     : item.toLowerCase(),--}%
-                            %{--url         : "${createLink(action:'deleteIt_ajax')}",--}%
-                            %{--data        : {--}%
-                            %{--id : nodeId--}%
-                            %{--},--}%
-                            %{--nodeStrId   : nodeStrId,--}%
-                            %{--parentStrId : parentStrId,--}%
-                            %{--log         : item + " "--}%
-                            %{--});--}%
                             menuItems.eliminar = {
                                 label            : "Eliminar",
                                 separator_before : false, // Insert a separator before the item
@@ -706,10 +652,6 @@
                         li = "<li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></li>";
                         break;
                     case "2":
-//                        id = "manoObra_2";
-//                        rel = "grupo_manoObra";
-//                        label = "Mano de obra";
-//                        extra = "<li id='consultoria_2' class='root hasChildren jstree-closed' rel='grupo_consultoria' ><a href='#' class='label_arbol'>Consultoría</a>";
                         $.ajax({
                             type    : "POST",
                             async   : false,
@@ -756,8 +698,6 @@
 
                                     },
                                     error   : function (data) {
-                                        ////////console.log("error");
-                                        ////////console.log(data);
                                     }
                                 }
                             },
@@ -878,57 +818,6 @@
                         }).bind("select_node.jstree", function (NODE, REF_NODE) {
                             showInfo();
                         })
-                %{--.bind("move_node.jstree", function (event, data) {--}%
-                %{--//                            ////console.log('move', data);--}%
-                %{--var oldParent = data.rslt.op;--}%
-                %{--var newParent = data.rslt.np;--}%
-                %{--var node = data.rslt.o;--}%
-
-                %{--var nodeId = node.attr("id");--}%
-                %{--var newParentId = newParent.attr("id");--}%
-
-                %{--if (oldParent.attr("id") != newParentId) {--}%
-                %{--var html = "Está seguro de mover el item <b>" + $.trim(node.children("a").text()) + "</b> de <b>" + $.trim(oldParent.children("a").text()) + "</b>";--}%
-                %{--html += " a <b>" + $.trim(newParent.children("a").text()) + "</b>?";--}%
-                %{--$.box({--}%
-                %{--imageClass : "box_info",--}%
-                %{--text       : html,--}%
-                %{--title      : "Confirmación",--}%
-                %{--iconClose  : false,--}%
-                %{--dialog     : {--}%
-                %{--resizable     : false,--}%
-                %{--draggable     : false,--}%
-                %{--closeOnEscape : false,--}%
-                %{--buttons       : {--}%
-                %{--"Aceptar"  : function () {--}%
-                %{--$.ajax({--}%
-                %{--type    : "POST",--}%
-                %{--url     : "${createLink(action:'moveNode_ajax')}",--}%
-                %{--data    : {--}%
-                %{--node      : nodeId,--}%
-                %{--newParent : newParentId--}%
-                %{--},--}%
-                %{--success : function (msg) {--}%
-                %{--var parts = msg.split("_");--}%
-                %{--log(parts[1], parts[0] == "NO");--}%
-                %{--if (parts[0] == "NO") {--}%
-                %{--$.jstree.rollback(data.rlbk);--}%
-                %{--}--}%
-                %{--}--}%
-                %{--});--}%
-                %{--},--}%
-                %{--"Cancelar" : function () {--}%
-                %{--$.jstree.rollback(data.rlbk);--}%
-                %{--}--}%
-                %{--}--}%
-                %{--}--}%
-                %{--})--}%
-                %{--;--}%
-
-                %{--} else {--}%
-                %{--$.jstree.rollback(data.rlbk);--}%
-                %{--}--}%
-                %{--})--}%
                 ;
             }
 
@@ -993,7 +882,6 @@
                                 response(data);
                             }
                         });
-
                     }
                 });
 

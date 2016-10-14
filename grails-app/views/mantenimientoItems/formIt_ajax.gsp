@@ -1,4 +1,4 @@
-<%@ page import="janus.pac.CodigoComprasPublicas; janus.Item" %>
+<%@ page import="janus.Grupo; janus.pac.CodigoComprasPublicas; janus.Item" %>
 
 <div id="create" class="span" role="main">
 <link href="${resource(dir: 'js/jquery/css/bw', file: 'jquery-ui-1.10.2.custom.min.css')}" rel="stylesheet"/>
@@ -11,13 +11,14 @@
                 <div class="control-group">
                     <div>
                         <span class="control-label label label-inverse">
-                            Subgrupo
+                            Grupo
                         </span>
                     </div>
 
                     <div class="controls">
-                        <g:hiddenField name="departamento.id" value="${departamento.id}"/>
-                        ${departamento.descripcion}
+                        %{--<g:hiddenField name="departamento.id" value="${departamento.id}"/>--}%
+                        %{--${departamento.descripcion}--}%
+                        <g:select name="subgrupo_name" id="selSubgrupo" value="${itemInstance?.departamento?.subgrupo?.id}" from="${janus.SubgrupoItems.findAllByGrupo(janus.Grupo.get(grupo), [sort: 'codigo', order: 'asc']) }" optionValue="${{it.codigo + ' : ' + it.descripcion}}" optionKey="id"/>
                     </div>
                 </div>
 
@@ -26,58 +27,16 @@
                 <div class="control-group">
                     <div>
                         <span class="control-label label label-inverse">
-                            Código
+                            Subgrupo
                         </span>
                     </div>
 
-                    <div class="controls" style="font-weight: bolder">
-                        <g:set var="cd1" value="${departamento.subgrupo.codigo.toString().padLeft(3, '0')}"/>
-                        <g:set var="cd2" value="${departamento.codigo.toString().padLeft(3, '0')}"/>
-                        <g:set var="cd" value="${itemInstance?.codigo}"/>
-                        <g:if test="${itemInstance.id && cd}">
-                            <g:set var="cd" value="${cd?.replace(cd1 + ".", '').replace(cd2 + ".", '')}"/>
-                        </g:if>
-                        <g:if test="${itemInstance.id}">
-                            <g:if test="${itemInstance?.departamento?.subgrupo?.grupoId != 2 && departamento.subgrupo.grupoId != 2}">
-                                ${cd1}.</g:if>${cd2}.${cd}
-                        </g:if>
-                        <g:else>
-                            <div class="input-prepend">
-                                <g:if test="${itemInstance?.departamento?.subgrupo?.grupoId != 2 && departamento.subgrupo.grupoId != 2}">
-                                    <span class="add-on">${cd1}</span>
-                                </g:if>
-                                <span class="add-on">${cd2}</span>
-                                <g:textField name="codigo" maxlength="20" class="allCaps required input-small" value="${cd}"/>
-                                <span class="mandatory">*</span>
-
-                                <p class="help-block ui-helper-hidden"></p>
-                            </div>
-                        </g:else>
-                    %{--<span class="mandatory">*</span>--}%
-
-                    %{--<p class="help-block ui-helper-hidden"></p>--}%
+                    <div class="controls" id="divDepartamento">
                     </div>
                 </div>
-
             </td>
         </tr>
     </table>
-
-
-%{--<div class="control-group">--}%
-%{--<div>--}%
-%{--<span class="control-label label label-inverse">--}%
-%{--Nombre corto--}%
-%{--</span>--}%
-%{--</div>--}%
-
-%{--<div class="controls">--}%
-%{--<g:textField name="campo" maxlength="29" style="width: 300px" class="allCaps" value="${itemInstance?.campo}"/>--}%
-
-%{--<p class="help-block ui-helper-hidden"></p>--}%
-%{--</div>--}%
-%{--</div>--}%
-
 
     <div class="control-group">
         <div>
@@ -94,28 +53,58 @@
         </div>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Código CPC (SERCOP)
-            </span>
-        </div>
+    <table>
+       <tr>
+           <td width="500px">
+               <div class="control-group">
+                   <div>
+                       <span class="control-label label label-inverse">
+                           Código
+                       </span>
+                   </div>
 
-        %{--TODO: buscador de CPC--}%
+                   <div class="controls" style="font-weight: bolder">
+                       <g:set var="cd1" value="${departamento.subgrupo.codigo.toString().padLeft(3, '0')}"/>
+                       <g:set var="cd2" value="${departamento.codigo.toString().padLeft(3, '0')}"/>
+                       <g:set var="cd" value="${itemInstance?.codigo}"/>
+                       <g:if test="${itemInstance.id && cd}">
+                           <g:set var="cd" value="${cd?.replace(cd1 + ".", '').replace(cd2 + ".", '')}"/>
+                       </g:if>
+                       <g:if test="${itemInstance.id}">
+                           <g:if test="${itemInstance?.departamento?.subgrupo?.grupoId != 2 && departamento.subgrupo.grupoId != 2}">
+                               ${cd1}.</g:if>${cd2}.${cd}
+                       </g:if>
+                       <g:else>
+                           <div class="input-prepend">
+                               <g:if test="${itemInstance?.departamento?.subgrupo?.grupoId != 2 && departamento.subgrupo.grupoId != 2}">
+                                   <span class="add-on">${cd1}</span>
+                               </g:if>
+                               <span class="add-on">${cd2}</span>
+                               <g:textField name="codigo" maxlength="20" class="allCaps required input-small" value="${cd}"/>
+                               <span class="mandatory">*</span>
 
-        <div class="controls">
-        %{--<g:hiddenField name="id" value="${itemInstance?.id}"/>--}%
-        <input readonly="" type="text" style="width: 154px;;font-size: 12px;" id="item_codigo" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.numero}">
-        <input type="hidden" style="width: 60px" id="item_cpac" name="codigoComprasPublicas.id" value="${itemInstance?.codigoComprasPublicas?.id}">
-%{--
-            <g:select id="item_codigo" name="unidad.id" from="${janus.Unidad.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
-                      class="many-to-one " value="${itemInstance?.unidad?.id}" noSelection="['': '']"/>
---}%
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
-
+                               <p class="help-block ui-helper-hidden"></p>
+                           </div>
+                       </g:else>
+                   </div>
+               </div>
+           </td>
+           <td>
+               <div class="control-group">
+                   <div>
+                       <span class="control-label label label-inverse">
+                           Código CPC (SERCOP)
+                       </span>
+                   </div>
+                   <div class="controls">
+                       <input readonly="" type="text" style="width: 154px;;font-size: 12px;" id="item_codigo" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.numero}">
+                       <input type="hidden" style="width: 60px" id="item_cpac" name="codigoComprasPublicas.id" value="${itemInstance?.codigoComprasPublicas?.id}">
+                       <p class="help-block ui-helper-hidden"></p>
+                   </div>
+               </div>
+           </td>
+       </tr>
+    </table>
 
     <div class="control-group">
         <div>
@@ -132,24 +121,6 @@
         </div>
     </div>
 
-%{--
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Tipo de Bien
-            </span>
-        </div>
-
-        <div class="controls" >
-            <g:select id="tipoDeBien" name="tipoDeBien.id" from="${janus.TipoDeBien.list([sort: 'descripcion'])}" optionKey="id"
-                      optionValue="descripcion" class="span4" value="${itemInstance?.tipoDeBien?.id}"
-                      noSelection="['': '']"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
---}%
-
     <g:if test="${grupo.toString() == '1'}">
         <div class="control-group">
             <div>
@@ -159,8 +130,6 @@
             </div>
 
             <div class="controls">
-                %{--<g:select from="['P': 'Peso (capital de cantón)', 'P1': 'Peso (especial)', 'V': 'Volumen (materiales pétreos para hormigones)', 'V1': 'Volumen (materiales pétreos para mejoramiento)', 'V2': 'Volumen (materiales pétreos para carpeta asfáltica)']"--}%
-                %{--name="transporte" class="span4" value="${itemInstance?.transporte}" optionKey="key" optionValue="value"/>--}%
                 <elm:select from="${janus.TipoLista.findAllByUnidadIsNotNull([sort: 'descripcion'])}" optionClass="unidad" id="tipoLista"
                             name="tipoLista.id" class="span4" value="${itemInstance?.tipoListaId}" optionKey="id" optionValue="descripcion"/>
                 <p class="help-block ui-helper-hidden"></p>
@@ -176,19 +145,11 @@
 
             <div class="controls">
                 <div class="input-append">
-
-                    %{--<g:field type="number" name="peso" maxlength="20" class=" required input-small peso" value="${fieldValue(bean: itemInstance, field: 'peso')}"/>--}%
                     <g:field type="number" name="peso" maxlength="20"
                              step="${10**-(formatNumber(number: itemInstance?.peso, format: '#,#####0', minFractionDigits: 3, maxFractionDigits: 6, locale: 'ec').toString().size()-2)}"
                              class=" required input-small peso" value="${formatNumber(number: itemInstance?.peso, format: '##,######0', minFractionDigits: 6, maxFractionDigits: 6, locale: 'ec')}"/>
 
                     <span class="add-on" id="spanPeso">
-                        %{--<g:if test="${itemInstance && itemInstance.id}">--}%
-                        %{--${(itemInstance?.transporte == 'P' || itemInstance?.transporte == 'P1') ? 'Ton' : 'm<sup>3</sup>'}--}%
-                        %{--</g:if>--}%
-                        %{--<g:else>--}%
-                        %{--Ton--}%
-                        %{--</g:else>--}%
                     </span>
                 </div>
                 <span class="mandatory">*</span>
@@ -201,49 +162,42 @@
         <g:hiddenField name="peso" maxlength="20" class=" required input-small" value="0"/>
     </g:else>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Estado
-            </span>
-        </div>
+    <table>
+        <tr>
+            <td width="500px">
+                <div class="control-group">
+                    <div>
+                        <span class="control-label label label-inverse">
+                            Estado
+                        </span>
+                    </div>
 
-        <div class="controls">
-            <g:select from="['A': 'Activo', 'B': 'Dado de baja']" name="estado" class="input-medium" value="${itemInstance?.estado}" optionKey="key" optionValue="value"/>
+                    <div class="controls">
+                        <g:select from="['A': 'Activo', 'B': 'Dado de baja']" name="estado" class="input-medium" value="${itemInstance?.estado}" optionKey="key" optionValue="value"/>
 
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="control-group">
+                    <div>
+                        <span class="control-label label label-inverse">
+                            Fecha
+                        </span>
+                    </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha
-            </span>
-        </div>
+                    <div class="controls">
+                        <elm:datepicker name="fecha" class="datepicker" style="width: 90px" value="${itemInstance?.fecha}"/>
 
-        <div class="controls">
-            <elm:datepicker name="fecha" class="datepicker" style="width: 90px" value="${itemInstance?.fecha}"/>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </div>
+                </div>
 
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+            </td>
+        </tr>
+    </table>
 
-%{--
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Indice INEC
-            </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="inec" maxlength="1" style="width: 20px" class="" value="${itemInstance?.inec}"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
---}%
 
     <g:if test="${grupo.toString() == '3'}">
         <div class="control-group">
@@ -295,6 +249,28 @@
 
 <script type="text/javascript">
 
+    cargarDepartamento($("#selSubgrupo").val());
+
+    function cargarDepartamento (subgrupo) {
+        var item = '${itemInstance?.id}'
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'mantenimientoItems', action: 'departamento_ajax')}',
+            data:{
+                subgrupo: subgrupo,
+                item: item
+            },
+            success: function (msg){
+                $("#divDepartamento").html(msg)
+            }
+        })
+    }
+
+    $("#selSubgrupo").change(function () {
+        var subgrupo = $(this).val();
+        cargarDepartamento(subgrupo)
+    });
+
     function label() {
         var c = $("#tipoLista").children("option:selected").attr("class");
         if (c == "null") {
@@ -319,10 +295,10 @@
          39         -> flecha der
          */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-                (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-                ev.keyCode == 190 || ev.keyCode == 110 ||
-                ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-                ev.keyCode == 37 || ev.keyCode == 39);
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 190 || ev.keyCode == 110 ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39);
     }
 
     label();
@@ -363,24 +339,6 @@
     $(".allCaps").blur(function () {
         this.value = this.value.toUpperCase();
     });
-
-    //    $("#nombre").keyup(function () {
-    //        var orig = $(this).val().toUpperCase();
-    //
-    //        var cleanString = orig.replace(/[|&;$%@"<>()+,'\[\]\{\}=]/g, "");
-    //        cleanString = cleanString.replace(/[ ]/g, "_");
-    //        cleanString = cleanString.replace(/[áàâäãÁÀÂÄÃ]/g, "A");
-    //        cleanString = cleanString.replace(/[éèêëẽÉÈÊËẼ]/g, "E");
-    //        cleanString = cleanString.replace(/[íìîïĩÍÌÎÏĨ]/g, "I");
-    //        cleanString = cleanString.replace(/[óòôöõÓÒÔÖÕ]/g, "O");
-    //        cleanString = cleanString.replace(/[úùûüũÚÙÛÜŨ]/g, "U");
-    //        cleanString = cleanString.replace(/[ñÑ]/g, "N");
-    //
-    //        if (cleanString.length > 20) {
-    //            cleanString = cleanString.substring(0, 19);
-    //        }
-    //        $("#campo").val(cleanString);
-    //    });
 
     $("#transporte").change(function () {
         var v = $(this).val();
@@ -457,14 +415,5 @@
             $("#buscarDialog").bind("click", enviar)
         });
     });
-
-
-    /*
-        $(document).ready(function() {
-            console.log($("#frmSave").scrollTop())
-    //        $("#modalBody").scrollTop(0);
-            $("#modalBody").scrollTop(10);
-        });
-    */
 
 </script>

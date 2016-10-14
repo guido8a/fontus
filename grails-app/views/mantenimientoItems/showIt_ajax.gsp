@@ -3,23 +3,7 @@
 <form class="form-horizontal">
 
     <div class="tituloTree">${itemInstance.nombre}</div>
-%{--<g:if test="${itemInstance?.nombre}">--}%
-%{--<div class="control-group">--}%
-%{--<div>--}%
-%{--<span id="nombre-label" class="control-label label label-inverse">--}%
-%{--Nombre--}%
-%{--</span>--}%
-%{--</div>--}%
 
-%{--<div class="controls">--}%
-
-%{--<span aria-labelledby="nombre-label">--}%
-%{--<g:fieldValue bean="${itemInstance}" field="nombre"/>--}%
-%{--</span>--}%
-
-%{--</div>--}%
-%{--</div>--}%
-%{--</g:if>--}%
 
     <g:if test="${itemInstance?.codigo}">
         <div class="control-group">
@@ -48,13 +32,9 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="unidad-label">
-                    %{--<g:link controller="unidad" action="show" id="${itemInstance?.unidad?.id}">--}%
                     ${itemInstance?.unidad?.codigo}
-                    %{--</g:link>--}%
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -63,20 +43,15 @@
         <div class="control-group">
             <div>
                 <span id="peso-label" class="control-label label label-inverse">
-                    %{--Peso--}%
-                    %{--${(itemInstance?.transporte == 'P' || itemInstance?.transporte == 'P1') ? 'Peso' : 'Volumen'}--}%
                     ${(itemInstance?.tipoLista?.codigo[0] == 'P') ? 'Peso' : 'Volumen'}
                 </span>
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="peso-label">
                     <g:formatNumber number="${itemInstance.peso}" maxFractionDigits="6" minFractionDigits="6" format='##,######0' locale='ec'/>
-                    %{--${(itemInstance?.transporte == 'P' || itemInstance?.transporte == 'P1') ? 'Ton' : 'M<sup>3</sup>'}--}%
                     ${itemInstance?.tipoLista?.unidad}
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -90,13 +65,9 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="departamento-label">
-                    %{--<g:link controller="departamentoItem" action="show" id="${itemInstance?.departamento?.id}">--}%
                     ${itemInstance?.departamento?.descripcion}
-                    %{--</g:link>--}%
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -110,11 +81,9 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="estado-label">
                     ${itemInstance.estado == 'A' ? 'ACTIVO' : itemInstance.estado == 'B' ? 'DADO DE BAJA' : ''}
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -128,7 +97,6 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="fecha-label">
                     <g:formatDate date="${itemInstance?.fecha}" format="dd-MM-yyyy"/>
                 </span>
@@ -146,49 +114,25 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="fecha-label">
                     <g:formatDate date="${itemInstance?.fechaModificacion}" format="dd-MM-yyyy"/>
                 </span>
-
             </div>
         </div>
     </g:if>
 
-%{--
     <g:if test="${itemInstance?.fechaModificacion}">
         <div class="control-group">
             <div>
-                <span id="fechaModificacion-label" class="control-label label label-inverse">
-                    Tipo de Bien
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="fecha-label">
-                    ${itemInstance?.tipoDeBien} (${itemInstance?.tipoDeBien?.codigo})
-                </span>
-
-            </div>
-        </div>
-    </g:if>
---}%
-
-    <g:if test="${itemInstance?.fechaModificacion}">
-        <div class="control-group">
-            <div>
-                <span id="fechaModificacion-label" class="control-label label label-inverse">
+                <span id="CPC-label" class="control-label label label-inverse">
                     Código CPC
                 </span>
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="fecha-label">
                     ${itemInstance?.codigoComprasPublicas?.numero}
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -202,11 +146,9 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="transportePeso-label">
                     <g:fieldValue bean="${itemInstance}" field="transportePeso"/>
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -220,11 +162,9 @@
             </div>
 
             <div class="controls">
-
                 <span aria-labelledby="transporteVolumen-label">
                     <g:fieldValue bean="${itemInstance}" field="transporteVolumen"/>
                 </span>
-
             </div>
         </div>
     </g:if>
@@ -300,24 +240,6 @@
             </div>
         </div>
     </g:if>
-
-    %{--<g:if test="${itemInstance?.campo}">--}%
-        %{--<div class="control-group">--}%
-            %{--<div>--}%
-                %{--<span id="campo-label" class="control-label label label-inverse">--}%
-                    %{--Nombre corto--}%
-                %{--</span>--}%
-            %{--</div>--}%
-
-            %{--<div class="controls">--}%
-
-                %{--<span aria-labelledby="campo-label">--}%
-                    %{--<g:fieldValue bean="${itemInstance}" field="campo"/>--}%
-                %{--</span>--}%
-
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</g:if>--}%
 
     <g:if test="${itemInstance?.registro}">
         <div class="control-group">
