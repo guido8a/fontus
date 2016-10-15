@@ -209,7 +209,7 @@ class InicioController extends janus.seguridad.Shield {
                             htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                             Cell[] row = null
                             s.getRows().times { j ->
-//                            (900..1000).each { j ->
+//                            (2500..s.getRows()).each { j ->
                                 row = s.getRow(j)
                                 println "cargando: ${row*.getContents()}"
 //                                println row.length
@@ -305,10 +305,10 @@ class InicioController extends janus.seguridad.Shield {
                 def tx = "select coalesce(max(cast(dprtcdgo as integer)), 0) maximo from dprt where sbgr__id = ${sbgr.id}"
                 def ctgr = DepartamentoItem.findByDescripcion(categoria)
                 if(!ctgr){
-                    println "sql: $tx"
+//                    println "sql: $tx"
                     def nmro = cn.rows(tx.toString())[0].maximo + 1
                     cn.close()
-                    println "numero: $nmro, codigo: ${tipo + nmro}"
+//                    println "numero: $nmro, codigo: ${tipo + nmro}"
                     ctgr = new DepartamentoItem()
                     ctgr.codigo = nmro
                     ctgr.descripcion = categoria
