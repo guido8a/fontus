@@ -129,7 +129,8 @@ class InicioController extends janus.seguridad.Shield {
                             dprt = DepartamentoItem.findByCodigo(params.sbgr)
                             lgar = Lugar.findByCodigo(100)
                             tpls = TipoLista.get(6)
-                            sbgr = SubgrupoItems.findByCodigo(params.sbgr)
+//                            sbgr = SubgrupoItems.findByCodigo(params.sbgr)
+                            sbgr = SubgrupoItems.findByCodigoAndGrupo(params.sbgr, Grupo.get(3))
 
                             s.getRows().times { j ->
                                 row = s.getRow(j)
@@ -164,7 +165,7 @@ class InicioController extends janus.seguridad.Shield {
                         dprt = DepartamentoItem.findByCodigo('006')
                         println "departamento: --- $dprt, unidad: ${unidad.descripcion}"
                         lgar = Lugar.findByCodigo(100)
-                        sbgr = SubgrupoItems.findByCodigo('001')
+                        sbgr = SubgrupoItems.get(21)
                         tpls = TipoLista.get(6)
 
                         if (!s.getSettings().isHidden()) {
@@ -201,7 +202,7 @@ class InicioController extends janus.seguridad.Shield {
                     if (sheet == 2) {
                         Sheet s = workbook.getSheet(sheet)
                         dprt = DepartamentoItem.findByCodigo('001')
-                        sbgr = SubgrupoItems.findByCodigo(params.sbgr_mt)
+                        sbgr = SubgrupoItems.findByCodigoAndGrupo(params.sbgr_mt, Grupo.get(1))
                         tpls = TipoLista.get(1)
 
                         if (!s.getSettings().isHidden()) {
@@ -209,7 +210,7 @@ class InicioController extends janus.seguridad.Shield {
                             htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                             Cell[] row = null
                             s.getRows().times { j ->
-//                            (2500..s.getRows()).each { j ->
+//                            (3100..s.getRows()).each { j ->
                                 row = s.getRow(j)
                                 println "cargando: ${row*.getContents()}"
 //                                println row.length
