@@ -621,7 +621,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1"/>
             </div>
 
             <div class="span3">
@@ -678,7 +678,7 @@
                 <elm:datepicker name="fechaSalida" class="span24" id="fechaSalidaId" value="${rubro?.fechaModificacion}" style="width: 100px" tabindex="-1"/>
             </div>
             <div class="span3" style="margin-top: 5px;">
-                <g:checkBox name="columnaCodigo" class="codigoId"/> Imprimir columna de código
+                <g:checkBox name="columnaCodigo" class="codigoId"/> Imprimir la columna de Código del Item
             </div>
             <div class="span3" style="margin-top: 5px;">
                 ¿Desea imprimir el reporte desglosando el transporte?

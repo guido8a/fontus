@@ -7,6 +7,7 @@ import jxl.Sheet
 import jxl.Workbook
 import jxl.WorkbookSettings
 import org.springframework.dao.DataIntegrityViolationException
+import groovy.time.TimeCategory
 
 
 class InicioController extends janus.seguridad.Shield {
@@ -210,7 +211,7 @@ class InicioController extends janus.seguridad.Shield {
                             htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                             Cell[] row = null
                             s.getRows().times { j ->
-//                            (3100..s.getRows()).each { j ->
+//                            (3700..s.getRows()).each { j ->
                                 row = s.getRow(j)
                                 println "cargando: ${row*.getContents()}"
 //                                println row.length
@@ -225,10 +226,11 @@ class InicioController extends janus.seguridad.Shield {
                                     if (cod != "CODIGO" && cod) {  // no es el título
                                         def costos = []
                                         lugares = []
-                                        (0..10).each {
+                                        (0..11).each {
 //                                            println "pone lugares y costos con it: $it"
-                                            lugares.add(Lugar.findByCodigo(it+1))
-                                            costos.add(row[it+6].getContents())
+                                            lugares.add(it+1)
+//                                            costos.add(row[it+6].getContents())
+                                            costos.add(Math.round(row[it+6].getValue()*100000)/100000)
                                         }
 //                                        println "lugares y precios: $lugares\n$costos"
                                         //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt,
@@ -275,8 +277,13 @@ class InicioController extends janus.seguridad.Shield {
     }
 
     def cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt, lgar, vae, costos, lugares, tpls) {
+        def inicio = new Date()
         def cn = dbConnectionService.getConnection()
-        def item = Item.findAllByNombreIlike(nombre)
+        def existe = Item.findByNombreIlike(nombre)
+        def fin = new Date()
+        println "halla item: ${TimeCategory.minus(fin, inicio)}"
+        def tx = ""
+        def item
         def rbpc
         def cpac
         def itva
@@ -294,8 +301,10 @@ class InicioController extends janus.seguridad.Shield {
         }
 
 
-        if (item.size() == 0) {
+        if (!existe) {
             cpac = CodigoComprasPublicas.findByNumero(cpc)
+            fin = new Date()
+            println "halla cpac: ${TimeCategory.minus(fin, inicio)}"
             item = new Item()
             item.codigo = tipo + itemcdgo
             item.nombre = nombre
@@ -303,7 +312,7 @@ class InicioController extends janus.seguridad.Shield {
             item.tipoItem = tpit
             item.tipoLista = tpls
             if(categoria){
-                def tx = "select coalesce(max(cast(dprtcdgo as integer)), 0) maximo from dprt where sbgr__id = ${sbgr.id}"
+                tx = "select coalesce(max(cast(dprtcdgo as integer)), 0) maximo from dprt where sbgr__id = ${sbgr.id}"
                 def ctgr = DepartamentoItem.findByDescripcion(categoria)
                 if(!ctgr){
 //                    println "sql: $tx"
@@ -332,6 +341,9 @@ class InicioController extends janus.seguridad.Shield {
             }
 
             item.refresh()
+            fin = new Date()
+            println "crea item: ${TimeCategory.minus(fin, inicio)}"
+
 //            println "pasa item.."
 
             if(!costos) {
@@ -345,20 +357,30 @@ class InicioController extends janus.seguridad.Shield {
                 rbpc.save(flush: true)
 //            println "pasa rbpc.."
             } else {
-                (0..10).each {
-                    if(costos[it]) {
+                (0..11).each {
+                    if(costos[it].toDouble() > 0) {
+                        tx = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
+                                "values(${item.id}, ${lugares[it]}, '${fcha.format('yyyy-MM-dd')}', " +
+                                "${costos[it].toDouble()}, '${fcha.format('yyyy-MM-dd')}', 'N')"
+//                        println "sql: $tx"
+                        cn.execute(tx.toString())
+/*
                         rbpc = new PrecioRubrosItems()
-                        rbpc.lugar = lugares[it]
+                        rbpc.lugar = Lugar.get(lugares[it])
                         rbpc.item = item
                         rbpc.fecha = fcha
                         rbpc.fechaIngreso = fcha
                         rbpc.precioUnitario = costos[it].toDouble()
                         rbpc.registrado = 'N'
                         rbpc.save(flush: true)
+*/
                     }
                 }
 //            println "pasa rbpc.."
             }
+
+            fin = new Date()
+            println "crea precios: ${TimeCategory.minus(fin, inicio)}"
 
             itva = new VaeItems()
             itva.item = item
@@ -371,6 +393,8 @@ class InicioController extends janus.seguridad.Shield {
 
 //            println " se ha grabado el item: $item"
             contador++
+            fin = new Date()
+            println "fin: ${TimeCategory.minus(fin, inicio)}"
 
         } else {
             errores += "<li>Ya existe el item con código ${itemcdgo}</li>"
