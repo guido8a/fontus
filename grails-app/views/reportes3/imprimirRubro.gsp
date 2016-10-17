@@ -10,13 +10,9 @@
 <html>
     <head>
         <title>Rubro :${rubro.codigo}</title>
-        %{--<link href="../../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/custom.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/font-awesome.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
+
+        <rep:estilos orientacion="h" pagTitle="ANÁLISIS DE PRECIOS UNITARIOS"/>
+
         <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
         <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
         <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
@@ -43,13 +39,9 @@
         .tituloPdf {
             height        : 100px;
             font-size     : 11px;
-            /*font-weight   : bold;*/
             text-align    : center;
             margin-bottom : 5px;
             width         : 95%;
-
-            /*font-family       : 'Tulpen One', cursive !important;*/
-            /*font-family : "Open Sans Condensed" !important;*/
         }
 
         .grande{
@@ -83,39 +75,24 @@
         }
 
         .theader {
-
-            /*border: 1px solid #000000;*/
-            /*margin-bottom: 30px !important;*/
             border-bottom: 1px solid #000000;
-
         }
 
         .theaderup {
-            /*margin-top: 30px !important;*/
-            /*border: 1px solid #000000;*/
             border-top: 1px solid #000000;
-
-
-
         }
 
         .marginTop{
-
             margin-top:20px !important;
         }
 
-
         .tituloHeader{
-
             font-size: 14px !important;
-
         }
 
         .padTopBot{
-
             padding-top: 7px !important;
             padding-bottom: 7px !important;
-
         }
 
         .row-fluid {
@@ -147,20 +124,19 @@
 
     <body>
         <div class="hoja">
+            <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ANÁLISIS DE PRECIOS UNITARIOS" estilo="right"/>
 
-            <div class="tituloPdf tituloHeader">
-                <p class="grande">
-                    <b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>
-                </p>
-
-                <p style="font-size: 14px">
-                    <b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b>
-                </p>
-
-                <p style="font-size: 14px">
-                    <b>ANÁLISIS DE PRECIOS UNITARIOS</b>
-                </p>
-            </div>
+            %{--<div class="tituloPdf tituloHeader">--}%
+                %{--<p class="grande">--}%
+                    %{--<b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>--}%
+                %{--</p>--}%
+                %{--<p style="font-size: 14px">--}%
+                    %{--<b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b>--}%
+                %{--</p>--}%
+                %{--<p style="font-size: 14px">--}%
+                    %{--<b>ANÁLISIS DE PRECIOS UNITARIOS</b>--}%
+                %{--</p>--}%
+            %{--</div>--}%
 
             <div style="margin-top: 20px">
                 <div class="row-fluid">
@@ -181,21 +157,31 @@
                             <b>Fecha Act. P.U:</b>
                         </g:else>
                     </div>
+
+
+
                 </div>
 
                 <div class="row-fluid">
-                    <div class="span3" style="margin-right: 0px !important;width: 180px;">
+                    %{--<div class="span3" style="margin-right: 0px !important;width: 180px;">--}%
+                    <div class="span3" style="margin-right: 195px !important;">
                         <b>Código de rubro:</b> ${rubro?.codigo}
                     </div>
 
-                    <div class="span3" style="margin-right: 0px !important; width: 220px;">
-                        <b>Código de especificación:</b> ${rubro?.codigoEspecificacion}
-                    </div>
+                    %{--<div class="span3" style="margin-right: 0px !important; width: 220px;">--}%
+                        %{--<b>Código de especificación:</b> ${rubro?.codigoEspecificacion}--}%
+                    %{--</div>--}%
 
                     <div class="span3">
                         <b>Unidad:</b> ${rubro?.unidad?.codigo}
                     </div>
                 </div>
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <b>Código de especificación:</b> ${rubro?.codigoEspecificacion}
+                </div>
+            </div>
 
                 <div class="row-fluid">
                     <div class="span12">

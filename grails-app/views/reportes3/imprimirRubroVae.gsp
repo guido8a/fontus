@@ -2,17 +2,18 @@
 <html>
 <head>
     <title>Rubro :${rubro.codigo}</title>
+
+    <rep:estilos orientacion="l" pagTitle="ANÁLISIS DE PRECIOS UNITARIOS"/>
+
     <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="../css/font-awesome.css" rel="stylesheet" type="text/css"/>
     <style type="text/css">
     @page {
-        /*size   : 21cm 29.7cm;  *//*width height */
         size   : 29.7cm 21cm;  /*width height */
         margin : 2cm;
         margin-left: 2.0cm;
-    ;
     }
 
     body {
@@ -34,8 +35,7 @@
         text-align    : center;
         margin-bottom : 5px;
         width         : 95%;
-        /*font-family       : 'Tulpen One', cursive !important;*/
-        /*font-family : "Open Sans Condensed" !important;*/
+
     }
 
     .totales {
@@ -59,14 +59,10 @@
 
     thead tr {
         margin : 0px;
-
-
     }
 
     th, td {
         font-size : 10px !important;
-
-
     }
 
     .theader {
@@ -141,17 +137,18 @@
 
 <body>
 <div class="hoja">
+    <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ANÁLISIS DE PRECIOS UNITARIOS" estilo="right"/>
 
-    <div class="tituloPdf tituloHeader">
-        <p style="font-size: 18px">
-            <b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>
-        </p>
+    %{--<div class="tituloPdf tituloHeader">--}%
+        %{--<p style="font-size: 18px">--}%
+            %{--<b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>--}%
+        %{--</p>--}%
 
-        <p style="font-size: 14px; margin-top: -15px;">
-            <b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b><br/>
-            <b>ANÁLISIS DE PRECIOS UNITARIOS</b>
-        </p>
-    </div>
+        %{--<p style="font-size: 14px; margin-top: -15px;">--}%
+            %{--<b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b><br/>--}%
+            %{--<b>ANÁLISIS DE PRECIOS UNITARIOS</b>--}%
+        %{--</p>--}%
+    %{--</div>--}%
 
     <div style="margin-top: 0px">
         <div class="row-fluid">
@@ -177,13 +174,13 @@
 
 
         <div class="row-fluid">
-            <div class="span3" style="margin-right: 0px !important; width: 400px;">
+            <div class="span3" style="margin-right: 195px !important; width: 500px;">
                 <b>Código de rubro:</b> ${rubro?.codigo}
             </div>
 
-            <div class="span3" style="margin-right: 0px !important; width: 300px;">
-                <b>Código de especificación:</b> ${rubro?.codigoEspecificacion}
-            </div>
+            %{--<div class="span3" style="margin-right: 0px !important; width: 300px;">--}%
+                %{--<b>Código de especificación:</b> ${rubro?.codigoEspecificacion}--}%
+            %{--</div>--}%
 
             <div class="span3" style="width: 100px;">
 
@@ -193,9 +190,14 @@
         </div>
 
 
+    <div class="row-fluid">
+        <div class="span12">
+            <b>Código de especificación:</b> ${rubro?.codigoEspecificacion}
+        </div>
+    </div>
+
         <div class="row-fluid">
             <div class="span12">
-                %{--<g:set var="nombre" value="${rubro.nombre.replaceAll('<', '(menor)')}"></g:set>--}%
                 <b>Descripción:</b> ${rubro?.nombre}
             </div>
         </div>
