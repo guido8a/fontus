@@ -40,7 +40,8 @@
             </a>
             <form class="form-search" style="width: 700px; margin-left: 380px; margin-top: -30px;">
                 <div class="input-append">
-                    <input type="text" class="input-medium search-query" id="search"/>
+                    %{--<input type="text" class="input-medium search-query" id="search"/>--}%
+                    <input type="text" class="input" id="search"/>
                     <a href='#' class='btn' id="btnSearch"><i class='icon-zoom-in'></i> Buscar</a>
                 </div>
                 <span id="cantRes"></span>
@@ -859,31 +860,31 @@
                     }
                 });
 
-                var cache = {};
-                $("#search").autocomplete({
-                    minLength : 3,
-                    source    : function (request, response) {
-                        var term = request.term;
-                        if (term in cache) {
-                            response(cache[ term ]);
-                            return;
-                        }
+                %{--var cache = {};--}%
+                %{--$("#search").autocomplete({--}%
+                    %{--minLength : 3,--}%
+                    %{--source    : function (request, response) {--}%
+                        %{--var term = request.term;--}%
+                        %{--if (term in cache) {--}%
+                            %{--response(cache[ term ]);--}%
+                            %{--return;--}%
+                        %{--}--}%
 
-                        $.ajax({
-                            type     : "POST",
-                            dataType : 'json',
-                            url      : "${createLink(action: 'search_ajax')}",
-                            data     : {
-                                search : term,
-                                tipo   : current
-                            },
-                            success  : function (data) {
-                                cache[ term ] = data;
-                                response(data);
-                            }
-                        });
-                    }
-                });
+                        %{--$.ajax({--}%
+                            %{--type     : "POST",--}%
+                            %{--dataType : 'json',--}%
+                            %{--url      : "${createLink(action: 'search_ajax')}",--}%
+                            %{--data     : {--}%
+                                %{--search : term,--}%
+                                %{--tipo   : current--}%
+                            %{--},--}%
+                            %{--success  : function (data) {--}%
+                                %{--cache[ term ] = data;--}%
+                                %{--response(data);--}%
+                            %{--}--}%
+                        %{--});--}%
+                    %{--}--}%
+                %{--});--}%
 
             });
         </script>
