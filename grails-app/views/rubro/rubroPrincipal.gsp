@@ -749,21 +749,23 @@
 
     function agregar(id,tipo){
         var tipoItem=$("#item_id").attr("tipo")
-        console.log("-->" + tipoItem)
+//        console.log("-->" + tipoItem)
         var cant = $("#item_cantidad").val()
+        console.log("-->" + cant)
         if (cant == "")
             cant = 0
         if (isNaN(cant))
             cant = 0
+/*
         if(tipoItem*1>1){
             if(cant>0){
                 var c = Math.ceil(cant)
-//                console.log(c)
                 if(c>cant){
                     cant=0
                 }
             }
         }
+*/
         var rend = $("#item_rendimiento").val()
         if (isNaN(rend))
             rend = 1
@@ -1907,6 +1909,7 @@
             $("#buscarDialog").bind("click", enviarItem)
             setTimeout( function() { $( '#criterio' ).focus() }, 500 );
         });
+
         $("#cdgo_buscar").blur(function () {
 //            ////console.log($("#item_id").val()=="")
             if ($("#item_id").val() == "" && $("#cdgo_buscar").val() != "") {

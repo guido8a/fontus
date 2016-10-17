@@ -132,7 +132,7 @@ class RubroController extends janus.seguridad.Shield {
     }
 
     def addItem() {
-//        println "add item " + params
+        println "add item " + params
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
         def detalle
@@ -142,14 +142,14 @@ class RubroController extends janus.seguridad.Shield {
         detalle.rubro = rubro
         detalle.item = item
         detalle.cantidad = params.cantidad.toDouble()
-        if (detalle.item.codigo=~"103.001.00") {
+        if (detalle.item.codigo =~ "103.001.00") {
             detalle.cantidad = 1
             detalle.rendimiento = 1
         } else {
             detalle.rendimiento = params.rendimiento.toDouble()
         }
-        if (detalle.item.departamento.subgrupo.grupo.id == 2)
-            detalle.cantidad = Math.ceil(detalle.cantidad)
+//        if (detalle.item.departamento.subgrupo.grupo.id == 2)
+//            detalle.cantidad = Math.ceil(detalle.cantidad)
         detalle.fecha = new Date()
         if (detalle.item.departamento.subgrupo.grupo.id == 1)
             detalle.rendimiento = 1
@@ -163,7 +163,7 @@ class RubroController extends janus.seguridad.Shield {
     }
 
     def buscaItem() {
-        //println "busca item "+params
+//        println "busca item "+params
         def listaTitulos = ["Código", "Descripción"]
         def listaCampos = ["codigo", "nombre"]
         def funciones = [null, null]
