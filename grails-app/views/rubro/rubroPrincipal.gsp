@@ -320,10 +320,10 @@
                 <th style="width: 80px;">
                     CANTIDAD
                 </th>
-                <th class="col_tarifa" style="display: none;">TARIFA <br>($/hora)</th>
-                <th class="col_hora" style="display: none;">COSTO($)</th>
-                <th class="col_rend" style="width: 50px">RENDIMIENTO</th>
-                <th class="col_total" style="display: none;"><C class="TOTAL"></C>C.TOTAL($)<br>($/hora)</th>
+                <th class="col_tarifa" style="display: none;">TARIFA</th>
+                <th class="col_hora" style="display: none;">COSTO/H</th>
+                <th class="col_rend" style="width: 50px">HORAS/U</th>
+                <th class="col_total" style="display: none;"><C class="TOTAL"></C>COSTO</th>
                 <th style="width: 40px" class="col_delete"></th>
             </tr>
             </thead>
@@ -369,10 +369,10 @@
                     CANTIDAD
                 </th>
 
-                <th class="col_jornal" style="display: none;">JORNAL<br>($/hora)</th>
-                <th class="col_hora" style="display: none;">COSTO($)</th>
-                <th class="col_rend" style="width: 50px;">RENDIMIENTO</th>
-                <th class="col_total" style="display: none;">C.TOTAL($)</th>
+                <th class="col_jornal" style="display: none;">JORNAL/H</th>
+                <th class="col_hora" style="display: none;">COSTO/H</th>
+                <th class="col_rend" style="width: 50px;">HORAS/U</th>
+                <th class="col_total" style="display: none;">COSTO</th>
                 <th style="width: 40px" class="col_delete"></th>
             </tr>
             </thead>
@@ -421,8 +421,8 @@
                     CANTIDAD
                 </th>
                 <th style="width: 40px" class="col_delete"></th>
-                <th class="col_precioUnit" style="display: none;">UNITARIO</th>
-                <th class="col_total" style="display: none;">C.TOTAL($)</th>
+                <th class="col_precioUnit" style="display: none;">COSTO/U</th>
+                <th class="col_total" style="display: none;">COSTO</th>
             </tr>
             </thead>
             <tbody id="tabla_material">
