@@ -99,9 +99,6 @@ $("#mas").button({
         })
         $("#criterios").append(div)
 
-
-
-
     });
 //
 //$(".btnpq").livequery(function() {
