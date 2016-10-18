@@ -28,7 +28,7 @@ class InicioController extends janus.seguridad.Shield {
 
         //println "formula "
         //oferentesService.copiaFormula(1457,1485)
-       // println " crono "
+        // println " crono "
         //oferentesService.copiaCrono(1457,1485)
         return [prms: prms, empr: empr]
     }
@@ -42,7 +42,7 @@ class InicioController extends janus.seguridad.Shield {
 
     }
 
-    def arbol () {
+    def arbol() {
 
     }
 
@@ -50,10 +50,10 @@ class InicioController extends janus.seguridad.Shield {
 
     }
 
-    def variables () {
+    def variables() {
         def paux = Parametros.get(1);
         def par = Parametros.list()
-        return[paux: paux, par: par]
+        return [paux: paux, par: par]
     }
 
     def formArchivo() {
@@ -139,19 +139,19 @@ class InicioController extends janus.seguridad.Shield {
 //                                println row.length
 
                                 if (row.length >= 6) {
-                                    def cod =    row[0].getContents().toUpperCase()
+                                    def cod = row[0].getContents().toUpperCase()
                                     def nombre = row[1].getContents()
                                     def unidad = Unidad.findByCodigo(row[2].getContents())
-                                    def costo  = row[3].getContents()
-                                    def cpc    = row[4].getContents()
-                                    def vae   = row[5].getContents()
+                                    def costo = row[3].getContents()
+                                    def cpc = row[4].getContents()
+                                    def vae = row[5].getContents()
 
                                     if (cod != "CODIGO") {  // no es el título
                                         //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt,
                                         // lgar, vae, costos, lugares, tpls)
                                         cargar = cargaItem(cod, tipo, nombre, unidad, null, null, costo, cpc, tpit, dprt,
                                                 lgar, vae, null, null, tpls)
-                                        if(cargar.contador) contador++ else repetidos++
+                                        if (cargar.contador) contador++ else repetidos++
                                     }
                                 } //row ! empty
                             } //rows.each
@@ -179,19 +179,19 @@ class InicioController extends janus.seguridad.Shield {
 //                                println row.length
 
                                 if (row.length >= 5) {
-                                    def cod        = row[0].getContents().toUpperCase()
-                                    def nombre     = row[1].getContents()
-                                    def categoria  = row[2].getContents()
-                                    def costo      = row[3].getContents()
-                                    def cpc        = row[4].getContents()
-                                    def vae        = row[5].getContents()
+                                    def cod = row[0].getContents().toUpperCase()
+                                    def nombre = row[1].getContents()
+                                    def categoria = row[2].getContents()
+                                    def costo = row[3].getContents()
+                                    def cpc = row[4].getContents()
+                                    def vae = row[5].getContents()
 
                                     if (cod != "CODIGO") {  // no es el título
                                         //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit,
                                         // dprt, lgar, vae, costos, lugares, tpls)
                                         cargar = cargaItem(cod, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit,
                                                 dprt, lgar, vae, null, null, tpls)
-                                        if(cargar.contador) contador++ else repetidos++
+                                        if (cargar.contador) contador++ else repetidos++
                                     }
                                 } //row ! empty
                             } //rows.each
@@ -217,27 +217,27 @@ class InicioController extends janus.seguridad.Shield {
 //                                println row.length
 
                                 if (row.length >= 10) {
-                                    def cod =    row[0].getContents().toUpperCase()
+                                    def cod = row[0].getContents().toUpperCase()
                                     def nombre = row[1].getContents()
                                     def unidad = Unidad.findByCodigo(row[2].getContents())
-                                    def categoria  = row[3].getContents()
-                                    def cpc    = row[4].getContents().replaceAll(~/\./, "")
-                                    def vae   = row[5].getContents()
+                                    def categoria = row[3].getContents()
+                                    def cpc = row[4].getContents().replaceAll(~/\./, "")
+                                    def vae = row[5].getContents()
                                     if (cod != "CODIGO" && cod) {  // no es el título
                                         def costos = []
                                         lugares = []
                                         (0..11).each {
 //                                            println "pone lugares y costos con it: $it"
-                                            lugares.add(it+1)
+                                            lugares.add(it + 1)
 //                                            costos.add(row[it+6].getContents())
-                                            costos.add(Math.round(row[it+6].getValue()*100000)/100000)
+                                            costos.add(Math.round(row[it + 6].getValue() * 100000) / 100000)
                                         }
 //                                        println "lugares y precios: $lugares\n$costos"
                                         //cargaItem(itemcdgo, tipo, nombre, unidad, categoria, sbgr, costo, cpc, tpit, dprt,
                                         // lgar, vae, costos, lugares, tpls)
                                         cargar = cargaItem(cod, tipo, nombre, unidad, categoria, sbgr, null, cpc, tpit, dprt,
                                                 lgar, vae, costos, lugares, tpls)
-                                        if(cargar.contador) contador++ else repetidos++
+                                        if (cargar.contador) contador++ else repetidos++
                                     }
                                 } //row ! empty
                             } //rows.each
@@ -272,6 +272,7 @@ class InicioController extends janus.seguridad.Shield {
         }
     }
 
+
     def mensajeUpload() {
 
     }
@@ -292,9 +293,9 @@ class InicioController extends janus.seguridad.Shield {
         def contador = 0
         def errores = ""
 
-        if(vae == 'EP') {
+        if (vae == 'EP') {
             vvae = 100
-        } else if(vae == 'ND') {
+        } else if (vae == 'ND') {
             vvae = 40
         } else {
             vvae = 0
@@ -311,10 +312,10 @@ class InicioController extends janus.seguridad.Shield {
             item.unidad = unidad
             item.tipoItem = tpit
             item.tipoLista = tpls
-            if(categoria){
+            if (categoria) {
                 tx = "select coalesce(max(cast(dprtcdgo as integer)), 0) maximo from dprt where sbgr__id = ${sbgr.id}"
                 def ctgr = DepartamentoItem.findByDescripcion(categoria)
-                if(!ctgr){
+                if (!ctgr) {
 //                    println "sql: $tx"
                     def nmro = cn.rows(tx.toString())[0].maximo + 1
                     cn.close()
@@ -332,7 +333,7 @@ class InicioController extends janus.seguridad.Shield {
             } else {
                 item.departamento = dprt
             }
-            item.codigoComprasPublicas = cpac?:null
+            item.codigoComprasPublicas = cpac ?: null
             try {
                 item.save(flush: true)
 //                println "........ ${item.codigo}, ${item.nombre}, ${item.unidad.id}, ${item.tipoItem}, ${item.departamento}"
@@ -346,7 +347,7 @@ class InicioController extends janus.seguridad.Shield {
 
 //            println "pasa item.."
 
-            if(!costos) {
+            if (!costos) {
                 rbpc = new PrecioRubrosItems()
                 rbpc.lugar = lgar
                 rbpc.item = item
@@ -358,7 +359,7 @@ class InicioController extends janus.seguridad.Shield {
 //            println "pasa rbpc.."
             } else {
                 (0..11).each {
-                    if(costos[it].toDouble() > 0) {
+                    if (costos[it].toDouble() > 0) {
                         tx = "insert into rbpc(item__id, lgar__id, rbpcfcha, rbpcpcun, rbpcfcin, rbpcrgst) " +
                                 "values(${item.id}, ${lugares[it]}, '${fcha.format('yyyy-MM-dd')}', " +
                                 "${costos[it].toDouble()}, '${fcha.format('yyyy-MM-dd')}', 'N')"
@@ -402,5 +403,162 @@ class InicioController extends janus.seguridad.Shield {
         }
         return [errores: errores, contador: contador]
     }
+
+    def cargaProv() {
+        println "cargaProv $params"
+        def contador = 0
+
+        def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xls") {
+                fileName = "xlsComposicion_" + new Date().format("yyyyMMdd_HHmmss")
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = ""
+                def file = new File(pathFile)
+                WorkbookSettings ws = new WorkbookSettings();
+                ws.setEncoding("Cp1252");
+                Workbook workbook = Workbook.getWorkbook(file, ws)
+                workbook.getNumberOfSheets().times { sheet ->
+
+                    /** ------------------- carga equipos ----------------- **/
+                    if (sheet == 0) {  // primera hoja Equipo -- no tiene categoria
+                        Sheet s = workbook.getSheet(sheet)
+                        if (!s.getSettings().isHidden()) {
+                            println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+                            Cell[] row = null
+
+                            s.getRows().times { j ->
+                                row = s.getRow(j)
+                                println row*.getContents()
+                                println row.length
+
+                                if (row.length >= 6) {
+                                    def provnmro = row[0].getContents()
+                                    def provnmbr = row[1].getContents()
+                                    def cntnnmro = row[2].getContents()
+                                    def cntnnmbr = row[3].getContents()
+                                    def parrnmro = row[4].getContents()
+                                    def parrnmbr = row[5].getContents()
+                                    if (provnmro != "CODIGO") {  // no es el título
+                                        def prov = Provincia.findByNombre(provnmbr)
+                                        if (!prov) {
+                                            prov = new Provincia()
+                                            prov.numero = provnmro
+                                            prov.nombre = provnmbr
+                                            try {
+                                                prov.save(flush: true)
+//                                          println "........ ${prov.numero}, ${prov.nombre}"
+                                            } catch (DataIntegrityViolationException e) {
+                                                println "ERROR: $e"
+                                            }
+                                            prov.refresh()
+                                        }
+                                        def cntn = Canton.findByProvinciaAndNombre(prov, cntnnmbr)
+                                        if (!cntn) {
+                                            cntn = new Canton()
+                                            cntn.provincia = prov
+                                            cntn.numero = cntnnmro
+                                            cntn.nombre = cntnnmbr
+                                            try {
+                                                cntn.save(flush: true)
+//                                          println "........ ${prov.numero}, ${prov.nombre}"
+                                            } catch (DataIntegrityViolationException e) {
+                                                println "ERROR: $e"
+                                            }
+                                            cntn.refresh()
+                                        }
+                                        println "parroquias para ${cntn.nombre}: $parrnmbr"
+                                        def parr = Parroquia.findAllByCantonAndNombre(cntn, parrnmbr)
+                                        if (!parr) {
+                                            parr = new Parroquia()
+                                            parr.canton = cntn
+                                            parr.codigo = parrnmro
+                                            parr.nombre = parrnmbr
+                                            try {
+                                                parr.save(flush: true)
+//                                          println "........ ${prov.numero}, ${prov.nombre}"
+                                            } catch (DataIntegrityViolationException e) {
+                                                println "ERROR: $e"
+                                            }
+                                            parr.refresh()
+
+                                            def cmnd = new Comunidad()
+                                            cmnd.parroquia = parr
+                                            cmnd.numero = parrnmro
+                                            cmnd.nombre = parrnmbr
+                                            try {
+                                                cmnd.save(flush: true)
+//                                          println "........ ${prov.numero}, ${prov.nombre}"
+                                            } catch (DataIntegrityViolationException e) {
+                                                println "ERROR: $e"
+                                            }
+                                        }
+                                        contador++
+                                    }
+                                } //row ! empty
+                            } //rows.each
+                        } //sheet ! hidden
+                        htmlInfo += "<p>Se han cargado $contador registros<p>"
+                    }// sheet 0
+
+                } //sheets.each
+                if (contador > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente $contador registros</div>"
+                }
+
+                def str = doneHtml
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+                str += doneHtml
+
+                flash.message = str
+
+                println "DONE!! --> $str"
+                redirect(action: 'mensajeUpload')
+            } else {
+                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
+                redirect(action: 'formArchivo')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(action: 'formArchivo')
+//            println "NO FILE"
+        }
+    }
+
 
 }
