@@ -31,6 +31,8 @@ class Item implements Serializable {
     String codigoEspecificacion
     CodigoComprasPublicas codigoComprasPublicas
     String estadoSuper
+    String descripcion
+    String pago
 
     static auditable = true
 
@@ -70,6 +72,8 @@ class Item implements Serializable {
             codigoEspecificacion column: 'itemcdes'
             codigoComprasPublicas column: 'cpac__id'
             estadoSuper column: 'itemaprb'
+            pago column: 'itempago'
+            descripcion column: 'itemdscr'
         }
     }
     static constraints = {
@@ -97,10 +101,12 @@ class Item implements Serializable {
         observaciones(size: 1..127, blank: true, nullable: true, attributes: [title: 'observaciones'])
         foto(size: 1..100, blank: true, nullable: true)
         tipoLista(blank: true, nullable: true)
-        especificaciones(blank: true, nullable: true, size: 1..1024)
+        especificaciones(blank: true, nullable: true)
         codigoEspecificacion(blank: true, nullable: true, size: 1..30)
         codigoComprasPublicas(blank: true, nullable: true, attributes: [title: 'Código de Compras Públicas'])
         estadoSuper(blank: true, nullable: true)
+        pago(blank: true, nullable: true)
+        descripcion(blank: true, nullable: true)
     }
 
     String toString() {

@@ -1001,4 +1001,17 @@ class RubroController extends janus.seguridad.Shield {
     }
 
 
+    def desregistrar_ajax () {
+        def rubro = Item.get(params.id)
+        rubro.estadoSuper = 'N'
+        try{
+            rubro.save(flush: true)
+            render 'ok'
+        }catch (e){
+            render 'no'
+            println("error al cambiar de estado" + rubro.errors)
+        }
+    }
+
+
 } //fin controller

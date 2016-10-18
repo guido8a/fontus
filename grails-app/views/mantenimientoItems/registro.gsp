@@ -860,7 +860,7 @@
                     }
                 });
 
-                %{--var cache = {};--}%
+//                var cache = {};
                 %{--$("#search").autocomplete({--}%
                     %{--minLength : 3,--}%
                     %{--source    : function (request, response) {--}%

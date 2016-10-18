@@ -113,7 +113,7 @@
         </a>
     </g:if>
     <g:if test="${session.perfil.codigo == 'CSTO' && rubro?.estadoSuper == 'R'}">
-        <a href="#" class="btn btn-ajax btn-new btn-warning" id="registrar" title="Quitar el registro del rubro">
+        <a href="#" class="btn btn-ajax btn-new btn-warning" id="quitarRegistro" title="Quitar el registro del rubro">
             <i class="icon-check"></i>
             Desregistrar
         </a>
@@ -695,6 +695,33 @@
 
 </div>
 <script type="text/javascript">
+
+    $("#quitarRegistro").click(function () {
+        var idRubroR = '${rubro?.id}'
+        if(confirm("Está seguro de cambiar el estado de este rubro a 'INGRESADO'? ")){
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'rubro', action: 'desregistrar_ajax')}',
+                data:{
+                    id: idRubroR
+                },
+                success: function (msg) {
+                    if(msg == 'ok'){
+                        $("#spanOk").html("Rubro desregistrado correctamente");
+                        $("#divOk").show()
+                        setTimeout(function () {
+                            location.reload(true)
+                        }, 1000);
+                    }else{
+                        $("#spanError").html("Error al cambiar el estado del rubro a ingresado");
+                        $("#divError").show()
+                    }
+                }
+            })
+        }
+
+    });
+
 
     $("#revision").click(function () {
         var idRubro = '${rubro?.id}'
