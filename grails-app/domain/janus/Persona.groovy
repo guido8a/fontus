@@ -90,6 +90,6 @@ class Persona implements Serializable {
     }
 
     String toString() {
-        return this.titulo + " " + this.nombre + " " + this.apellido
+        return (this.titulo ?: '') + " " + this.nombre + " " + this.apellido
     }
 }
