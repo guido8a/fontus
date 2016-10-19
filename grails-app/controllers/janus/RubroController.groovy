@@ -1013,5 +1013,28 @@ class RubroController extends janus.seguridad.Shield {
         }
     }
 
+    def especificaciones () {
+        println("params especificaciones " + params)
+        def rubro = Item.get(params.id)
+        return [rubro: rubro]
+    }
+
+    def guardarDescripcion_ajax() {
+
+        println("save " + params)
+        def rubro = Item.get(params.id)
+        rubro.descripcion = params.descripcion
+        rubro.especificaciones = params.especificacion
+        rubro.pago= params.pago
+
+        try{
+            rubro.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar los textos adicionales en el rubro-item " + rubro.errors)
+        }
+
+    }
 
 } //fin controller

@@ -86,12 +86,12 @@
     </g:if>
 
     <g:if test="${rubro}">
-        <g:if test="${rubro?.codigoEspecificacion}">
+        %{--<g:if test="${rubro?.codigoEspecificacion}">--}%
             <a href="#" id="detalle" class="btn btn-ajax btn-new">
                 <i class="icon-list"></i>
                 Especificaciones
             </a>
-        </g:if>
+        %{--</g:if>--}%
     </g:if>
     <g:if test="${rubro}">
         <a href="#" id="foto" class="btn btn-ajax btn-new">
@@ -1397,11 +1397,7 @@
                 %{--child.opener = self;--}%
             %{--window.toolbar.visible = false;--}%
             %{--window.menubar.visible = false;--}%
-
-
-
-
-
+            location.href="${createLink(controller: 'rubro', action: 'especificaciones')}/" + '${rubro?.id}'
         });
 
         $("#borrar").click(function () {
