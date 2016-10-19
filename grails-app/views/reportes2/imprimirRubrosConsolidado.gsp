@@ -4,6 +4,9 @@
     <title>
         Reporte de rubros consolidado
     </title>
+
+    <rep:estilos orientacion="h" pagTitle="ANÁLISIS DE PRECIOS UNITARIOS"/>
+
     <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
@@ -147,11 +150,9 @@
 </head>
 <body>
 <div class="hoja">
-    <div class="titulo" style="text-align: center;margin-bottom: 15px;">
-        SEP - G.A.D. PROVINCIA DE PICHINCHA <br/>
-        GESTIÓN DE PRESUPUESTOS <br/>
-        ANÁLISIS DE PRECIOS UNITARIOS  <br/>
-    </div>
+
+    <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ANÁLISIS DE PRECIOS UNITARIOS" estilo="right"/>
+
     <div style="height: 192px;border-bottom: 1px solid black;margin-bottom: 10px;">
 
         <div class="label">Fecha Act. P.U: </div> <div class="dato large">${fecha.format("dd-MM-yyyy")}</div>

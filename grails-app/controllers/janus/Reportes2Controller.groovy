@@ -763,7 +763,7 @@ class Reportes2Controller {
 
 
     def imprimirRubrosConsolidado2() {
-//        println "consolidado 2: $params"
+        println "consolidado 2: $params"
         def rubros = []
 
         def parts = params.id.split("_")
@@ -879,8 +879,8 @@ class Reportes2Controller {
         def ultimaFila
 
 
-        label = new jxl.write.Label(1, 2, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 3, "GESTIÓN DE PRESUPUESTOS", times16format); sheet.addCell(label);
+        label = new jxl.write.Label(1, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new jxl.write.Label(1, 3, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
         label = new jxl.write.Label(1, 4, "ANÁLISIS DE PRECIOS UNITARIOS", times16format); sheet.addCell(label);
         label = new jxl.write.Label(0, 6, "Fecha Act. P.U.: ", times16format); sheet.addCell(label);
         label = new jxl.write.Label(1, 6, fecha.format("dd-MM-yyyy"), times16No); sheet.addCell(label);
