@@ -3725,7 +3725,7 @@ class Reportes4Controller {
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
         label = new Label(1, 2, "REPORTE EXCEL ITEMS VAE", times16format); sheet.addCell(label);
 
         label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);

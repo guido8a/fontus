@@ -102,9 +102,9 @@
 
     <body>
         <div class="hoja">
-            <h1>SEP - G.A.D. PROVINCIA DE PICHINCHA</h1>
+            %{--<h1>SEP - G.A.D. PROVINCIA DE PICHINCHA</h1>--}%
 
-            <h2>Cronograma</h2>
+            %{--<h2>Cronograma</h2>--}%
 
             <div style="height: 30px;">
                 <div class="left strong">Obra: ${obra.descripcion} (${meses} mes${meses == 1 ? "" : "es"})</div>

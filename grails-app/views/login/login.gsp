@@ -91,7 +91,7 @@
             <div class="modal-body" id="modalBody" style="padding: 0px">
 
                 <g:form class="well form-horizontal span login2" action="validar" name="frmLogin">
-                    <p class="css-vertical-text" style="left: 12px;;font-family: 'Tulpen One',cursive;font-weight: bold;font-size: 35px; color: #334">Sistema SEP - GADPP</p>
+                    <p class="css-vertical-text" style="left: 12px;;font-family: 'Tulpen One',cursive;font-weight: bold;font-size: 35px; color: #334">SISTEMA SECOB</p>
 
                     <div class="linea" style="height: 95%;left: 45px; border-left-color: #334"></div>
                     <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">×</button>

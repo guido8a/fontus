@@ -1809,7 +1809,7 @@ class Reportes2Controller {
         def number
         def fila = 8;
 
-        label = new jxl.write.Label(2, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA".toUpperCase(), times16format);
+        label = new jxl.write.Label(2, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS".toUpperCase(), times16format);
         sheet.addCell(label);
         label = new jxl.write.Label(2, 2, "REPORTE COSTOS DE: ${grupo.descripcion.toUpperCase()}", times16format);
         sheet.addCell(label);

@@ -10,13 +10,9 @@
 <html>
     <head>
         <title>PAC</title>
-        %{--<link href="../../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/custom.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/font-awesome.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
+
+        <rep:estilos orientacion="h" pagTitle="PLAN ANUAL DE COMPRAS PÚBLICAS"/>
+
         <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
         <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
         <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
@@ -121,19 +117,21 @@
     <body>
         <div class="hoja">
 
-            <div class="tituloPdf">
-                <p>
-                    <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
-                </p>
+            <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="PLAN ANUAL DE COMPRAS PÚBLICAS" estilo="right"/>
 
-                <p>
-                    COORDINACIÓN DE COMPRAS PÚBLICAS
-                </p>
+            %{--<div class="tituloPdf">--}%
+                %{--<p>--}%
+                    %{--<b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>--}%
+                %{--</p>--}%
 
-                <p>
-                    PLAN ANUAL DE COMPRAS PÚBLICAS
-                </p>
-            </div>
+                %{--<p>--}%
+                    %{--COORDINACIÓN DE COMPRAS PÚBLICAS--}%
+                %{--</p>--}%
+
+                %{--<p>--}%
+                    %{--PLAN ANUAL DE COMPRAS PÚBLICAS--}%
+                %{--</p>--}%
+            %{--</div>--}%
 
             <div class="row-fluid" style="margin-left: 0px;margin-bottom: 10px;">
 

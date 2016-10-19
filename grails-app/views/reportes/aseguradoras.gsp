@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Aseguradoras</title>
+        <rep:estilos orientacion="h" pagTitle="LISTA DE ASEGURADORAS"/>
         <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
         <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
         <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
@@ -94,19 +95,22 @@
 
     <div class="hoja">
 
-        <div class="tituloPdf">
-            <p>
-                <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
-            </p>
 
-            <p>
-                COORDINACIÓN DE COMPRAS PÚBLICAS
-            </p>
+        <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="LISTA DE ASEGURADORAS" estilo="right"/>
 
-            <p>
-                LISTA DE ASEGURADORAS
-            </p>
-        </div>
+        %{--<div class="tituloPdf">--}%
+            %{--<p>--}%
+                %{--<b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>--}%
+            %{--</p>--}%
+
+            %{--<p>--}%
+                %{--COORDINACIÓN DE COMPRAS PÚBLICAS--}%
+            %{--</p>--}%
+
+            %{--<p>--}%
+                %{--LISTA DE ASEGURADORAS--}%
+            %{--</p>--}%
+        %{--</div>--}%
 
         <table class="table table-bordered table-striped table-condensed table-hover" style="border: 0px solid black">
             <thead>

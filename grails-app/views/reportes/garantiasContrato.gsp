@@ -10,6 +10,7 @@
 <html>
     <head>
         <title>Garantías contrato</title>
+        <rep:estilos orientacion="h" pagTitle="GARANTÍAS DE CONTRATO"/>
         <style type="text/css">
         @page {
             size   : 21cm 29.7cm;  /*width height */
@@ -75,19 +76,20 @@
 
         <div class="hoja">
 
-            <div class="tituloPdf">
-                <p>
-                    <b style="font-size: 18px">SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
-                </p>
+            <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="GARANTÍAS DE CONTRATO" estilo="right"/>
+            %{--<div class="tituloPdf">--}%
+                %{--<p>--}%
+                    %{--<b style="font-size: 18px">SEP - G.A.D. PROVINCIA DE PICHINCHA</b>--}%
+                %{--</p>--}%
 
-                <p style="font-size: 14px">
-                    COORDINACIÓN DE COMPRAS PÚBLICAS
-                </p>
+                %{--<p style="font-size: 14px">--}%
+                    %{--COORDINACIÓN DE COMPRAS PÚBLICAS--}%
+                %{--</p>--}%
 
-                <p style="font-size: 14px">
-                    GARANTÍAS DE CONTRATO
-                </p>
-            </div>
+                %{--<p style="font-size: 14px">--}%
+                    %{--GARANTÍAS DE CONTRATO--}%
+                %{--</p>--}%
+            %{--</div>--}%
 
             <table>
                 <tr>

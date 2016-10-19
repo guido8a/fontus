@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Reporte de precios</title>
+        <rep:estilos orientacion="h" pagTitle="ANÁLISIS DE PRECIOS UNITARIOS"/>
 
         <style type="text/css">
         @page {
@@ -88,9 +89,13 @@
 
     <body>
         <div class="hoja">
-            <h1 style="font-size: 16px">SEP - G.A.D. PROVINCIA DE PICHINCHA</h1>
 
-            <h2>REPORTE DE COSTOS DE ${grupo?.descripcion?.toUpperCase()}</h2>
+            <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="REPORTE DE PRECIOS" estilo="right"/>
+            %{--<h1 style="font-size: 16px">SEP - G.A.D. PROVINCIA DE PICHINCHA</h1>--}%
+
+            %{--<h2>REPORTE DE COSTOS DE ${grupo?.descripcion?.toUpperCase()}</h2>--}%
+
+          %{----}%
 
             <div style="height: 30px;">
                 <div class="left strong"> LISTA DE PRECIOS: ${lugar?.descripcion?.toUpperCase()}</div>

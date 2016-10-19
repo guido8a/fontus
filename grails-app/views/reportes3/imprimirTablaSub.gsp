@@ -145,17 +145,17 @@
 
 <div class="tituloPdf">
 
-    <p style="font-size: 18px">
-        <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
-    </p>
+    %{--<p style="font-size: 18px">--}%
+        %{--<b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>--}%
+    %{--</p>--}%
 
     %{--<p style="font-size: 14px">--}%
         %{--<b> ${obra?.departamento?.direccion?.nombre}</b>--}%
     %{--</p>--}%
 
-    <p style="font-size: 14px">
-        <b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b>
-    </p>
+    %{--<p style="font-size: 14px">--}%
+        %{--<b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b>--}%
+    %{--</p>--}%
 
     <p style="font-size: 14px">
         <g:if test="${subPre == -1}">

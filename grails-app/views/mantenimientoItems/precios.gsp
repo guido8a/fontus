@@ -907,10 +907,12 @@
                                 $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
                                 $("#modalTitle").html("Procesando");
                                 $("#modalBody").html(wait);
-                                $("#modalBody").close();
+//                                $("#modalBody").close();
+                                $("#modalBody").modal('hide');
+//                                $("#modalBody").close();
                                 $("#modalFooter").html("").append(btnClose);
 
-                                $.modal.close();
+//                                $.modal.close();
 
                                 return false;
                             });

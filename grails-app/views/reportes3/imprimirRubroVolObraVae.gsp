@@ -2,13 +2,7 @@
 <html>
 <head>
     <title>Rubro :${rubro.codigo}</title>
-    %{--<link href="../../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-    %{--<link href="../../css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>--}%
-    %{--<link href="../../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-    %{--<link href="../../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-    %{--<link href="../../css/custom.css" rel="stylesheet" type="text/css"/>--}%
-    %{--<link href="../../css/font-awesome.css" rel="stylesheet" type="text/css"/>--}%
-    %{--<link href="../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
+    <rep:estilos orientacion="h" pagTitle="ANÁLISIS DE PRECIOS UNITARIOS"/>
     <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
@@ -149,16 +143,19 @@
 <body>
 <div class="hoja">
 
-    <div class="tituloPdf tituloHeader">
-        <p style="font-size: 18px">
-            <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>
-        </p>
 
-        <p style="font-size: 14px; margin-top: -15px;">
-            <b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>
-            <b>ANÁLISIS DE PRECIOS UNITARIOS</b>
-        </p>
-    </div>
+    <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ANALISIS DE PRECIOS UNITARIOS" estilo="right"/>
+
+    %{--<div class="tituloPdf tituloHeader">--}%
+        %{--<p style="font-size: 18px">--}%
+            %{--<b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>--}%
+        %{--</p>--}%
+
+        %{--<p style="font-size: 14px; margin-top: -15px;">--}%
+            %{--<b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>--}%
+            %{--<b>ANÁLISIS DE PRECIOS UNITARIOS</b>--}%
+        %{--</p>--}%
+    %{--</div>--}%
 
     <div style="margin-top: 0px">
         <div class="row-fluid">

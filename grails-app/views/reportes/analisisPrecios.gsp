@@ -10,6 +10,7 @@
 <html>
     <head>
         <title>Análisis de Precios Unitarios de Presupuesto</title>
+        <rep:estilos orientacion="h" pagTitle="ANÁLISIS DE PRECIOS UNITARIOS DE PRESUPUESTO"/>
 
         <style type="text/css">
 
@@ -69,11 +70,13 @@
 
         <div class="hoja">
 
-            <h1>SEP - G.A.D. PROVINCIA DE PICHINCHA</h1>
+            <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ANÁLISIS DE PRECIOS UNITARIOS DE PRESUPUESTO" estilo="right"/>
 
-            <h2>Coordinación de Costos</h2>
+            %{--<h1>SEP - G.A.D. PROVINCIA DE PICHINCHA</h1>--}%
 
-            <h2>Análisis de Precios Unitarios de Presupuesto</h2>
+            %{--<h2>Coordinación de Costos</h2>--}%
+
+            %{--<h2>Análisis de Precios Unitarios de Presupuesto</h2>--}%
 
             <div class="span10">
 
