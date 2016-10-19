@@ -123,7 +123,7 @@
 
     .small2 {
 
-        width: 150px;
+        width: 80px;
     }
     .half{
         width: 50px;
@@ -134,23 +134,20 @@
 <body>
 <div class="hoja">
     <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ANÁLISIS DE PRECIOS UNITARIOS" estilo="right"/>
-    %{--<div class="titulo" style="text-align: center;margin-bottom: 15px;">--}%
-        %{--SEP - G.A.D. PROVINCIA DE PICHINCHA <br/>--}%
-        %{--GESTIÓN DE PRESUPUESTOS <br/>--}%
-        %{--ANÁLISIS DE PRECIOS UNITARIOS  <br/>--}%
-    %{--</div>--}%
-    <div style="height: 192px;border-bottom: 1px solid black;margin-bottom: 10px;">
+    <div style="height: 60px;border-bottom: 1px solid black;margin-bottom: 10px;">
 
         <div class="label">Fecha Act. P.U: </div> <div class="dato large">${fecha.format("dd-MM-yyyy")}</div>
         <div class="label">% costos indirectos: </div> <div class="dato small">${indi}</div>
-        <div class="dato" style="width: 100%;font-weight: bold;border-bottom: black solid 1px;margin-bottom: 5px;border-top: 1px solid black">Listas de precios y distancias</div>
-        <div class="label">Mano de obra y Equipos: </div> <div class="dato large">${Lugar.get(lista6).descripcion}</div>
-        <div class="label"></div> <div class="dato small"></div>
-        <div class="label">Canton: </div> <div class="dato large ">${Lugar.get(lista1).descripcion}</div>
-        <div class="label half">Distancia: </div> <div class="dato small">${params.dsp0}</div>
-        <div class="label">Especial: </div> <div class="dato large">${Lugar.get(lista2).descripcion}</div>
-        <div class="label half">Distancia: </div> <div class="dato small ">${params.dsp1}</div>
+        <div class="dato small">Listas de precios</div>
+        <div class="dato large">${Lugar.get(lista6).descripcion}</div>
+        %{--<div class="label"></div> <div class="dato small"></div>--}%
+        <div class="label small2">Lugar: </div> <div class="dato small ">${Lugar.get(lista1).descripcion}</div>
+        %{--<div class="label half">Distancia: </div> <div class="dato small">${params.dsp0}</div>--}%
 
+        %{--<div class="label">Especial: </div> <div class="dato large">${Lugar.get(lista2).descripcion}</div>--}%
+        %{--<div class="label half">Distancia: </div> <div class="dato small ">${params.dsp1}</div>--}%
+
+%{--
         <g:if test="${lista3}">
             <div class="label">Petreos Hormigones:</div> <div class="dato large">${janus.Lugar.get(lista3).descripcion}</div>
         </g:if>
@@ -173,6 +170,9 @@
         <g:else>
             <div class="label">Carpeta Asfáltica: </div> <div class="dato large">No seleccionó carpeta asfáltica</div>
         </g:else>
+--}%
+
+%{--
         <div class="label half">Distancia: </div> <div class="dato small">${params.dsv2}</div>
         <div class="dato" style="width: 100%;font-weight: bold;border-top: 1px solid black;height: 1px"></div>
         <g:if test="${params.chof != '-1'}">
@@ -188,6 +188,7 @@
             <div class="label half">Volquete: </div> <div class="dato small2"> No seleccionada Volqueta <b>($${params.prvl.toDouble().round(2)})</b></div>
         </g:else>
 
+--}%
 
 
     %{--<div class="label">Distancia 2:</div> <div class="dato">${indi}</div>--}%
@@ -200,8 +201,8 @@
             <th>NOMBRE</th>
             <th>UNIDAD</th>
             <th>PRECIO</th>
-            <th>ESPECIFI- <t>CACIONES</t></th>
-            <th>PLANO DE DETALLE</th>
+            %{--<th>ESPECIFI- <t>CACIONES</t></th>--}%
+            %{--<th>PLANO DE DETALLE</th>--}%
         </tr>
         </thead>
         <tbody>
@@ -212,8 +213,8 @@
                 <td>${nombres[j]}</td>
                 <td>${rubro.unddcdgo}</td>
                 <td style="text-align: right"><g:formatNumber number="${rubro.rbropcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                <td style="text-align: center">${rubro.rbroespc}</td>
-                <td style="text-align: center">${rubro.rbrofoto}</td>
+                %{--<td style="text-align: center">${rubro.rbroespc}</td>--}%
+                %{--<td style="text-align: center">${rubro.rbrofoto}</td>--}%
             </tr>
         </g:each>
         </tbody>

@@ -223,7 +223,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1"/>
             </div>
 
             <div class="span3">
@@ -231,7 +231,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=3')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_3"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=3 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_3"/>
             </div>
         </div>
 
@@ -241,7 +241,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_2"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_2"/>
             </div>
 
             <div class="span3">
@@ -249,7 +249,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_4"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_4"/>
             </div>
         </div>
 
@@ -261,7 +261,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_5"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_5"/>
             </div>
         </div>
     </div>
@@ -429,7 +429,7 @@
             </div>
 
             <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1g"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1 order by codigo')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1g"/>
             </div>
 
             <div class="span3">
@@ -1045,7 +1045,7 @@
         var id, rel, label;
         id = "root";
         rel = "root";
-        label = "Dirección Responsable";
+        label = "Área de Especialización";
 
         $("#tree").bind("loaded.jstree",
                 function (event, data) {

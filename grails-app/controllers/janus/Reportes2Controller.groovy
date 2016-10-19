@@ -763,7 +763,7 @@ class Reportes2Controller {
 
 
     def imprimirRubrosConsolidado2() {
-        println "consolidado 2: $params"
+//        println "consolidado 2: $params"
         def rubros = []
 
         def parts = params.id.split("_")
@@ -820,6 +820,7 @@ class Reportes2Controller {
             text = text.replaceAll(/</, /&lt;/);
             text = text.replaceAll(/>/, /&gt;/);
             text = text.replaceAll(/"/, /&quot;/);
+//            text = text.replaceAll(/'/, /&squo;/);
             corregidos += text
         }
 //        println("nombres " +corregidos)
