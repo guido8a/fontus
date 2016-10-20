@@ -2261,7 +2261,7 @@
 
         $("#crearNuevo").click(function () {
             var id = $("#input_codigo").val()
-            console.log('id', id)
+//            console.log('id', id)
             var url = "${createLink(action: 'rubroPrincipal')}?id=" + id
             location.href = url
         });
