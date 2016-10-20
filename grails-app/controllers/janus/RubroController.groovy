@@ -111,7 +111,7 @@ class RubroController extends janus.seguridad.Shield {
 //                println "sql: $tx"
                 def nmro = cn.rows(tx.toString())[0].mxmo + 1
 //                println "nmro: $nmro, ceros: ${5 - nmro.toString().size()}"
-                def ceros = "0" * (5 - nmro.toString().size() - 1)
+                def ceros = "0" * (5 - nmro.toString().size())
                 siguiente = "${params.id[0].toUpperCase()}-${ceros}${nmro}"
             }
             println "Siguiente .... ${siguiente}"
