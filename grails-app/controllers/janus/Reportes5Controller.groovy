@@ -40,32 +40,6 @@ class Reportes5Controller {
     }
 
     private filasAvance(params) {
-//        def sqlBase = "SELECT\n" +
-//                "  c.cntr__id               id,\n" +
-//                "  b.obracdgo               obra_cod,\n" +
-//                "  b.obranmbr               obra_nmbr,\n" +
-//                "  m.cmndnmbr               comunidad,\n" +
-//                "  a.parrnmbr               parroquia,\n" +
-//                "  k.cntnnmbr               canton,\n" +
-//                "  c.cntrcdgo               num_contrato,\n" +
-//                "  p.prvenmbr               proveedor,\n" +
-//                "  c.cntrmnto               monto,\n" +
-//                "  c.cntrfcsb               fecha,\n" +
-//                "  c.cntrplzo               plazo,\n" +
-//                "  (SELECT\n" +
-//                "  coalesce(sum(plnlmnto), 0)\n" +
-//                "   FROM plnl\n" +
-//                "   WHERE cntr__id = c.cntr__id\n" +
-//                "         AND tppl__id = 3) sum\n" +
-//                "FROM cntr c\n" +
-//                "  INNER JOIN ofrt o ON c.ofrt__id = o.ofrt__id\n" +
-//                "  INNER JOIN cncr n ON o.cncr__id = n.cncr__id\n" +
-//                "  INNER JOIN obra b ON n.obra__id = b.obra__id\n" +
-//                "  INNER JOIN tpob t ON b.tpob__id = t.tpob__id\n" +
-//                "  INNER JOIN prve p ON o.prve__id = p.prve__id\n" +
-//                "  INNER JOIN cmnd m ON b.cmnd__id = m.cmnd__id\n" +
-//                "  INNER JOIN parr a ON m.parr__id = a.parr__id\n" +
-//                "  INNER JOIN cntn k ON a.cntn__id = k.cntn__id"
 
         def sqlBase = "SELECT\n" +
                 "  c.cntr__id               id,\n" +
@@ -183,13 +157,7 @@ class Reportes5Controller {
         }else{
             obrasFiltradas = res
         }
-
-
-//        println res
-
-//        println(obrasFiltradas)
         params.criterio = params.old
-
         return [res: obrasFiltradas, params: params]
     }
 
@@ -197,14 +165,10 @@ class Reportes5Controller {
 //        println "tablaContratadas ok $params , ${reportesService.obrasContratadas()}"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasAvance()
-
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
-
         def sql = armaSqlAvance(params)
         def obras = cn.rows(sql)
-
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
         return [obras: obras, params: params]
     }
@@ -227,17 +191,13 @@ class Reportes5Controller {
                 "prve.prve__id = c.prve__id"
         def sqlOrder = "order by obracdgo"
 
-//        println "llega params: $params"
         params.nombre = "Código"
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
             def op = operador.find {it.valor == params.operador}
             println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
-//        println "txWhere: $sqlWhere"
-//        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
-//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
-        //retorna sql armado:
+
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -325,16 +285,8 @@ class Reportes5Controller {
         addCellTabla(tablaDatos, new Paragraph("Plazo", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("% Avance", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Avance Físico", fontTh), paramsHead)
-//        addCellTabla(tablaDatos, new Paragraph("Estado", fontTh), paramsHead)
 
         obras.each { fila ->
-//            def estado = ""
-//            if (fila.inicio) {
-//                estado = "Iniciada el " + (fila.inicio.format("dd-MM-yyyy"))
-//                if (fila.recepcion_contratista && fila.recepcion_fisc) {
-//                    estado = "Finalizada el " + (fila.recepcion_fisc.format("dd-MM-yyyy"))
-//                }
-//            }
             addCellTabla(tablaDatos, new Paragraph(fila.obracdgo, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.obranmbr, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, fontTd), prmsCellLeft)
@@ -345,7 +297,6 @@ class Reportes5Controller {
             addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellRight)
             addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellRight)
-//            addCellTabla(tablaDatos, new Paragraph(estado, fontTd), prmsCellLeft)
         }
 
         document.add(tablaDatos)
@@ -654,7 +605,6 @@ class Reportes5Controller {
         }
 
         cuenta = firma.size() + firmaFijaFormu.size()
-
         def totalBase = params.totalPresupuesto
 
         if (obra?.formulaPolinomica == null) {
@@ -667,7 +617,6 @@ class Reportes5Controller {
 
         def file = File.createTempFile('myExcelDocument', '.xls')
         file.deleteOnExit()
-//        println "paso"
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
 
         WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
@@ -675,13 +624,6 @@ class Reportes5Controller {
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
-//        params.id = params.id.split(",")
-//        if (params.id.class == java.lang.String) {
-//            params.id = [params.id]
-//        }
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         sheet.setColumnView(0, 12)
@@ -702,12 +644,9 @@ class Reportes5Controller {
 
         def ultimaFila
 
-        label = new Label(1, 2, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-
+        label = new Label(1, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
         label = new Label(1, 4, "FÓRMULA POLINÓMICA", times16format); sheet.addCell(label);
-
         label = new Label(1, 6, obra?.formulaPolinomica, times16format); sheet.addCell(label);
-
         label = new Label(1, 8, "De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la contrucción de:", times16format);
         sheet.addCell(label);
 
@@ -881,38 +820,6 @@ class Reportes5Controller {
             label = new Label(1, salto3 + 14, "Coordinador no asignado", times16format);
             sheet.addCell(label);
         }
-
-//        label = new Label(1, salto3 + 14, "", times16format);
-//        sheet.addCell(label);
-
-//        if (cuenta == 3) {
-//            label = new Label(1, salto3 + 13, "______________________________________", times16format);
-//            sheet.addCell(label);
-//            label = new Label(2, salto3 + 13, "______________________________________", times16format);
-//            sheet.addCell(label);
-//            label = new Label(3, salto3 + 13, "______________________________________", times16format);
-//            sheet.addCell(label);
-//            def salto4 = salto3 + 13
-//
-//            firmaFijaFormu.eachWithIndex { f, h ->
-//
-//                if (f != '') {
-//
-//                    firmas = Persona.get(f)
-//
-//                    label = new Label(h + 1, salto4 + 1, firmas?.titulo + " " + firmas?.nombre + " " + firmas?.apellido, times16format);
-//                    sheet.addCell(label);
-//                } else {
-//                    label = new Label(h + 1, salto4 + 1, "Sin asignar,  ", times16format); sheet.addCell(label);
-//                }
-//            }
-//
-//            firmas = Persona.get(firmaFijaFormu[0])
-//            label = new Label(1, salto4 + 2, firmas?.cargo, times16format); sheet.addCell(label);
-//            label = new Label(2, salto4 + 2, "REVISOR", times16format); sheet.addCell(label);
-//            label = new Label(3, salto4 + 2, "ELABORÓ", times16format); sheet.addCell(label);
-//        }
-
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
@@ -1224,6 +1131,12 @@ class Reportes5Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
+    }
+
+
+    def reporteEspecificaciones () {
+        def rubro = Item.get(params.id)
+        return [rubro: rubro]
     }
 
 }

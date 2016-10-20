@@ -785,16 +785,6 @@
             cant = 0
         if (isNaN(cant))
             cant = 0
-/*
-        if(tipoItem*1>1){
-            if(cant>0){
-                var c = Math.ceil(cant)
-                if(c>cant){
-                    cant=0
-                }
-            }
-        }
-*/
         var rend = $("#item_rendimiento").val()
         if (isNaN(rend))
             rend = 1
@@ -823,7 +813,6 @@
 
                         if (parts[0] == "1") {
                             $("#tabla_material").children().find(".cdgo").each(function () {
-//                                    ////console.log($(this))
                                 if ($(this).html() == $("#cdgo_buscar").val()) {
                                     var tdCant = $(this).parent().find(".cant")
                                     var tdRend = $(this).parent().find(".rend")
@@ -1008,7 +997,6 @@
                         $("#cdgo_buscar").val("")
                         $("#cdgo_unidad").val("")
                         $("#cdgo_buscar").focus()
-//                            $("#item_rendimiento").val("1")
                     }
                 });
             } else {
@@ -1131,7 +1119,6 @@
         }
 
         equipos.each(function () {
-//            ////console.log("each ",$(this))
             totalE += parseFloat($(this).find(".col_total").html())
         })
 
@@ -1143,11 +1130,9 @@
     }
 
     function calculaHerramientas() {
-//        ////console.log("calc herramientas")
         var h2 = $(".i_3490")
         var h3 = $(".cod_103_001_001")
         var h5 = $(".cod_103_001_002")
-//        //console.log($(".cod_103_001_001"))
         var h
         if (h2.html())
             h = h2
@@ -1166,10 +1151,8 @@
                 data     : datos,
                 success  : function (msg) {
                     var precios = msg.split("&")
-//                     ////console.log(msg)
                     for (i = 0; i < precios.length; i++) {
                         var parts = precios[i].split(";")
-//                        ////console.log(parts,parts.length)
                         if (parts.length > 1) {
                             precio = parseFloat(parts[1].trim())
                         }
@@ -1182,13 +1165,10 @@
                     var tarifa = padre.find(".col_tarifa")
                     rend.html(number_format(1, 5, ".", ""))
                     cant.html(number_format($("#total_mano").find(".valor_total").html(), 5, ".", ""))
-//                    ////console.log("cantidad",$("#total_mano").find(".valor_total").html())
-//                    ////console.log(number_format($("#total_mano").find(".valor_total").html(), 5, ".", ""))
                     tarifa.html(number_format(precio, 5, ".", ""))
                     hora.html(number_format(parseFloat(cant.html()) * parseFloat(tarifa.html()), 5, ".", ""))
                     total.html(number_format(parseFloat(hora.html()) * parseFloat(rend.html()), 5, ".", ""))
                     totalEquipos()
-//                    ////console.log("total herramienta",parseFloat(hora.html())*parseFloat(rend.html()),total)
                 }
             });
         } else {
@@ -1229,13 +1209,11 @@
         td = $("<td>")
         trM.append(td)
         materiales.each(function () {
-//            ////console.log($(this),$(this).find(".col_total").html())
             var val = $(this).find(".col_total").html()
             if (val == "")
                 val = 0
             if (isNaN(val))
                 val = 0
-//            ////console.log(val)
             totalM += parseFloat(val)
         })
         manos.each(function () {
@@ -1249,7 +1227,6 @@
         trMa.append(td)
         $("#tabla_material").append(trM)
         $("#tabla_mano").append(trMa)
-//        ////console.log(totalMa)
         $("#totMat_h").val(totalMa)
         calculaHerramientas()
     }
@@ -1345,7 +1322,6 @@
                     else
                         factor = factor * 1;
                     if (factor > 0) {
-
                         var idReg = $("#rub_select").val();
                         var datos = "rubro=" + $("#rubro__id").val() + "&copiar=" + idReg + "&factor=" + factor;
                         $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
@@ -1384,7 +1360,6 @@
 
         $("#foto").click(function () {
             var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"il"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
-
             if (child.opener == null)
                 child.opener = self;
             window.toolbar.visible = false;
@@ -1392,13 +1367,6 @@
         });
 
         $("#detalle").click(function () {
-            %{--var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"dt"])}',--}%
-                    %{--'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
-
-            %{--if (child.opener == null)--}%
-                %{--child.opener = self;--}%
-            %{--window.toolbar.visible = false;--}%
-            %{--window.menubar.visible = false;--}%
             location.href="${createLink(controller: 'rubro', action: 'especificaciones')}/" + '${rubro?.id}'
         });
 
@@ -1413,7 +1381,6 @@
                         if (msg == "ok") {
                             location.href = "${createLink(action: 'rubroPrincipal')}"
                         } else {
-//                            ////console.log(msg)
                             $.box({
                                 imageClass : "box_info",
                                 text       : "Error: el rubro seleccionado no se pudo eliminar. Esta referenciado en las siguientes obras: <br>" + msg,

@@ -87,6 +87,10 @@
         <i class="icon-save"></i>
         Guardar Texto
     </a>
+    <a href="#" class="btn btn-ajax btn-new btn-info" id="btnImprimirEspecificacion" title="Imprimir en formato PDF">
+        <i class="icon-print"></i>
+        Imprimir
+    </a>
 </div>
 
 
@@ -120,6 +124,12 @@
     $("#btnRegresar").click(function () {
        location.href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}?idRubro=" + '${rubro?.id}'
     });
+
+
+    $("#btnImprimirEspecificacion").click(function () {
+        var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificaciones')}?id=" + '${rubro?.id}'
+        location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+    })
 </script>
 
 
