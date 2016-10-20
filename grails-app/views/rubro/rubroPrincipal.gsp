@@ -37,34 +37,36 @@
         <span id="spanOk"></span>
     </div>
 </div>
+%{--siguiente: ${siguiente}--}%
 
 <div class="span12 btn-group" role="navigation">
-    <a href="#" class="btn  " id="btn_lista">
+    <a href="#" class="btn  " id="btn_lista" title="Lista de rubos ingresados">
         <i class="icon-list-ul"></i>
         Lista
     </a>
     <g:if test="${modifica}">
-        <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
+        <a href="${g.createLink(action: 'rubroPrincipal')}?id=${rubro?.codigo}" class="btn btn-ajax btn-new" title="Crear un nuevo Rubo">
+        %{--"${createLink(controller: 'rubro', action: 'rubroPrincipal')}?idRubro=" + '${rubro?.id}'--}%
             <i class="icon-file-alt"></i>
             Nuevo
         </a>
         <g:if test="${rubro?.estadoSuper != 'R'}">
-            <a href="#" class="btn btn-ajax btn-new btn-success" id="guardar">
+            <a href="#" class="btn btn-ajax btn-new btn-success" id="guardar" title="Guardar datos del rubro">
                 <i class="icon-save"></i>
                 Guardar
             </a>
-            <a href="#" class="btn btn-ajax btn-new btn-danger" id="borrar">
+            <a href="#" class="btn btn-ajax btn-new btn-danger" id="borrar" title="Eliminar el rubro del sistema">
                 <i class="icon-trash"></i>
                 Borrar
             </a>
         </g:if>
     </g:if>
-    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
+    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new" title="Cancelar cambios y no grabar">
         <i class="icon-remove"></i>
         Cancelar
     </a>
 
-    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">
+    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular el valor del rubro / quitar precios">
         <i class="icon-table"></i>
         Calcular
     </a>
@@ -79,7 +81,7 @@
         </a>
     </g:if>
     <g:if test="${rubro}">
-        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">
+        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Copiar rubro a excel">
             <i class="icon-print"></i>
             Excel
         </a>
@@ -87,16 +89,16 @@
 
     <g:if test="${rubro}">
         %{--<g:if test="${rubro?.codigoEspecificacion}">--}%
-            <a href="#" id="detalle" class="btn btn-ajax btn-new">
+            <a href="#" id="detalle" class="btn btn-ajax btn-new" title="Ingresar datos para especificaciones">
                 <i class="icon-list"></i>
-                Especificaciones
+                Especif.
             </a>
         %{--</g:if>--}%
     </g:if>
     <g:if test="${rubro}">
-        <a href="#" id="foto" class="btn btn-ajax btn-new">
+        <a href="#" id="foto" class="btn btn-ajax btn-new" title="Cargar ilustración">
             <i class="icon-picture"></i>
-            Ilustración
+            Ilust.
         </a>
     </g:if>
 
@@ -134,7 +136,7 @@
             <div class="row-fluid">
                 <div class="span2" style="width: 150px;">
                     Código
-                    <input type="text" name="rubro.codigo" class="span20 allCaps required input-small" value="${rubro?.codigo}"
+                    <input type="text" name="rubro.codigo" class="span20 allCaps required input-small" value="${rubro?.codigo?:siguiente}"
                            id="input_codigo" maxlength="30">
 
                     <p class="help-block ui-helper-hidden"></p>
@@ -1402,7 +1404,7 @@
 
         $("#borrar").click(function () {
             <g:if test="${rubro}">
-            if (confirm("Esta Seguro?")) {
+            if (confirm("¿Está Seguro de eliminar el Rubro?\n\n¿Continuar..?")) {
                 $("#dlgLoad").dialog("open")
                 $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'borrarRubro')}",
                     data     : "id=${rubro?.id}",

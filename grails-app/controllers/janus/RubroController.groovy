@@ -11,6 +11,7 @@ class RubroController extends janus.seguridad.Shield {
 
     def buscadorService
     def preciosService
+    def dbConnectionService
 
     def index() {
         redirect(action: "rubroPrincipal", params: params)
@@ -63,7 +64,8 @@ class RubroController extends janus.seguridad.Shield {
     }
 
     def rubroPrincipal() {
-//        println "rubroPrincipal params: $params"
+        println "rubroPrincipal params: $params"
+        def cn = dbConnectionService.getConnection()
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -74,7 +76,7 @@ class RubroController extends janus.seguridad.Shield {
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
         def dpto = Departamento.findAllByPermisosIlike("APU")
         def resps = Persona.findAllByDepartamentoInList(dpto)
-
+        def siguiente = ""
 
 //        println "depto "+dpto
         def dptoUser = Persona.get(session.usuario.id).departamento
@@ -84,7 +86,6 @@ class RubroController extends janus.seguridad.Shield {
                 if (d.id.toInteger() == dptoUser.id.toInteger())
                     modifica = true
             }
-
         }
 
         grupoTransporte.each {
@@ -92,12 +93,10 @@ class RubroController extends janus.seguridad.Shield {
                 choferes = Item.findAllByDepartamento(it)
             if (it.transporte.codigo == "T")
                 volquetes = Item.findAllByDepartamento(it)
-
             volquetes2 += volquetes
-
         }
 
-        grupos=Grupo.findAll("from Grupo  where id>3")
+        grupos = Grupo.findAll("from Grupo  where id>3")
         if (params.idRubro) {
             rubro = Item.get(params.idRubro)
             def items = Rubro.findAllByRubro(rubro)
@@ -107,11 +106,18 @@ class RubroController extends janus.seguridad.Shield {
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
              aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps]
         } else {
-
-//            println "Nuevo .... responsable: ${resps?.id} ${resps}"
-
+            if(params.id){  // se propone siguiente código
+                def tx = "select coalesce(max(cast(substr(itemcdgo,3,5) as integer)),0) mxmo from item where tpit__id = 2 and " +
+                        "itemcdgo like '${params.id[0]}%'"
+                println "sql: $tx"
+                def nmro = cn.rows(tx.toString())[0].mxmo + 1
+                println "nmro: $nmro, ceros: ${5 - nmro.toString().size()}"
+                def ceros = "0" * (5 - nmro.toString().size() - 1)
+                siguiente = "${params.id[0..2]}${ceros}${nmro}"
+            }
+            println "Siguiente .... ${siguiente}"
             [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
-             volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps]
+             volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps, siguiente: siguiente]
         }
     }
 
@@ -258,7 +264,7 @@ class RubroController extends janus.seguridad.Shield {
         def url = g.createLink(action: "buscaRubro", controller: "rubro")
         def funcionJs = "function(){"
         funcionJs += 'if($("#rubro__id").val()*1>0){ '
-        funcionJs += '   if(confirm("Esta seguro?")){'
+        funcionJs += '   if(confirm("¿Está seguro?")){'
         funcionJs += '        $("#rub_select").val($(this).attr("regId"));'
         funcionJs += '        $("#copiar_dlg").dialog("open");$("#modal-rubro").modal("hide");'
         funcionJs += '    } '
