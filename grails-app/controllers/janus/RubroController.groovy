@@ -64,9 +64,8 @@ class RubroController extends janus.seguridad.Shield {
     }
 
     def rubroPrincipal() {
-        println "rubroPrincipal params: $params"
+//        println "rubroPrincipal params: $params"
         def cn = dbConnectionService.getConnection()
-        def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
         def volquetes = []
@@ -108,12 +107,12 @@ class RubroController extends janus.seguridad.Shield {
         } else {
             if(params.id){  // se propone siguiente código
                 def tx = "select coalesce(max(cast(substr(itemcdgo,3,5) as integer)),0) mxmo from item where tpit__id = 2 and " +
-                        "itemcdgo like '${params.id[0]}%'"
-                println "sql: $tx"
+                        "itemcdgo ilike '${params.id[0]}%'"
+//                println "sql: $tx"
                 def nmro = cn.rows(tx.toString())[0].mxmo + 1
-                println "nmro: $nmro, ceros: ${5 - nmro.toString().size()}"
+//                println "nmro: $nmro, ceros: ${5 - nmro.toString().size()}"
                 def ceros = "0" * (5 - nmro.toString().size() - 1)
-                siguiente = "${params.id[0..2]}${ceros}${nmro}"
+                siguiente = "${params.id[0].toUpperCase()}-${ceros}${nmro}"
             }
             println "Siguiente .... ${siguiente}"
             [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,

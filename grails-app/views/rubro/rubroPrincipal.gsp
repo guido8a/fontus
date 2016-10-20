@@ -45,8 +45,9 @@
         Lista
     </a>
     <g:if test="${modifica}">
-        <a href="${g.createLink(action: 'rubroPrincipal')}?id=${rubro?.codigo}" class="btn btn-ajax btn-new" title="Crear un nuevo Rubo">
-        %{--"${createLink(controller: 'rubro', action: 'rubroPrincipal')}?idRubro=" + '${rubro?.id}'--}%
+        %{--<a href="${g.createLink(action: 'rubroPrincipal')}?id=${rubro?.codigo}" class="btn btn-ajax btn-new"--}%
+        <a href="#" class="btn btn-ajax btn-new"
+           title="Crear un nuevo Rubo" id="crearNuevo">
             <i class="icon-file-alt"></i>
             Nuevo
         </a>
@@ -2053,7 +2054,6 @@
                     } else {
                         $("#frmRubro").submit()
                     }
-
                 }
             });
         });
@@ -2115,7 +2115,6 @@
                                 draggable : false,
                                 buttons   : {
                                     "Cancelar":function(){
-
                                     },
                                     "Aceptar" : function () {
                                         $("#dlgLoad").dialog("open")
@@ -2129,19 +2128,15 @@
 //                                                    console.log("es historico",msg)
                                                     $("#boxHiddenDlg").dialog("close")
                                                     agregar(msg,"H");
-
                                                 }
-
                                             }
                                         });
                                     }
-
                                 }
                             }
                         });
                     }else{
                         agregar(${rubro?.id},"");
-
                     }
                 }
             });
@@ -2263,6 +2258,14 @@
                 }
             }
         });
+
+        $("#crearNuevo").click(function () {
+            var id = $("#input_codigo").val()
+            console.log('id', id)
+            var url = "${createLink(action: 'rubroPrincipal')}?id=" + id
+            location.href = url
+        });
+
 
     });
 </script>
