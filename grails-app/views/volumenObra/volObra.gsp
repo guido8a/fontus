@@ -92,7 +92,6 @@
 
                     </g:if>
                     <g:else>
-                    <g:else>
                         <g:if test="${persona?.departamento?.id == obra?.departamento?.id}">
                             <a href="#" class="btn" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">
                                 <i class="icon-plus"></i>
@@ -105,10 +104,7 @@
                             </a>
                         </g:if>
                     </g:else>
-
                 </div>
-
-
             </div>
         </div>
         </div>
