@@ -121,7 +121,7 @@ class ProgramacionController extends janus.seguridad.Shield {
     } //save
 
     def save_ext() {
-//        println("params" + params)
+        println("params" + params)
         def programacionInstance, message
 
         if (params.fechaInicio) {
@@ -131,7 +131,7 @@ class ProgramacionController extends janus.seguridad.Shield {
             params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
         }
 
-        if(params.fechaInicio >= params.fechaFin){
+        if(params.fechaFin && (params.fechaInicio >= params.fechaFin)){
           render "error"
           return
         }else{

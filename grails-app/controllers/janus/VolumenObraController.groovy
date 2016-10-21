@@ -280,7 +280,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 //
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
-        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
 //
 //        if(responsableRol) {
@@ -298,7 +298,7 @@ class VolumenObraController extends janus.seguridad.Shield {
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
                 dueno = true
             } else {
-                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
+                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'DNCP'
             }
         }
 

@@ -70,7 +70,12 @@ class ClaseObraController extends janus.seguridad.Shield {
 //
 //            }
             claseObraInstance = new ClaseObra(params)
-            claseObraInstance.codigo =  (codigos.last() + 1)
+            if(codigos){
+                claseObraInstance.codigo =  (codigos.last() + 1)
+            } else {
+                claseObraInstance.codigo =  1
+            }
+
 
         } //es create
         if (!claseObraInstance.save(flush: true)) {

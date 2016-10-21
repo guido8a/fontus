@@ -244,7 +244,7 @@
 
                         %{--//nuevo--}%
 
-                        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                        <g:if test="${persona?.departamento?.codigo == 'DNCP'}">
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>
@@ -325,7 +325,7 @@
 
                         %{--//old--}%
                         %{--<g:if test="${coordinadores != null}">--}%
-                        %{--<g:if test="${duenoObra == 1 && persona?.departamento?.codigo == 'UTFPU'}">--}%
+                        %{--<g:if test="${duenoObra == 1 && persona?.departamento?.codigo == 'DNCP'}">--}%
                         %{--<tr>--}%
                         %{--<td>--}%
                         %{--<g:select name="coordinador" from="${personasUtfpuCoor}" optionValue="persona" optionKey="id" style="width: 380px"/>--}%
@@ -561,7 +561,7 @@
 
                         <tbody id="firmasFijasMemo">
 
-                        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                        <g:if test="${persona?.departamento?.codigo == 'DNCP'}">
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>
@@ -757,7 +757,7 @@
 
                         <tbody id="firmasFijasPoli">
 
-                        <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+                        <g:if test="${persona?.departamento?.codigo == 'DNCP'}">
                             <g:if test="${duenoObra == 1}">
                                 <tr>
                                     <td>

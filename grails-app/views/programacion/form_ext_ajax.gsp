@@ -28,8 +28,8 @@
         </div>
 
         <div class="controls">
-            <elm:datepicker name="fechaInicio" class="" value="${programacionInstance?.fechaInicio}"/>
-
+            <elm:datepicker name="fechaInicio" class="required" value="${programacionInstance?.fechaInicio}"/>
+            <span class="mandatory">*</span>
 
             <p class="help-block ui-helper-hidden"></p>
         </div>
@@ -44,7 +44,6 @@
 
         <div class="controls">
             <elm:datepicker name="fechaFin" class="" value="${programacionInstance?.fechaFin}"/>
-
 
             <p class="help-block ui-helper-hidden"></p>
         </div>

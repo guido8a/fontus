@@ -5,32 +5,6 @@
     <g:hiddenField name="id" value="${claseObraInstance?.id}"/>
     <g:hiddenField name="grupo" value="${grupo}"/>
 
-    %{--<div class="control-group">--}%
-        %{--<div>--}%
-            %{--<span class="control-label label label-inverse">--}%
-                %{--Código--}%
-            %{--</span>--}%
-        %{--</div>--}%
-
-        %{--<g:if test="${claseObraInstance?.id}">--}%
-
-            %{--<div class="controls">--}%
-                %{--<g:textField name="codigo" readonly="readonly" class=" required allCaps" value="${fieldValue(bean: claseObraInstance, field: 'codigo')}"/>--}%
-                %{--<span class="mandatory">*</span>--}%
-                %{--<p class="help-block ui-helper-hidden"></p>--}%
-            %{--</div>--}%
-
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-            %{--<div class="controls">--}%
-                %{--<g:textField name="codigo"  id="codigo1" class=" required allCaps" value=""/>--}%
-                %{--<span class="mandatory">*</span>--}%
-
-                %{--<p class="help-block ui-helper-hidden"></p>--}%
-            %{--</div>--}%
-        %{--</g:else>--}%
-    %{--</div>--}%
-
     <div class="control-group">
         <div>
             <span class="control-label label label-inverse">
@@ -39,7 +13,7 @@
         </div>
 
         <div class="controls">
-            <g:textField name="descripcion" maxlength="63" class=" required" value="${claseObraInstance?.descripcion}"/>
+            <g:textField name="descripcion" maxlength="63" class="span4 required" value="${claseObraInstance?.descripcion}"/>
             <span class="mandatory">*</span>
 
             <p class="help-block ui-helper-hidden"></p>

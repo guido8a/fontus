@@ -2121,7 +2121,7 @@ class Reportes2Controller {
         def funcionElab = Funcion.findByCodigo('E')
 
         def personasDep = Persona.findAllByDepartamento(deptoUsu)
-        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
 
         def coordinador = PersonaRol.findByPersonaInListAndFuncion(personasDep,funcionCoor)
         def coordinadorUtfpu = PersonaRol.findByPersonaInListAndFuncion(personasUtfpu,funcionCoor)

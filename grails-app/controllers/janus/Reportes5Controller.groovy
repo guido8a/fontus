@@ -141,13 +141,13 @@ class Reportes5Controller {
 
         def res = filasAvance(params)
 
-        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
         def responsableObra
 
         def obrasFiltradas = []
 
 
-        if(Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'){
+        if(Persona.get(session.usuario.id).departamento?.codigo == 'DNCP'){
             res.each{
                 responsableObra = it.responsable
                 if((personasUtfpu.contains(Persona.get(responsableObra))) || it.tipo == 'D'){

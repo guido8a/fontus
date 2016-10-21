@@ -1,5 +1,5 @@
 
-<g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
+<g:if test="${persona?.departamento?.codigo == 'DNCP'}">
     <g:if test="${obra?.id == null}">
         <div class="span1">Responsable Cantidades de Obra</div>
 

@@ -450,7 +450,7 @@ class ObraController extends janus.seguridad.Shield {
 
 //        println("--->" + Departamento.findByCodigo('UTFPU'))
 
-        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
 
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
 
@@ -1117,7 +1117,7 @@ class ObraController extends janus.seguridad.Shield {
         def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
         def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
 
-        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
 
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
 
@@ -1480,7 +1480,7 @@ class ObraController extends janus.seguridad.Shield {
 //            println "busca direccion de usuario ${session.usuario}"
 
             def persona = Persona.get(session.usuario.id)
-            if(session.usuario.departamento?.codigo != 'UTFPU'){
+            if(session.usuario.departamento?.codigo != 'DNCP'){
                 def direccion = Direccion.get(persona.departamento.direccion.id)
                 def departamentos = Departamento.findAllByDireccion(direccion)
                 def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])

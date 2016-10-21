@@ -2299,7 +2299,7 @@ class ReportesController {
         txtIzq.setAlignment(Element.ALIGN_LEFT);
 
         if (params.encabezado == "1" || params.encabezado == 1) {
-            if (Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU') {
+            if (Persona.get(session.usuario.id).departamento?.codigo == 'DNCP') {
                 if (obra?.departamentoDestino) {
                     def departamentoDestino = Departamento.get(obra?.departamentoDestino?.id)
                     def direccionDestino = departamentoDestino?.direccion
@@ -3223,7 +3223,7 @@ class ReportesController {
         txtIzq.setAlignment(Element.ALIGN_LEFT);
 
         if (params.encabezado == "1" || params.encabezado == 1) {
-            if (Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU') {
+            if (Persona.get(session.usuario.id).departamento?.codigo == 'DNCP') {
                 if (obra?.departamentoDestino) {
                     def departamentoDestino = Departamento.get(obra?.departamentoDestino?.id)
                     def direccionDestino = departamentoDestino?.direccion
@@ -4027,7 +4027,7 @@ class ReportesController {
         txtIzq.setAlignment(Element.ALIGN_LEFT);
 
         if (params.encabezado == "1" || params.encabezado == 1) {
-            if (Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU') {
+            if (Persona.get(session.usuario.id).departamento?.codigo == 'DNCP') {
                 if (obra?.departamentoDestino) {
                     def departamentoDestino = Departamento.get(obra?.departamentoDestino?.id)
                     def direccionDestino = departamentoDestino?.direccion
@@ -5184,9 +5184,9 @@ class ReportesController {
         document.add(tablaFirmas);
 
         /** todo: poner responsable y revisado por ... usar obrasService.esDuenoObra**/
-        if(obraService.esDuenoObra(obra, session.usuario.id) && (tipo == '1') && (session.usuario.departamento.codigo == 'UTFPU')){
+        if(obraService.esDuenoObra(obra, session.usuario.id) && (tipo == '1') && (session.usuario.departamento.codigo == 'DNCP')){
             def funcionCoord = Funcion.findByCodigo('O')
-            def coordinador = PersonaRol.findByFuncionAndPersonaInList(funcionCoord, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))?.persona
+            def coordinador = PersonaRol.findByFuncionAndPersonaInList(funcionCoord, Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP')))?.persona
             PdfPTable tablaPie = new PdfPTable(2);
             tablaPie.setWidthPercentage(100);
             tablaPie.setWidths(arregloEnteros([3, 60]))

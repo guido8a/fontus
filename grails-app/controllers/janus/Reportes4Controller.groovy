@@ -406,7 +406,7 @@ class Reportes4Controller {
         def subPres
 
 
-        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
         def responsableObra
 
         params.old = params.criterio
@@ -534,7 +534,7 @@ class Reportes4Controller {
 
 
 
-        if(Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'){
+        if(Persona.get(session.usuario.id).departamento?.codigo == 'DNCP'){
 
             res.each{
                 responsableObra = it.responsable
@@ -620,7 +620,7 @@ class Reportes4Controller {
 
         def obrasFiltradas = []
 
-        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
         def responsableObra
 
         params.old = params.criterio
@@ -735,7 +735,7 @@ class Reportes4Controller {
 
 //        println("##" + valoresTotales)
 
-        if(Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'){
+        if(Persona.get(session.usuario.id).departamento?.codigo == 'DNCP'){
             res.each{
                 responsableObra = it.responsable
                 if((personasUtfpu.contains(Persona.get(responsableObra))) || it.tipo == 'D'){
@@ -2502,7 +2502,7 @@ class Reportes4Controller {
         def obrasFiltradas = []
 
         res.each{
-            if(it.codigodepar == 'UTFPU' || it.tipo == 'D'){
+            if(it.codigodepar == 'DNCP' || it.tipo == 'D'){
                 obrasFiltradas += it
             }
         }
