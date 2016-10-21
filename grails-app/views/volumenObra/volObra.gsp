@@ -14,6 +14,14 @@
         <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>
         <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
         <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
+
+        <style>
+            .boton {
+                padding: 2px 6px;
+                margin-top: -10px
+            }
+        </style>
+
     </head>
 
     <body>
@@ -28,7 +36,7 @@
 
         %{--<div class="tituloTree">--}%
         <div style=" font-size: 14px;  color: #0088CC;">
-            Volúmenes de la obra: ${obra.descripcion + " (" + obra.codigo + ")"}
+            Volúmenes de la obra: ${obra.nombre + " (" + obra.codigo + ")"}
             <input type="hidden" id="override" value="0">
         </div>
 %{--
@@ -52,7 +60,7 @@
 --}%
 
         <div class="row" style="display: inline">
-            <div class="span5" role="navigation" style="margin-left: 35px;">
+            <div class="span5" role="navigation" style="margin-left: 35px; width: 460px">
                 <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
                     <i class="icon-arrow-left"></i>
                     Regresar
@@ -68,25 +76,26 @@
             </div>
 
         <div class="row-fluid" style="margin-left: 0px">
-            <div class="span3" style="width: 170px; margin-top: -20px;">
+            <div class="span3" style="width: 160px; margin-top: -20px;">
                 <b>Tipo de Obra:</b><g:select name="grupos" id="grupos" from="${grupoFiltrado}" optionKey="id" optionValue="descripcion"
-                                              style="margin-left: 0px; width: 160px " value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>
+                      style="margin-left: 0px; width: 150px; font-size: 13px; font-weight: bold" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>
             </div>
 
             <div class="" style="margin-left: 0px">
-                <div class="span4" style="width: 450px; margin-top: -20px;">
+                <div class="span4" style="width: 500px; margin-top: -20px;">
                     <b>Crear Subpresupuesto / Ingresar Rubros:</b>
                     <span id="sp">
-                        <span id="div_cmb_sub"><g:select name="subpresupuesto" from="${subpreFiltrado}" optionKey="id" optionValue="descripcion" style="font-size: 10px" id="subPres"/></span>
+                        <span id="div_cmb_sub"><g:select name="subpresupuesto" from="${subpreFiltrado}" optionKey="id" optionValue="descripcion"
+                             style="font-size: 12px; width: 400px" id="subPres"/></span>
                     </span>
                     <g:if test="${duenoObra == 1}">
-                        <a href="#" class="btn" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">
+                        <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto">
                             <i class="icon-plus"></i>
                         </a>
-                        <a href="#" class="btn" id="btnBorrarSP" title="Borrar subpresupuesto" style="margin-top: -10px;">
+                        <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto">
                             <i class="icon-minus"></i>
                         </a>
-                        <a href="#" class="btn" id="btnEditarSP" title="Editar subpresupuesto" style="margin-top: -10px;">
+                        <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto">
                             <i class="icon-edit"></i>
                         </a>
 
@@ -127,22 +136,22 @@
         </g:if>
 
         <div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: 0px">
-            <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 92px">
+            <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 60px">
                 %{--<div class="linea" style="height: 98%;"></div>--}%
 
 
 
                     %{--Inicia registro de vlob--}%
-                    <div class="span1" style="margin-left: -17px; width: 100px;">
+                    <div class="span1" style="margin-left: 20px; width: 100px;">
                         <b>Código</b>
-                        <input type="text" style="width: 100px;;font-size: 10px" id="item_codigo" class="allCaps">
+                        <input type="text" style="width: 60px;;font-size: 12px" id="item_codigo" class="allCaps">
                         <input type="hidden" style="width: 60px" id="item_id">
                     </div>
 
-                    <div class="span4" style="margin-left: 15px;">
+                    <div class="span8" style="margin-left: -20px;">
                         <b>Rubro</b>
                         %{--<input type="text" style="width: 420px;font-size: 10px" id="item_nombre" disabled="true">--}%
-                        <input type="text" style="width: 420px;font-size: 10px" id="item_nombre" readonly="true">
+                        <input type="text" style="width: 760px;font-size: 12px" id="item_nombre" readonly="true">
 
                     </div>
 
@@ -150,27 +159,27 @@
                         %{--<b>Descripción:</b>--}%
                         %{--<input type="text" style="width: 680px" id="item_descripcion" value="">--}%
                     %{--</div>--}%
-                    <div class="span2" style="margin-left: 20px; width: 180px;">
+                    <div class="span1" style="margin-left: 20px; width: 100px;">
                         <b>Cantidad:</b>
                         <input type="text" style="width: 90px;text-align: right" id="item_cantidad" value="">
                     </div>
 
                     <div class="span1" style="margin-left: 20px; width: 90px;">
                         <b>Orden:</b>
-                        <input type="text" style="width: 30px;text-align: right" id="item_orden" value="${(volumenes?.size() > 0) ? volumenes.size() + 1 : 1}">
+                        <input type="text" style="width: 50px;text-align: right" id="item_orden" value="${(volumenes?.size() > 0) ? volumenes.size() + 1 : 1}">
                     </div>
 
                     <div class="span1" style="margin-left: 10px;padding-top:0px; width: 25px;">
                         <input type="hidden" value="" id="vol_id">
 
                         <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
-                            <a href="#" class="btn btn-primary" title="agregar" id="item_agregar">
+                            <a href="#" class="btn btn-primary" title="agregar" id="item_agregar" style="margin-top: 20px;">
                                 <i class="icon-plus"></i>
                             </a>
                         </g:if>
                         <g:else>
                             <g:if test="${obra.estado != 'R' && obra?.departamento?.id == persona?.departamento?.id}">
-                                <a href="#" class="btn btn-primary" title="agregar" id="item_agregar">
+                                <a href="#" class="btn btn-primary" title="agregar" id="item_agregar" style="margin-top: 20px;">
                                     <i class="icon-plus"></i>
                                 </a>
                             </g:if>
@@ -443,9 +452,7 @@
                 });
 
                 $("#btnBorrarSP").click(function () {
-
                     $("#borrarSPDialog").dialog("open")
-
                 });
 
                 $("#btnEditarSP").click(function () {
