@@ -16,7 +16,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Rubro :${rubro.codigo}</title>
+    <title>Rubro :${rubro?.codigo}</title>
 
     <rep:estilos orientacion="h" pagTitle="ESPECIFICACIONES"/>
 
@@ -27,7 +27,7 @@
     <style type="text/css">
     @page {
         size   : 21cm 29.7cm;  /*width height */
-        margin-left : 2cm;
+        margin-left : 2.4cm;
         margin-top: 1cm;
     }
 
@@ -51,28 +51,6 @@
         width         : 95%;
     }
 
-    .grande{
-
-        font-size: 18px;
-    }
-
-    .totales {
-        font-weight : bold;
-    }
-
-    .num {
-        text-align : right;
-    }
-
-    .header {
-        background : #333333 !important;
-        color      : #AAAAAA;
-    }
-
-    .total {
-        background : #000000 !important;
-        color      : #FFFFFF !important;
-    }
     thead tr {
         margin : 0px
     }
@@ -81,51 +59,6 @@
         font-size : 10px !important;
     }
 
-    .theader {
-        border-bottom: 1px solid #000000;
-    }
-
-    .theaderup {
-        border-top: 1px solid #000000;
-    }
-
-    .marginTop{
-        margin-top:20px !important;
-    }
-
-    .tituloHeader{
-        font-size: 14px !important;
-    }
-
-    .padTopBot{
-        padding-top: 7px !important;
-        padding-bottom: 7px !important;
-    }
-
-    .row-fluid {
-        width  : 100%;
-        height : 20px;
-    }
-
-    .span3 {
-        width  : 29%;
-        float  : left;
-        height : 100%;
-    }
-
-    .span8 {
-        width  : 79%;
-        float  : left;
-        height : 100%;
-    }
-
-    .span7 {
-        width  : 69%;
-        float  : left;
-        height : 100%;
-    }
-
-
     </style>
 </head>
 
@@ -133,82 +66,121 @@
 <div class="hoja">
     <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="ESPECIFICACIONES" estilo="right"/>
 
-
-    %{--<div style="margin-top: 20px">--}%
-        %{--<div class="row-fluid">--}%
-            %{--<div class="span3" style="margin-right: 195px !important;">--}%
-                %{--<g:if test="${fechaPala}">--}%
-                    %{--<b>Fecha:</b> ${fechaPala.format("dd-MM-yyyy")}--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                    %{--<b>Fecha:</b>--}%
-                %{--</g:else>--}%
-            %{--</div>--}%
-
-            %{--<div class="span4">--}%
-                %{--<g:if test="${fechaPrecios}">--}%
-                    %{--<b>Fecha Act. P.U:</b> ${fechaPrecios.format("dd-MM-yyyy")}--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                    %{--<b>Fecha Act. P.U:</b>--}%
-                %{--</g:else>--}%
-            %{--</div>--}%
-
-
-
-        %{--</div>--}%
-
-        %{--<div class="row-fluid">--}%
-            %{--<div class="span3" style="margin-right: 195px !important;">--}%
-                %{--<b>Código de rubro:</b> ${rubro?.codigo}--}%
-            %{--</div>--}%
-
-            %{--<div class="span3">--}%
-                %{--<b>Unidad:</b> ${rubro?.unidad?.codigo}--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="row-fluid">--}%
-            %{--<div class="span12">--}%
-                %{--<b>Código de especificación:</b> ${rubro?.codigoEspecificacion}--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="row-fluid">--}%
-            %{--<div class="span12">--}%
-                %{--<b>Descripción:</b> ${rubro.nombre}--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
+    <table class="table table-bordered table-striped table-condensed table-hover " style="margin-top: 30px; border-top: 1px solid #000000;  border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000; border-left: 1px solid #000000; width: 600px">
+        <tbody>
+        <tr style="border-bottom: 1px solid #000000; border-right: 1px solid #000000; text-align: center">
+            <td  style="border-bottom: 1px solid #000000; border-right: 1px solid #000000"><b>CÓDIGO SECOB</b></td>
+            <td  style="border-bottom: 1px solid #000000; border-right: 1px solid #000000"><b>DESCRIPCIÓN</b></td>
+            <td style="border-bottom: 1px solid #000000;"><b>UNIDAD</b></td>
+        </tr>
+        <tr style="border-top: 1px solid #000000; border-right: 1px solid #000000; text-align: center">
+            <td style="border-right: 1px solid #000000">${rubro?.codigo}</td>
+            <td style="border-right: 1px solid #000000">${nombre.toUpperCase()}</td>
+            <td>${rubro?.unidad}</td>
+        </tr>
+        </tbody>
+    </table>
 
     <div style="width: 100%;margin-top: 10px;">
 
-
-
-        <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 40px;width: 50%;float: right; border-top: 1px solid #000000;  border-bottom: 1px solid #000000">
+        <table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 20px;">
             <tbody>
-            <tr style="">
+            <tr>
                 <td style="width: 350px;">
-                    <b>1. DESCRIPCIÓN</b>
+                    <b>1. DESCRIPCIÓN.- </b>
                 </td>
-                <td style="text-align: right">
-                    ${rubro?.descripcion}
+            </tr>
+            <tr>
+                <td style="text-align: justify">
+                    ${desc}
                 </td>
             </tr>
             <tr>
                 <td>
-                    <b>2. ESPECIFICACIONES</b>
+                    <b>2. ESPECIFICACIONES.-</b>
                 </td>
-                <td style="text-align: right">
-                    ${rubro?.especificaciones}
+            </tr>
+            <tr>
+                <td style="text-align: justify">
+                    ${espe}
                 </td>
             </tr>
             <tr>
                 <td>
-                    <b>6. MEDICIÓN Y PAGO</b>
+                    <b>3. MATERIALES.-</b>
                 </td>
-                <td style="text-align: right">
-                    ${rubro?.pago}
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                        <g:each in="${items}" var="rub1" status="i">
+                            <g:if test="${rub1.item.departamento.subgrupo.grupo.id == 1}">
+                                <tr>
+                                    <td style="width: 80px">${rub1?.item?.codigo}</td>
+                                    <td>${rub1?.item?.nombre}</td>
+                                </tr>
+                            </g:if>
+                        </g:each>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>4. EQUIPO.-</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                        <g:each in="${items}" var="rub3" status="i">
+                            <g:if test="${rub3.item.departamento.subgrupo.grupo.id == 3}">
+                                <tr>
+                                    <td style="width: 80px">${rub3?.item?.codigo}</td>
+                                    <td>${rub3?.item?.nombre}</td>
+                                </tr>
+                            </g:if>
+                        </g:each>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>5. MANO DE OBRA.-</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                        <g:each in="${items}" var="rub" status="i">
+                            <g:if test="${rub.item.departamento.subgrupo.grupo.id == 2}">
+                                <tr>
+                                    <td style="width: 80px">${rub?.item?.codigo}</td>
+                                    <td>${rub?.item?.nombre}</td>
+                                </tr>
+                            </g:if>
+                        </g:each>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>6. MEDICIÓN Y PAGO.-</b>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: justify">
+                    ${pago}
                 </td>
             </tr>
             </tbody>

@@ -1136,7 +1136,38 @@ class Reportes5Controller {
 
     def reporteEspecificaciones () {
         def rubro = Item.get(params.id)
-        return [rubro: rubro]
+        def desc = reemplazar(rubro?.descripcion)
+        def espe = reemplazar(rubro?.especificaciones)
+        def pago = reemplazar(rubro?.pago)
+        def nombre = reemplazar(rubro?.nombre)
+        def items = Rubro.findAllByRubro(rubro)
+        items.sort { it.item.codigo }
+
+        return [rubro: rubro, espe: espe, desc: desc, pago: pago, nombre: nombre, items: items]
+    }
+
+
+    def reemplazar (texto) {
+        def text = (texto ?: '')
+
+        text = text.replaceAll("&lt;", "*lt*")
+        text = text.replaceAll("&gt;", "*gt*")
+        text = text.replaceAll("&amp;", "*amp*")
+        text = text.replaceAll("<p>&nbsp;</p>", "<br/>")
+//        text = text.replaceAll("&nbsp;", " ")
+        text = text.replaceAll("&aacute;", "á")
+
+        text = text.decodeHTML()
+
+        text = text.replaceAll("\\*lt\\*", "&lt;")
+        text = text.replaceAll("\\*gt\\*", "&gt;")
+        text = text.replaceAll("\\*amp\\*", "&amp;")
+        text = text.replaceAll("\\*nbsp\\*", " ")
+        text = text.replaceAll(/<tr>\s*<\/tr>/, / /)
+
+        text = text.replaceAll(~"\\?\\_debugResources=y\\&n=[0-9]*", "")
+
+        return text
     }
 
 }

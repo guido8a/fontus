@@ -32,12 +32,8 @@
 
 
 <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
-    <div class="span12" style="margin-top: 10px; margin-bottom: 5px;">
-        <div class="span1 formato label">Código:</div>
-        <div class="span3"><g:textField name="codigo" class="" value="${rubro?.codigo}" readonly="true"/></div>
-
-        <div class="span1 formato label">Rubro:</div>
-        <div class="span5"><g:textField name="memo" class="" value="${rubro?.nombre}" readonly="true" style="width: 500px"/></div>
+    <div class="span12" style="margin-top: 10px; margin-bottom: 5px">
+        <h4 class="span-6">${"Rubro:  " + rubro?.codigo + " : " + rubro?.nombre}</h4>
     </div>
 </fieldset>
 
