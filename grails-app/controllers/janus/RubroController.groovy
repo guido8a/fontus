@@ -64,8 +64,9 @@ class RubroController extends janus.seguridad.Shield {
     }
 
     def rubroPrincipal() {
-//        println "rubroPrincipal params: $params"
+        println "rubroPrincipal params: $params"
         def cn = dbConnectionService.getConnection()
+        def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
         def volquetes = []
