@@ -31,11 +31,11 @@
 </div>
 
 
-<fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
+%{--<fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">--}%
     <div class="span12" style="margin-top: 10px; margin-bottom: 5px">
         <h4 class="span-6">${"Rubro:  " + rubro?.codigo + " : " + rubro?.nombre}</h4>
     </div>
-</fieldset>
+%{--</fieldset>--}%
 
 <fieldset class="span-10" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
     <p class="css-vertical-text">Descripción</p>
@@ -46,7 +46,7 @@
 </fieldset>
 
 <fieldset class="span-10" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
-    <p class="css-vertical-text">Especificación</p>
+    <p class="css-vertical-text">Especificaciones</p>
     <div class="linea" style="height: 85%;"></div>
     <div class="span10">
         <textarea name="editorE" id="editorE" rows="30" cols="80">${rubro?.especificaciones}</textarea>
@@ -54,7 +54,7 @@
 </fieldset>
 
 <fieldset class="span-10" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
-    <p class="css-vertical-text">Pago</p>
+    <p class="css-vertical-text">Medición y Pago</p>
     <div class="linea" style="height: 85%;"></div>
     <div class="span10">
         <textarea name="editorP" id="editorP" rows="30" cols="80">${rubro?.pago}</textarea>
