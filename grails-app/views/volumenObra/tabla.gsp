@@ -9,12 +9,8 @@
     <div class="span-6" style="margin-bottom: 5px">
         <b>Subpresupuesto:</b>
         <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 300px;font-size: 10px" id="subPres_desc" value="${subPre}"
+                  style="width: 400px;font-size: 10px; margin-right: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'TODOS']"/>
-
-        %{--todo descomentar esto--}%
-        %{--<g:select name="subpresupuesto" from="${subPresupuesto1}" optionKey="id" optionValue="descripcion" style="width: 300px;font-size: 10px" id="subPres_desc" value="${subPre}"></g:select>--}%
-
 
         <a href="#" class="btn btn-ajax btn-new" id="ordenarAsc" title="Ordenar Ascendentemente">
             <i class="icon-arrow-up"></i>
@@ -23,32 +19,32 @@
             <i class="icon-arrow-down"></i>
         </a>
 
-        %{--<div class="btn-group" data-toggle="buttons-checkbox">--}%
-        %{--<button type="button" id="ver_todos" class="btn btn-tabla ${(!subPre)?'active':''} " style="font-size: 10px">Ver todos</button>--}%
-
-        %{--</div>--}%
 
         <a href="#" class="btn  " id="copiar_rubros">
             <i class="icon-copy"></i>
             Copiar Rubros
         </a>
-        <a href="#" class="btn  " id="imprimir_sub">
-            <i class="icon-print"></i>
-            Impr. Subpre.
+        <a href="#" class="btn  " id="imprimirSub">
+        <i class="icon-print"></i>
+        Imprimir
         </a>
-        <a href="#" class="btn  " id="imprimir_excel" style="margin-left:-7px">
-            <i class="icon-table"></i>
-            Excel
-        </a>
-
-        <a href="#" class="btn  " id="imprimir_sub_vae">
-            <i class="icon-print"></i>
-            Subpre. VAE
-        </a>
-        <a href="#" class="btn  " id="imprimir_vae_excel">
+        %{--<a href="#" class="btn  " id="imprimir_sub">--}%
+            %{--<i class="icon-print"></i>--}%
+            %{--Impr. Subpre.--}%
+        %{--</a>--}%
+        %{--<a href="#" class="btn  " id="imprimir_excel" style="margin-left:-7px">--}%
             %{--<i class="icon-table"></i>--}%
-           VAE Excel
-        </a>
+            %{--Excel--}%
+        %{--</a>--}%
+
+        %{--<a href="#" class="btn  " id="imprimir_sub_vae">--}%
+            %{--<i class="icon-print"></i>--}%
+            %{--Subpre. VAE--}%
+        %{--</a>--}%
+        %{--<a href="#" class="btn  " id="imprimir_vae_excel">--}%
+            %{--<i class="icon-table"></i>--}%
+           %{--VAE Excel--}%
+        %{--</a>--}%
     </div>
 </div>
 <table class="table table-bordered table-striped table-condensed table-hover">
@@ -129,7 +125,119 @@
 </div>
 
 
+<div id="imprimirSubpresupuesto" style="height: 150px !important;">
+    <fieldset>
+        %{--<div class="span2" style="margin-top: 5px">--}%
+            %{--Fecha:--}%
+
+        %{--</div>--}%
+        <div class="span3" style="margin-top: 5px;">
+            <g:checkBox name="todos_name" class="todosSub"/> Imprimir todos los subpresupuestos.
+        </div>
+        <div class="span3" style="margin-top: 5px;">
+            <g:checkBox name="vae_name" class="vaeSub"/> VAE
+        </div>
+        %{--<div class="span3" style="margin-top: 5px;">--}%
+            %{--¿Desea imprimir el reporte desglosando el transporte?--}%
+        %{--</div>--}%
+
+    </fieldset>
+</div>
+
+
 <script type="text/javascript">
+
+    $("#imprimirSub").click(function () {
+        $("#imprimirSubpresupuesto").dialog("open");
+    });
+
+
+    $("#imprimirSubpresupuesto").dialog({
+
+        autoOpen  : false,
+        resizable : false,
+        modal     : true,
+        dragable  : false,
+        width     : 350,
+        height    : 220,
+        position  : 'center',
+        title     : 'Imprimir Subpresupuesto',
+
+        buttons   : {
+            'PDF' : function () {
+                %{--var dsp0 = $("#dist_p1").val()--}%
+                %{--var dsp1 = $("#dist_p2").val()--}%
+                %{--var dsv0 = $("#dist_v1").val()--}%
+                %{--var dsv1 = $("#dist_v2").val()--}%
+                %{--var dsv2 = $("#dist_v3").val()--}%
+                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
+                %{--var volqueta = $("#costo_volqueta").val()--}%
+                %{--var chofer = $("#costo_chofer").val()--}%
+                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
+                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq="--}%
+                        %{--+ $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
+                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?" + datos--}%
+                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
+                %{--$("#imprimirTransporteDialog").dialog("close");--}%
+            },
+            "Excel" : function () {
+                %{--var dsp0 = $("#dist_p1").val()--}%
+                %{--var dsp1 = $("#dist_p2").val()--}%
+                %{--var dsv0 = $("#dist_v1").val()--}%
+                %{--var dsv1 = $("#dist_v2").val()--}%
+                %{--var dsv2 = $("#dist_v3").val()--}%
+                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
+                %{--var volqueta = $("#costo_volqueta").val()--}%
+                %{--var chofer = $("#costo_chofer").val()--}%
+                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
+                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val()--}%
+                        %{--+ "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val()--}%
+                        %{--+ "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
+                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?" + datos--}%
+                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
+                %{--$("#imprimirTransporteDialog").dialog("close");--}%
+            },
+
+//            "VAE PDF " : function () {
+                %{--var dsp0 = $("#dist_p1").val()--}%
+                %{--var dsp1 = $("#dist_p2").val()--}%
+                %{--var dsv0 = $("#dist_v1").val()--}%
+                %{--var dsv1 = $("#dist_v2").val()--}%
+                %{--var dsv2 = $("#dist_v3").val()--}%
+                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
+                %{--var volqueta = $("#costo_volqueta").val()--}%
+                %{--var chofer = $("#costo_chofer").val()--}%
+                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
+
+                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq="--}%
+                        %{--+ $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
+                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?" + datos--}%
+                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
+                %{--$("#imprimirTransporteDialog").dialog("close");--}%
+//            },
+//            "VAE Excel" : function () {
+                %{--var dsp0 = $("#dist_p1").val()--}%
+                %{--var dsp1 = $("#dist_p2").val()--}%
+                %{--var dsv0 = $("#dist_v1").val()--}%
+                %{--var dsv1 = $("#dist_v2").val()--}%
+                %{--var dsv2 = $("#dist_v3").val()--}%
+                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
+                %{--var volqueta = $("#costo_volqueta").val()--}%
+                %{--var chofer = $("#costo_chofer").val()--}%
+                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
+
+                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val()--}%
+                        %{--+ "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val()--}%
+                        %{--+ "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
+                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?" + datos--}%
+                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
+                %{--$("#imprimirTransporteDialog").dialog("close");--}%
+//            },
+            "Cancelar" :  function () {
+                $("#imprimirSubpresupuesto").dialog("close");
+            }
+        }
+    });
 
     $.contextMenu({
         selector: '.item_row',

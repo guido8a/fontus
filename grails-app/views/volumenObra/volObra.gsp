@@ -61,11 +61,11 @@
 
         <div class="row" style="display: inline">
             <div class="span5" role="navigation" style="margin-left: 35px; width: 460px">
-                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
+                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-ajax btn-new " id="atras" title="Regresar a la obra">
                     <i class="icon-arrow-left"></i>
                     Regresar
                 </a>
-                <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">
+                <a href="#" class="btn btn-ajax btn-new btn-info" id="calcular" title="Calcular precios">
                     <i class="icon-table"></i>
                     Calcular
                 </a>
