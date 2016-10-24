@@ -18,8 +18,8 @@
     <style type="text/css">
     @page {
         size   : 21cm 29.7cm;  /*width height */
-        margin : 2cm;
-        margin-left: 2.0cm;
+        /*margin : 2cm;*/
+        margin-left: 2.5cm;
     }
 
     body {
