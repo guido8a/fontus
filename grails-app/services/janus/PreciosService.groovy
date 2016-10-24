@@ -16,8 +16,11 @@ class PreciosService {
             if (i < items.size() - 1)
                 itemsId += ","
         }
-//        println "get Precios items "+fecha+"  "+fecha.format('yyyy-MM-dd')
-        def sql = "SELECT r1.item__id,(SELECT r2.rbpcpcun from rbpc r2 where r2.item__id=r1.item__id and r2.rbpcfcha = max(r1.rbpcfcha) and r2.lgar__id=${lugar.id}) from rbpc r1 where r1.item__id in (${itemsId}) and r1.lgar__id=${lugar.id} and r1.rbpcfcha < '${fecha.format('yyyy-MM-dd')}' group by 1"
+//        println "lugar: ${lugar?.id}"
+        def sql = "SELECT r1.item__id,(SELECT r2.rbpcpcun from rbpc r2 where r2.item__id=r1.item__id and " +
+                "r2.rbpcfcha = max(r1.rbpcfcha) and r2.lgar__id=${lugar.id}) from rbpc r1 " +
+                "where r1.item__id in (${itemsId}) and r1.lgar__id=${lugar.id} and " +
+                "r1.rbpcfcha < '${fecha.format('yyyy-MM-dd')}' group by 1"
 //        println "sql " + sql
         cn.eachRow(sql.toString()) { row ->
             res.put(row[0].toString(), row[1])

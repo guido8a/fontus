@@ -73,15 +73,15 @@ class DocumentosObraController {
         def dsvl = obra.distanciaVolumen
         def lugar = obra.lugar
 
-        def prch = 0
-        def prvl = 0
+//        def prch = 0
+//        def prvl = 0
 
-        if (obra.chofer){
-            prch = preciosService.getPrecioItems(fecha,lugar,[obra.chofer])
-            prch = prch["${obra.chofer.id}"]
-            prvl = preciosService.getPrecioItems(fecha,lugar,[obra.volquete])
-            prvl = prvl["${obra.volquete.id}"]
-        }
+//        if (obra.chofer){
+//            prch = preciosService.getPrecioItems(fecha,lugar,[obra.chofer])
+//            prch = prch["${obra.chofer.id}"]
+//            prvl = preciosService.getPrecioItems(fecha,lugar,[obra.volquete])
+//            prvl = prvl["${obra.volquete.id}"]
+//        }
         def indirecto = obra.totales/100
 
 
