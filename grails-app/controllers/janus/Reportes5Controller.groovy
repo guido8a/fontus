@@ -927,7 +927,7 @@ class Reportes5Controller {
 
     def reporteVaeExcel () {
 
-//        println("params " + params)
+        println("params " + params)
 
         def obra = Obra.get(params.id)
         def detalle
@@ -1030,8 +1030,8 @@ class Reportes5Controller {
 
 
         //cabecera
-        label = new Label(2, 2, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS", times16format); sheet.addCell(label);
+        label = new Label(2, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(2, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTOS", times16format); sheet.addCell(label);
         label = new Label(2, 6, "PRESUPUESTO", times16format); sheet.addCell(label);
         label = new Label(2, 8, "REQUIRENTE: " + obra?.departamento?.direccion?.nombre, times16format); sheet.addCell(label);
         label = new Label(2, 9, "FECHA: " + fechaNueva, times16format);

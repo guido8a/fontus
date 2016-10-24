@@ -5043,7 +5043,7 @@ class ReportesController {
 
             if (params.proyeccionMemo == 'true' && cantidadMesesMemo >= '1' && params.reajusteIvaMemo == 'false') {
 
-                def anio = new Date().getYear()
+                def anio = obra.fechaCreacionObra.getYear().toInteger()
                 inflacion = ValoresAnuales.findByAnio((anio + 1900)).inflacion
                 mesesMemo = params.reajusteMesesMemo
                 proyeccionTotalMemo = (totalBase.toDouble() * ((inflacion / 1200) * mesesMemo.toInteger()))
@@ -5062,7 +5062,7 @@ class ReportesController {
 
             if (params.proyeccionMemo == 'true' && cantidadMesesMemo >= '1' && params.reajusteIvaMemo == 'true') {
 
-                def anio = new Date().getYear()
+                def anio = obra.fechaCreacionObra.getYear().toInteger()
                 inflacion = ValoresAnuales.findByAnio((anio + 1900)).inflacion
                 mesesMemo = params.reajusteMesesMemo
                 proyeccionTotalMemo = (totalBase.toDouble() * ((inflacion / 1200) * mesesMemo.toInteger()))
@@ -5874,9 +5874,6 @@ class ReportesController {
 
 
     def reporteExcelVolObra() {
-
-//        println("params->" + params)
-
         def obra = Obra.get(params.id)
         def detalle
         detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
@@ -5892,24 +5889,16 @@ class ReportesController {
         def subPre
         preciosService.ac_rbroObra(obra.id)
 
-//        def valores = preciosService.rbro_pcun_v2(obra.id)
         def valores
-
         if (params.sub)
-
             if (params.sub == '-1') {
                 valores = preciosService.rbro_pcun_v2(obra.id)
 
             } else {
-
                 valores = preciosService.rbro_pcun_v3(obra.id, params.sub)
-
             }
         else
-
             valores = preciosService.rbro_pcun_v2(obra.id)
-
-
 
         if (params.sub == '-1' || params.sub == null) {
 
@@ -5965,40 +5954,23 @@ class ReportesController {
         sheet.setColumnView(6, 25)
         sheet.setColumnView(7, 25)
 
-
         def label
         def number
         def nmro
         def numero = 1;
-
         def fila = 16;
-
         def ultimaFila
 
-
-
-        label = new Label(2, 2, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-
-
-        label = new Label(2, 4, "DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS", times16format); sheet.addCell(label);
-
-
+        label = new Label(2, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(2, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
         label = new Label(2, 6, "PRESUPUESTO", times16format); sheet.addCell(label);
-
-
         label = new Label(2, 8, "FECHA: " + obra?.fechaCreacionObra.format("dd-MM-yyyy"), times16format);
         sheet.addCell(label);
-
         label = new Label(2, 9, "FECHA ACT. PRECIOS: " + obra?.fechaPreciosRubros.format("dd-MM-yyyy"), times16format);
         sheet.addCell(label);
-
         label = new Label(2, 10, "NOMBRE: " + obra?.nombre, times16format); sheet.addCell(label);
         label = new Label(2, 11, "DOC. REFERENCIA: " + (obra?.oficioIngreso ?: '') + "  " + (obra?.referencia ?: ''), times16format); sheet.addCell(label);
-//        label = new Label(2, 12, "REFERENCIA: " + obra?.referencia, times16format); sheet.addCell(label);
         label = new Label(2, 12, "MEMO CANT. DE OBRA: " + (obra?.memoCantidadObra ?: ''), times16format); sheet.addCell(label);
-
-
-
         label = new Label(0, 15, "N°", times16format); sheet.addCell(label);
         label = new Label(1, 15, "CÓDIGO", times16format); sheet.addCell(label);
         label = new Label(2, 15, "SUBPRESUPUESTO", times16format); sheet.addCell(label);
@@ -6009,8 +5981,6 @@ class ReportesController {
         label = new Label(7, 15, "C.TOTAL", times16format); sheet.addCell(label);
 
         valores.each {
-
-
             number = new Number(0, fila, numero++); sheet.addCell(number);
             label = new Label(1, fila, it.rbrocdgo.toString()); sheet.addCell(label);
             label = new Label(2, fila, it.sbprdscr.toString()); sheet.addCell(label);
@@ -6019,12 +5989,10 @@ class ReportesController {
             number = new Number(5, fila, it.vlobcntd); sheet.addCell(number);
             number = new Number(6, fila, it.pcun); sheet.addCell(number);
             number = new Number(7, fila, it.totl); sheet.addCell(number);
-
             fila++
             totales = it.totl
             totalPresupuesto = (total1 += totales);
             ultimaFila = fila
-
         }
 
         label = new Label(6, ultimaFila, "TOTAL ", times16format); sheet.addCell(label);

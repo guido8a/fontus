@@ -10,7 +10,7 @@
         <b>Subpresupuesto:</b>
         <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
                   style="width: 400px;font-size: 10px; margin-right: 10px" id="subPres_desc" value="${subPre}"
-                  noSelection="['-1': 'TODOS']"/>
+                  noSelection="['-1': 'Seleccione..']"/>
 
         <a href="#" class="btn btn-ajax btn-new" id="ordenarAsc" title="Ordenar Ascendentemente">
             <i class="icon-arrow-up"></i>
@@ -24,17 +24,18 @@
             <i class="icon-copy"></i>
             Copiar Rubros
         </a>
+
         <a href="#" class="btn  " id="imprimirSub">
-        <i class="icon-print"></i>
-        Imprimir
+            <i class="icon-print"></i>Imprimir
         </a>
+
         %{--<a href="#" class="btn  " id="imprimir_sub">--}%
-            %{--<i class="icon-print"></i>--}%
-            %{--Impr. Subpre.--}%
+        %{--<i class="icon-print"></i>--}%
+        %{--Impr. Subpre.--}%
         %{--</a>--}%
         %{--<a href="#" class="btn  " id="imprimir_excel" style="margin-left:-7px">--}%
-            %{--<i class="icon-table"></i>--}%
-            %{--Excel--}%
+        %{--<i class="icon-table"></i>--}%
+        %{--Excel--}%
         %{--</a>--}%
 
         %{--<a href="#" class="btn  " id="imprimir_sub_vae">--}%
@@ -43,7 +44,7 @@
         %{--</a>--}%
         %{--<a href="#" class="btn  " id="imprimir_vae_excel">--}%
             %{--<i class="icon-table"></i>--}%
-           %{--VAE Excel--}%
+            %{--VAE Excel--}%
         %{--</a>--}%
     </div>
 </div>
@@ -101,11 +102,9 @@
             </td>
             <g:if test="${obra.estado!='R' && duenoObra == 1}">
                 <td style="width: 40px;text-align: center" class="col_delete">
-
                     <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar"
                        iden="${val.vlob__id}">
                         <i class="icon-trash"></i></a>
-
                 </td>
             </g:if>
         </tr>
@@ -113,7 +112,6 @@
 
     </tbody>
 </table>
-
 
 
 <div id="borrarDialog">
@@ -127,30 +125,36 @@
 
 <div id="imprimirSubpresupuesto" style="height: 150px !important;">
     <fieldset>
-        %{--<div class="span2" style="margin-top: 5px">--}%
-            %{--Fecha:--}%
-
-        %{--</div>--}%
         <div class="span3" style="margin-top: 5px;">
-            <g:checkBox name="todos_name" class="todosSub"/> Imprimir todos los subpresupuestos.
+            <g:checkBox name="todos_name" class="todosSub" /> Imprimir todos los subpresupuestos.
         </div>
         <div class="span3" style="margin-top: 5px;">
-            <g:checkBox name="vae_name" class="vaeSub"/> VAE
+            <g:checkBox name="vae_name" class="vaeSub" /> VAE
         </div>
-        %{--<div class="span3" style="margin-top: 5px;">--}%
-            %{--¿Desea imprimir el reporte desglosando el transporte?--}%
-        %{--</div>--}%
-
     </fieldset>
 </div>
 
-
 <script type="text/javascript">
 
-    $("#imprimirSub").click(function () {
-        $("#imprimirSubpresupuesto").dialog("open");
+    var todosCheck
+    var vaeCheck
+
+    $(".todosSub").click(function () {
+        todosCheck = $(this).prop("checked")
     });
 
+    $(".vaeSub").click(function () {
+        vaeCheck = $(this).prop("checked")
+    });
+
+    $("#imprimirSub").click(function () {
+
+        if ($("#subPres_desc").val() != '' && $("#subPres_desc").val() != -1 ) {
+            $("#imprimirSubpresupuesto").dialog("open");
+        }else{
+            alert("Para imprimir primero debe seleccionar un subpresupuesto!")
+        }
+    });
 
     $("#imprimirSubpresupuesto").dialog({
 
@@ -165,79 +169,58 @@
 
         buttons   : {
             'PDF' : function () {
-                %{--var dsp0 = $("#dist_p1").val()--}%
-                %{--var dsp1 = $("#dist_p2").val()--}%
-                %{--var dsv0 = $("#dist_v1").val()--}%
-                %{--var dsv1 = $("#dist_v2").val()--}%
-                %{--var dsv2 = $("#dist_v3").val()--}%
-                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
-                %{--var volqueta = $("#costo_volqueta").val()--}%
-                %{--var chofer = $("#costo_chofer").val()--}%
-                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
-                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq="--}%
-                        %{--+ $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?" + datos--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                %{--$("#imprimirTransporteDialog").dialog("close");--}%
+
+                var sub
+                if(todosCheck == true){
+                    sub = -1
+                }else{
+                    sub = $("#subPres_desc").val()
+                }
+
+                if (vaeCheck != true){
+                    var dsps =
+                    ${obra.distanciaPeso}
+                    var dsvs =
+                    ${obra.distanciaVolumen}
+
+                    var datos = "?obra=${obra.id}Wsub=" + sub
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
+                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                }else{
+                    var dsps =
+                    ${obra.distanciaPeso}
+                    var dsvs =
+                    ${obra.distanciaVolumen}
+                    var datos = "?obra=${obra.id}Wsub=" + sub
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos
+                    console.log(url)
+                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                }
+                $("#imprimirSubpresupuesto").dialog("close");
             },
             "Excel" : function () {
-                %{--var dsp0 = $("#dist_p1").val()--}%
-                %{--var dsp1 = $("#dist_p2").val()--}%
-                %{--var dsv0 = $("#dist_v1").val()--}%
-                %{--var dsv1 = $("#dist_v2").val()--}%
-                %{--var dsv2 = $("#dist_v3").val()--}%
-                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
-                %{--var volqueta = $("#costo_volqueta").val()--}%
-                %{--var chofer = $("#costo_chofer").val()--}%
-                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
-                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val()--}%
-                        %{--+ "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val()--}%
-                        %{--+ "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?" + datos--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                %{--$("#imprimirTransporteDialog").dialog("close");--}%
+                var subExcel
+                if(todosCheck == true){
+                    subExcel = -1
+                }else{
+                    subExcel = $("#subPres_desc").val()
+                }
+
+                if (vaeCheck != true){
+                    location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',id: obra?.id)}?sub=" + subExcel;
+                }else{
+                    location.href = "${g.createLink(controller: 'reportes5',action: 'reporteVaeExcel',id: obra?.id)}?sub=" + subExcel;
+                }
+                $("#imprimirSubpresupuesto").dialog("close");
             },
-
-//            "VAE PDF " : function () {
-                %{--var dsp0 = $("#dist_p1").val()--}%
-                %{--var dsp1 = $("#dist_p2").val()--}%
-                %{--var dsv0 = $("#dist_v1").val()--}%
-                %{--var dsv1 = $("#dist_v2").val()--}%
-                %{--var dsv2 = $("#dist_v3").val()--}%
-                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
-                %{--var volqueta = $("#costo_volqueta").val()--}%
-                %{--var chofer = $("#costo_chofer").val()--}%
-                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
-
-                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq="--}%
-                        %{--+ $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?" + datos--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                %{--$("#imprimirTransporteDialog").dialog("close");--}%
-//            },
-//            "VAE Excel" : function () {
-                %{--var dsp0 = $("#dist_p1").val()--}%
-                %{--var dsp1 = $("#dist_p2").val()--}%
-                %{--var dsv0 = $("#dist_v1").val()--}%
-                %{--var dsv1 = $("#dist_v2").val()--}%
-                %{--var dsv2 = $("#dist_v3").val()--}%
-                %{--var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()--}%
-                %{--var volqueta = $("#costo_volqueta").val()--}%
-                %{--var chofer = $("#costo_chofer").val()--}%
-                %{--var fechaSalida = $("#fechaSalidaId").val();--}%
-
-                %{--datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val()--}%
-                        %{--+ "Wid=${rubro?.id}Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val()--}%
-                        %{--+ "Windi=" + $("#costo_indi").val() + "Wtrans=no" + "WfechaSalida=" + fechaSalida + "WcodigoCheck=" + codigoCheck--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?" + datos--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                %{--$("#imprimirTransporteDialog").dialog("close");--}%
-//            },
             "Cancelar" :  function () {
                 $("#imprimirSubpresupuesto").dialog("close");
             }
         }
     });
+
+
+
 
     $.contextMenu({
         selector: '.item_row',
@@ -360,10 +343,6 @@
             ${obra.distanciaPeso}
             var dsvs =
             ${obra.distanciaVolumen}
-            %{--var volqueta = ${precioVol}--}%
-            %{--var chofer = ${precioChof}--}%
-            %{--var datos = "?dsps="+dsps+"&dsvs="+dsvs+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()--}%
-            %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}"+datos--}%
             var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val()
             var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
             location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
@@ -379,8 +358,6 @@
             ${obra.distanciaPeso}
             var dsvs =
             ${obra.distanciaVolumen}
-            %{--var volqueta = ${precioVol}--}%
-            %{--var chofer = ${precioChof}--}%
             var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val()
             var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos
             console.log(url)
@@ -414,15 +391,6 @@
 
 
     $("#imprimir_excel").click(function () {
-//        var $boton = $(this).clone(true)
-//        $(this).replaceWith(spinner);
-
-        %{--var dsps=${obra.distanciaPeso}--}%
-        %{--var dsvs=${obra.distanciaVolumen}--}%
-        %{--var volqueta=${precioVol}--}%
-        %{--var chofer=${precioChof}--}%
-
-        %{--var url = "${g.createLink(controller: 'reportes', action: 'reporteExcelVolObra')}"--}%
 
         $("#dlgLoad").dialog("open");
 
@@ -543,19 +511,19 @@
         buttons: {
             "Aceptar": function () {
 //                   console.log("-->>" + $(this).attr("iden"));
-                    $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
-                        data: "id=" + $(this).attr("iden"),
-                        success: function (msg) {
-                            clearInterval(interval)
-                            $("#detalle").html(msg)
-                        }
-                    });
+                $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
+                    data: "id=" + $(this).attr("iden"),
+                    success: function (msg) {
+                        clearInterval(interval)
+                        $("#detalle").html(msg)
+                    }
+                });
                 $("#borrarDialog").dialog("close");
             },
 
-           "Cancelar" : function () {
-               $("#borrarDialog").dialog("close");
-           }
+            "Cancelar" : function () {
+                $("#borrarDialog").dialog("close");
+            }
         }
     });
 

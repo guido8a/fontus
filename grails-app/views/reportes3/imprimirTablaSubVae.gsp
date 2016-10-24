@@ -15,6 +15,8 @@
         <title>Sub presupuesto ${subPre}</title>
     </g:else>
 
+    <rep:estilos orientacion="l" pagTitle="PRESUPUESTOS"/>
+
     <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
     <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
@@ -155,21 +157,7 @@
 <body>
 <div class="hoja">
 
-    %{--<div class="tituloPdf tituloHeader">--}%
-        %{--<p style="font-size: 18px">--}%
-            %{--<b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>--}%
-        %{--</p>--}%
-        %{--<p style="font-size: 14px; margin-top: -15px">--}%
-            %{--<b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>--}%
-            %{--<g:if test="${subPre == -1}">--}%
-                %{--<b>PRESUPUESTO</b>--}%
-            %{--</g:if>--}%
-            %{--<g:else>--}%
-                %{--<b>SUBPRESUPUESTO: ${subPre.toUpperCase()}</b>--}%
-            %{--</g:else>--}%
-
-        %{--</p>--}%
-    %{--</div>--}%
+    <rep:headerFooter title="DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO" subtitulo="PRESUPUESTO" estilo="right"/>
 
     <div style="margin-top: 0px">
         <div class="row-fluid">

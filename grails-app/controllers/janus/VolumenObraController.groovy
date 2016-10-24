@@ -227,8 +227,6 @@ class VolumenObraController extends janus.seguridad.Shield {
         def grupo = Grupo.findAllByDireccion(direccion)
         def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
         def obra = Obra.get(params.obra)
-
-//        def volumenes = VolumenesObra.findAllByObra(obra);
         def duenoObra = 0
         def valores
         def orden
@@ -238,7 +236,6 @@ class VolumenObraController extends janus.seguridad.Shield {
         } else {
             orden = 'desc'
         }
-
 
         // actualiza el rendimiento de rubros transporte TR% si la obra no está registrada y herr. menor
         if(obra.estado != 'R') {
@@ -250,27 +247,14 @@ class VolumenObraController extends janus.seguridad.Shield {
         if (params.sub && params.sub != "-1") {
             valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
         } else {
-            valores = preciosService.rbro_pcun_v4(obra.id, orden)
+//            valores = preciosService.rbro_pcun_v4(obra.id, orden)
         }
-//        println("-->>" + valores)
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
-//        def precios = [:]
-//        def fecha = obra.fechaPreciosRubros
-//        def dsps = obra.distanciaPeso
-//        def dsvl = obra.distanciaVolumen
-//        def lugar = obra.lugar
         def estado = obra.estado
-//        def prch = 0
-//        def prvl = 0
-
-//        def indirecto = obra.totales / 100
 
         duenoObra = esDuenoObra(obra)? 1 : 0
 
-
-//        [subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores,
         [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
          subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
 
