@@ -2103,8 +2103,6 @@
                             }
 
                         });
-//           //console.log("1:" + firmasFijas)
-
                 notaValue = $("#piePaginaSel").val();
 
                 if ($("#forzar").attr("checked") == "checked") {
@@ -2113,11 +2111,8 @@
                     forzarValue = 2;
                 }
                 if (1 != 1) {
-
                     $("#tipoReporteDialog").dialog("open");
-
                 } else {
-
                     proyeccion = $("#proyeccionReajuste").is(':checked');
                     reajusteIva = $("#reajusteIva").is(':checked');
                     reajusteMeses = $("#mesesReajuste").val();
