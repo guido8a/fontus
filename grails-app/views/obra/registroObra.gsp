@@ -99,7 +99,7 @@
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
-                <button class="btn btn-success" id="btn-aceptar"><i class="icon-ok"></i> Grabar
+                <button class="btn" id="btn-aceptar"><i class="icon-ok"></i> Grabar
                 </button>
             </g:if>
         </g:if>
@@ -661,7 +661,7 @@
                                                                        value="${obra?.fechaPreciosRubros ?: fcha}"
                                                                        title="Fecha Precios"/></div>
 
-            <div class="span1" style="margin-left: -20px">Coordenadas WGS84</div>
+            <div class="span1" style="margin-left: -20px">Coordenadas</div>
 
             <div class="span2">
                 <g:set var="coords" value="${obra?.coordenadas}"/>
@@ -2126,7 +2126,8 @@
                 },
                 success: function (msg) {
 
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+//                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-pagar"><i class="icon-ok"></i> Guardar</a>');
 
                     var btnCancel = $('<a href="#" data-dismiss="modal" class="btn" >Cancelar</a>');
 

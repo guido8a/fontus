@@ -91,7 +91,7 @@
     background-color       : hsl(23, 100%, 67%) !important;
     background-repeat      : repeat-x;
     filter                 : progid:DXImageTransform.Microsoft.gradient(startColorstr="#fffbf9", endColorstr="#fe9756");
-    background-image       : -khtml-gradient(linear, left top, left bottom, from(#fffbf9), to(#fe9756));
+    /*background-image       : -khtml-gradient(linear, left top, left bottom, from(#fffbf9), to(#fe9756));*/
     background-image       : -moz-linear-gradient(top, #fffbf9, #fe9756);
     background-image       : -ms-linear-gradient(top, #fffbf9, #fe9756);
     background-image       : -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fffbf9), color-stop(100%, #fe9756));
@@ -125,7 +125,7 @@
     background-color       : hsl(194, 45%, 61%) !important;
     background-repeat      : repeat-x;
     filter                 : progid:DXImageTransform.Microsoft.gradient(startColorstr="#a2cedb", endColorstr="#6eb3c8");
-    background-image       : -khtml-gradient(linear, left top, left bottom, from(#a2cedb), to(#6eb3c8));
+    /*background-image       : -khtml-gradient(linear, left top, left bottom, from(#a2cedb), to(#6eb3c8));*/
     background-image       : -moz-linear-gradient(top, #a2cedb, #6eb3c8);
     background-image       : -ms-linear-gradient(top, #a2cedb, #6eb3c8);
     background-image       : -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a2cedb), color-stop(100%, #6eb3c8));
@@ -156,9 +156,10 @@
 }
 
 .btn-info {
-    /*background-color: #a2cedb;*/
-    background-color : #89cffd;
-    background-image : linear-gradient(to bottom, #89cffd, #296fad)
+    background-color: #6ea3e2;
+    /*background-color : #89cffd;*/
+    /*background-image : linear-gradient(to bottom, #89cffd, #296fad)*/
+    background-image : linear-gradient(to bottom, #6ea3e2, #296fad)
 }
 
 .btn-info:hover, .btn-info:active, .btn-info.active, .btn-info.disabled, .btn-info[disabled] {

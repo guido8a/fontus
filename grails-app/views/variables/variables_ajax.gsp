@@ -28,7 +28,7 @@
             <li><a href="#tab-factores">Factores</a></li>
             <li><a href="#tab-indirecto">Costos Indirectos</a></li>
             <li class="desglose"><a href="#tab-desglose">Desglose Eq. FP</a></li>
-            <li class="especial"><a href="#tab-especial">Tranp. Especial</a></li>
+            %{--<li class="especial"><a href="#tab-especial">Tranp. Especial</a></li>--}%
         </ul>
 
         <div id="tab-transporte" class="tab">
@@ -284,37 +284,9 @@
                     <g:textField type="text" name="factorPeso" class="inputVar num" value="${g.formatNumber(number: (obra?.factorPeso) ?: par.factorPeso, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
-
-            %{--<div class="row-fluid">--}%
-
-            %{--<div class="span3">--}%
-            %{--Distancia Volumen--}%
-            %{--</div>--}%
-
-            %{--<div class="span3">--}%
-            %{--<g:textField type="text" name="distanciaVolumen" class="inputVar" value="0.00"/>--}%
-            %{--</div>--}%
-
-            %{--<div class="span3">--}%
-            %{--Distancia Peso--}%
-            %{--</div>--}%
-
-            %{--<div class="span3">--}%
-            %{--<g:textField type="text" name="distanciaPeso" class="inputVar" value="0.00"/>--}%
-            %{--</div>--}%
-            %{--</div>--}%
         </div>
 
         <div id="tab-indirecto" class="tab">
-            %{--<div class="row-fluid">--}%
-            %{--<div class="span10">--}%
-            %{--Control y Administración (Fiscalización) - no se usa en obras nuevas--}%
-            %{--</div>--}%
-
-            %{--<div class="span2">--}%
-            %{--<g:textField type="text" name="contrato" class="inputVar num" value="${g.formatNumber(number: obra?.contrato, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>--}%
-            %{--</div>--}%
-            %{--</div>--}%
 
             <div class="row-fluid" style="margin-top: 20px;">
                 <div class="span4">
@@ -506,7 +478,7 @@
             </div>
         </div>
 
-        %{--/* TODO: poner en obra los id de los item de tranposte camioneta y transporte acemila */--}%
+%{--
         <div id="tab-especial" class="tab">
             <div class="row-fluid">
                 <div class="span3">
@@ -514,13 +486,11 @@
                 </div>
 
                 <div class="span6">
-                    %{--<g:select name="transporteCamioneta.id" id="trcm" from="${transporteCamioneta}" optionKey="id" optionValue="nombre"--}%
                     <g:select name="transporteCamioneta.id" from="${transporteCamioneta}" optionKey="id" optionValue="nombre" id="transporteCam"
                               value="${obra?.transporteCamioneta?.id}" style="width: 300px; margin-left: -10px" noSelection="${['null': 'Seleccione']}"/>
                 </div>
 
                 <div class="span2">
-                    %{--<g:textField class="inputVar num2" name="distanciaCamioneta" style="width: 60px" type="number" maxlength="12" value="${obra?.distanciaCamioneta}"/>--}%
                     <g:textField class="inputVar num3" name="distanciaCamioneta" style="width: 60px" type="number" maxlength="6" value="${g.formatNumber(number: (obra?.distanciaCamioneta), maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
 
@@ -535,7 +505,6 @@
                 </div>
 
                 <div class="span6">
-                    %{--<g:select name="transporteAcemila.id" id="trac" from="${transporteAcemila}" optionKey="id" optionValue="nombre"--}%
                     <g:select name="transporteAcemila.id" from="${transporteAcemila}" optionKey="id" optionValue="nombre"  id="transporteAce"
                               value="${obra?.transporteAcemila?.id}" style="width: 300px; margin-left: -10px" noSelection="${['null': 'Seleccione']}"/>
                 </div>
@@ -561,8 +530,8 @@
                     <g:textField name="unidad_camioneta" id="uni_trcm" value="${"Km"}" readonly="true" style="width: 30px; margin-left: 5px"/>
                 </div>
             </div>
-
         </div>
+--}%
 
     </div>
 </g:form>

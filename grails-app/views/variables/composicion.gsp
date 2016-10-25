@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 12/19/12
-  Time: 3:31 PM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -28,96 +20,12 @@
                 font-size   : 8px;
             }
 
-            .tituloPdf {
-                height        : 100px;
-                font-size     : 11px;
-                /*font-weight   : bold;*/
-                text-align    : center;
-                margin-bottom : 5px;
-                width         : 95%;
-                /*font-family       : 'Tulpen One', cursive !important;*/
-                /*font-family : "Open Sans Condensed" !important;*/
-            }
-
-            .totales {
-                font-weight : bold;
-            }
-
-            .num {
-                text-align : right;
-            }
-
-            .header {
-                background : #333333 !important;
-                color      : #AAAAAA;
-            }
-
-            .total {
-                background : #000000 !important;
-                color      : #FFFFFF !important;
-            }
-
-                /*th {*/
-                /*background : #cccccc;*/
-                /*}*/
-
-                /*tbody tr:nth-child(2n+1) {*/
-                /*background : none repeat scroll 0 0 #E1F1F7;*/
-                /*}*/
-
-                /*tbody tr:nth-child(2n) {*/
-                /*background : none repeat scroll 0 0 #F5F5F5;*/
-                /*}*/
             thead tr {
                 margin : 0px
             }
 
             th, td {
                 font-size : 10px !important;
-
-            }
-
-            .sorting_desc {
-
-                class : sorting !important;
-
-            }
-
-            .row-fluid {
-                width  : 100%;
-                height : 20px;
-            }
-
-            .span3 {
-                width  : 29%;
-                float  : left;
-                height : 100%;
-            }
-
-            .span8 {
-                width  : 79%;
-                float  : left;
-                height : 100%;
-            }
-
-            .span7 {
-                width  : 69%;
-                float  : left;
-                height : 100%;
-            }
-
-            .tituloChevere {
-                color       : #0088CC;
-                border      : 0px solid red;
-                white-space : nowrap;
-                display     : block;
-                width       : 98%;
-                height      : 30px;
-                font-weight : bold;
-                font-size   : 14px;
-                text-shadow : -2px 2px 1px rgba(0, 0, 0, 0.25);
-                margin-top  : 10px;
-                line-height : 25px;
             }
 
             </style>
@@ -126,8 +34,8 @@
     </head>
 
     <body>
-        <div class="hoja">
-            <div class="tituloChevere">Composición de la obra: ${obra?.descripcion}</div>
+            %{--<p class="tituloTree" style="color: #29516b; font-size: 20px">Composición de la obra: ${obra?.nombre}</p>--}%
+            <p class="tituloTree">Composición de la obra: ${obra?.nombre}</p>
 
             <g:if test="${flash.message}">
                 <div class="span12">
@@ -145,10 +53,12 @@
                             <i class="icon-arrow-left"></i>
                             Regresar
                         </a>
+%{--
                         <g:link action="validacion" id="${obra?.id}" controller="composicion" class="btn" title="Cantidades reales de Materiales, M.O. y Equipos">
                             <i class="icon-list"></i>
                             Adm. Directa
                         </g:link>
+--}%
                     </div>
 
 
@@ -204,12 +114,6 @@
                     </div>
 
                     <div class="btn-group">
-                        %{--<g:link action="composicion" id="${obra?.id}" params="[tipo: tipo, rend: 'pdf']" class="btn btn-print btnPdf">--}%
-                        %{--<i class="icon-print"></i>--}%
-                        %{--Pdf--}%
-                        %{--</g:link>--}%
-                        %{--<g:link action="composicion" id="${obra.id}" params="[tipo: tipo, rend: 'xls']" class="btn btn-print btnExcel"> </g:link>--}%
-
                         <a href="#" class="btn  " id="imprimirPdf">
                             <i class="icon-print"></i>
                             PDF
@@ -217,9 +121,11 @@
                         <g:link controller="reportes2" action="reporteExcelComposicion" class="btn btn-print btnExcel" id="${obra?.id}" params="[sp: sub, tipo: tipo]">
                             <i class="icon-table"></i> Excel
                         </g:link>
+%{--
                         <g:link controller="reportes2" action="reporteExcelComposicionTotales" class="btn btn-print btnExcel" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
                             <i class="icon-table"></i> Adm. Directa
                         </g:link>
+--}%
                     </div>
                 </div>
             </g:if>
@@ -351,7 +257,6 @@
                     </table>
                 </div>
             </div>
-        </div>
 
         <g:if test="${rend == 'screen'}">
             <script type="text/javascript">

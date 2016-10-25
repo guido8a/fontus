@@ -61,7 +61,7 @@ Hasta aca se comenta para regresar a la version anterior
     font-size      : 25px;
     padding-bottom : 8px;;
     border-bottom  : 1px solid rgba(148, 148, 148, 1);
-    color          : #0088CC;
+    color          : #155184;  /*#0088CC; */
 }
 
 .highlight {
@@ -184,7 +184,7 @@ fieldset.borde legend {
     position          : absolute;
     left              : 5px;
     bottom            : 5px;
-    color             : #0088CC;
+    color             : #155184;   /* #0088CC; */
     border            : 0px solid red;
     /*writing-mode      : tb-rl;*/
     -webkit-transform : rotate(270deg);
@@ -204,7 +204,7 @@ fieldset.borde legend {
 }
 
 .tituloChevere {
-    color       : #0088CC;
+    color       : #155184; /* #0088CC; */
     border      : 0px solid red;
     white-space : nowrap;
     display     : block;
@@ -219,7 +219,7 @@ fieldset.borde legend {
 }
 
 .tituloGrande {
-    color       : #0088CC;
+    color       : #155184;  /* #0088CC; */
     width       : 98%;
     height      : 30px;
     font-family : 'open sans condensed';
@@ -230,7 +230,7 @@ fieldset.borde legend {
 }
 
 .label-azul {
-    color       : #0061CC;
+    color       : #155184; /* #0061CC; */
     font-family : 'open sans condensed';
     font-weight : bold;
     font-size   : 14px;
@@ -244,7 +244,7 @@ fieldset.borde legend {
     left        : 30px;
     bottom      : 5px;
     width       : 1px;
-    border-left : 1px solid #0088CC;
+    border-left : 1px solid #155184; /* #0088CC; */
 
 }
 
@@ -280,7 +280,7 @@ th.desc a {
 
 .table th {
     /*background  : #49AFCD;*/
-    background  : #498FCD;
+    background  : #155184; /* #498FCD; */
     font-family : "Open Sans Condensed";
     font-size   : 15px;
     font-weight : bolder;
@@ -457,7 +457,7 @@ tr.info td.alerta {
 /************************************* FIN ALERTAS ********************************************************/
 
 .ui-button-text-only .ui-button-text {
-    background : #1484a8 !important;
+    background : #155184; /* #1484a8 */ !important;
 }
 
 .hasCountdown {

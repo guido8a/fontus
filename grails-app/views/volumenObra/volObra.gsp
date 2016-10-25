@@ -34,8 +34,7 @@
             </g:if>
         </div>
 
-        %{--<div class="tituloTree">--}%
-        <div style=" font-size: 14px;  color: #0088CC;">
+        <div class="tituloTree">
             Volúmenes de la obra: ${obra.nombre + " (" + obra.codigo + ")"}
             <input type="hidden" id="override" value="0">
         </div>
@@ -65,7 +64,8 @@
                     <i class="icon-arrow-left"></i>
                     Regresar
                 </a>
-                <a href="#" class="btn btn-ajax btn-new btn-warning" id="calcular" title="Calcular precios">
+                %{--<a href="#" class="btn btn-ajax btn-new btn-warning" id="calcular" title="Calcular precios">--}%
+                <a href="#" class="btn btn-ajax btn-new btn-params" id="calcular" title="Calcular precios">
                     <i class="icon-table"></i>
                     Calcular
                 </a>
