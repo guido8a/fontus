@@ -65,25 +65,25 @@
 
     <div id="tab-presupuesto" class="tab">
 
-        <div class="tipoReporte">
+        %{--<div class="tipoReporte">--}%
 
-            <fieldset class="borde">
+            %{--<fieldset class="borde">--}%
 
-                <legend>Tipo de Reporte</legend>
+                %{--<legend>Tipo de Reporte</legend>--}%
 
-                <div class="span6" style="margin-bottom: 10px; margin-top: -20px">
-                    <input type="radio" name="tipoPresupuesto" class="radioPresupuesto uno" value="1" checked="true"/>  Base de Contrato
-                    <input type="radio" name="tipoPresupuesto" class="radioPresupuesto" value="2"
-                           style="margin-left: 220px"/> Presupuesto Referencial
-                </div>
-                <div class="span6" style="margin-bottom: 10px; ">
-                    <input type="radio" name="encabezado" class="encabezado uno" value="1" checked="true"/>  Con encabezado
-                    <input type="radio" name="encabezado" class="encabezado" value="0"
-                           style="margin-left: 220px"/> Sin encabezado
-                </div>
-            </fieldset>
+                %{--<div class="span6" style="margin-bottom: 10px; margin-top: -20px">--}%
+                    %{--<input type="radio" name="tipoPresupuesto" class="radioPresupuesto uno" value="1" checked="true"/>  Base de Contrato--}%
+                    %{--<input type="radio" name="tipoPresupuesto" class="radioPresupuesto" value="2"--}%
+                           %{--style="margin-left: 220px"/> Presupuesto Referencial--}%
+                %{--</div>--}%
+                %{--<div class="span6" style="margin-bottom: 10px; ">--}%
+                    %{--<input type="radio" name="encabezado" class="encabezado uno" value="1" checked="true"/>  Con encabezado--}%
+                    %{--<input type="radio" name="encabezado" class="encabezado" value="0"--}%
+                           %{--style="margin-left: 220px"/> Sin encabezado--}%
+                %{--</div>--}%
+            %{--</fieldset>--}%
 
-        </div>
+        %{--</div>--}%
 
 
         <div class="piePagina" style="margin-bottom: 10px">
@@ -1814,14 +1814,11 @@
             if (active == 1) {   //Memorando
 
                 var idCoordinador = $("#coordinador").val()
-
                 var idFirmaCoor
 
                 if (idCoordinador != null) {
-
                     idFirmaCoor = $("#coordinador").val()
                 } else {
-
                     idFirmaCoor = ''
                 }
 
@@ -1845,7 +1842,6 @@
                     firmasFijasMemo[i] = $(this).data("id")
                 });
 
-//            //console.log("2:" + firmasFijasMemo)
 
                 if (firmasIdMemo.length == 0) {
 
