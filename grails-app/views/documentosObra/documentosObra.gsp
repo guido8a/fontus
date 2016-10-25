@@ -1053,39 +1053,30 @@
 
         <fieldset>
             <div class="span3" style="margin-top: 10px">
-
                 Incluir Iva <g:checkBox name="reajusteIva" style="margin-left: 132px"/>
-
             </div>
 
             <div class="span3" style="margin-top: 10px">
                 Incluir Proyección del reajuste <g:checkBox name="proyeccionReajuste" style="margin-left: 20px"/>
-
             </div>
 
             <div class="span3" style="margin-top: 10px">
-
                 Meses: <g:textField name="mesesReajuste" style="width: 55px; margin-left: 20px"/>
             </div>
-
         </fieldset>
     </div>
 
 
     <div id="maxFirmasDialog">
-
         <fieldset>
             <div class="span3">
-
                 A ingresado el número máximo de firmas para este documento.
-
             </div>
         </fieldset>
     </div>
 
 
     <div id="mesesCeroDialog">
-
         <fieldset>
             <div class="span3">
                 <br>

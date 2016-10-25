@@ -43,7 +43,7 @@ class ReportesController {
         if (fecha) {
             return (fecha.format("dd") + ' de ' + meses[fecha.format("MM").toInteger()] + ' de ' + fecha.format("yyyy"))
         } else {
-            return "Error: no hay fecha que mostrar"
+            return ""
         }
     }
 
@@ -4585,20 +4585,17 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Memorando " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, fontus, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph(auxiliar.titulo, times18bold));
-        addEmptyLine(headers, 1);
-//        headers.add(new Paragraph(obra?.departamento?.direccion?.nombre, times14bold));
-        headers.add(new Paragraph("DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS", times14bold));
-        addEmptyLine(headers, 1);
-        headers.add(new Paragraph("MEMORANDO", times14bold))
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
+        headers.add(new Paragraph("MEMORANDO", times12bold))
 
         Paragraph txtIzq = new Paragraph();
         addEmptyLine(txtIzq, 1);
@@ -4660,11 +4657,6 @@ class ReportesController {
             addCellTabla(tablaDatosMemo, new Paragraph(" : ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaDatosMemo, new Paragraph("No se ha seleccionado una dirección de destino, en la pantalla de Registro de Obra", times10bold), prmsHeaderHoja)
         }
-
-//        addCellTabla(tablaDatosMemo, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaDatosMemo, new Paragraph("PARA", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaDatosMemo, new Paragraph(" : ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaDatosMemo, new Paragraph(obra?.departamento?.direccion?.nombre + ' - ' + obra?.departamento?.descripcion, times10bold), prmsHeaderHoja)
 
 
         PdfPTable tablaLinea = new PdfPTable(2);
@@ -4882,26 +4874,17 @@ class ReportesController {
         document.add(tablaMemo)
         document.add(tablaBaseMemo)
 
-//        if (cuenta == 3) {
-
         PdfPTable tablaFirmas = new PdfPTable(2)
         tablaFirmas.setWidthPercentage(90);
 
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         //nuevas
         def personaRol = null
         if (params.firmaCoordinador != '') {
@@ -4910,17 +4893,13 @@ class ReportesController {
             if (firmaNueva) {
                 firmaCoordinador = firmaNueva.persona
             }
-
             addCellTabla(tablaFirmas, new Paragraph((firmaCoordinador?.titulo?.toUpperCase() ?: '') + " " + (firmaCoordinador?.nombre?.toUpperCase() ?: '') + " " + (firmaCoordinador?.apellido?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
             addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//            addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         } else {
             addCellTabla(tablaFirmas, new Paragraph("Coordinador no asignado", times8bold), prmsHeaderHoja)
             addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//            addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         }
         def rolPrint = "COORDINADOR"
-//        println "firma nueva " + firmaNueva
         def personaNueva
         if (firmaNueva) {
             personaNueva = firmaNueva.persona
@@ -4935,19 +4914,12 @@ class ReportesController {
                 }
             }
         }
-//        println "coordinador: ${firmaCoordinador.nombre}, personanueva: ${personaNueva.nombre}"
         addCellTabla(tablaFirmas, new Paragraph(rolPrint, times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph(personaNueva?.departamento?.descripcion?.toUpperCase() ?: '', times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph('', times8bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         document.add(tablaFirmas);
 
         /** todo: poner responsable y revisado por ... usar obrasService.esDuenoObra**/
@@ -4962,47 +4934,10 @@ class ReportesController {
             addCellTabla(tablaPie, new Paragraph("Elaborado por: " + obra?.responsableObra?.titulo?.toUpperCase() + " " +
                     obra?.responsableObra?.nombre?.toUpperCase() + obra?.responsableObra?.apellido?.toUpperCase(), times8normal), prmsHeaderHoja)
             addCellTabla(tablaPie, new Paragraph(" ", times8bold), prmsHeaderHoja)
-            addCellTabla(tablaPie, new Paragraph("Revisado por: " + coordinador?.titulo?.toUpperCase() + " " +
-                    coordinador?.nombre?.toUpperCase() + " " + coordinador?.apellido?.toUpperCase() , times8normal), prmsHeaderHoja)
-//            println "Revisado por: " + firmaCoordinador?.nombre + firmaCoordinador?.apellido
+            addCellTabla(tablaPie, new Paragraph("Revisado por: " + (coordinador?.titulo ? coordinador?.titulo?.toUpperCase() : '' ) + " " +
+                    (coordinador?.nombre ? coordinador?.nombre?.toUpperCase() : '') + " " + (coordinador?.apellido ? coordinador?.apellido?.toUpperCase() : '') , times8normal), prmsHeaderHoja)
             document.add(tablaPie)
         }
-
-        //old
-//            firmaFijaMemo.each {f->
-//                if(f != ''){
-//                    firmas = Persona.get(f)
-//                    addCellTabla(tablaFirmas, new Paragraph((firmas?.titulo.toUpperCase() ?: '') + " " + (firmas?.nombre.toUpperCase() ?: '') + " " + (firmas?.apellido.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
-//                    addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-//                    addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-//                }else {
-//                    addCellTabla(tablaFirmas, new Paragraph("Director no asignado", times8bold), prmsHeaderHoja)
-//                    addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-//                    addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-//                }
-//            }
-//
-//            addCellTabla(tablaFirmas, new Paragraph( (obra?.departamento?.direccion?.jefatura?.toUpperCase() ?: ''), times8bold), prmsHeaderHoja)
-//            addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//            addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//
-//            document.add(tablaFirmas);
-//
-//
-//        PdfPTable tablaAdicionar = new PdfPTable(2);
-//        tablaAdicionar.setWidthPercentage(100);
-//        tablaAdicionar.setWidths(arregloEnteros([7, 80]))
-//
-//        addCellTabla(tablaAdicionar, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaAdicionar, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//
-//        addCellTabla(tablaAdicionar, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaAdicionar, new Paragraph(nota?.texto, times8normal), prmsHeaderHoja)
-//
-//        addCellTabla(tablaAdicionar, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        addCellTabla(tablaAdicionar, new Paragraph(nota?.adicional, times8normal), prmsHeaderHoja)
-//
-//        document.add(tablaAdicionar)
 
         document.close();
         pdfw.close()
@@ -5016,7 +4951,6 @@ class ReportesController {
     def reporteDocumentosObraFormu() {   /* fórmula polinómica */
 //        println("paramsf" + params)
         def auxiliar = Auxiliar.get(1)
-//        println(auxiliar)
         def auxiliarFijo = Auxiliar.get(1)
         def obra = Obra.get(params.id)
         def firma
@@ -5026,7 +4960,6 @@ class ReportesController {
         def formula = FormulaPolinomica.findAllByObra(obra)
         def ps = FormulaPolinomica.findAllByObraAndNumeroIlike(obra, 'p%', [sort: 'numero'])
         def cuadrilla = FormulaPolinomica.findAllByObraAndNumeroIlike(obra, 'c%', [sort: 'numero'])
-//        println("---->>>>>"+ps)
         def c
         def z = []
         def banderafp = 0
@@ -5110,19 +5043,18 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Formula " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, fontus, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA")
         document.setMargins(30, 20, 20, 20)
 
         Paragraph headers = new Paragraph();
 
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph(auxiliar.titulo, times18bold));
-        headers.add(new Paragraph("DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS", times12bold))
-        headers.add(new Paragraph("FÓRMULA POLINÓMICA: " + obra?.formulaPolinomica, times12bold))
-//        headers.add(new Paragraph(obra?.formulaPolinomica, times12bold))
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
+        headers.add(new Paragraph("FÓRMULA POLINÓMICA", times12bold));
         document.add(headers);
 
         Paragraph txtIzq = new Paragraph();
