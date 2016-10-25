@@ -105,7 +105,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 
 
     def addItem() {
-//        println "addItem " + params
+        println "addItem " + params
         def obra = Obra.get(params.obra)
 //        def rubro2 = Item.get(params.rubro)
 //        def rubro = Item.get(params.id)
@@ -127,7 +127,7 @@ class VolumenObraController extends janus.seguridad.Shield {
                 if (params.override == "1") {
                     v.cantidad += params.cantidad.toDouble()
                     v.save(flush: true)
-                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: 1])
+                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: params.ord])
                     return
                 } else {
                     msg = "error"
@@ -150,7 +150,7 @@ class VolumenObraController extends janus.seguridad.Shield {
             render "error"
         } else {
             preciosService.actualizaOrden(volumen, "insert")
-            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: 1])
+            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: params.ord])
         }
     }
 
@@ -220,7 +220,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 
     /** carga tabla de detalle de volúmenes de obra **/
     def tabla() {
-//        println "params tabla Vlob--->>>> "+params
+        println "params tabla Vlob--->>>> "+params
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
@@ -257,7 +257,6 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
          subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
-
     }
 
     def esDuenoObra(obra) {
@@ -266,32 +265,14 @@ class VolumenObraController extends janus.seguridad.Shield {
         def funcionElab = Funcion.findByCodigo('E')
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
-//
-//        if(responsableRol) {
-////            println personasUtfpu
-//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
-//        }
-
-//        println "responsable" + responsableRol + " dueño " + dueno
-//                dueno = session.usuario.departamento.id == obra?.responsableObra?.departamento?.id || dueno
 
         if (responsableRol) {
-//            println "..................."
-//            println "${obra?.responsableObra?.departamento?.id} ==== ${Persona.get(session.usuario.id).departamento?.id}"
-//            println "${Persona.get(session.usuario.id)}"
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
                 dueno = true
             } else {
                 dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'DNCP'
             }
         }
-
-
-//        println(" usuarioDep " + Persona.get(session.usuario.id).departamento?.direccion?.id + " respDep " + obra?.responsableObra?.departamento?.direccion?.id + " dueño " + dueno)
-
-//        println ">>>>responsable" + responsableRol + " dueño " + dueno + " usuario " + session.usuario.departamento.id + " respDep " + obra?.responsableObra?.departamento?.id
-//        println ">>>>responsable" + responsableRol + " dueño " + dueno + " usuario " + Persona.get(session.usuario.id).departamento?.direccion?.id + " respDep " + obra?.responsableObra?.departamento?.direccion?.id
-
         dueno
     }
 

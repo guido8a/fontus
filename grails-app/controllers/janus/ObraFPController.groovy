@@ -72,35 +72,37 @@ class ObraFPController {
         def sbpr = params.sub.toInteger()
         def res
 
-//        println params
+        println "validaciones: $params"
         if (params.borraFP == "true") obraService.borrarFP(params.obra)
 
         res = pone_ids()
-//        println "equipo: ${id_equipo}, repuestos: ${id_repuestos}, combustible: ${id_combustible}, " +
-//                "saldo: ${id_saldo}, mecanico: ${id_mecanico}, herramientas: ${id_herramientas} " +
-//                "mano de obra: ${id_manoDeObra}"
+        println "equipo: ${id_equipo}, repuestos: ${id_repuestos}, combustible: ${id_combustible}, " +
+                "saldo: ${id_saldo}, mecanico: ${id_mecanico}, herramientas: ${id_herramientas} " +
+                "mano de obra: ${id_manoDeObra}"
 
         if (res) {
             render "Error: " + res
             return
         }
-
+//        println "....1"
         res = ejecutaSQL("select * from ac_rbro_hr_v2(${obra__id})")
         if (!res) {
             render "Error: no se pudo ejecutar ac_rbro_hr_v2"
             return
         }
+//        println "....2"
         res = ejecutaSQL("select * from sp_obra_v2(${obra__id}, ${sbpr})")
         if (!res) {
             render "Error: no se pudo ejecutar sp_obra_v2"
             return
         }
-
+//        println "....3"
         res = verificaMatriz(obra__id)
         if (res != "") {
             render res
             return
         }
+        println "....4"
         res = verifica_precios(obra__id)
         if (res.size() > 0) {
             def msg = "<span style='color:red'>Errores detectados</span><br> <span class='label-azul'>No se encontraron precios para los siguientes items:</span><br>"
@@ -109,12 +111,13 @@ class ObraFPController {
             return
         }
 
+        println "pasa validaciones"
         redirect(action: "matrizFP", params: ["obra": params.obra, "sub": params.sub, "trans": params.trans])
         return
     }
 
     def matrizFP() {
-        println "matriz fp " + params
+        println "**********matriz fp " + params
         /* --------------------- parámetros que se requieren para correr el proceso  --------------------- */
         def obra__id = params.obra.toInteger()         // obra de pruebas dos rubros: 550, varios 921. Pruebas 886
         def sbpr = params.sub.toInteger()              // todos los subpresupuestos
@@ -253,6 +256,7 @@ class ObraFPController {
         des_Materiales(obra__id, sbpr, conTransporte)
         println "11. completa des_Materiales, conTranp: $conTransporte ... Hay equipos: $hayEquipos"
         if (hayEquipos) {
+            println "ejecuta hayEquipos"
             if (conTransporte) acTransporte(obra__id, sbpr)
             acEquipos(obra__id, sbpr)
         }
@@ -300,17 +304,15 @@ class ObraFPController {
         def errr = ""
         if (!VolumenesObra.findAllByObra(obra)) errr += "<br><span class='label-azul'>No se ha ingresado los volúmenes de Obra</span>"
         if (!obra.lugar) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Peso Capital de cantón\" para esta Obra"
-        if (!obra.listaPeso1) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Peso Especial\" para esta Obra"
-        if (!obra.listaVolumen0) errr += "<br><span class='label-azul'>No se ha definido la Lista precios: </span>\"Materiales Pétreos Hormigones\" para esta Obra"
-        if (!obra.listaVolumen1) errr += "<br><span class='label-azul'>No se ha definido la Lista precios: </span>\"Materiales Mejoramiento\" para esta Obra"
-        if (!obra.listaVolumen2) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Materiales Carpeta Asfáltica\" para esta Obra"
-        if (!obra.listaManoObra) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Mano de obra y equipos\" para esta Obra"
+//        if (!obra.listaPeso1) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Peso Especial\" para esta Obra"
+//        if (!obra.listaVolumen0) errr += "<br><span class='label-azul'>No se ha definido la Lista precios: </span>\"Materiales Pétreos Hormigones\" para esta Obra"
+//        if (!obra.listaVolumen1) errr += "<br><span class='label-azul'>No se ha definido la Lista precios: </span>\"Materiales Mejoramiento\" para esta Obra"
+//        if (!obra.listaVolumen2) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Materiales Carpeta Asfáltica\" para esta Obra"
+//        if (!obra.listaManoObra) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Mano de obra y equipos\" para esta Obra"
 
-        if (!obra.distanciaPeso) errr += "<br> <span class='label-azul'> No se han ingresado las distancias al Peso</span>"
-        if (!obra.distanciaVolumen) errr += "<br>  <span class='label-azul'>No se han ingresado las distancias al Volumen</span>"
+//        if (!obra.distanciaPeso) errr += "<br> <span class='label-azul'> No se han ingresado las distancias al Peso</span>"
+//        if (!obra.distanciaVolumen) errr += "<br>  <span class='label-azul'>No se han ingresado las distancias al Volumen</span>"
         if (rubrosSinCantidad(id) > 0) errr += "<br> <span class='label-azul'>Existen Rubros con cantidades Negativas o CERO</span>"
-
-        //if (nombresCortos()) errr += "<br><span class='label-azul'>Existen Items con nombres cortos repetidos: </span>" + nombresCortos()
 
         if (errr) errr = "<b><span style='color:red'>Errores detectados</span></b> " + errr
         else errr = ""
@@ -892,7 +894,7 @@ class ObraFPController {
             tx_sql = "select item.item__id, itemcdgo from vlob, item where obra__id = ${id} and sbpr__id = ${sbpr} and "
             tx_sql += "vlobcntd > 0 and item.item__id = vlob.item__id group by item.item__id, itemcdgo"
         }
-        //println "acEquipos: " + tx_sql
+        println "acEquipos: " + tx_sql
         cn.eachRow(tx_sql.toString()) { row ->
             if (obra.estado == 'N') {
 /*
@@ -1083,14 +1085,14 @@ class ObraFPController {
         def fraccion = 0.0
         if (conTrnp) {
             tx_sql = "select rbpcpcun pcun from item_pcun_v2 (${obra.chofer.id}, '${obra.fechaPreciosRubros}', ${obra.lugar.id}," +
-                    "${obra.listaPeso1.id}, ${obra.listaVolumen0.id}, ${obra.listaVolumen1.id}, ${obra.listaVolumen2.id}, ${obra.listaManoObra.id})"
-            //println "desgloseTrnp: " + tx_sql
+                    "${obra.listaPeso1?.id}, ${obra.listaVolumen0?.id}, ${obra.listaVolumen1?.id}, ${obra.listaVolumen2?.id}, ${obra.listaManoObra.id})"
+            println "desgloseTrnp: " + tx_sql
             cn.eachRow(tx_sql.toString()) { row ->
                 pu_chfr = row.pcun
             }
             tx_sql = "select rbpcpcun pcun from item_pcun_v2 (${obra.volquete.id}, '${obra.fechaPreciosRubros}', ${obra.lugar.id}," +
-                    "${obra.listaPeso1.id}, ${obra.listaVolumen0.id}, ${obra.listaVolumen1.id}, ${obra.listaVolumen2.id}, ${obra.listaManoObra.id})"
-            //println "desgloseTrnp: " + tx_sql
+                    "${obra.listaPeso1?.id}, ${obra.listaVolumen0?.id}, ${obra.listaVolumen1?.id}, ${obra.listaVolumen2?.id}, ${obra.listaManoObra.id})"
+            println "desgloseTrnp: " + tx_sql
             cn.eachRow(tx_sql.toString()) { row ->
                 pu_vlqt = row.pcun
             }
@@ -1108,7 +1110,7 @@ class ObraFPController {
         def trnp = totalSx(id, 'TRANSPORTE_T', 'sS1', sbpr)
         def transporte = (totalSx(id, 'TRANSPORTE_T', 'sS1', sbpr) * fraccion + totalSx(id, "${id_equipo}_T", "sS1", sbpr))
 
-//        println "transporte: $transporte, total equipos:" + totalSx(id, "${id_equipo}_T", "sS1")
+        println "transporte: $transporte, total equipos:" + totalSx(id, "${id_equipo}_T", "sS1", sbpr)
 
         def saldo = totalSx(id, "${id_saldo}_T", "sS1", sbpr)
         def mecanico = totalSx(id, "${id_mecanico}_T", "sS1", sbpr)
@@ -1118,15 +1120,6 @@ class ObraFPController {
 
 //        println "valor inicial de chofer: $chofer"
 //        println "a anadir: ${trnp * (1 - fraccion)}"
-
-
-/*
-        actualizaS2(id, "${id_equipo}_T", transporte * 0.52)
-        actualizaS2(id, "${id_repuestos}_T", transporte * 0.26 + repuestos)
-        actualizaS2(id, "${id_combustible}_T", transporte * 0.08 + combustible)
-        actualizaS2(id, "${id_mecanico}_T", transporte * 0.11 + mecanico)
-        actualizaS2(id, "${id_saldo}_T", transporte * 0.03 + saldo)
-*/
 
         actualizaS2(id, "${id_equipo}_T", transporte * obra.desgloseEquipo, sbpr)
         actualizaS2(id, "${id_repuestos}_T", transporte * obra.desgloseRepuestos + repuestos, sbpr)
@@ -1221,8 +1214,8 @@ class ObraFPController {
                 tx_cr = "select rbpcpcun pcun from item_pcun (${item__id}, ${obra.lugarId}, '${obra.fechaPreciosRubros}')"
 */
                 tx_cr = "select rbpcpcun pcun from item_pcun_v2 (${item__id}, '${obra.fechaPreciosRubros}', ${obra.lugar.id}," +
-                        "${obra.listaPeso1.id}, ${obra.listaVolumen0.id}, ${obra.listaVolumen1.id}, ${obra.listaVolumen2.id}, ${obra.listaManoObra.id})"
-                //println "tarifaHoraria:" + tx_cr
+                        "${obra.listaPeso1?.id}, ${obra.listaVolumen0?.id}, ${obra.listaVolumen1?.id}, ${obra.listaVolumen2?.id}, ${obra.listaManoObra.id})"
+                println "tarifaHoraria:" + tx_cr
             } else {
                 tx_cr = "select itempcun pcun from obit where item__id = ${item__id}"
             }

@@ -9,13 +9,13 @@
     <div class="span-6" style="margin-bottom: 5px">
         <b>Subpresupuesto:</b>
         <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 400px;font-size: 10px; margin-right: 10px" id="subPres_desc" value="${subPre}"
+                  style="width: 500px;font-size: 12px; margin-right: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'Seleccione..']"/>
 
-        <a href="#" class="btn btn-ajax btn-new" id="ordenarAsc" title="Ordenar Ascendentemente">
+        <a href="#" class="btn btn-ajax btn-new ${params.ord == '1'? 'active': ''}" id="ordenarAsc" title="Ordenar Ascendentemente">
             <i class="icon-arrow-up"></i>
         </a>
-        <a href="#" class="btn btn-ajax btn-new" id="ordenarDesc" title="Ordenar Descendentemente">
+        <a href="#" class="btn btn-ajax btn-new ${params.ord == '2'? 'active': ''}" id="ordenarDesc" title="Ordenar Descendentemente">
             <i class="icon-arrow-down"></i>
         </a>
 

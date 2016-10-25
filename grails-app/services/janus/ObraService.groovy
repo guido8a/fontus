@@ -63,6 +63,7 @@ class ObraService {
         def funcionElab = Funcion.findByCodigo('E')
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
+        println "responsableRol $responsableRol, dir: ${obra?.responsableObra?.departamento?.direccion?.id} per: ${Persona.get(usro).departamento?.direccion?.id}"
         if (responsableRol) {
 //            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(usro).departamento?.direccion?.id) {
@@ -71,6 +72,7 @@ class ObraService {
                 dueno = personasUtfpu.contains(responsableRol) && (Persona.get(usro).departamento?.codigo == 'DNCP')
             }
         }
+        println "es dueño: $dueno"
         dueno
     }
 

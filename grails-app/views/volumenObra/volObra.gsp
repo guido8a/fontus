@@ -15,7 +15,7 @@
         <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
         <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
 
-        <style>
+        <style type="text/css">
             .boton {
                 padding: 2px 6px;
                 margin-top: -10px
@@ -65,7 +65,7 @@
                     <i class="icon-arrow-left"></i>
                     Regresar
                 </a>
-                <a href="#" class="btn btn-ajax btn-new btn-info" id="calcular" title="Calcular precios">
+                <a href="#" class="btn btn-ajax btn-new btn-warning" id="calcular" title="Calcular precios">
                     <i class="icon-table"></i>
                     Calcular
                 </a>
@@ -89,7 +89,7 @@
                              style="font-size: 12px; width: 400px" id="subPres"/></span>
                     </span>
                     <g:if test="${duenoObra == 1}">
-                        <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto">
+                        <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto1">
                             <i class="icon-plus"></i>
                         </a>
                         <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto">
@@ -102,13 +102,13 @@
                     </g:if>
                     <g:else>
                         <g:if test="${persona?.departamento?.id == obra?.departamento?.id}">
-                            <a href="#" class="btn" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">
+                            <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto">
                                 <i class="icon-plus"></i>
                             </a>
-                            <a href="#" class="btn" id="btnBorrarSP" title="Borrar subpresupuesto" style="margin-top: -10px;">
+                            <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto">
                                 <i class="icon-minus"></i>
                             </a>
-                            <a href="#" class="btn" id="btnEditarSP" title="Editar subpresupuesto" style="margin-top: -10px;">
+                            <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto">
                                 <i class="icon-edit"></i>
                             </a>
                         </g:if>
@@ -597,6 +597,13 @@
                     var cod = $("#item_codigo").val()
                     var sub = $("#subPres").val()
                     var dscr = $("#item_descripcion").val()
+                    var ord = 1
+                    console.log('class', $("#ordenarDesc").hasClass('active'))
+                    if($("#ordenarDesc").hasClass('active')){
+                        ord = 2
+                    } else {
+                        ord = 1
+                    }
                     if (isNaN(cantidad))
                         cantidad = 0
                     if (isNaN(orden))
@@ -610,14 +617,14 @@
 
                     if (msn.length == 0) {
                         var datos = "rubro=" + rubro + "&cantidad=" + cantidad + "&orden=" + orden + "&sub=" + sub +
-                                "&obra=${obra.id}" + "&cod=" + cod + "&ord=" + '1&override=' + $("#override").val() +
+                                "&obra=${obra.id}" + "&cod=" + cod + "&ord=" + ord + '&override=' + $("#override").val() +
                                 "&dscr=" + dscr
 //                        //console.log(datos)
                         if ($("#vol_id").val() * 1 > 0)
                             datos += "&id=" + $("#vol_id").val()
 //                        //console.log(datos)
 
-                        $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'addItem')}",
+                        $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'addItem')}",
                             data     : datos,
                             success  : function (msg) {
                                 if (msg != "error") {

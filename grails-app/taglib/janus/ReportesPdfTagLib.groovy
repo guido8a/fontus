@@ -50,7 +50,7 @@ class ReportesPdfTagLib {
      * Muestra header y footer para los reportes
      */
     def headerFooter = { attrs ->
-        println("header footer attr " + attrs)
+//        println("header footer attr " + attrs)
         attrs.title = attrs.title ?: ""
         def header = headerReporte(attrs)
         def footer = footerReporte(attrs)
@@ -64,7 +64,7 @@ class ReportesPdfTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
-        println("AQUI atributos headerReporte  " + attrs)
+//        println("AQUI atributos headerReporte  " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
 
@@ -76,11 +76,6 @@ class ReportesPdfTagLib {
         def estilo = attrs.estilo ?: "center"
 
         def form
-        if(attrs.title.contains("permanente")) {
-            form = attrs.form ?: 'GAF-001'
-        }  else {
-            form = attrs.form ?: 'GPE-DPI-01'
-        }
 
         def h = 55
 
@@ -110,7 +105,7 @@ class ReportesPdfTagLib {
             html += '</div>' + "\n"
             if (subtitulo != "") {
 //                html += "<div class='tituloRprt'>"
-                html += "<div class='tituloReporteSinLinea'>"
+                html += "<div class='subtitulo'>"
                 html += subtitulo
                 html += '</div>'
             }
@@ -127,17 +122,6 @@ class ReportesPdfTagLib {
             html += "<tr>" + "\n"
             html += "<td style='background: #0F243E;'>Form. ${form}</td>" + "\n"
             html += "<td style='background: #008080;'>Numeración:</td>" + "\n"
-//            if(attrs.unidad.id)
-//            {
-//                if(attrs.title.trim().toLowerCase() in ['aval de poa', 'reforma al poa']) {
-//
-//                    html += "<td style='background: #008080;'>${attrs.anio}-GPE</td>" + "\n"
-//                }
-//                if(attrs.title.trim().toLowerCase() in ['aval de poa de gasto permanente', 'ajuste al poa de gasto permanente', 'reforma al poa de gasto permanente']){
-//                    html += "<td style='background: #008080;'>${attrs.anio}-GAF</td>" + "\n"
-//                }
-//            }else{
-//            }
 
             html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
             html += "</tr>" + "\n"

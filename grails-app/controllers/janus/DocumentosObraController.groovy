@@ -27,39 +27,16 @@ class DocumentosObraController {
         return [notaFormu: notaFormu, nota: idFinal]
     }
 
-//    def esDuenoObra(obra) {
-//        def dueno = false
-//        def funcionElab = Funcion.findByCodigo('E')
-//        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
-//        def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
-//
-//        if(responsableRol) {
-//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
-//        }
-//        dueno = session.usuario.departamento.id == obra?.responsableObra?.departamento?.id || dueno
-//        dueno
-//    }
-
 
     def documentosObra () {
-
-//        println("params:" + params)
-
-        def pr = janus.ReportesController
         def nota = new Nota();
         def auxiliar = new Auxiliar();
         def auxiliarFijo = Auxiliar.get(1);
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
         def obra = Obra.get(params.id)
-//        def cuadrilla = FormulaPolinomica.findAllByObraAndNumeroIlike(obra,'c%')
-//        println("cuadrilla:" + cuadrilla)
         def departamento = Departamento.get(obra?.departamento?.id)
-//        println("departamento: " + obra?.departamento?.descripcion)
-//        def personas = Persona.list()
-        def departamentos = Departamento.list()
 
-        //selector notas
         def notaMemo = Nota.findAllByTipo('memo')
         def notaFormu = Nota.findAllByTipo('formula');
 
@@ -68,20 +45,7 @@ class DocumentosObraController {
         detalle= VolumenesObra.findAllByObra(obra,[sort:"orden"])
 
         def precios = [:]
-        def fecha = obra.fechaPreciosRubros
-        def dsps = obra.distanciaPeso
-        def dsvl = obra.distanciaVolumen
-        def lugar = obra.lugar
 
-//        def prch = 0
-//        def prvl = 0
-
-//        if (obra.chofer){
-//            prch = preciosService.getPrecioItems(fecha,lugar,[obra.chofer])
-//            prch = prch["${obra.chofer.id}"]
-//            prvl = preciosService.getPrecioItems(fecha,lugar,[obra.volquete])
-//            prvl = prvl["${obra.volquete.id}"]
-//        }
         def indirecto = obra.totales/100
 
 
@@ -100,32 +64,24 @@ class DocumentosObraController {
             preciosService.ac_rbroObra(obra.id)
         }
 
-
         def valores = preciosService.rbro_pcun_v2(obra.id)
 
         def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
 
 
         subPres.each { s->
-
             total2 = 0
-
             valores.each {
-
               if(it.sbprdscr == s.descripcion){
-
                 totales = it.totl
                 totalPresupuestoBien = (total1 += totales)
                 totalPrueba = total2 += totales
-
               }
             }
-
         }
 
         detalle.each {
             def res = preciosService.precioUnitarioVolumenObraSinOrderBy("sum(parcial)+sum(parcial_t) precio ",obra.id,it.item.id)
-
 //            precios.put(it.id.toString(),(res["precio"][0]+res["precio"][0]*indirecto).toDouble().round(2))
 
             if(res["precio"][0]){

@@ -358,12 +358,14 @@
             <div class="span2">
                 <g:textField name="oficioIngreso" class="memo allCaps" value="${obra?.oficioIngreso}" maxlength="20"
                              style="width: 120px; margin-left: -10px" title="Número del Oficio de Ingreso"/>
+%{--
                 <g:if test="${obra}">
                     <a class="btn btn-small btn-info " id="tramites"
                        href="${g.createLink(action: 'verTramites', controller: 'tramite', id: obra?.oficioIngreso)}"
-                       rel="tooltip" title="Ver tramites" style="margin-top: -10px;">
+                       rel="tooltip" title="Ver trámites" style="margin-top: -10px;">
                         <i class="icon-file-alt"></i></a>
                 </g:if>
+--}%
             </div>
 
             <div class="span1 formato" style="width: 220px; margin-left: 40px;">MEMORANDO CANTIDAD DE OBRA</div>
@@ -505,11 +507,12 @@
         <div class="span12">
             <div class="span3" style="width: 185px;">Referencia (Gestión/Disposición):</div>
 
-            <div class="span5"><g:textField name="referencia" class="referencia"
-                                            style="width: 470px; margin-left: -20px" value="${obra?.referencia}"
+            <div class="span9"><g:textField name="referencia" class="referencia span9"
+                                            style="margin-left: -20px" value="${obra?.referencia}"
                                             maxlength="127"
                                             title="Referencia de la disposición para realizar la Obra"/></div>
 
+%{--
             <div class="span1" style="width: 120px;">Longitud de la vía(m):</div>
 
             <div class="span1"><g:textField name="longitudVia" class="referencia number" type="number"
@@ -523,6 +526,7 @@
                                             style="width: 50px; margin-left: -10px" maxlength="4"
                                             value="${g.formatNumber(number: obra?.anchoVia, maxFractionDigits: 1, minFractionDigits: 1, format: '##,##0', locale: 'ec')}"
                                             title="Ancho de la vía en metros. Sólo obras viales"/></div>
+--}%
         </div>
 
         <div class="span12" id="filaPersonas">
@@ -533,22 +537,22 @@
             <div class="span1" style="margin-top: 15px; width: 90px;"><button class="btn btn-buscar btn-info" id="btn-buscar"><i class="icon-globe"></i> Buscar </button>
             </div>
 
-            <div class="span2" style="width: 220px; margin-left: 10px;">Cantón
-            <g:hiddenField name="canton.id" id="hiddenCanton" value="${obra?.comunidad?.parroquia?.canton?.id}"/>
+            <div class="span2" style="width: 220px; margin-left: 10px;">Provincia
+            <g:hiddenField name="canton.id" id="hiddenCanton" value="${obra?.comunidad?.parroquia?.canton?.provincia?.id}"/>
             <g:textField style="width: 210px;" name="cantonkk.id" id="cantNombre" class="canton required"
-                         value="${obra?.comunidad?.parroquia?.canton?.nombre}" readonly="true" title="Cantón"/>
+                         value="${obra?.comunidad?.parroquia?.canton?.provincia?.nombre}" readonly="true" title="Cantón"/>
+            </div>
+
+            <div class="span2" style="width: 200px; margin-left: 10px;">Cantón
+            <g:hiddenField name="parroquia.id" id="hiddenParroquia" value="${obra?.comunidad?.parroquia?.canton?.id}"/>
+            <g:textField style="width: 190px;" name="parroquiakk.id" id="parrNombre" class="parroquia required"
+                         value="${obra?.comunidad?.parroquia?.canton?.nombre}" readonly="true" title="Parroquia"/>
             </div>
 
             <div class="span2" style="width: 200px; margin-left: 10px;">Parroquia
-            <g:hiddenField name="parroquia.id" id="hiddenParroquia" value="${obra?.comunidad?.parroquia?.id}"/>
-            <g:textField style="width: 190px;" name="parroquiakk.id" id="parrNombre" class="parroquia required"
-                         value="${obra?.comunidad?.parroquia?.nombre}" readonly="true" title="Parroquia"/>
-            </div>
-
-            <div class="span2" style="width: 200px; margin-left: 10px;">Comunidad
-            <g:hiddenField name="comunidad.id" id="hiddenComunidad" value="${obra?.comunidad?.id}"/>
+            <g:hiddenField name="comunidad.id" id="hiddenComunidad" value="${obra?.comunidad?.parroquia?.id}"/>
             <g:textField style="width: 190px;" name="comunidadkk.id" id="comuNombre" class="comunidad required"
-                         value="${obra?.comunidad?.nombre}" readonly="true" title="Comunidad"/>
+                         value="${obra?.comunidad?.parroquia?.nombre}" readonly="true" title="Comunidad"/>
             </div>
 
             <div class="span2" style="width: 355px; margin-left: 10px;">Sitio
@@ -791,7 +795,7 @@
 
         <div>
             <div class="span2"><g:select name="buscarPor" class="buscarPor"
-                                         from="['1': 'Provincia', '2': 'Cantón', '3': 'Parroquia', '4': 'Comunidad']"
+                                         from="['1': 'Provincia', '2': 'Cantón', '3': 'Parroquia']"
                                          style="width: 120px" optionKey="key"
                                          optionValue="value"/></div>
 

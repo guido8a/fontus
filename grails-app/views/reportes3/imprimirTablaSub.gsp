@@ -139,6 +139,13 @@
        color: #000000 !important;
     }
 
+    .tituloReporteSinLinea {
+        margin-top: 0px;
+    }
+    .subtitulo {
+        font-size: 13px;
+        margin-top: 6px;
+    }
 
     </style>
 </head>
@@ -174,12 +181,14 @@
 
 <div style="margin-top: 20px">
 
+%{--
     <div class="row-fluid">
         <div class="span6" style="margin-right: 195px !important;">
             <b>Requirente:</b> ${obra?.departamento?.direccion?.nombre}
         </div>
 
     </div>
+--}%
 
     <div class="row-fluid">
         <div class="span3" style="margin-right: 195px !important;">
