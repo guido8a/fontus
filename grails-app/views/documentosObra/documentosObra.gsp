@@ -54,7 +54,7 @@
 
 <div style='page-break-after: auto'></div>
 
-<div id="tabs" style="width: 800px; height: 1060px">
+<div id="tabs" style="width: 800px; height: 850px">
     <ul>
         <li><a href="#tab-presupuesto">Presupuesto</a></li>
         <li><a href="#tab-memorando">Memorando</a></li>

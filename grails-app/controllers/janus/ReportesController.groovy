@@ -4505,11 +4505,11 @@ class ReportesController {
 
         def firmaNueva
 
-        if (!(params.firmaNueva == 'undefined')) {
-            firmaNueva = PersonaRol.get(params.firmaNueva)
-        } else {
+//        if (!(params.firmaNueva == 'undefined')) {
+//            firmaNueva = PersonaRol.get(params.firmaNueva)
+//        } else {
             firmaNueva = null
-        }
+//        }
 
         if (params.notaValue && params.notaValue != '' && params.notaValue != 'null' && params.notaValue != 'undefined') {
             nota = Nota.get(params.notaValue)
