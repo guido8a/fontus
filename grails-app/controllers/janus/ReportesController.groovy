@@ -1466,12 +1466,11 @@ class ReportesController {
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph(auxiliar.titulo, times14bold));
-        headers.add(new Paragraph(" ", times10bold));
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO ", times12bold));
+//        headers.add(new Paragraph(obra?.departamento?.direccion?.nombre, times10bold));
 //        headers.add(new Paragraph(" ", times10bold));
-        headers.add(new Paragraph(obra?.departamento?.direccion?.nombre, times10bold));
-        headers.add(new Paragraph(" ", times10bold));
-        headers.add(new Paragraph("DATOS DE LA OBRA ", times10bold));
+        headers.add(new Paragraph("DATOS DE LA OBRA ", times12bold));
         headers.add(new Paragraph(" ", times10bold));
         document.add(headers)
 
@@ -1530,7 +1529,7 @@ class ReportesController {
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaPeso, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Lista Peso Especial", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(obra?.listaPeso1?.descripcion, times10normal), prmsHeaderHoja)
-        addCellTabla(tablaDistancias, new Paragraph("Distancia Peso Espeacial ", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaDistancias, new Paragraph("Distancia Peso Especial ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaPesoEspecial, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)

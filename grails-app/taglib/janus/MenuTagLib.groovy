@@ -21,15 +21,6 @@ class MenuTagLib {
                         items[ac.modulo.nombre].add(g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre))
                     }
                 }
-//                if (!items[ac.modulo.nombre]) {
-//                    def temp =[:]
-//                    temp.put(ac.accnDescripcion, g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre))
-//                    items.put(ac.modulo.nombre, temp)
-//
-//                } else {
-//                    items[ac.modulo.nombre].put(ac.accnDescripcion,g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre))
-//
-//                }
             }
 
 
@@ -104,33 +95,7 @@ class MenuTagLib {
 
             out << html
         } else {
-//            println "else "
-//            def html = ""
-//            html += '<div class="navbar navbar-static-top navbar-inverse">'
-//            html += '<div class="navbar-inner">'
-//            html += '<div class="container">'
-//            html += '<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">'
-//            html += '<span class="icon-bar"></span>'
-//            html += '<span class="icon-bar"></span>'
-//            html += '<span class="icon-bar"></span>'
-//            html += '</a>'
-//            html += '<a class="brand titulo" href="#">'
-//            html += "Gobierno de la provincia de Pichincha - Sistema Janus "
-//            html += '</a>'
-//
-//            html += '<div class="nav-collapse">'
-//            html += '<ul class="nav">'
-////            html += strItems
-//            html += ' <li class="divider-vertical"></li>'
-//            html += '<li><a href="#" id="ingresar"><i class="icon-off icon-white"></i>Ingresar</a></li>'
-////        html += '<li><a href="#contact">Contact</a></li>'
-//            html += '</ul>'
-//            html += '</div><!--/.nav-collapse -->'
-//            html += '</div>'
-//            html += '</div>'
-//            html += '</div>'
-//
-//            out << html
+
         }
 
     } //menu

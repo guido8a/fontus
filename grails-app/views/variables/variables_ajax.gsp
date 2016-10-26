@@ -397,9 +397,7 @@
             </div>
 
             <div class="row-fluid" style="margin-top: 10px;">
-
                 <div class="span1" style="margin-left: 0px; width: 120px;"><g:link controller="reportes2" action="reporteCostosIndirectos"  id="${obra.id}" style="margin-left: 0px;" class="btn btn-info"><i class="icon-print"></i> Reporte</g:link></div>
-
             </div>
 
 

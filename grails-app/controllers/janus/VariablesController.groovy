@@ -22,22 +22,11 @@ class VariablesController  extends janus.seguridad.Shield{
                 choferes = Item.findAllByDepartamento(it)
             if (it.transporte.codigo == "T")
                 volquetes = Item.findAllByDepartamento(it)
-
             volquetes2 += volquetes
-
-//            println("volquetes" + volquetes)
-
-
         }
-
-//        println("volquetes2" + volquetes2)
-
 
         def transporteCamioneta =  Item.findAllByCodigoIlike('tc-%');
         def transporteAcemila =  Item.findAllByCodigoIlike('ta-%');
-//
-//        println("TC" + transporteCamioneta);
-//        println("TA" + transporteAcemila);
 
         [choferes: choferes, volquetes: volquetes, obra: obra, par: par, volquetes2: volquetes2, transporteCamioneta: transporteCamioneta, transporteAcemila: transporteAcemila]
     }

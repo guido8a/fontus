@@ -2128,9 +2128,7 @@
                 },
                 success: function (msg) {
 
-//                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-pagar"><i class="icon-ok"></i> Guardar</a>');
-
                     var btnCancel = $('<a href="#" data-dismiss="modal" class="btn" >Cancelar</a>');
 
                     btnSave.click(function () {

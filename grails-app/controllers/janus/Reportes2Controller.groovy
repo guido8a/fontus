@@ -134,14 +134,6 @@ class Reportes2Controller {
         table.addCell(cell);
     }
 
-//    def pagina(PdfContentByte cb, Document document, int pag) {
-//        BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-//        cb.beginText();
-//        cb.setFontAndSize(bf, 9);
-//        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, pag.toString(), (document.right() - 15).toFloat(), (document.bottom() - 10).toFloat(), 0);
-//        cb.endText();
-//    }
-
     private static void infoText(PdfContentByte cb, Document document, String info, int tipo) {
         def posx = 0, posy = 0
 
@@ -197,15 +189,16 @@ class Reportes2Controller {
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
         document.addTitle("Rubros de la obra " + obra.nombre + " " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, rubros");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, FONTUS, rubros");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
-        preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont));
+        preface.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", catFont));
+        preface.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLEANEAMIENTO", catFont));
         preface.add(new Paragraph("ANEXO DE ESPECIFICACIÓN DE RUBROS DE LA OBRA " + obra.nombre, catFont));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
@@ -417,7 +410,6 @@ class Reportes2Controller {
 
                 def il
 
-//                if (extIlustracion.toLowerCase() in ["pdf", "png", "jpg"]) {
                 if (extIlustracion.toLowerCase() in ["pdf"]) {  //solo pdf se tiene que cargar separadamente los png y jpg se insertan sin problema
                     try{
                         il = new FileInputStream(pathIlustracion)
@@ -432,18 +424,12 @@ class Reportes2Controller {
                   }
                 }
             }
-//            if (rubro.especificaciones && tipo.contains("e")) {
             def ares = ArchivoEspecificacion.findByItem(rubro)
-//            println "rubro: ${rubro.codigo}, ruta: ${ares?.ruta}"
             if (ares && tipo.contains("e")) {
                 mensaje += " ruta: ${ares?.ruta}"
-//                extEspecificacion = rubro.especificaciones.split("\\.")
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
-
-//                pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.especificaciones
                 pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + ares?.ruta
-
                 arrIe += ( ares?.ruta + "*")
 
                 def fi
@@ -486,15 +472,16 @@ class Reportes2Controller {
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
         document.addTitle("Rubros de la obra " + obra.nombre + " " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, rubros");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, fontus, rubros");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
-        preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont));
+        preface.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", catFont));
+        preface.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", catFont));
         preface.add(new Paragraph("ANEXO DE ESPECIFICACIÓN DE RUBROS DE LA OBRA " + obra.nombre, catFont));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
@@ -946,11 +933,6 @@ class Reportes2Controller {
 
     }
 
-
-
-
-
-
     def tablasPlanilla_bck() {
         def planilla = Planilla.get(params.id)
         def obra = planilla.contrato.oferta.concurso.obra
@@ -1045,7 +1027,6 @@ class Reportes2Controller {
 
         def p0s = []
         def tbodyP0 = "<tbody>"
-//        def diasPlanilla = planilla.fechaFin - planilla.fechaInicio
         def diasPlanilla = 0
 
         if (planilla.tipoPlanilla.codigo != "A") {
@@ -1202,8 +1183,6 @@ class Reportes2Controller {
         } //pcs.p.each
 
         def filaFr = "", filaFr1 = "", filaP0 = "", filaPr = ""
-//        println ">>>"
-//        println p0s
 
         def totalReajuste = 0
 
@@ -1254,13 +1233,6 @@ class Reportes2Controller {
 
 
     def reportePrecios() {
-//        params.orden = "a" //a,n    Alfabetico | Numerico
-//        params.col = ["t", "u", "p", "f"] //t,u,p,f   Transporte | Unidad | Precio | Fecha de Act
-//        params.fecha = "22-11-2012"
-//        params.lugar = "4"
-//        params.grupo = "1"
-//
-//        println "reportePrecios params" + params
 
         def grupo = Grupo.get(params.grupo.toLong())
 
@@ -1270,8 +1242,6 @@ class Reportes2Controller {
         }
         def lugar = Lugar.get(params.lugar.toLong())
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-//        println("fecha:" + fecha)
-
         def items = ""
         def lista = Item.withCriteria {
             eq("tipoItem", TipoItem.findByCodigo("I"))
@@ -1325,17 +1295,13 @@ class Reportes2Controller {
             res.eachWithIndex{ j,i->
                 j.item.nombre = corregidos[i]
             }
-
         }
-
-//        println("res" + res + "grupo" + grupo)
 
         return [lugar: lugar, cols: params.col, precios: res, grupo: grupo]
     }
 
     def reporteExcelComposicionTotales() {
 
-//        println("!!!" + params)
 
         if (!params.tipo) {
             params.tipo = "-1"
@@ -1380,30 +1346,11 @@ class Reportes2Controller {
                 "  g.grpo__id\n" +
                 "ORDER BY grid ASC, i.itemnmbr"
 
-/*
-        def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
-                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
-                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid,\n" +
-                "FROM vlobitem v INNER JOIN item i ON v.item__id = i.item__id\n" +
-                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "INNER JOIN sbpr b ON v.sbpr__id = b.sbpr__id\n" +
-                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo}) \n" +
-                "WHERE v.obra__id = ${params.id} and v.voitcntd >0 \n" +
-                "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, \n" +
-                "g.grpo__id, g.grpodscr " +
-                "ORDER BY g.grpo__id ASC, i.itemcdgo"
-*/
-
-//        println sql
-
         def cn = dbConnectionService.getConnection()
 
         def res = cn.rows(sql.toString())
-
-//        println("--->>" + res)
         def errores = ""
+
         if (res.size() != 0) {
 
             //excel
@@ -1440,9 +1387,9 @@ class Reportes2Controller {
             def totalMO = 0;
             def ultimaFila
 
-            label = new jxl.write.Label(1, 2, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 4, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 6, obra?.departamento?.direccion?.nombre, times16format);
+            label = new jxl.write.Label(1, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+            label = new jxl.write.Label(1, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format);
+            label = new jxl.write.Label(1, 6, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
             sheet.addCell(label);
             label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
             label = new jxl.write.Label(1, 10, "DOC. REFERENCIA: " + obra?.oficioIngreso, times16format);
@@ -1482,13 +1429,10 @@ class Reportes2Controller {
                 label = new jxl.write.Label(0, fila, it?.codigo.toString()); sheet.addCell(label);
                 label = new jxl.write.Label(1, fila, it?.item.toString()); sheet.addCell(label);
                 label = new jxl.write.Label(2, fila, it?.unidad ? it?.unidad.toString() : ""); sheet.addCell(label);
-//                number = new jxl.write.Number(3, fila, it?.cantidad.toDouble().round(3) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(3, fila, it?.cantidad.toDouble() ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(4, fila,0); sheet.addCell(number);
                 number = new jxl.write.Number(5, fila, it?.punitario.toDouble().round(6) ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(6, fila, it?.transporte.toDouble().round(2) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(6, fila, it?.transporte.toDouble() ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(7, fila, it?.costo.toDouble().round(6) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(7, fila, it?.costo.toDouble() ?: 0); sheet.addCell(number);
                 label = new jxl.write.Label(8, fila, it?.grupo ? it?.grupo.toString() : ""); sheet.addCell(label);
 
@@ -1529,12 +1473,10 @@ class Reportes2Controller {
         def wsp = ""
 
         if (params.sp.toString() != "-1") {
-
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
         def obra = Obra.get(params.id)
-//        params.tipo = "1,2,3"
 
         def sql = "SELECT\n" +
                 "  v.voit__id                            id,\n" +
@@ -1562,29 +1504,11 @@ class Reportes2Controller {
                 "WHERE v.obra__id = ${params.id} \n" + wsp +
                 "ORDER BY v.sbpr__id, grid ASC, i.itemnmbr"
 
-/*
-        def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
-                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
-                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid,\n" +
-                "FROM vlobitem v INNER JOIN item i ON v.item__id = i.item__id\n" +
-                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "INNER JOIN sbpr b ON v.sbpr__id = b.sbpr__id\n" +
-                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo}) \n" +
-                "WHERE v.obra__id = ${params.id} and v.voitcntd >0 \n" +
-                "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, \n" +
-                "g.grpo__id, g.grpodscr " +
-                "ORDER BY g.grpo__id ASC, i.itemcdgo"
-*/
-
-//        println sql
 
         def cn = dbConnectionService.getConnection()
 
         def res = cn.rows(sql.toString())
 
-//        println("--->>" + res)
         def errores = ""
         if (res.size() != 0) {
 
@@ -1628,9 +1552,9 @@ class Reportes2Controller {
             def totalDirecto = 0;
             def ultimaFila
 
-            label = new jxl.write.Label(1, 2, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 4, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 6, obra?.departamento?.direccion?.nombre, times16format);
+            label = new jxl.write.Label(1, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+            label = new jxl.write.Label(1, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format);
+            label = new jxl.write.Label(1, 6, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
             sheet.addCell(label);
             label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
             label = new jxl.write.Label(1, 10, "DOC. REFERENCIA: " + obra?.oficioIngreso, times16format);
@@ -1639,12 +1563,10 @@ class Reportes2Controller {
             sheet.addCell(label);
             label = new jxl.write.Label(1, 14, "FECHA ACT.PRECIOS: " + printFecha(obra?.fechaPreciosRubros), times16format);
             sheet.addCell(label);
-
             label = new jxl.write.Label(0, 16, "CODIGO", times16format); sheet.addCell(label);
             label = new jxl.write.Label(1, 16, "ITEM", times16format); sheet.addCell(label);
             label = new jxl.write.Label(2, 16, "UNIDAD", times16format); sheet.addCell(label);
             label = new jxl.write.Label(3, 16, "CANTIDAD", times16format); sheet.addCell(label);
-//            label = new jxl.write.Label(4, 16, "C. REDONDEADA", times16format); sheet.addCell(label);
             label = new jxl.write.Label(4, 16, "P.UNITARIO", times16format); sheet.addCell(label);
             label = new jxl.write.Label(5, 16, "TRANSPORTE", times16format); sheet.addCell(label);
             label = new jxl.write.Label(6, 16, "COSTO", times16format); sheet.addCell(label);
@@ -1675,14 +1597,10 @@ class Reportes2Controller {
                 label = new jxl.write.Label(0, fila, it?.codigo.toString()); sheet.addCell(label);
                 label = new jxl.write.Label(1, fila, it?.item.toString()); sheet.addCell(label);
                 label = new jxl.write.Label(2, fila, it?.unidad ? it?.unidad.toString() : ""); sheet.addCell(label);
-//                number = new jxl.write.Number(3, fila, it?.cantidad.toDouble().round(2) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(3, fila, it?.cantidad.toDouble() ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(4, fila,0); sheet.addCell(number);
                 number = new jxl.write.Number(4, fila, it?.punitario.toDouble().round(6) ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(5, fila, it?.transporte.toDouble().round(2) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(5, fila, it?.transporte.toDouble() ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(6, fila, it?.costo.toDouble() ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(7, fila, it?.total.toDouble().round(2) ?: 0); sheet.addCell(number);
                 number = new jxl.write.Number(7, fila, it?.total.toDouble() ?: 0); sheet.addCell(number);
                 label = new jxl.write.Label(8,fila, it?.grupo ? it?.grupo.toString() : ""); sheet.addCell(label);
                 label = new jxl.write.Label(9, fila, it?.subpresupuesto ? it?.subpresupuesto.toString() : "");
@@ -1703,7 +1621,6 @@ class Reportes2Controller {
                 ultimaFila = fila
             }
 
-//        println ">>>>>>>>>> " + ultimaFila
             if (res.size() > 0) {
                 label = new jxl.write.Label(6, ultimaFila, "Total Materiales: ", times16format); sheet.addCell(label);
                 number = new jxl.write.Number(7, ultimaFila, totalMaterial.toDouble()?.round(2) ?: 0);
@@ -1715,7 +1632,6 @@ class Reportes2Controller {
                 sheet.addCell(number);
 
                 label = new jxl.write.Label(6, ultimaFila + 2, "Total Equipos: ", times16format); sheet.addCell(label);
-//        number = new jxl.write.Number(7, ultimaFila + 2, totalEquipo); sheet.addCell(number);
                 number = new jxl.write.Number(7, ultimaFila + 2, totalEquipo.toDouble()?.round(2) ?: 0);
                 sheet.addCell(number);
 
@@ -1746,8 +1662,6 @@ class Reportes2Controller {
 
     def reportePreciosExcel() {
 
-//        println("params " + params)
-
         def orden = "itemnmbr"
         if (params.orden == "n") {
             orden = "itemcdgo"
@@ -1771,15 +1685,11 @@ class Reportes2Controller {
             items += it
         }
         def res = []
-//        println items
         def tmp = preciosService.getPrecioRubroItemOrder(fecha, lugar, items, orden, "asc")
         tmp.each {
             res.add(PrecioRubrosItems.get(it))
         }
 
-//        println("excel" + res)
-
-        //excel
 
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
@@ -1871,13 +1781,6 @@ class Reportes2Controller {
                 obra = contrato.obra
                 lbl = "l contrato de la obra"
                 break;
-/*
-            case "ejecucion":
-                contrato = Contrato.get(params.id)
-                obra = contrato.obra
-                lbl = "l contrato de la obra"
-                break;
-*/
         }
         def meses = obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)
 
@@ -1925,9 +1828,9 @@ class Reportes2Controller {
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
         document.addTitle("Cronograma de${lbl} " + obra.nombre + " " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, planillas");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, FONTUS, planillas");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         /* ***************************************************** Titulo del reporte *******************************************************/
@@ -1935,14 +1838,11 @@ class Reportes2Controller {
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
 
-        preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont3));
-
-//        preface.add(new Paragraph("CRONOGRAMA DE ${lbl.toUpperCase()} " + obra.nombre, catFont2));
+        preface.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", catFont2));
+        preface.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", catFont2));
         preface.add(new Paragraph("CRONOGRAMA", catFont2));
-        preface.add(new Paragraph("DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS", catFont2));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
-//        preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         document.add(preface);
         document.add(preface2);
         Paragraph pMeses = new Paragraph();
@@ -2018,14 +1918,8 @@ class Reportes2Controller {
                 case "contrato":
                     cronos = CronogramaContrato.findAllByVolumenObra(vol)
                     break;
-/*
-                case "ejecucion":
-                    cronos = CronogramaEjecucion.findAllByVolumenObra(vol)
-                    break;
-*/
             }
             def totalDolRow = 0, totalPrcRow = 0, totalCanRow = 0
-//            def parcial = precios[vol.id.toString()] * vol.cantidad
             def parcial = Math.round(precios[vol.id.toString()] * vol.cantidad*100)/100
             sum += parcial
 
@@ -2275,13 +2169,6 @@ class Reportes2Controller {
                 "mfcl.clmndscr = 'TRANSPORTE_T' AND\n" +
                 "codigo = 'sS1' AND\n" +
                 "mfvl.clmncdgo = mfcl.clmncdgo"
-
-//        select valor
-//        from mfvl, mfcl
-//        where mfvl.obra__id = mfcl.obra__id and mfvl.obra__id = 1430
-//        and mfcl.clmndscr = 'TRANSPORTE_T' and
-//        codigo = 'sS1'  and mfvl.clmncdgo = mfcl.clmncdgo;
-
         //equipoTotal
         sqlEquipoTotal1 = "SELECT\n" +
                 "valor\n" +
@@ -2312,16 +2199,6 @@ class Reportes2Controller {
                 "mfvl.clmncdgo = mfcl.clmncdgo"
 
 
-/*
-        sqlEquiposs1 = "SELECT\n" +
-                "valor\n" +
-                "from mfvl, mfcl\n" +
-                "WHERE mfvl.obra__id = mfcl.obra__id AND\n" +
-                "mfvl.obra__id = ${obra.id} AND\n" +
-                "mfcl.clmndscr = '1256_T' AND \n" +
-                "codigo = 'sS1' AND\n " +
-                "mfvl.clmncdgo = mfcl.clmncdgo"
-*/
         sqlEquiposs1 = "SELECT\n" +
                 "valor\n" +
                 "from mfvl, mfcl\n" +
@@ -2392,51 +2269,27 @@ class Reportes2Controller {
         valores += (obra?.desgloseMecanico)
         valores += (obra?.desgloseSaldo)
 
-//        println("obradesglose" + obra?.desgloseEquipo)
-
-//        println("coeficientes:" + valores)
-////
-//        println("ed1" + ed1)
-//        println("eqTotal:" + eqTotal)
-//        println("vartrans" + varTrans)
-
 
         if (varTrans > 0) {
             valores.eachWithIndex { item, i ->
-//println("item " + item)
-//println("ed " + ed1)
                 if (item > 0 && ed1[1]) {
-
-
                     b += (((ed1[i]) / (item)) - eqTotal)
-                    //                println(b[0])
-
                 } else {
-
                     b += 0
                 }
-
             }
 
         } else {
             b[0] = 0.00
         }
 
-//        println("B:" + b)
-
         b.each {
             c += (it + eqTotal)
         }
 
-//      println("C:" + c)
-
-        //nuevos valores
-
         def equipoA = cn.rows(sqlEquiposs1.toString())
         def equipoC = cn.rows(sqlEquiposs2.toString())
 
-//        println("--->" + equipoA)
-//        println("--->" + equipoC)
 
         equipoA.each{
 
@@ -2446,14 +2299,7 @@ class Reportes2Controller {
         equipoC.each {
             nuevoc = it?.valor/obra?.desgloseEquipo
         }
-//
-//        println("A" + nuevoa)
-//        println("C" + nuevoc)
-
         nuevob = nuevoc -nuevoa
-
-//        println "nuevoB" + nuevob
-
         nuevod = nuevoc*obra?.desgloseEquipo
         nuevoe = nuevoc*obra?.desgloseRepuestos
         nuevof = nuevoc*obra?.desgloseCombustible
@@ -2512,10 +2358,10 @@ class Reportes2Controller {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times14bold));
-        addEmptyLine(headersTitulo, 1);
-        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
-        addEmptyLine(headersTitulo, 1)
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
+//        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
+//        addEmptyLine(headersTitulo, 1)
         headersTitulo.add(new Paragraph("DESGLOSE DE EQUIPOS", times12bold));
         addEmptyLine(headersTitulo, 1);
         document.add(headersTitulo);
@@ -2574,8 +2420,6 @@ class Reportes2Controller {
 
         addCellTabla(tablaDesglose, new Paragraph("Valor de Equipos", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDesglose, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: eqTotal, minFractionDigits:
-//                5, maxFractionDigits: 5, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: nuevoa , minFractionDigits:
                 5, maxFractionDigits: 5, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
@@ -2585,34 +2429,12 @@ class Reportes2Controller {
         addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
 
-//        if (b[0] > 0) {
-//
-//
-//            addCellTabla(tablaDesglose, new Paragraph("Valor de Transporte excluyendo al Chofer", times10bold), prmsHeaderHoja)
-//            addCellTabla(tablaDesglose, new Paragraph(" : "), prmsHeaderHoja)
-//            addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: b[0], minFractionDigits:
-//                    5, maxFractionDigits: 5, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//            addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
-//
-//        } else {
-//
-//
-//            addCellTabla(tablaDesglose, new Paragraph("Valor de Transporte excluyendo al Chofer", times10bold), prmsHeaderHoja)
-//            addCellTabla(tablaDesglose, new Paragraph(" : "), prmsHeaderHoja)
-//            addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: b[0], minFractionDigits:
-//                    5, maxFractionDigits: 5, format: "##.##", locale: "ec"), times10normal), prmsDerecha)
-//            addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
-//
-//
-//        }
-
 
         addCellTabla(tablaDesglose, new Paragraph("Valor de Transporte excluyendo al Chofer", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDesglose, new Paragraph(" : "), prmsHeaderHoja)
         addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: nuevob, minFractionDigits:
                 5, maxFractionDigits: 5, format: "##.##", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
-
 
 
         addCellTabla(tablaDesglose, new Paragraph("____________________________"), prmsHeaderHoja)
@@ -2622,8 +2444,6 @@ class Reportes2Controller {
 
         addCellTabla(tablaDesglose, new Paragraph("Total Equipos + Transporte", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDesglose, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: c[0], minFractionDigits:
-//                5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesglose, new Paragraph(g.formatNumber(number: nuevoc, minFractionDigits:
                 5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesglose, new Paragraph(" "), prmsHeaderHoja)
@@ -2644,8 +2464,6 @@ class Reportes2Controller {
                 0, maxFractionDigits: 0, format: "###,##0", locale: "ec") + " %", times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: c[0] * valores[0], minFractionDigits:
-//                5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: nuevod, minFractionDigits:
                 5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
@@ -2655,8 +2473,6 @@ class Reportes2Controller {
                 0, maxFractionDigits: 0, format: "###,##0", locale: "ec") + " %", times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: c[0] * valores[1], minFractionDigits:
-//                5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: nuevoe, minFractionDigits:
                 5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
@@ -2666,8 +2482,6 @@ class Reportes2Controller {
                 0, maxFractionDigits: 0, format: "###,##0", locale: "ec") + " %", times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: c[0] * valores[2], minFractionDigits:
-//                5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: nuevof, minFractionDigits:
                 5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
@@ -2677,8 +2491,6 @@ class Reportes2Controller {
                 0, maxFractionDigits: 0, format: "###,##0", locale: "ec") + " %", times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: c[0] * valores[3], minFractionDigits:
-//                5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: nuevog, minFractionDigits:
                 5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
@@ -2688,8 +2500,6 @@ class Reportes2Controller {
                 0, maxFractionDigits: 0, format: "###,##0", locale: "ec") + " %", times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: c[0] * valores[4], minFractionDigits:
-//                5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: nuevoh, minFractionDigits:
                 5, maxFractionDigits: 5, format: "###,##0", locale: "ec"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
@@ -2710,23 +2520,14 @@ class Reportes2Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b1.length)
         response.getOutputStream().write(b1)
-
-
     }
 
 
     def reporteCostosIndirectos() {
-
-        //        println("params" + params)
-
         def obra = Obra.get(params.id)
-
-
         def fechaIngreso = printFecha(obra?.fechaCreacionObra)
         def fechaPrecios = printFecha(obra?.fechaPreciosRubros)
-
         def prmsHeaderHoja = [border: Color.WHITE]
-//        def prmsHeaderHojaBorde = [border: Color.WHITE, bordeBot:"1"]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                 align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
@@ -2746,7 +2547,6 @@ class Reportes2Controller {
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                 prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsDerecha: prmsDerecha]
 
-
         def baos = new ByteArrayOutputStream()
         def name = "costos_indirectos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -2762,30 +2562,25 @@ class Reportes2Controller {
         def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
                 times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times10normal: times10normal]
 
-
         Document document
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-//        document.setMargins(2,2,2,2)
         document.addTitle("Costos Indirectos " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, fontus, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
 
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times14bold));
-        addEmptyLine(headersTitulo, 1);
-        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
-        addEmptyLine(headersTitulo, 1)
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headersTitulo.add(new Paragraph("COSTOS INDIRECTOS", times12bold));
         addEmptyLine(headersTitulo, 1);
         document.add(headersTitulo);
-//
 
         PdfPTable tablaHeader = new PdfPTable(3);
         tablaHeader.setWidthPercentage(100);
@@ -2795,32 +2590,13 @@ class Reportes2Controller {
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
 
-
         addCellTabla(tablaHeader, new Paragraph("OBRA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(obra?.nombre, times8normal), prmsHeaderHoja)
 
-/*
-        addCellTabla(tablaHeader, new Paragraph("CÓDIGO", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaHeader, new Paragraph(obra?.codigo, times8normal), prmsHeaderHoja)
-*/
-
         addCellTabla(tablaHeader, new Paragraph("MEMO CANT. OBRA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(obra?.memoCantidadObra, times8normal), prmsHeaderHoja)
-
-/*
-        addCellTabla(tablaHeader, new Paragraph("DOC. REFERENCIA", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaHeader, new Paragraph(obra?.oficioIngreso, times8normal), prmsHeaderHoja)
-*/
-
-/*
-        addCellTabla(tablaHeader, new Paragraph("FECHA", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaHeader, new Paragraph(printFecha(obra?.fechaCreacionObra), times8normal), prmsHeaderHoja)
-*/
 
         addCellTabla(tablaHeader, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
@@ -2922,8 +2698,6 @@ class Reportes2Controller {
                 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10bold), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
-
-
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
@@ -2938,55 +2712,7 @@ class Reportes2Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b1.length)
         response.getOutputStream().write(b1)
-
-
     }
-
-//    def addCellTabla(table, paragraph, params) {
-//        PdfPCell cell = new PdfPCell(paragraph);
-////        println "params "+params
-//        cell.setBorderColor(Color.BLACK);
-//        if (params.border) {
-//            if (!params.bordeBot)
-//                if (!params.bordeTop)
-//                    cell.setBorderColor(params.border);
-//        }
-//        if (params.bg) {
-//            cell.setBackgroundColor(params.bg);
-//        }
-//        if (params.colspan) {
-//            cell.setColspan(params.colspan);
-//        }
-//        if (params.align) {
-//            cell.setHorizontalAlignment(params.align);
-//        }
-//        if (params.valign) {
-//            cell.setVerticalAlignment(params.valign);
-//        }
-//        if (params.w) {
-//            cell.setBorderWidth(params.w);
-//        }
-//        if (params.bordeTop) {
-//            cell.setBorderWidthTop(1)
-//            cell.setBorderWidthLeft(0)
-//            cell.setBorderWidthRight(0)
-//            cell.setBorderWidthBottom(0)
-//            cell.setPaddingTop(7);
-//
-//        }
-//        if (params.bordeBot) {
-//            cell.setBorderWidthBottom(1)
-//            cell.setBorderWidthLeft(0)
-//            cell.setBorderWidthRight(0)
-//            cell.setPaddingBottom(7)
-//
-//            if (!params.bordeTop) {
-//                cell.setBorderWidthTop(0)
-//            }
-//        }
-//        table.addCell(cell);
-//    }
-
 
 
     def reporteCronogramaEjec() {
@@ -3024,9 +2750,9 @@ class Reportes2Controller {
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
         document.addTitle("Cronograma de Ejecucón de " + obra.nombre + " " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, planillas");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, fontus, planillas");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         /* ***************************************************** Titulo del reporte *******************************************************/
@@ -3034,8 +2760,9 @@ class Reportes2Controller {
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
 
-        preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont3));
-        preface.add(new Paragraph("CRONOGRAMA DE EJECUÓN DE OBRA", catFont2));
+        preface.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", catFont3));
+        preface.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", catFont3));
+        preface.add(new Paragraph("CRONOGRAMA DE EJECUCIÓN DE OBRA", catFont2));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
         document.add(preface);
@@ -3258,8 +2985,5 @@ class Reportes2Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
-
-
 }
