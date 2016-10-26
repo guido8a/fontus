@@ -9,7 +9,7 @@
 
     <body>
         <div class="hoja">
-            <div class="tituloGrande" style="width: 100%">Precios Cero en obra: ${obra?.descripcion}</div>
+            <div class="tituloTree" style="width: 100%">Precios Cero en obra: ${obra?.nombre}</div>
 
             <g:if test="${flash.message}">
                 <div class="span12">

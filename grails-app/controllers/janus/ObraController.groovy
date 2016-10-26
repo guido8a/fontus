@@ -59,11 +59,7 @@ class ObraController extends janus.seguridad.Shield {
 
 
     def obrasFinalizadas() {
-
-
         def perfil = session.perfil.id
-
-//        return [perfil: perfil]
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"]]
         [campos: campos, perfil: perfil]
@@ -352,11 +348,6 @@ class ObraController extends janus.seguridad.Shield {
         def resultM = cn.rows(sqlM.toString())
         def resultR = cn.rows(sqlR.toString())
 
-        //println "\n\n"
-        //println resultM
-        //println resultR
-        //println "\n\n"
-
         if (params.save.toString() == "0") {
             return [obra: obra, resultM: resultM, resultR: resultR, params: params]
         } else {
@@ -432,9 +423,7 @@ class ObraController extends janus.seguridad.Shield {
     }
 
     def registroObra() {
-
         def cn = dbConnectionService.getConnection()
-//        println "---" + params
 //        println "---" + params
         def obra
         def perfil = session.perfil
@@ -448,13 +437,9 @@ class ObraController extends janus.seguridad.Shield {
         def duenoObra = 0
         def funcionElab = Funcion.findByCodigo('E')
 
-//        println("--->" + Departamento.findByCodigo('UTFPU'))
-
         def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('DNCP'))
 
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
-
-        def responsableObra
 
 
         def fechaPrecio = new Date()
@@ -483,7 +468,6 @@ class ObraController extends janus.seguridad.Shield {
                     sbprMF << ["${d.sbpr__id}" : SubPresupuesto.get(d.sbpr__id).descripcion]
             }
 
-//            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
             def subs = VolumenesObra.findAllByObra(obra).subPresupuesto.unique().sort{it.id}
             def volumen = VolumenesObra.findByObra(obra)
             def formula = FormulaPolinomica.findByObra(obra)

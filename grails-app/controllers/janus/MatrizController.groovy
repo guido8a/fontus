@@ -22,7 +22,7 @@ class MatrizController extends janus.seguridad.Shield {
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} and sbpr__id = ${params.sbpr} order by  1"
 //        println "sql desc "+sql
         def columnas = []
-        def filas = []
+        def nombre = ""
         def cont = 0
         def indices = ["mano":[],"saldo":[],"total":[]]
         cn.eachRow(sql.toString()){r->
@@ -32,9 +32,8 @@ class MatrizController extends janus.seguridad.Shield {
                 //println "parts "+parts
                 //def num
                 try{
-                    //col = parts[0].toLong()
-                    col = Item.get(parts[0].toLong()).nombre
-
+                    nombre = Item.get(parts[0].toLong()).nombre
+                    col = nombre.size() > 60 ? nombre[0..60] + "..." : nombre
                 }catch (e){
                     //println "matriz controller l 37: "+"error: " + e
                     col = parts[0]
@@ -53,11 +52,11 @@ class MatrizController extends janus.seguridad.Shield {
                 col += " " + parts[1]?.replaceAll("T","<br/>Total")?.replaceAll("U","<br/>Unitario")
             }
 
-
             columnas.add([r[0], col, r[2]])
             cont++
         }
-       // println "indices "+indices
+        println "columnas $columnas"
+
         session.indices = indices
         def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'
         [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr]
@@ -96,7 +95,6 @@ class MatrizController extends janus.seguridad.Shield {
                         tmp.add(v[0])
                     }
                 }
-
             }
 
 
@@ -107,8 +105,6 @@ class MatrizController extends janus.seguridad.Shield {
             render "fin"
         else
             [filas:filas, cols:columnas, obraId:params.id, offset:offset, indices:indices, sbpr: params.sbpr]
-
-
     }
 
     def insertarVolumenesItem(){

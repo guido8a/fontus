@@ -109,7 +109,7 @@
         </g:if>
 
         <div class="tituloTree">
-            Coeficientes de la fórmula polinómica de la obra: ${obra.descripcion + " (" + obra.codigo + ")"}
+            Coeficientes de la fórmula polinómica de la obra: ${obra.nombre + " (" + obra.codigo + ")"}
         </div>
 
         <div class="btn-toolbar" style="margin-top: 15px;">

@@ -133,7 +133,7 @@
      style="margin-top: 10px;margin-left: 0;width: 100%;max-width: 100%;overflow-x: hidden">
     <div style="width: 1060px;overflow-x: auto;max-width: 1050px;" class="scroll-pane">
         <table class="table table-bordered table-condensed  "
-               style="width: ${cols.size() * 120 - 90}px;max-width: ${cols.size() * 120 - 90}px;float:left">
+               style="width: ${cols.size() * 120 - 90}px; max-width: ${cols.size() * 120 - 90}px;float:left">
             <thead>
             <tr style="font-size: 10px !important;" id="ht">
                 <th style="width: 20px;max-width: 30px;font-size: 12px !important" class="h_0">#</th>
@@ -181,12 +181,13 @@
         </tbody>
     </table>
 </div>
+
 <script type="text/javascript">
     function cargarDatos(inicio, interval, limite) {
         var band = false
         $.ajax({
             type: "POST",
-            url: "${createLink(action: 'matrizPolinomica',controller: 'matriz')}",
+            url: "${createLink(action: 'matrizPolinomica', controller: 'matriz')}",
             data: "id=${obra}&inicio=" + inicio + "&limit=" + limite + "&sbpr=${sbpr}",
             success: function (msg) {
                 $("#dlgLoad").dialog("close");
