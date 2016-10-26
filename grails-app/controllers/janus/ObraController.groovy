@@ -529,22 +529,6 @@ class ObraController extends janus.seguridad.Shield {
 
     def esDuenoObra(obra) {
         return obraService.esDuenoObra(obra, session.usuario.id)
-
-/*
-        def dueno = false
-        def funcionElab = Funcion.findByCodigo('E')
-        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
-        def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
-
-        if (responsableRol) {
-            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
-                dueno = true
-            } else {
-                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
-            }
-        }
-        dueno
-*/
     }
 
 
@@ -1002,31 +986,16 @@ class ObraController extends janus.seguridad.Shield {
 
 
     def getPersonas2() {
-
 //        println("--->" + params)
 
         def obra = Obra.get(params.obra)
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
-
-
         def rolUsuario = PersonaRol.findByPersona(persona)
-
         def direccion = Direccion.get(params.id)
-
         def departamentos = Departamento.findAllByDireccion(direccion)
 
-//        def departamentos = Departamento.get(params.idDep)
-
-//        println("depar " + departamentos)
-
         def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
-//        def personas = Persona.findAllByDepartamento(departamentos)
-
-//        def personas = Persona.findAllByDepartamento(Departamento.get(params.idDep))
-
-//        println("personas " + personas)
 
         def funcionInsp = Funcion.findByCodigo('I')
         def funcionRevi = Funcion.findByCodigo('R')
@@ -1042,71 +1011,14 @@ class ObraController extends janus.seguridad.Shield {
 
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
 
+        def duenoObra = esDuenoObra(obra) ? 1 : 0
 
-        def responsableObra
-        def duenoObra = 0
-
-//        println("---->>" + personasRolResp)
-//        println("---->>" + personas)
-
-//        println(personasRolInsp)
-//        println(personasRolRevi)
-//        println(personasRolResp)
-//        println(personasRolElab)
-////
-//        println(personasRolInsp.persona)
-//        println(personasRolRevi.persona)
-//        println(personasRolResp.persona)
-
-//        println(personas)
-
-
-        if (obra) {
-            responsableObra = obra?.responsableObra
-
-            def responsableRol = PersonaRol.findByPersonaAndFuncion(responsableObra, funcionElab)
-
-            if (responsableRol) {
-                personasUtfpu.each {
-                    if (it.id == responsableRol.id) {
-                        duenoObra = 1
-                    } else {
-
-                    }
-                }
-            } else {
-
-            }
-
-
-        } else {
-
-//            responsableObra = obra?.responsableObra
-//
-//            personasUtfpu.each{
-//                if(it.id == responsableObra){
-//                    duenoObra = 1
-//                }else {
-//
-//                }
-//            }
-
-
-            duenoObra = 0
-
-        }
-
-
-
-
-        return [personas       : personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
+        return [personas: personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
                 personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra, persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra]
     }
 
     def getSalida() {
-
 //        println("params:" + params)
-
         def direccion = Direccion.get(params.direccion)
         def departamentos = Departamento.findAllByDireccion(direccion)
         def obra = Obra.get(params.obra)

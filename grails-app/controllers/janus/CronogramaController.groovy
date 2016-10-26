@@ -358,16 +358,13 @@ class CronogramaController extends janus.seguridad.Shield {
     }
 
     def cronogramaObra() {
-        println "--- cronograma"
+//        println "--- cronograma"
         def cn = dbConnectionService.getConnection()
-        // debe mostrar los rubros con sus precios unitarios y totales
 //        def inicio = new Date()
         def obra = Obra.get(params.id)
         def subpres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
         def persona = Persona.get(session.usuario.id)
-        def duenoObra = 0
-
-        duenoObra = esDuenoObra(obra) ? 1 : 0
+        def duenoObra = esDuenoObra(obra) ? 1 : 0
 
         def subpre = params.subpre
         if (!subpre) {
@@ -397,17 +394,12 @@ class CronogramaController extends janus.seguridad.Shield {
 
         //TODO: mostrar precio unitario, armar respuesta como pcun_totl desde preciosService.rbro_pcun_v2_item
         detalle.each { dt ->
-//            it.refresh()
-//            def res = preciosService.rbro_pcun_v2_item(obra.id, it.subPresupuesto.id, it.item.id)
-//            precios.put(it.id.toString(), res)
             precios.put(dt.id.toString(), preciosVlob.find { it.vlob__id == dt.id}.totl)
             pcun.put(dt.id.toString(), preciosVlob.find { it.vlob__id == dt.id}.pcun)
         }
 
 //        def fin = new Date()
-//        println "cronogramaObra: precios $precios"
 //        println "${TimeCategory.minus(fin, inicio)}"
-//        println "detalle: $detalle.dias"
 
         def tieneMatriz = false
         cn.eachRow("select count(*) cuenta from mfrb where obra__id = ${obra.id}".toString()) { d ->
