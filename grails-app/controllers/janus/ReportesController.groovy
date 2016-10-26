@@ -4756,7 +4756,7 @@ class ReportesController {
         headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
         headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times12bold));
-        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
+//        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo)
 
@@ -5059,7 +5059,7 @@ class ReportesController {
         headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
         headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times12bold));
-        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
+//        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo)
 
@@ -5259,10 +5259,10 @@ class ReportesController {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times14bold));
-        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS", times14bold));
-        headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
-        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS", times12bold));
+        headersTitulo.add(new Paragraph("COMPOSICIÓN", times12bold));
+//        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo)
 
@@ -5475,10 +5475,10 @@ class ReportesController {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times18bold));
-        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times18bold));
-        headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
-        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
+        headersTitulo.add(new Paragraph("COMPOSICIÓN", times12bold));
+//        headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo)
 
