@@ -70,8 +70,8 @@
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+      <!--<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    %{--<![endif]-->--}%
 
         <link rel="shortcut icon" href="${resource(dir: 'images/ico', file: 'fontus_16.png')}">
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${resource(dir: 'images/ico', file: 'fontus.png')}">

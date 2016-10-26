@@ -9,18 +9,13 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.8.2.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.9.1.custom.min.js')}"></script>--}%
         <script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.9.1.js')}"></script>
         <script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.2.custom.min.js')}"></script>
-
         <link href="${resource(dir: 'css/bootstrap/css', file: 'bootstrap.css')}" rel="stylesheet">
         <link href="${resource(dir: 'css/bootstrap/css', file: 'bootstrap-responsive.css')}" rel="stylesheet">
-
-        %{--<link href="${resource(dir: 'js/jquery/css/twitBoot', file: 'jquery-ui-1.9.1.custom.min.css')}" rel="stylesheet">--}%
         <link href="${resource(dir: 'js/jquery/css/bw', file: 'jquery-ui-1.10.2.custom.min.css')}" rel="stylesheet">
 
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      %{--<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>--}%
 
         <link rel="shortcut icon" href="${resource(dir: 'images/ico', file: 'fontus_16.png')}">
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${resource(dir: 'images/ico', file: 'fontus.png')}">
@@ -40,7 +35,6 @@
 
         <script src="${resource(dir: 'css/bootstrap/js', file: 'bootstrap.js')}"></script>
         <script type="text/javascript">
-            %{--var url = "${resource(dir:'images', file:'spinner_24.gif')}";--}%
             var url = "${resource(dir:'images', file:'spinnerLogin_24.gif')}";
             var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
             var urlLogin = "${resource(dir:'images', file:'spinnerLogin_24.gif')}";
