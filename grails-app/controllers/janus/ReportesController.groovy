@@ -15,20 +15,11 @@ import janus.pac.PeriodoEjecucion
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.write.*
-
 import java.awt.Color
-import java.lang.Object
-
-import com.itextpdf.text.pdf.ColumnText;
-
-
-//import java.awt.Label
-
 
 class ReportesController {
 
     def index() {
-
     }
 
     def buscadorService
@@ -48,7 +39,6 @@ class ReportesController {
     }
 
     def garantiasContrato() {
-//        println "reporte garantiasContrato $params"
         def contrato = Contrato.get(params.id)
         def garantias = Garantia.findAllByContrato(contrato)
         return [contrato: contrato, garantias: garantias]
@@ -56,35 +46,12 @@ class ReportesController {
 
 
     def rubro = {
-//        println "rep!!!  rubro " + params
-//        def rubro
-//        def grupos = []
-//        def volquetes = []
-//        def choferes = []
-//        def grupoTransporte=DepartamentoItem.findAllByTransporteIsNotNull()
-//        grupoTransporte.each {
-//            if(it.transporte.codigo=="H")
-//                choferes=Item.findAllByDepartamento(it)
-//            if(it.transporte.codigo=="T")
-//                volquetes=Item.findAllByDepartamento(it)
-//        }
-//        grupos.add(Grupo.get(4))
-//        grupos.add(Grupo.get(5))
-//        grupos.add(Grupo.get(6))
-//
-//        rubro = Item.get(params.id)
-//        def items=Rubro.findAllByRubro(rubro)
-//        items.sort{it.item.codigo}
-//        [ rubro: rubro, grupos: grupos,items:items,choferes:choferes,volquetes:volquetes]
-//        render "<html><head></head><body>Hola</body></html>"
         return [algo: "algo"]
     }
 
     def imprimeMatriz() {
 
         def obra = Obra.get(params.id)
-//
-//        println "imprime matriz"
         def cn = buscadorService.dbConnectionService.getConnection()
         def cn2 = buscadorService.dbConnectionService.getConnection()
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id=${params.id} order by 1"
@@ -122,15 +89,13 @@ class ReportesController {
                 }
 
             }
-//            println "fila  "+tmp
-//            println("col" + columnas)
+
             filas.add(tmp)
             cont++
         }
 
         def baos = new ByteArrayOutputStream()
         def name = "matriz_polinomica_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-//            println "name "+name
         Font titleFont = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
         Font titleFont3 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font titleFont2 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
@@ -153,22 +118,20 @@ class ReportesController {
         footer1.setAlignment(Element.ALIGN_CENTER);
 
         document.setFooter(footer1);
-
         document.open();
         document.addTitle("Matriz Polinómica " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus,matriz");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte,fontus,matriz");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
         Font small = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
 
         def titulo = obra.desgloseTransporte == "S" ? '(Con desglose de Transporte)' : '(Sin desglose de Transporte)'
-//        println titulo
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1)
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", titleFont2));
-        addEmptyLine(headersTitulo, 1);
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", titleFont2));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", titleFont2));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, titleFont));
         addEmptyLine(headersTitulo, 1);
         headersTitulo.add(new Paragraph("MATRIZ DE LA FORMULA POLINÓMICA " + titulo, titleFont));
@@ -183,39 +146,29 @@ class ReportesController {
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
-
-
         addCellTabla(tablaHeader, new Paragraph("OBRA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(obra?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaHeader, new Paragraph("CÓDIGO", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(obra?.codigo, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaHeader, new Paragraph("MEMO CANT. OBRA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(obra?.memoCantidadObra, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaHeader, new Paragraph("DOC. REFERENCIA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(obra?.oficioIngreso, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaHeader, new Paragraph("FECHA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(printFecha(obra?.fechaCreacionObra).toUpperCase(), times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaHeader, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(printFecha(obra?.fechaPreciosRubros).toUpperCase(), times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" ", times8bold), prmsHeaderHoja)
 
         document.add(tablaHeader);
-
-        /*table*/
 
         def parcial = []
         def anchos = [4, 5, 15, 4, 6, 6, 6, 6, 6,6,6,6,6,6,6,6]     // , 9
@@ -227,11 +180,7 @@ class ReportesController {
         def inicioCab = 0
         def finCab = 16
 
-//        println "size "+columnas.size()
         while (fin <= columnas.size() + 1) {  //gdo  <= antes
-
-//            println "inicio "+inicio+"  fin  "+fin
-//            println "iniciocab "+inicioCab+"  fincab  "+finCab
             if (inicio != 0) {
                 anchos = [ 6, 6, 6, 6, 6,6,6,6,6,6,6,6,7,7,7,7]
                 anchos2 = [6, 6, 6, 6, 6,6,6,6,6,6,6,6,7,7,7,7]
@@ -252,10 +201,7 @@ class ReportesController {
             def parrafo = new Paragraph("")
 
             PdfPTable table = new PdfPTable((fin - inicio).toInteger());       //gdo
-//            println("-->>" + (fin-inicio))
-
             PdfPTable table2 = new PdfPTable(((finCab - inicioCab).toInteger()));
-//            println "inicio "+inicioCab+"  fin "+finCab+"   "+anchos2.size()+"  "+arregloEnteros(anchos2) +" i1 "+inicio+" f1 "+fin
             def tam = 100
             if(anchos.size()<16)
                 tam=(anchos.size()*100/16).toInteger()
@@ -300,14 +246,12 @@ class ReportesController {
 
             } else {
                 (finCab - inicioCab).toInteger().times { i ->
-//                println "columnas "+columnas[(inicioCab + i)-1][1]
                     PdfPCell c1 = new PdfPCell(new Phrase(columnas[(inicioCab + i) - 1][1], small));
                     c1.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(c1);
                 }
                 table.setHeaderRows(1);
                 filas.each { f ->
-//                    println "f "+f[1]
                     def fuente = small
                     def borde = 1.5
                     if (f[1]=~"sS") {
@@ -337,7 +281,6 @@ class ReportesController {
             parrafo.add(table);
             document.add(parrafo);
             document.newPage();
-//            inicio = fin + 1
             inicio = fin
             fin = inicio + 16
 
@@ -354,8 +297,6 @@ class ReportesController {
                 break;
         }
 
-        /*table*/
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -367,7 +308,6 @@ class ReportesController {
 
 
     def reporteBuscadorExcel() {
-//        println "reporte buscador excel "+params
         def listaTitulos = params.listaTitulos
         def listaCampos = params.listaCampos
         def lista = buscadorService.buscar(session.dominio, params.tabla, "excluyente", params, true, params.extras)
@@ -398,13 +338,10 @@ class ReportesController {
         def persona1 = Persona.get(session.usuario.id)
 
         def label = new Label(0, 1, "Reporte de " + params.titulo.toUpperCase(), times16format); sheet.addCell(label);
-//        label = new Label(0, 2, "Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), times16format);
         label = new Label(0, 2, "Generado por el usuario: " + (persona1?.titulo ?: '') + ' ' + (persona1?.nombre ?: '') + ' ' + (persona1?.apellido ?: '') + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), times16format);
         sheet.addCell(label);
         listaTitulos.eachWithIndex { h, i ->
-            //write cell
             label = new Label(i, 4, "" + h, times10b); sheet.addCell(label);
-//            fila++
         }
         fila++
 
@@ -423,7 +360,6 @@ class ReportesController {
                 if (campo == "null" || campo == null)
                     campo = ""
                 label = new Label(j, fila, "" + campo, times10); sheet.addCell(label);
-//write cell
             }
             fila++
         }
@@ -440,7 +376,6 @@ class ReportesController {
 
     def reporteBuscador = {
 
-//        println "reporte buscador params !! "+params
         if (!session.dominio)
             response.sendError(403)
         else {
@@ -454,7 +389,6 @@ class ReportesController {
 
             def baos = new ByteArrayOutputStream()
             def name = "reporte_de_" + params.titulo.replaceAll(" ", "_") + "_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-//            println "name "+name
             Font catFont = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
             Font info = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
             Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -474,29 +408,22 @@ class ReportesController {
 
             document.open();
             document.addTitle("Reporte de " + params.titulo + " " + new Date().format("dd_MM_yyyy"));
-            document.addSubject("Generado por el sistema Janus");
-            document.addKeywords("reporte, elyon," + params.titulo);
-            document.addAuthor("Janus");
+            document.addSubject("Generado por el sistema Fontus");
+            document.addKeywords("reporte, fontus," + params.titulo);
+            document.addAuthor("Fontus");
             document.addCreator("Tedein SA");
-//            Paragraph preface = new Paragraph();
-//            addEmptyLine(headers, 1);
-//            preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont));
+
             Paragraph headers = new Paragraph();
             addEmptyLine(headers, 1);
             headers.setAlignment(Element.ALIGN_CENTER);
-            headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-            addEmptyLine(headers, 1);
+            headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+            headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
             headers.add(new Paragraph("" + params.titulo, times12bold));
             addEmptyLine(headers, 1);
             headers.add(new Paragraph("Quito, al " + printFecha(new Date()).toUpperCase(), times12bold));
             addEmptyLine(headers, 1);
-
             document.add(headers);
-//        Start a new page
-//        document.newPage();
-            //System.getProperty("user.name")
             addContent(document, catFont, listaCampos.size(), listaTitulos, params.anchos, listaCampos, funciones, lista);
-            // Los tamaños son porcentajes!!!!
             document.close();
             pdfw.close()
             byte[] b = baos.toByteArray();
@@ -509,7 +436,6 @@ class ReportesController {
 
     def reporteBuscador2 = {
 
-        // println "reporte buscador params !! "+params
         if (!session.dominio)
             response.sendError(403)
         else {
@@ -523,7 +449,6 @@ class ReportesController {
 
             def baos = new ByteArrayOutputStream()
             def name = "reporte_de_" + params.titulo.replaceAll(" ", "_") + "_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-//            println "name "+name
             Font catFont = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
             Font info = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
             Document document
@@ -536,30 +461,22 @@ class ReportesController {
 
             document.open();
             document.addTitle("Reporte de " + params.titulo + " " + new Date().format("dd_MM_yyyy"));
-            document.addSubject("Generado por el sistema Janus");
-            document.addKeywords("reporte, elyon," + params.titulo);
-            document.addAuthor("Janus");
+            document.addSubject("Generado por el sistema Fontus");
+            document.addKeywords("reporte, fontus," + params.titulo);
+            document.addAuthor("Fontus");
             document.addCreator("Tedein SA");
             Paragraph preface = new Paragraph();
             addEmptyLine(preface, 1);
-//            preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont));
-//            preface.add(new Paragraph("" + params.titulo, catFont));
-//            preface.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
-//            addEmptyLine(preface, 1);
-//            document.add(preface);
 
-            preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", catFont));
-            addEmptyLine(preface, 1);
+
+            preface.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", catFont));
+            preface.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", catFont));
             preface.add(new Paragraph("REPORTE DE OBRAS REGISTRADAS", catFont));
             addEmptyLine(preface, 1);
             preface.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), catFont));
             addEmptyLine(preface, 1);
 
-//        Start a new page
-//        document.newPage();
-            //System.getProperty("user.name")
             addContent(document, catFont, listaCampos.size(), listaTitulos, params.anchos, listaCampos, funciones, lista);
-            // Los tamaños son porcentajes!!!!
             document.close();
             pdfw.close()
             byte[] b = baos.toByteArray();
@@ -571,7 +488,6 @@ class ReportesController {
     }
 
     def pac() {
-//        println "params REPORTE " + params
         def pac
         def dep
         def anio
@@ -597,7 +513,6 @@ class ReportesController {
     }
 
     def pacExcel() {
-//        println "params REPORTE " + params
         def pac
         def dep
         def anio
@@ -646,12 +561,11 @@ class ReportesController {
         sheet.setColumnView(11, 5)
         sheet.setColumnView(12, 5)
 
-        def label = new Label(0, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA".toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 2, "Departamento de compras públicas".toUpperCase(), times16format); sheet.addCell(label);
+        def label = new Label(0, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS".toUpperCase(), times16format); sheet.addCell(label);
+        label = new Label(0, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO".toUpperCase(), times16format); sheet.addCell(label);
         label = new Label(0, 3, "Plan anual de compras".toUpperCase(), times16format); sheet.addCell(label);
         label = new Label(0, 4, "Departamento: ${dep}".toUpperCase(), times16format); sheet.addCell(label);
         label = new Label(0, 5, "Año: ${anio}".toUpperCase(), times16format); sheet.addCell(label);
-
         label = new Label(0, fila, "#", times16format); sheet.addCell(label);
         label = new Label(1, fila, "Año", times16format); sheet.addCell(label);
         label = new Label(2, fila, "Partida", times16format); sheet.addCell(label);
@@ -689,7 +603,6 @@ class ReportesController {
         def number = new Number(9, fila, total); sheet.addCell(number);
         fila++
 
-
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
@@ -701,23 +614,6 @@ class ReportesController {
 
 
     def analisisPrecios() {
-
-//        def item = Item.get(189)
-//
-//        println(item.id)
-//
-//        def rubro = PrecioRubrosItems.get(item.id)
-//
-//
-//
-//        println(rubro)
-//
-//        def grupo = Grupo.get(rubro.item.departamento.subgrupo.grupo.id)
-//
-//
-//        println(grupo)
-//        [item: item, rubro: rubro, grupo: grupo]
-
     }
 
     private static void addEmptyLine(Paragraph paragraph, int number) {
@@ -733,8 +629,6 @@ class ReportesController {
         def parrafo = new Paragraph("")
         createTable(parrafo, columnas, headers, anchos, campos, funciones, datos);
         document.add(parrafo);
-
-
     }
 
 
@@ -762,15 +656,10 @@ class ReportesController {
                 } else {
                     campo = d.properties[c].toString()
                 }
-
                 table.addCell(new Phrase(campo, small));
-
             }
-
         }
-
         subCatPart.add(table);
-
     }
 
     private static void createList(Section subCatPart) {
@@ -787,12 +676,10 @@ class ReportesController {
         array.eachWithIndex { it, i ->
             ia[i] = it.toInteger()
         }
-
         return ia
     }
 
     def reporteSubgrupos() {
-
         def obra = Obra.get(params.id)
 
         def sql = "SELECT\n" +
@@ -811,14 +698,8 @@ class ReportesController {
                 "obra__id= ${params.id}\n" +
                 "order by sbprdscr,grpodscr,sbgrdscr,dprtdscr,itemnmbr"
 
-//        println("sql:" + sql)
-
         def cn = dbConnectionService.getConnection()
-
         def res = cn.rows(sql.toString())
-
-//        return [res: res, obra: obra]
-
         def baos = new ByteArrayOutputStream()
         def name = "subgrupos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -838,9 +719,9 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Subgrupos " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, rubros");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte,fontus, rubros");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         def prmsHeaderHoja = [border: Color.WHITE]
@@ -861,16 +742,11 @@ class ReportesController {
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum]
 
-//        Paragraph headers0 = new Paragraph();
-//        headers0.setAlignment(Element.ALIGN_RIGHT);
-//        headers0.add(new Paragraph("GADPP", times12bold));
-//        document.add(headers0);
-
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times14bold));
-        headers.add(new Paragraph(" ", times14bold));
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO ", times12bold));
         headers.add(new Paragraph("REPORTE GRUPOS Y SUBGRUPOS", times12bold));
         headers.add(new Paragraph("OBRA: " + obra?.nombre, times12bold));
         headers.add(new Paragraph("FECHA: " + printFecha(obra?.fechaCreacionObra), times12bold));
@@ -897,9 +773,6 @@ class ReportesController {
             addCellTabla(table, new Paragraph(r?.descripcion, times8normal), prmsCellIzquierda)
             addCellTabla(table, new Paragraph(r?.nombre, times8normal), prmsCellIzquierda)
             addCellTabla(table, new Paragraph(g.formatNumber(number: r?.cantidad, minFractionDigits: 3, maxFractionDigits: 3, format: "##,###0", locale: "ec"), times8normal), prmsNum)
-
-//            addCellTabla(table, new Paragraph(g.formatNumber(number: r?.subpresupuesto?.descripcion, minFractionDigits: 0, maxFractionDigits: 0, format: "##,#0", locale: "ec"), times8normal), prmsNum)
-
         }
 
         document.add(table);
@@ -910,7 +783,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
 
@@ -960,10 +832,8 @@ class ReportesController {
         sheet.setColumnView(5, 15)
         sheet.setColumnView(6, 15)
 
-//        sheet.setColumnView(4, 30)
-//        sheet.setColumnView(8, 20)
-        def label = new Label(0, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA".toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 2, "DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS".toUpperCase(), times16format); sheet.addCell(label);
+        def label = new Label(0, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS".toUpperCase(), times16format); sheet.addCell(label);
+        label = new Label(0, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO".toUpperCase(), times16format); sheet.addCell(label);
         label = new Label(0, 3, "Análisis de precios unitarios".toUpperCase(), times16format); sheet.addCell(label);
 
         sheet.mergeCells(0, 1, 1, 1)
@@ -992,7 +862,6 @@ class ReportesController {
         def band = 0
         def rowsTrans = []
         res.each { r ->
-//            println "r "+r
             if (r["grpocdgo"] == 3) {
                 if (band == 0) {
                     label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
@@ -1159,19 +1028,13 @@ class ReportesController {
 
     def imprimirRubros() {
 
-//        //NUEVO
-//
-//        println "imprimirRubros ----->>>>" + params
-//        def rubro = Item.get(params.id)
         def obra = Obra.get(params.obra)
-
         def fecha1
         def fecha2
 
         if (obra?.fechaPreciosRubros) {
             fecha1 = obra?.fechaPreciosRubros
         } else {
-
         }
 
         if (obra?.fechaOficioSalida) {
@@ -1199,34 +1062,21 @@ class ReportesController {
         def html = ""
 
         rubros = VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique()
-
-//        println rubros.size()
-
-//        def cont = 0
-//        def max = 500
-
         rubros.eachWithIndex {rubro, indice ->
-//            if (indice > cont*max && indice <= (cont+1)*max) {
-            //def nombre = rubro.nombre.replaceAll('<', '(menor)').replaceAll('>', '(mayor)').replaceAll('"', '(pulgadas)')
-//            println indice+" "+rubro.nombre
             def nombre = rubro.nombre.decodeHTML()
-
             nombre = nombre.replaceAll(/</, /&lt;/)
             nombre = nombre.replaceAll(/>/, /&gt;/)
-//                nombre = "TEST"
-//            println "\t"+nombre
-
             def header, tablas, footer, nota, salto
             def tablaHer, tablaMano, tablaMat, tablaTrans, tablaIndi
 
             header =
                     "  <div class=\"tituloPdf\" >\n" +
                             "                <p style=\"font-size: 18px\">\n" +
-                            "                    <b>SEP - G.A.D. PROVINCIA DE PICHINCHA</b>\n" +
+                            "                    <b>SERVICIO DE CONTRATACIÓN DE OBRAS</b>\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
-                            "                    <b>DGCP - UNIDAD TÉCNICA DE FIJACIÓN DE PRECIOS UNITARIOS</b>\n" +
+                            "                    <b>DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO</b>\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
@@ -1304,29 +1154,19 @@ class ReportesController {
             def bandMat = 0
             def bandTrans = params.desglose
 
-
-
             tablaTrans += "<thead><tr><th colspan='8' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='8' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot' >CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>PES/VOL</th><th>CANTIDAD</th><th>DISTANCIA</th><th>TARIFA</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='8' class='theaderup'></th></tr> </thead><tbody>"
             tablaHer += "<thead><tr><th colspan='7' class='tituloHeader'>EQUIPOS</th></tr><tr><th colspan='7' class='theader'></th></tr><tr><th style='width: 80px' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>CANTIDAD</th><th style='width:70px'>TARIFA(\$/H)</th><th>COSTO(\$)</th><th>RENDIMIENTO</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='7' class='theaderup'></th></tr> </thead><tbody>"
             tablaMano += "<thead><tr><th colspan='7' class='tituloHeader'>MANO DE OBRA</th></tr><tr><th colspan='7' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>CANTIDAD</th><th style='width:70px'>JORNAL(\$/H)</th><th>COSTO(\$)</th><th>RENDIMIENTO</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='7' class='theaderup'></th></tr> </thead><tbody>"
-
             if (params.desglose == '0') {
-
                 tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES INCLUIDO TRANSPORTE</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
 
             } else {
-
                 tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
-
             }
             tablaMat2 += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
             tablaTrans2 += "<thead><tr><th colspan='8' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='8' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>PES/VOL</th><th>CANTIDAD</th><th>DISTANCIA</th><th>TARIFA</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='8' class='theaderup'></th></tr> </thead><tbody>"
 
-
-
             res.each { r ->
-//            println "res "+res
-
                 if (r["grpocdgo"] == 3) {
                     def nombreVaeH = r["itemnmbr"].decodeHTML()
                     nombreVaeH = nombreVaeH.replaceAll(/</, /&lt;/)
@@ -1456,16 +1296,8 @@ class ReportesController {
             tablaMat2 += "</tbody></table>"
 
             def totalRubro = 0
-//            if (!params.desglose) {
             totalRubro = total + totalHer + totalMan + totalMat
-//            } else {
-//                totalRubro = totalHer + totalMan + totalMat
-//            }
             def totalIndi = totalRubro * indi / 100
-//            tablaIndi += "<thead><tr><th colspan='3'>Costos indirectos</th></tr><tr><th style='width:550px'>Descripción</th><th>Porcentaje</th><th>Valor</th></tr></thead>"
-//            tablaIndi += "<tbody><tr><td>Costos indirectos</td><td style='text-align:right'>${indi}%</td><td style='text-align:right'>${g.formatNumber(number: totalIndi, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5")}</td></tr></tbody>"
-//            tablaIndi += "</table>"
-
             tablaIndi += "<thead><tr><th class='tituloHeader'>COSTOS INDIRECTOS</th></tr><tr><th colspan='3' class='theader'></th></tr><tr><th style='width:550px' class='padTopBot'>DESCRIPCIÓN</th><th style='width:130px'>PORCENTAJE</th><th>VALOR</th></tr>    <tr><th colspan='3' class='theaderup'></th></tr>  </thead>"
             tablaIndi += "<tbody><tr><td>COSTOS INDIRECTOS</td><td style='text-align:center'>${indi}%</td><td style='text-align:right'>${g.formatNumber(number: totalIndi, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5")}</td></tr></tbody>"
             tablaIndi += "</table>"
@@ -1519,25 +1351,11 @@ class ReportesController {
                 footer += "<div><strong>Distancia a la escombrera:</strong> D= ${obra?.distanciaDesalojo} km</div>"
             }
             footer += "<div><b>Nota:</b> Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales</div>"
-
-//            nota = "                <div class='divRubro' style=\"width: 100%;float: left;height: 20px;margin-top: 10px;text-align: left; page-break-after: always\">\n" +
-
-//            nota = "                <div style=\"width: 100%;float: left;height: 20px;text-align: left;\">\n" +
-//                    "                        <b>Nota:</b> Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales\n" +
-//                    "                    </div>"
-
             html += "<div class='divRubro'>" + header + tablas + footer + "</div>"
-
-
         }
-//        }
-
         [html: html]
 
     }
-
-
-
 
 
     def addTablaHoja(document, table, right) {
@@ -1546,14 +1364,12 @@ class ReportesController {
             paragraph.setAlignment(Element.ALIGN_RIGHT);
         }
         paragraph.setSpacingAfter(10);
-//        addEmptyLine(paragraph, 1);
         paragraph.add(table);
         document.add(paragraph);
     }
 
     def addCellTabla(table, paragraph, params) {
         PdfPCell cell = new PdfPCell(paragraph);
-//        println "params "+params
         cell.setBorderColor(Color.BLACK);
 
         if (params.border) {
@@ -1594,17 +1410,6 @@ class ReportesController {
                 cell.setBorderWidthTop(0)
             }
         }
-//        if (params.bordeLeft) {
-//            cell.setBorderWidthTop(0)
-//            cell.setBorderWidthLeft(1)
-//            cell.setBorderWidthRight(0)
-//            cell.setBorderWidthBottom(0)
-//            cell.setPaddingLeft(7);
-//
-//        }
-
-
-
         table.addCell(cell);
     }
 
@@ -1612,22 +1417,12 @@ class ReportesController {
     def reporteRegistro() {
 
         def obra = Obra.get(params.id)
-
         def auxiliar = Auxiliar.get(1)
-
-
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja3 = [border: Color.WHITE, colspan: 2]
-
-
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
-
-
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-
-
-
         def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
                            align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsCellHead = [border: Color.WHITE, bg: new Color(73, 175, 205),
@@ -1638,11 +1433,8 @@ class ReportesController {
         def prmsSubtotal = [border: Color.BLACK, colspan: 6,
                             align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsNum = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight]
-
-
 
         def baos = new ByteArrayOutputStream()
         def name = "presupuesto_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -1664,9 +1456,9 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Registro " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, fontus, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
 
@@ -1691,46 +1483,34 @@ class ReportesController {
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Obra: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.nombre, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Código: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.codigo, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Descripción: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.descripcion, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Dirección: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.departamento?.direccion?.nombre, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Programa: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.programacion?.descripcion, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Clase de Obra: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.claseObra?.descripcion, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Plazo: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.plazoEjecucionMeses + " Mes(es)" + " " + obra?.plazoEjecucionDias + " Días", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Documento de Referencia: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.oficioIngreso, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente, new Paragraph("Oficio de Salida: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(obra?.oficioSalida, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
 
         PdfPTable tablaDistancias = new PdfPTable(4);
         tablaDistancias.setWidthPercentage(100);
@@ -1740,60 +1520,38 @@ class ReportesController {
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Distancias", times12bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaDistancias, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaDistancias, new Paragraph("Lista Cantón", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaCoeficiente2, new Paragraph(g.formatNumber(number: obra?.lugar, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(obra?.lugar?.descripcion, times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Capital de Cantón ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaPeso, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDistancias, new Paragraph(obra?.distanciaPeso, times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaDistancias, new Paragraph("Lista Peso Especial", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaCoeficiente2, new Paragraph(g.formatNumber(number: obra?.listaPeso1, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(obra?.listaPeso1?.descripcion, times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Distancia Peso Espeacial ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaPesoEspecial, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
-
-//        addCellTabla(tablaDistancias, new Paragraph(obra?.distanciaPesoEspecial, times10bold), prmsHeaderHoja)
-
-
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
-
         addCellTabla(tablaDistancias, new Paragraph("Listas Volumen", times12bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Distancias", times12bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaDistancias, new Paragraph("Lista Materiales Petreos Hormigones", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaCoeficiente2, new Paragraph(g.formatNumber(number: obra?.listaVolumen0, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(obra?.listaVolumen0?.descripcion, times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Distancia Materiales Petreos Hormigones", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaVolumen, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDistancias, new Paragraph(obra?.distanciaVolumen, times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaDistancias, new Paragraph("Lista Materiales Mejoramiento", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaCoeficiente2, new Paragraph(g.formatNumber(number: obra?.listaVolumen1, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(obra?.listaVolumen1?.descripcion, times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Distancia Materiales Mejoramiento", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaVolumenMejoramiento, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDistancias, new Paragraph(obra?.distanciaVolumenMejoramiento, times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaDistancias, new Paragraph("Lista Materiales Carpeta Asfáltica", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaCoeficiente2, new Paragraph(g.formatNumber(number: obra?.listaVolumen2, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(obra?.listaVolumen2?.descripcion, times10normal), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph("Distancia Materiales Carpeta Asfáltica", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDistancias, new Paragraph(g.formatNumber(number: obra?.distanciaVolumenCarpetaAsfaltica, format: "###.##", locale: "ec"), times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDistancias, new Paragraph(obra?.distanciaVolumenCarpetaAsfaltica, times10bold), prmsHeaderHoja)
-
 
         PdfPTable tablaCoeficiente2 = new PdfPTable(3);
         tablaCoeficiente2.setWidthPercentage(100);
@@ -1802,62 +1560,45 @@ class ReportesController {
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Ubicación", times12bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Cantón: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.parroquia?.canton?.nombre, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Parroquia: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.parroquia?.nombre, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Comunidad: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.comunidad?.nombre, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Barrio: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.barrio, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Sitio: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.sitio, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Coordenadas: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.coordenadas, times10normal), prmsHeaderHoja3)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Lista de precios M.O. y Equipos: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.lugar?.descripcion, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Datos Generales", times12bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Inspector: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.inspector?.nombre + " " + obra?.inspector?.apellido, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Revisor: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.revisor?.nombre + " " + obra?.revisor?.apellido, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Responsable: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.responsableObra?.nombre + " " + obra?.responsableObra?.apellido, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
-
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Fecha de Registro de la Obra: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(printFecha(obra?.fechaCreacionObra), times10normal), prmsHeaderHoja3)
-
-
         addCellTabla(tablaCoeficiente2, new Paragraph("Observaciones: ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(obra?.observaciones, times10normal), prmsHeaderHoja)
         addCellTabla(tablaCoeficiente2, new Paragraph(" ", times10normal), prmsHeaderHoja)
@@ -1865,8 +1606,6 @@ class ReportesController {
         document.add(tablaCoeficiente)
         document.add(tablaDistancias)
         document.add(tablaCoeficiente2)
-
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -1874,18 +1613,13 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
     //reporte registroTramite
 
     def reporteRegistroTramite() {
 
-//        println("--->" + params)
-
         def usuario = session.usuario
-
         def tramites = PersonasTramite.withCriteria {
             eq("persona", usuario)
             ne("rolTramite", RolTramite.findByCodigo("CC"))
@@ -1894,19 +1628,10 @@ class ReportesController {
             }
         }.tramite.unique()
 
-
-
         def prmsHeaderHoja = [border: Color.WHITE]
-
-
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
-
-
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-
-
-
         def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
                            align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsCellHead = [border: Color.WHITE, bg: new Color(73, 175, 205),
@@ -1922,8 +1647,6 @@ class ReportesController {
 
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight]
-
-
 
         def baos = new ByteArrayOutputStream()
         def name = "registroTramite_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -1943,17 +1666,17 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Presupuesto " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("tramite, janus, registroTramite");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("tramite, fontus, registroTramite");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
 
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA"))
-        headers.add(new Paragraph(" "))
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS"))
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO"))
         headers.add(new Paragraph("TRÁMITES EN PROCESO"))
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("Quito, " + formatDate(date: new Date(), format: "dd-MM-yyyy"), times10bold));
@@ -1995,11 +1718,8 @@ class ReportesController {
         response.getOutputStream().write(b)
     }
 
-    //reporte registroTramite
-
     def reporteRegistroTramitexObra() {
 
-//        println("params" + params)
         def obra = Obra.get(params.idObra)
         def usuario = session.usuario
         def tramites = Tramite.findAllByObra(obra)
@@ -2041,17 +1761,17 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Presupuesto " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("tramite, janus, registroTramite");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("tramite,fontus, registroTramite");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
 
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA"))
-        headers.add(new Paragraph(" "))
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS"))
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO"))
         headers.add(new Paragraph("TRÁMITES POR OBRA"))
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("Quito, " + formatDate(date: new Date(), format: "dd-MM-yyyy"), times10bold));
@@ -2147,7 +1867,6 @@ class ReportesController {
         def prmsHeaderHoja4 = [border: Color.WHITE, bordeTop: "1"]
         def prmsHeaderHoja5 = [border: Color.WHITE, bordeBot: "1"]
         def prmsHeaderHoja6 = [border: Color.WHITE, bordeLeft: "1"]
-
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
@@ -2315,11 +2034,9 @@ class ReportesController {
         addCellTabla(tablaPresupuesto, new Paragraph("Nombre", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.nombre, times8normal), prmsHeaderHoja3)
-
         addCellTabla(tablaPresupuesto, new Paragraph("Código", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.codigo, times8normal), prmsHeaderHoja3)
-
         addCellTabla(tablaPresupuesto, new Paragraph("Provincia", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.parroquia?.canton?.provincia?.nombre, times8normal), prmsHeaderHoja)
@@ -2327,11 +2044,9 @@ class ReportesController {
         addCellTabla(tablaPresupuesto, new Paragraph("Cantón", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.parroquia?.canton?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaPresupuesto, new Paragraph("Parroquia", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.parroquia?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaPresupuesto, new Paragraph(" ", times8normal), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph("Sitio", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
@@ -2352,7 +2067,6 @@ class ReportesController {
         addCellTabla(tablaReferencia, new Paragraph("Referencia", times8bold), prmsHeaderHoja)
         addCellTabla(tablaReferencia, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaReferencia, new Paragraph(obra?.referencia, times8normal), prmsHeaderHoja)
-
 
         addCellTabla(tablaReferencia, new Paragraph("", times8bold), prmsHeaderHoja)
         addCellTabla(tablaReferencia, new Paragraph("", times8bold), prmsHeaderHoja)
@@ -2476,8 +2190,6 @@ class ReportesController {
             addCellTabla(tablaVolObra, new Paragraph("", times8bold), prmsCellRight)
             addCellTabla(tablaVolObra, new Paragraph("", times8bold), prmsCellRight)
             addCellTabla(tablaVolObra, new Paragraph("", times8bold), prmsCellRight)
-
-
         }
 
 
@@ -2485,7 +2197,6 @@ class ReportesController {
         tablaTotal.setWidthPercentage(100);
 
         tablaTotal.setWidths(arregloEnteros([85, 0, 0, 0, 0, 15]))
-
         addCellTabla(tablaTotal, new Paragraph("TOTAL DEL PRESUPUESTO SIN IVA: ", times8bold), prmsCellRight2)
         addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
         addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
@@ -2493,13 +2204,11 @@ class ReportesController {
         addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
         addCellTabla(tablaTotal, new Paragraph(g.formatNumber(number: totalPresupuesto, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8bold), prmsCellRight2)
 
-
         //solo IVA
         if (params.iva == 'true' && params.proyeccion == 'false') {
 
             ivaTotal = (totalPresupuesto * paux?.iva) / 100
             presupuestoTotal = totalPresupuesto + ivaTotal;
-
             addCellTabla(tablaTotal, new Paragraph("IVA " + paux?.iva + "% : ", times8bold), prmsCellRight)
             addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
             addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
@@ -2522,7 +2231,6 @@ class ReportesController {
 
             proyeccionTotal = (totalPresupuesto * ((inflacion / 1200) * meses.toInteger()))
             presupuestoTotal = totalPresupuesto + proyeccionTotal;
-
             addCellTabla(tablaTotal, new Paragraph("Proyeccion del Reajuste (período: " + meses + " meses, inflación: " + inflacion + " % ) :", times8bold), prmsCellRight)
             addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
             addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
@@ -2543,7 +2251,6 @@ class ReportesController {
             proyeccionTotal = (totalPresupuesto * ((inflacion / 1200) * meses.toInteger()))
             ivaTotal = ((totalPresupuesto + proyeccionTotal) * paux?.iva) / 100;
             presupuestoTotal = ((totalPresupuesto + proyeccionTotal) + ivaTotal)
-
             addCellTabla(tablaTotal, new Paragraph("Proyeccion del Reajuste (período: " + meses + " meses, inflación: " + inflacion + " % ) :", times8bold), prmsCellRight)
             addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
             addCellTabla(tablaTotal, new Paragraph(" ", times8bold), prmsCellHead)
@@ -2602,11 +2309,9 @@ class ReportesController {
         Paragraph txtDatos = new Paragraph();
         Paragraph txtDatos1 = new Paragraph();
 
-
         PdfPTable tablaDatos = new PdfPTable(6);
         tablaDatos.setWidthPercentage(100);
         tablaDatos.setWidths(arregloEnteros([10, 2, 30, 6, 2, 10]))
-
 
         if (params.forzarValue == '1') {
             Paragraph headerForzar = new Paragraph();
@@ -2624,15 +2329,12 @@ class ReportesController {
 
             tablaRetenciones.setWidthPercentage(100);
             tablaRetenciones.setWidths(arregloEnteros([7, 2, 60]))
-
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
-
             addCellTabla(tablaRetenciones, new Paragraph("Notas", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(nota?.texto, times8normal), prmsHeaderHoja)
-
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
@@ -2669,11 +2371,9 @@ class ReportesController {
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
-
             addCellTabla(tablaRetenciones, new Paragraph("Notas", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(nota?.texto, times8normal), prmsHeaderHoja)
-
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaRetenciones, new Paragraph(" ", times8bold), prmsHeaderHoja)
@@ -2694,7 +2394,6 @@ class ReportesController {
             txtDatos.setAlignment(Element.ALIGN_CENTER);
             txtDatos.add(new Paragraph("DATOS PARA EL PRESUPUESTO", times8bold));
             txtDatos.add(new Paragraph(" ", times8bold));
-
 
             addCellTabla(tablaDatos, new Paragraph("Lista de precios para", times8bold), prmsHeaderHoja)
             addCellTabla(tablaDatos, new Paragraph(" : ", times8bold), prmsHeaderHoja)
@@ -2759,7 +2458,6 @@ class ReportesController {
             txtRetenciones.setAlignment(Element.ALIGN_LEFT);
             txtRetenciones.add(new Paragraph("Atentamente, ", times8bold));
             txtRetenciones.add(new Paragraph(" ", times8bold));
-
         }
 
 //        if (cuenta == 3) {
@@ -2770,15 +2468,12 @@ class ReportesController {
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
-
         addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         if(session.perfil.id != 16){
@@ -2786,7 +2481,6 @@ class ReportesController {
         }else{
             addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         }
-
 
         def arregloFirmas = []
         def el1
@@ -3102,12 +2796,9 @@ class ReportesController {
         addCellTabla(tablaPresupuesto, new Paragraph("Nombre", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.nombre, times8normal), prmsHeaderHoja3)
-
         addCellTabla(tablaPresupuesto, new Paragraph("Código", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.codigo, times8normal), prmsHeaderHoja3)
-
-
         addCellTabla(tablaPresupuesto, new Paragraph("Provincia", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.parroquia?.canton?.provincia?.nombre, times8normal), prmsHeaderHoja)
@@ -3115,11 +2806,9 @@ class ReportesController {
         addCellTabla(tablaPresupuesto, new Paragraph("Cantón", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.parroquia?.canton?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaPresupuesto, new Paragraph("Parroquia", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(obra?.parroquia?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(tablaPresupuesto, new Paragraph(" ", times8normal), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph("Sitio", times8bold), prmsHeaderHoja)
         addCellTabla(tablaPresupuesto, new Paragraph(" : ", times8bold), prmsHeaderHoja)
@@ -3690,13 +3379,7 @@ class ReportesController {
         def direccion = Direccion.get(obra?.departamento?.direccion?.id)
         def nota
 
-        def firmaNueva
-
-//        if (!(params.firmaNueva == 'undefined')) {
-//            firmaNueva = PersonaRol.get(params.firmaNueva)
-//        } else {
-            firmaNueva = null
-//        }
+        def firmaNueva = null
 
         if (params.notaValue && params.notaValue != '' && params.notaValue != 'null' && params.notaValue != 'undefined') {
             nota = Nota.get(params.notaValue)
@@ -3880,10 +3563,6 @@ class ReportesController {
 
 
         if (tipo == '1') {
-//            addCellTabla(tablaMemo, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//            addCellTabla(tablaMemo, new Paragraph("Base de Contrato N°", times10bold), prmsHeaderHoja)
-//            addCellTabla(tablaMemo, new Paragraph(" : ", times8bold), prmsHeaderHoja)
-//            addCellTabla(tablaMemo, new Paragraph(obra?.oficioSalida, times10normal), prmsHeaderHoja)
             addCellTabla(tablaMemo, new Paragraph(" ", times8bold), prmsHeaderHoja)
             addCellTabla(tablaMemo, new Paragraph("Presupuesto Referencial", times10bold), prmsHeaderHoja)
             addCellTabla(tablaMemo, new Paragraph(" : ", times8bold), prmsHeaderHoja)
@@ -4797,14 +4476,11 @@ class ReportesController {
 
 
     def dummyReportes() {
-
         return false
-
     }
 
 
     def pagarAnticipoPdf() {
-
 
         def baos = new ByteArrayOutputStream()
         def name = "pagarAnticipo_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -4847,48 +4523,34 @@ class ReportesController {
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum]
 
         def planilla = janus.ejecucion.Planilla.get(params.id)
-
         def contrato = Contrato.get(planilla?.contrato?.id)
-
         def obra = Obra.get(contrato?.oferta?.concurso?.obra?.id)
-
         def suma = (planilla?.reajuste + planilla?.valor)
 
         PdfPTable headerRubroTabla = new PdfPTable(4); // 4 columns.
         headerRubroTabla.setWidthPercentage(100);
         headerRubroTabla.setWidths(arregloEnteros([10, 40, 10, 40]))
 
-
         addCellTabla(headerRubroTabla, new Paragraph("Obra1:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(obra?.nombre + " " + obra?.descripcion, times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Lugar:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(obra?.lugar?.descripcion, times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Planilla:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(g.formatNumber(number: planilla?.numero, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Ubicación:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(obra?.parroquia?.nombre + " " + obra?.parroquia?.canton?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Monto Contrato:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(g.formatNumber(number: contrato?.monto, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Contratista:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(contrato?.oferta?.proveedor?.nombre, times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Período:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph((planilla.tipoPlanilla.codigo == 'A' ? 'Anticipo' : 'del ' + planilla.fechaInicio.format('dd-MM-yyyy') + ' al ' + planilla.fechaFin.format('dd-MM-yyyy')), times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph("Plazo:", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(g.formatNumber(number: contrato?.plazo, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8normal), prmsHeaderHoja)
-
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8bold), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8normal), prmsHeaderHoja)
         addCellTabla(headerRubroTabla, new Paragraph(" ", times8bold), prmsHeaderHoja)
@@ -4899,102 +4561,28 @@ class ReportesController {
         anticipoTabla.setWidthPercentage(100);
         anticipoTabla.setWidths(arregloEnteros([50, 50]))
 
-
-
         if (planilla?.tipoPlanilla?.codigo == 'A') {
-
-
             addCellTabla(anticipoTabla, new Paragraph(contrato?.porcentajeAnticipo + " % de anticipo:", times8bold), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: planilla?.valor, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph("(+) Reajuste provisional del anticipo", times8bold), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: planilla?.reajuste, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph("SUMA:", times8bold), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: suma, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph("A FAVOR DEL CONTRATISTA:", times8bold), prmsHeaderHoja)
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: suma, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
-
         } else {
-
             addCellTabla(anticipoTabla, new Paragraph("Valor Planilla", times8bold), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: planilla?.valor, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph("(+) Reajuste provisional del anticipo", times8bold), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: planilla?.reajuste, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph("SUMA:", times8bold), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: suma, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
             addCellTabla(anticipoTabla, new Paragraph("A FAVOR DEL CONTRATISTA:", times8bold), prmsHeaderHoja)
             addCellTabla(anticipoTabla, new Paragraph(g.formatNumber(number: suma, minFractionDigits: 2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), fonts.times8normal), prmsHeaderHoja)
-
-
         }
 
-//        def planillas = Planilla.withCriteria {
-//            and {
-//                eq("contrato", contrato)
-//                or {
-//                    lt("fechaInicio", planilla.fechaFin)
-//                    isNull("fechaInicio")
-//                }
-//                order("id", "asc")
-//            }
-//        }
-//
-//
-//        def fp = janus.FormulaPolinomica.findAllByObra(obra)
-//        def fr = FormulaPolinomicaContractual.findAllByContrato(contrato)
-//        def tipo = TipoFormulaPolinomica.get(1)
-//        def oferta = contrato.oferta
-//        def periodoOferta = PeriodosInec.findByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(oferta.fechaEntrega, oferta.fechaEntrega)
-//
-//        def periodos = []
-//        def data = [
-//                c: [:],
-//                p: [:]
-//        ]
-//        def fpB0
-//
-//        def pcs = FormulaPolinomicaContractual.withCriteria {
-//            and {
-//                eq("contrato", contrato)
-//                or {
-//                    ilike("numero", "c%")
-//                    and {
-//                        ne("numero", "P0")
-//                        ilike("numero", "p%")
-//                    }
-//                }
-//                order("numero", "asc")
-//            }
-//        }
-//
-//
-//        PdfPTable b0Tabla = new PdfPTable(7);
-//        b0Tabla.setWidthPercentage(210);
-//        b0Tabla.setWidths(arregloEnteros([30, 30, 30, 30, 30, 30, 30]))
-//
-//        b0Tabla(headerRubroTabla, new Paragraph("Cuadrilla Tipo:", times8bold), prmsHeaderHoja)
-//        b0Tabla(headerRubroTabla, new Paragraph(obra?.nombre + " " + obra?.descripcion, times8normal), prmsHeaderHoja)
-//
-//        b0Tabla(headerRubroTabla, new Paragraph(" ", times8bold), prmsHeaderHoja)
-//        b0Tabla(headerRubroTabla, new Paragraph(" ", times8normal), prmsHeaderHoja)
-
-
         document.add(headerRubroTabla);
-//        document.add(anticipoTexto);
         document.add(anticipoTabla);
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -5002,8 +4590,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
 
@@ -5032,11 +4618,8 @@ class ReportesController {
             diasPlanilla = planilla.fechaFin - planilla.fechaInicio
         }
         def valorPlanilla = planilla.valor
-
         def acumuladoCrono = 0, acumuladoPlan = 0
-
         def diasAll = 0
-
         def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         def precios = [:]
         def indirecto = obra.totales / 100
@@ -5054,10 +4637,7 @@ class ReportesController {
         }
 
         def numerosALetras = NumberToLetterConverter.convertNumberToLetter(planilla?.valor + planilla?.reajuste)
-
-
         return [planilla: planilla, obra: obra, oferta: oferta, contrato: contrato, numerosALetras: numerosALetras, tramite: tramite, prsn: prsn]
-
     }
 
 
@@ -5070,21 +4650,15 @@ class ReportesController {
     def reporteComposicion() {
 
         def obra = Obra.get(params.id)
-
         def totales
-
         def valorTotal
-
         def total1 = 0
-
         def totalesMano
         def valorTotalMano
         def total2 = 0
-
         def totalesEquipos
         def valorTotalEquipos
         def total3 = 0
-
 
         if (!params.tipo) {
             params.tipo = "-1"
@@ -5193,54 +4767,42 @@ class ReportesController {
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("OBRA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.nombre, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("CÓDIGO", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.codigo, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("DOCUMENTO DE REFERENCIA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.oficioIngreso, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaCreacionObra), times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaPreciosRubros), times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
 
         document.add(header);
 
-
         PdfPTable tablaHeader = new PdfPTable(8)
         tablaHeader.setWidthPercentage(100)
         tablaHeader.setWidths(arregloEnteros([12, 36, 5, 9, 9, 9, 10, 10]))
-
         PdfPTable tablaTitulo = new PdfPTable(2)
         tablaTitulo.setWidthPercentage(100)
         tablaTitulo.setWidths(arregloEnteros([90, 10]))
-
         PdfPTable tablaComposicion = new PdfPTable(8)
         tablaComposicion.setWidthPercentage(100)
         tablaComposicion.setWidths(arregloEnteros([12, 36, 5, 9, 9, 9, 10, 10]))
-
         PdfPTable tablaTotales = new PdfPTable(2)
         tablaTotales.setWidthPercentage(100)
         tablaTotales.setWidths(arregloEnteros([70, 30]))
-
 
         addCellTabla(tablaHeader, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaHeader, new Paragraph("Item", times8bold), prmsCellHead2)
@@ -5250,17 +4812,13 @@ class ReportesController {
         addCellTabla(tablaHeader, new Paragraph("Transporte", times8bold), prmsCellDerecha2)
         addCellTabla(tablaHeader, new Paragraph("Costo", times8bold), prmsCellDerecha2)
         addCellTabla(tablaHeader, new Paragraph("Total", times8bold), prmsCellDerecha2)
-
-
         addCellTabla(tablaTitulo, new Paragraph("Materiales ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
 
 
         res.each { r ->
-
             if (r?.grid == 1) {
-
                 addCellTabla(tablaComposicion, new Paragraph(r?.codigo, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion, new Paragraph(r?.item, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion, new Paragraph(r?.unidad, times8normal), prmsCellHead)
@@ -5276,10 +4834,8 @@ class ReportesController {
                         3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times8normal), prmsNum)
 
                 totales = r?.total
-
                 valorTotal = (total1 += totales)
             }
-
         }
 
         addCellTabla(tablaTotales, new Paragraph("Total Materiales", times10bold), prmsCellDerecha)
@@ -5288,9 +4844,6 @@ class ReportesController {
 
         addCellTabla(tablaTotales, new Paragraph(" ", times10bold), prmsNum)
         addCellTabla(tablaTotales, new Paragraph(" ", times10bold), prmsNum)
-
-
-
 
         PdfPTable tablaTitulo2 = new PdfPTable(2)
         tablaTitulo2.setWidthPercentage(100)
@@ -5303,17 +4856,11 @@ class ReportesController {
         PdfPTable tablaTotalesMano = new PdfPTable(2)
         tablaTotalesMano.setWidthPercentage(100)
         tablaTotalesMano.setWidths(arregloEnteros([70, 30]))
-//
-//        println("h:" + tablaTitulo2.getHeaderHeight())
 
         addCellTabla(tablaTitulo2, new Paragraph("Mano de obra ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo2, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
-
-
         res.each { j ->
-
-
             if (j?.grid == 2) {
                 addCellTabla(tablaComposicion2, new Paragraph(j?.codigo, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion2, new Paragraph(j?.item, times8normal), prmsCellIzquierda)
@@ -5328,11 +4875,8 @@ class ReportesController {
                         3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times8normal), prmsNum)
                 addCellTabla(tablaComposicion2, new Paragraph(g.formatNumber(number: j?.total, minFractionDigits:
                         3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times8normal), prmsNum)
-
                 totalesMano = j?.total
                 valorTotalMano = (total2 += totalesMano)
-
-
             }
 
         }
@@ -5343,7 +4887,6 @@ class ReportesController {
 
         addCellTabla(tablaTotalesMano, new Paragraph(" ", times10bold), prmsNum)
         addCellTabla(tablaTotalesMano, new Paragraph(" ", times10bold), prmsNum)
-
 
         PdfPTable tablaTitulo3 = new PdfPTable(2)
         tablaTitulo3.setWidthPercentage(100)
@@ -5357,13 +4900,11 @@ class ReportesController {
         tablaTotalesEquipos.setWidthPercentage(100)
         tablaTotalesEquipos.setWidths(arregloEnteros([70, 30]))
 
-
         addCellTabla(tablaTitulo3, new Paragraph("Equipos ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo3, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
 
         res.each { k ->
-
             if (k?.grid == 3) {
                 addCellTabla(tablaComposicion3, new Paragraph(k?.codigo, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion3, new Paragraph(k?.item, times8normal), prmsCellIzquierda)
@@ -5381,17 +4922,13 @@ class ReportesController {
 
                 totalesEquipos = k?.total
                 valorTotalEquipos = (total3 += totalesEquipos)
-
-
             }
-
         }
 
         addCellTabla(tablaTotalesEquipos, new Paragraph("Total Equipos:", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotalesEquipos, new Paragraph(g.formatNumber(number: valorTotalEquipos, minFractionDigits:
                 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
 
-//
         PdfPTable tablaTotalGeneral = new PdfPTable(2)
         tablaTotalGeneral.setWidthPercentage(100)
         tablaTotalGeneral.setWidths(arregloEnteros([70, 30]))
@@ -5399,8 +4936,6 @@ class ReportesController {
         addCellTabla(tablaTotalGeneral, new Paragraph("Total General:", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotalGeneral, new Paragraph(g.formatNumber(number: (valorTotal + valorTotalMano + valorTotalEquipos), minFractionDigits:
                 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
-
-//        println("size: " + document.pageSize.getHeight())
 
         document.add(tablaHeader);
         document.add(tablaTitulo);
@@ -5420,22 +4955,14 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
     def reporteComposicionMat() {
 
-//        println("-->>" + params)
-
         def obra = Obra.get(params.id)
-
         def totales
-
         def valorTotal = 0
-
         def total1 = 0
-
         def totalesMano
         def valorTotalMano
         def total2 = 0
@@ -5457,8 +4984,6 @@ class ReportesController {
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
-
-
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                 "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
                 "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
@@ -5472,12 +4997,8 @@ class ReportesController {
                 "g.grpo__id, g.grpodscr " +
                 "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
-//        println(sql)
-
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
-
-
         def baos = new ByteArrayOutputStream()
         def name = "composicion_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -5548,23 +5069,18 @@ class ReportesController {
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("OBRA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.nombre, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("CÓDIGO", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.codigo, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("DOCUMENTO DE REFERENCIA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.oficioIngreso, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaCreacionObra), times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaPreciosRubros), times8bold), prmsCellHead3)
@@ -5596,17 +5112,11 @@ class ReportesController {
         addCellTabla(tablaHeader, new Paragraph("Transporte", times8bold), prmsCellDerecha2)
         addCellTabla(tablaHeader, new Paragraph("Costo", times8bold), prmsCellDerecha2)
         addCellTabla(tablaHeader, new Paragraph("Total", times8bold), prmsCellDerecha2)
-
-
         addCellTabla(tablaTitulo, new Paragraph("Materiales ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
-
-
         res.each { r ->
-
             if (r?.grid == 1) {
-
                 addCellTabla(tablaComposicion, new Paragraph(r?.codigo, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion, new Paragraph(r?.item, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion, new Paragraph(r?.unidad, times8normal), prmsCellHead)
@@ -5620,27 +5130,21 @@ class ReportesController {
                         3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times8normal), prmsNum)
                 addCellTabla(tablaComposicion, new Paragraph(g.formatNumber(number: r?.total, minFractionDigits:
                         3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times8normal), prmsNum)
-
                 totales = r?.total
-
                 valorTotal = (total1 += totales)
             }
-
         }
 
         addCellTabla(tablaTotales, new Paragraph("Total Materiales", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotales, new Paragraph(g.formatNumber(number: valorTotal, minFractionDigits: 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
-
         addCellTabla(tablaTotales, new Paragraph(" ", times10bold), prmsNum)
         addCellTabla(tablaTotales, new Paragraph(" ", times10bold), prmsNum)
 
 
         document.add(tablaTitulo);
         document.add(tablaHeader);
-
         document.add(tablaComposicion);
         document.add(tablaTotales)
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -5648,30 +5152,20 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
     def reporteComposicionMano() {
 
-//        println("MO!!!!" + params)
-
         def obra = Obra.get(params.id)
-
         def totales
-
         def valorTotal
-
         def total1 = 0
-
         def totalesMano
         def valorTotalMano
         def total2 = 0
-
         def totalesEquipos
         def valorTotalEquipos
         def total3 = 0
-
 
         if (!params.tipo) {
             params.tipo = "-1"
@@ -5691,8 +5185,6 @@ class ReportesController {
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
-
-
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                 "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
                 "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
@@ -5706,12 +5198,8 @@ class ReportesController {
                 "g.grpo__id, g.grpodscr " +
                 "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
-//        println(sql)
-
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
-
-
         def baos = new ByteArrayOutputStream()
         def name = "composicion_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -5732,9 +5220,9 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Composicion " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, composicion");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, fontus, composicion");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         def prmsHeaderHoja = [border: Color.WHITE]
@@ -5770,7 +5258,8 @@ class ReportesController {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times14bold));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS", times14bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
@@ -5783,23 +5272,18 @@ class ReportesController {
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("OBRA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.nombre, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("CÓDIGO", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.codigo, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("DOCUMENTO DE REFERENCIA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.oficioIngreso, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaCreacionObra), times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaPreciosRubros), times8bold), prmsCellHead3)
@@ -5845,11 +5329,7 @@ class ReportesController {
         addCellTabla(tablaTitulo2, new Paragraph("Mano de obra ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo2, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
-
-
         res.each { j ->
-
-
             if (j?.grid == 2) {
                 addCellTabla(tablaComposicion2, new Paragraph(j?.codigo, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion2, new Paragraph(j?.item, times8normal), prmsCellIzquierda)
@@ -5867,10 +5347,7 @@ class ReportesController {
 
                 totalesMano = j?.total
                 valorTotalMano = (total2 += totalesMano)
-
-
             }
-
         }
 
         addCellTabla(tablaTotalesMano, new Paragraph("Total Mano de Obra:", times10bold), prmsCellDerecha)
@@ -5880,13 +5357,10 @@ class ReportesController {
         addCellTabla(tablaTotalesMano, new Paragraph(" ", times10bold), prmsNum)
         addCellTabla(tablaTotalesMano, new Paragraph(" ", times10bold), prmsNum)
 
-//        println("size: " + document.pageSize.getHeight())
         document.add(tablaTitulo2)
         document.add(tablaHeader);
-
         document.add(tablaComposicion2);
         document.add(tablaTotalesMano)
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -5894,29 +5368,21 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
 
     def reporteComposicionEq() {
 
         def obra = Obra.get(params.id)
-
         def totales
-
         def valorTotal
-
         def total1 = 0
-
         def totalesMano
         def valorTotalMano
         def total2 = 0
-
         def totalesEquipos
         def valorTotalEquipos
         def total3 = 0
-
 
         if (!params.tipo) {
             params.tipo = "-1"
@@ -5935,8 +5401,6 @@ class ReportesController {
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
-
-
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                 "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
                 "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
@@ -5953,8 +5417,6 @@ class ReportesController {
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
-
-
         def baos = new ByteArrayOutputStream()
         def name = "composicion_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -5975,9 +5437,9 @@ class ReportesController {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
         document.addTitle("Composicion " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus, composicion");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, fontus, composicion");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
         def prmsHeaderHoja = [border: Color.WHITE]
@@ -6012,7 +5474,8 @@ class ReportesController {
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times18bold));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times18bold));
         headersTitulo.add(new Paragraph("COMPOSICIÓN", times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("", times12bold));
@@ -6025,23 +5488,18 @@ class ReportesController {
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph("", times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("OBRA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.nombre, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("CÓDIGO", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.codigo, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("DOCUMENTO DE REFERENCIA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(obra?.oficioIngreso, times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaCreacionObra), times8bold), prmsCellHead3)
-
         addCellTabla(header, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(" : ", times8bold), prmsCellHead3)
         addCellTabla(header, new Paragraph(printFecha(obra?.fechaPreciosRubros), times8bold), prmsCellHead3)
@@ -6097,13 +5555,10 @@ class ReportesController {
         tablaTotalesEquipos.setWidthPercentage(100)
         tablaTotalesEquipos.setWidths(arregloEnteros([70, 30]))
 
-
         addCellTabla(tablaTitulo3, new Paragraph("Equipos ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo3, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
-
         res.each { k ->
-
             if (k?.grid == 3) {
                 addCellTabla(tablaComposicion3, new Paragraph(k?.codigo, times8normal), prmsCellIzquierda)
                 addCellTabla(tablaComposicion3, new Paragraph(k?.item, times8normal), prmsCellIzquierda)
@@ -6121,10 +5576,7 @@ class ReportesController {
 
                 totalesEquipos = k?.total
                 valorTotalEquipos = (total3 += totalesEquipos)
-
-
             }
-
         }
 
         addCellTabla(tablaTotalesEquipos, new Paragraph("Total Equipos:", times10bold), prmsCellDerecha)
@@ -6136,7 +5588,6 @@ class ReportesController {
         document.add(tablaHeader);
         document.add(tablaComposicion3);
         document.add(tablaTotalesEquipos)
-
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -6144,8 +5595,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
 
@@ -6163,13 +5612,12 @@ class ReportesController {
         workbookSettings.locale = Locale.default
         def file = File.createTempFile('matrizFP' + obra.codigo, '.xls')
         file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
 
+        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
         WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.BOLD, false);
         WritableCellFormat times10format = new WritableCellFormat(times10Font);
         WritableFont times10Normal = new WritableFont(WritableFont.TIMES, 10, WritableFont.BOLD, false);
         WritableCellFormat times10formatNormal = new WritableCellFormat(times10Normal);
-
         WritableFont times08font = new WritableFont(WritableFont.TIMES, 8, WritableFont.NO_BOLD, false);
         WritableCellFormat times08format = new WritableCellFormat(times08font);
 
@@ -6191,7 +5639,7 @@ class ReportesController {
         sheet.setColumnView(11, 15)
         sheet.setColumnView(12, 15)  // el resto por defecto..
 
-        def label = new Label(2, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA".toUpperCase(), times10format); sheet.addCell(label);
+        def label = new Label(2, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS".toUpperCase(), times10format); sheet.addCell(label);
 
         label = new Label(2, 2, "${obra?.departamento?.direccion?.nombre}", times10format); sheet.addCell(label);
         label = new Label(2, 3, "Matriz de la Fórmula Polinómica", times10format); sheet.addCell(label);
@@ -6204,10 +5652,8 @@ class ReportesController {
         label = new Label(2, 10, "Fecha Act. Precios: ${printFecha(obra?.fechaPreciosRubros)}", times10format);
         sheet.addCell(label);
 
-        // crea columnas
 
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
-//        println "sql desc " + sql
         def subSql = ""
         def sqlVl = ""
         def clmn = 0
@@ -6228,7 +5674,6 @@ class ReportesController {
         }
         fila++
         def sqlRb = "SELECT orden, codigo, rubro, unidad, cantidad from mfrb where obra__id = ${obra.id} order by orden"
-//        println "sql desc " + sqlRb
         def number
         cn.eachRow(sqlRb.toString()) { r ->
             4.times {
@@ -6248,9 +5693,7 @@ class ReportesController {
                 if (r.clmntipo != "R") {
                     subSql = "select valor from mfvl where clmncdgo = ${r.clmncdgo} and codigo='${rb.codigo.trim()}' and " +
                             "obra__id = ${obra.id}"
-                    //println subSql
                     cn2.eachRow(subSql.toString()) { v ->
-//                        label = new Label(clmn++, fila, v.valor.toString(), times08format); sheet.addCell(label);
                         number = new Number(clmn++, fila, v.valor?.toDouble()?.round(5) ?: 0.00000, times08format); sheet.addCell(number);
                     }
                 }
@@ -6266,56 +5709,28 @@ class ReportesController {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
-
-        // crea columnas
-
-
     }
 
 
     def reporteAvance() {
 
         params.id = 15;
-
         def concurso = janus.pac.Concurso.get(params.id)
-
         def diasPreparatorioPac = concurso.pac.tipoProcedimiento.preparatorio
-
         def inicioPreparatorio = concurso.fechaInicioPreparatorio
-
         def finPreparatorio = concurso.fechaFinPreparatorio
-
         def diasPrecontractualPac = concurso.pac.tipoProcedimiento.precontractual
-
         def inicioPrecontractual = concurso.fechaInicioPrecontractual
-
         def finPrecontractual = concurso.fechaFinPrecontractual
-
         def diasContractualPac = concurso.pac.tipoProcedimiento.contractual
-
         def inicioContractual = concurso.fechaInicioContractual
-
         def finContractual = concurso.fechaInicioContractual
-
-//        def noLaborables = ["Sat", "Sun"]
-//
-//        def fmt = new java.text.SimpleDateFormat("EEE", new Locale("en"))
-
         def fechaTemp = inicioPreparatorio
-
         def fechaTempPrecon = inicioPrecontractual
-
         def fechaTempContra = inicioContractual
-
         def diasPreparatorio = 0
-
         def diasPrecontractual = 0
-
         def diasContractual = 0
-
-//        diasPreparatorio = horasLaborables(fechaTemp, finPreparatorio, diasPreparatorio, fmt, noLaborables)
-//        diasPrecontractual = horasLaborables(fechaTempPrecon, finPrecontractual, diasPrecontractual, fmt, noLaborables)
-//        diasContractual = horasLaborables(fechaTempContra, finContractual, diasContractual, fmt, noLaborables)
 
         /* Aqui esta con la nueva tabla de dias feriados */
         def res1 = diasLaborablesService.diasLaborablesEntre(fechaTemp, finPreparatorio)
@@ -6347,7 +5762,6 @@ class ReportesController {
             flash.message = "<ul>" + err + "</ul>"
             redirect(action: "errores", params: [link: link])
             return;
-//            redirect(action: "errores")
         }
 
         def baos = new ByteArrayOutputStream()
@@ -6402,7 +5816,8 @@ class ReportesController {
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headers.add(new Paragraph("CONTROL DE AVANCE DE CONCURSO", times12bold));
         headers.add(new Paragraph("OBRA: " + concurso?.obra?.nombre, times10bold));
         headers.add(new Paragraph("FECHA: " + printFecha(new Date()), times10bold));
@@ -6420,7 +5835,6 @@ class ReportesController {
         addCellTabla(tablaAvance, new Paragraph("Indicador", times10bold), prmsCellHead)
 
         if (inicioPreparatorio && finPreparatorio) {
-
             addCellTabla(tablaAvance, new Paragraph("Preparatorio", times8normal), prmsCellIzquierda)
             addCellTabla(tablaAvance, new Paragraph(g.formatNumber(number: diasPreparatorio, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsNum)
@@ -6428,11 +5842,8 @@ class ReportesController {
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsNum)
             addCellTabla(tablaAvance, new Paragraph(g.formatNumber(number: (diasPreparatorio / diasPreparatorioPac) * 100, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec") + " %", times8normal), prmsNum)
-
-
         }
         if (inicioPrecontractual && finPrecontractual) {
-
             addCellTabla(tablaAvance, new Paragraph("Precontractual", times8normal), prmsCellIzquierda)
             addCellTabla(tablaAvance, new Paragraph(g.formatNumber(number: diasPrecontractual, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsNum)
@@ -6440,11 +5851,8 @@ class ReportesController {
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsNum)
             addCellTabla(tablaAvance, new Paragraph(g.formatNumber(number: (diasPrecontractual / diasPrecontractualPac) * 100, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec") + " %", times8normal), prmsNum)
-
-
         }
         if (inicioContractual && finContractual) {
-
             addCellTabla(tablaAvance, new Paragraph("Contractual", times8normal), prmsCellIzquierda)
             addCellTabla(tablaAvance, new Paragraph(g.formatNumber(number: diasContractual, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsNum)
@@ -6454,7 +5862,6 @@ class ReportesController {
                     0, maxFractionDigits: 2, format: "##,##0", locale: "ec") + " %", times8normal), prmsNum)
         }
 
-
         document.add(tablaAvance);
         document.close();
         pdfw.close()
@@ -6463,12 +5870,10 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def horasLaborables(fechaTemp, fechaFin, dias, fmt, noLaborables) {
         while (fechaTemp <= fechaFin) {
-//            println "\t"+fechaTemp+"   "+fmt.format(fechaTemp)
             if (!noLaborables.contains(fmt.format(fechaTemp))) {
                 dias++
             }
