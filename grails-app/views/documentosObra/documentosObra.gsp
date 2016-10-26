@@ -1085,38 +1085,6 @@
         </fieldset>
     </div>
 
-
-    <div id="cambioMonedaExcel">
-
-        <fieldset>
-            <div class="span3" style="margin-bottom: 20px">
-
-                Coloque la tasa de cambio que se aplicará a los valores del reporte en excel.
-
-            </div>
-
-            <div class="span3">
-
-                Tasa de Cambio: <g:textField name="cambioMoneda" style="width: 55px; margin-left: 20px"/>
-
-            </div>
-
-        </fieldset>
-    </div>
-
-
-    <div id="tasaCeroDialog">
-
-        <fieldset>
-            <div class="span3">
-
-                Si desea que su reporte sea calculado con una tasa de cambio se debe colocar un número válido en el campo Tasa!!
-
-            </div>
-        </fieldset>
-    </div>
-
-
     <div id="borrarFirmaPresuDialog">
         <fieldset>
             <div class="span3">
@@ -1937,7 +1905,7 @@
 
             //memoAdmi
 
-            if (active == 3) {   /* administracion directa */
+            /*if (active == 3) {   /!* administracion directa *!/
 
                 var materiales = $("#materialesMemo").val()
                 var manoObra = $("#manoObraMemo").val()
@@ -1967,7 +1935,7 @@
                         firmasIdMP + "&totalPresupuesto=" + totalPres + "&firmasFijasMP=" + firmasFijasMP + "&materiales=" + materiales +
                         "&manoObra=" + manoObra + "&equipos=" + equipos + "&costoPorcentaje=" + costoPorcentaje + "&costo=" + costo + "&total=" + total +
                         "&texto=" + texto + "&para=" + para + "&de=" + de + "&fecha=" + fecha + "&asunto=" + asunto + "&financiero=" + financiero
-            }
+            }*/
         }
         return false;
     });
@@ -2210,14 +2178,6 @@
 
     });
 
-    $("#btnExcel").click(function () {
-        $("#cambioMonedaExcel").dialog("open")
-    });
-
-    //    $("#btnAceptarMemo").click(function () {
-    //
-    //        $("#frm-memo").submit();
-    //    });
 
     $("#btnEditarFor").click(function () {
 
@@ -2508,36 +2468,6 @@
 
     });
 
-    $("#cambioMonedaExcel").dialog({
-
-        autoOpen  : false,
-        resizable : false,
-        modal     : true,
-        draggable : false,
-        width     : 350,
-        height    : 250,
-        position  : 'center',
-        title     : 'Tasa de cambio',
-        buttons   : {
-            "Aceptar"    : function () {
-                tasaCambio = $("#cambioMoneda").val()
-                if (tasaCambio == "") {
-                    $("#tasaCeroDialog").dialog("open");
-                } else {
-                    var url = "${g.createLink(controller: 'reportes',action: 'documentosObraTasaExcel',id: obra?.id)}?tasa=" + tasaCambio
-                    location.href = url
-                }
-                $("#cambioMonedaExcel").dialog("close");
-            },
-            "Sin cambio" : function () {
-                location.href = "${g.createLink(controller: 'reportes',action: 'documentosObraExcel',id: obra?.id)}"
-                $("#cambioMonedaExcel").dialog("close");
-            },
-            "Cancelar"   : function () {
-                $("#cambioMonedaExcel").dialog("close");
-            }
-        }
-    });
 
     $("#reajustePresupuestoDialog").dialog({
 

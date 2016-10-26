@@ -243,7 +243,6 @@
         <div class="span12" style="margin-top: 15px" align="center">
 
             <p class="css-vertical-text">Ingreso</p>
-
             <div class="linea" style="height: 85%;"></div>
 
         </div>
@@ -386,6 +385,9 @@
 
     </fieldset>
     <fieldset class="borde" style="position: relative;float: left">
+        <p class="css-vertical-text" style="margin-bottom: 150px">Datos de la Obra</p>
+        <div class="linea" style="height: 96%;"></div>
+
         <g:if test="${obra?.tipo == 'D'}">
             <div class="span12" style="margin-top: 15px" align="center">
                 <p class="css-vertical-text">Administración Directa</p>
