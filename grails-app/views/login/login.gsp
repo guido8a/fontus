@@ -24,7 +24,8 @@
             font-family: 'open sans condensed';
             font-weight: bold;
             text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.25);
-            color: #00496e;
+            /*color: #00496e;*/
+            color: #5C6E80;
             margin-top: 20px;
         }
         .centrado {
@@ -40,7 +41,8 @@
             margin-top: 5px
         }
         .login2 {
-            border: 5px solid #00496e;
+            /*border: 5px solid #00496e;*/
+            border: 5px solid #002335;
             background:#C7C7C5; /*#a7a7a5*/
             color: #939Aa2;
             width: 300px;

@@ -1,12 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 2/10/12
-  Time: 4:18 PM
-  To change this template use File | Settings | File Templates.
---%>
-
-
 <%@ page import="janus.seguridad.Sesn" contentType="text/html;charset=UTF-8" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
@@ -39,7 +30,7 @@
         <h1 class="titl" style="font-size: 24px;">${empr.nombre}</h1>
     </div>
 
-        <g:form class="well form-horizontal span" action="savePer" name="frmLogin" style="border: 5px solid #155184; background:#c7c7c5;color: #939Aa2; width: 300px; margin-left: 240px; margin-top: 80px; position: relative; padding-left: 100px">
+        <g:form class="well form-horizontal span" action="savePer" name="frmLogin" style="border: 5px solid #002335; background:#c7c7c5;color: #939Aa2; width: 300px; margin-left: 240px; margin-top: 80px; position: relative; padding-left: 100px">
             <p class="css-vertical-text" style="left: 12px;;font-family: 'Tulpen One',cursive;font-weight: bold;font-size: 35px; color:#334;">Sistema SECOB</p>
 
             <div class="linea" style="height: 95%;left: 45px; border-left-color: #334"></div>

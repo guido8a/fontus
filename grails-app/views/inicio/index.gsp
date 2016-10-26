@@ -4,10 +4,6 @@
     <title>${empr.empresa}</title>
     <meta name="layout" content="main"/>
     <style type="text/css">
-    @page {
-        size: 8.5in 11in;  /* width height */
-        margin: 0.25in;
-    }
 
     .item {
         width: 260px;
@@ -37,8 +33,8 @@
     }
 
     .fuera {
-        margin-left: 15px;
-        margin-top: 20px;
+        margin-left: 6px;
+        margin-top: 8px;
         background-color: rgb(181, 181, 181);
         border: none;
 
@@ -62,8 +58,8 @@
 <div class="dialog">
     <div style="text-align: center;"><h1 class="titl" style="font-size: 26px;">${empr.nombre}</h1></div>
 
-    <div class="body ui-corner-all" style="width: 850px;position: relative;margin: auto;margin-top: 0px;height: 510px;
-    background: rgba(0, 32, 52, 0.73);">
+    <div class="body ui-corner-all" style="width: 818px;position: relative;margin: auto;margin-top: 0px;height: 482px;
+    background: #526272;">
 
         <g:if test="${prms.contains('rubroPrincipal')}">
             <a href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}" title="Análisis de Precios Unitarios">
