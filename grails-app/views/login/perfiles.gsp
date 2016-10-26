@@ -24,8 +24,8 @@
     </head>
 
     <body style="background-color: #d7d7d7">
-    <div class="dialog ui-corner-all" style="height: 595px;background: #d9d9d9;;padding: 10px;width: 910px; margin: auto;">
-        %{--<g:form class="well form-horizontal span" action="savePer" name="frmLogin" style="border: 5px solid #2080B0; background:#c7c7c5;color: #939Aa2; width: 300px; margin-left: 240px; margin-top: 180px; position: relative; padding-left: 100px">--}%
+    %{--<div class="dialog ui-corner-all" style="height: 595px;background: #d9d9d9;;padding: 10px;width: 910px; margin: auto;">--}%
+    <div class="dialog ui-corner-all" style="height: 595px;background: #d9d9d9;;padding: 10px;width: 910px; margin-left: 500px; text-align: center">
         <div style="text-align: center;"><h1 class="titl" style="font-size: 32px;">${empr.empresa}</h1>
         <h1 class="titl" style="font-size: 24px;">${empr.nombre}</h1>
     </div>
@@ -47,8 +47,8 @@
                 <div class="control-group">
                     <label class="control-label" style="width: 50px;text-align: left;font-size: 25px;font-family: 'Tulpen One',cursive;font-weight: bolder;float: left; color:#334">Perfil:</label>
 
-                    <div class="controls" style="width: 150px;margin-left: 5px;float: right;margin-right: 60px">
-                        <g:select name="perfiles" from="${perfilesUsr}" class="span2" required="" optionKey="id" style="width: 180px;"/>
+                    <div class="controls" style="width: 180px;margin-left: 5px;float: right;margin-right: 60px">
+                        <g:select name="perfiles" from="${perfilesUsr}" class="span2 control-group" required="" optionKey="id" style="width: 210px;"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </div>
                 </div>
