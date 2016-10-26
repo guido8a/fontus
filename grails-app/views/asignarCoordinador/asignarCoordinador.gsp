@@ -1,12 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 11/14/13
-  Time: 3:50 PM
---%>
-
-
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -87,21 +78,13 @@
 
 
     $("#adicionar").click(function () {
-
         var idDireccion = $("#direccion").val()
-
-
         if(idDireccion != -1){
-
             if($(".persona").val() != null){
-
         var idDepar = $("#departamento").val()
-
-
         var existe
 
         $.ajax({
-
             type:'POST',
             url: "${g.createLink(controller: "asignarCoordinador", action: 'sacarFunciones')}",
             data: { id: idDepar
@@ -111,16 +94,9 @@
                 if(msg == '0' ){
 
                     var idPersona = $(".persona").val();
-
-                    console.log("-->>" + idPersona)
-
+//                    console.log("-->>" + idPersona)
                     var valorAdicionar = $("#funcion option:selected").attr("class");
                     var idAcicionar = $("#funcion").val();
-
-
-//        console.log("-->" + idAcicionar)
-
-
                     var tbody = $("#funcionPersona");
                     var rows = tbody.children("tr").length;
                     var continuar = true;
@@ -136,28 +112,17 @@
                     });
 
                     if (continuar) {
-
-                        //AJAX
-
                         $.ajax({
                             type: "POST",
                             url: "${g.createLink(controller: "asignarCoordinador", action: 'grabarFuncion')}",
                             data: { id: idPersona,
-
                                 rol: idAcicionar
                             },
                             success: function (msg) {
-
-
                                 var confirmacion = $("#confirmacion")
-
-
                                 var comboPersona =  $(".persona option:selected").text()
-
                                 var dir =  $("<div class='span12' id='directorSel' style='font-weight: bold; color: #4f5dff'>Coordinador Seleccionado: "+ comboPersona + "</div>");
-
                                 confirmacion.html(dir)
-
                                 var parts = msg.split("_");
                                 if (parts[0] == "OK") {
                                     var tr = $("<tr>");
@@ -171,12 +136,10 @@
                                         borrar(boton);
                                     });
                                     tdAccion.append(boton);
-
                                     tr.data({
                                         id: idAcicionar,
                                         valor: valorAdicionar
                                     });
-
                                     tdNumero.html(rows + 1);
                                     tdFuncion.html(valorAdicionar);
                                     tr.append(tdNumero).append(tdFuncion).append(tdAccion);
@@ -184,28 +147,14 @@
                                 }
                             }
                         });
-
-
                     } else {
-                        //avisar q ya existe
-
                         alert("La persona ya tiene asignado el rol de Coordinador!")
                     }
-
-
                 }
-
                 else {
-
                     alert("Ya existe un coordinador asignado!")
-
                 }
-
             }
-
-
-
-
         });
 
     }

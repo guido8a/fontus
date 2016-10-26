@@ -7,73 +7,57 @@ class AsignarCoordinadorController {
     def index() {}
 
 
-    def getDepartamento () {
+    def getDepartamento() {
 
 //        println(params)
 
-     def direccion = Direccion.get(params.id)
+        def direccion = Direccion.get(params.id)
 
-     def departamento = Departamento.findAllByDireccion(direccion)
+        def departamento = Departamento.findAllByDireccion(direccion)
 
-        return[departamento: departamento]
-
-    }
-
-
-    def asignarCoordinador () {
-
-
+        return [departamento: departamento]
 
     }
 
 
-    def getPersonas () {
-
-    def departamento = Departamento.get(params.id)
-
-    def personas
-
-    if (departamento != null ){
-        personas = Persona.findAllByDepartamento(departamento)
-    }else {
-        personas = []
-    }
-
-    return [personas: personas]
-
+    def asignarCoordinador() {
 
 
     }
 
 
-    def sacarFunciones () {
-
-
+    def getPersonas() {
         def departamento = Departamento.get(params.id)
+        def personas
 
-        def personas = Persona.findAllByDepartamento(departamento, [sort: 'nombre'])
+        if (departamento != null) {
+            personas = Persona.findAllByDepartamento(departamento)
+        } else {
+            personas = []
+        }
 
-
-        def funcion = Funcion.get(10)
-
-
-        def roles = PersonaRol.findAllByPersonaInListAndFuncion(personas, funcion )
-
-        render roles.size()
-
-
+        return [personas: personas]
     }
 
 
-    def grabarFuncion () {
+    def sacarFunciones() {
+        def departamento = Departamento.get(params.id)
+        def personas = Persona.findAllByDepartamento(departamento, [sort: 'nombre'])
+        def funcion = Funcion.get(10)
+        def roles = PersonaRol.findAllByPersonaInListAndFuncion(personas, funcion)
+        render roles.size()
+    }
+
+
+    def grabarFuncion() {
         def personaRol = new PersonaRol()
         personaRol.persona = Persona.get(params.id)
         personaRol.funcion = Funcion.get(params.rol)
         if (!personaRol.save([flush: true])) {
             render "NO"
-            println "ERROR al guardar rolPersona: "+personaRol.errors
+            println "ERROR al guardar rolPersona: " + personaRol.errors
         } else {
-            render "OK_"+personaRol.id
+            render "OK_" + personaRol.id
         }
     }
 
@@ -97,7 +81,7 @@ class AsignarCoordinadorController {
     } //delete
 
 
-    def obtenerFuncionCoor () {
+    def obtenerFuncionCoor() {
 
         def persona = Persona.get(params.id);
 
@@ -111,7 +95,7 @@ class AsignarCoordinadorController {
     }
 
 
-    def mensajeCoordinador () {
+    def mensajeCoordinador() {
 
 
         def departamento = Departamento.get(params.id)
@@ -119,10 +103,10 @@ class AsignarCoordinadorController {
         def personas
 
 
-        if(departamento != null){
+        if (departamento != null) {
 
             personas = Persona.findAllByDepartamento(departamento)
-        }else{
+        } else {
 
             personas = []
 
@@ -134,12 +118,12 @@ class AsignarCoordinadorController {
 
         def getCoordinador
 
-        if(personas != []){
+        if (personas != []) {
 
             getCoordinador = PersonaRol.findByFuncionAndPersonaInList(funcionCoor, personas)
 
 
-        }else {
+        } else {
 
             getCoordinador = null
 
