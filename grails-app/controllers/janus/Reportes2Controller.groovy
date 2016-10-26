@@ -1388,9 +1388,9 @@ class Reportes2Controller {
             def ultimaFila
 
             label = new jxl.write.Label(1, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format);
+            label = new jxl.write.Label(1, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format);sheet.addCell(label);
             label = new jxl.write.Label(1, 6, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-            sheet.addCell(label);
+//            sheet.addCell(label);
             label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
             label = new jxl.write.Label(1, 10, "DOC. REFERENCIA: " + obra?.oficioIngreso, times16format);
             sheet.addCell(label);
@@ -1553,9 +1553,9 @@ class Reportes2Controller {
             def ultimaFila
 
             label = new jxl.write.Label(1, 2, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format);
+            label = new jxl.write.Label(1, 4, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
             label = new jxl.write.Label(1, 6, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-            sheet.addCell(label);
+//            sheet.addCell(label);
             label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
             label = new jxl.write.Label(1, 10, "DOC. REFERENCIA: " + obra?.oficioIngreso, times16format);
             sheet.addCell(label);
