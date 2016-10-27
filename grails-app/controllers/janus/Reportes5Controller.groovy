@@ -853,17 +853,17 @@ class Reportes5Controller {
 
         document.open();
         document.addTitle("Coeficientes " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus,coeficientes");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, fontus,coeficientes");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
 //        println titulo
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1)
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", titleFont2));
-        addEmptyLine(headersTitulo, 1);
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", titleFont));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", titleFont));
         headersTitulo.add(new Paragraph("COEFICIENTES DE LA FÓRMULA POLINÓMICA DE LA OBRA ${obra.nombre}", titleFont));
 //        headersTitulo.add(new Paragraph("Quito, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
         addEmptyLine(headersTitulo, 1);

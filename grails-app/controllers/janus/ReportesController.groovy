@@ -5611,7 +5611,8 @@ class ReportesController {
         def indi = obra.totales
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
-        def file = File.createTempFile('matrizFP' + obra.codigo, '.xls')
+//        def file = File.createTempFile('matrizFP' + obra.codigo, '.xls')
+        def file = File.createTempFile('matrizFP' + obra.codigo, '.xlsx')
         file.deleteOnExit()
 
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
@@ -5706,7 +5707,7 @@ class ReportesController {
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "matriz.xls";
+        def header = "attachment; filename=" + "matriz.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());

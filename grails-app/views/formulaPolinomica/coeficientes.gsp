@@ -6,12 +6,8 @@
         <title>
             AJUSTE DE LA F.P. Y C. TIPO
         </title>
-        %{--gdo--}%
         <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
         <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-
-
-
         <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
         <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
         <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
@@ -34,10 +30,7 @@
         }
 
         .area {
-            /*width      : 400px;*/
             height : 750px;
-            /*background : #fffaf0;*/
-            /*display    : none;*/
         }
 
         .left, .right {
