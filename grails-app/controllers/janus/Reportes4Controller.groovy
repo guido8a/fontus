@@ -556,16 +556,11 @@ class Reportes4Controller {
 
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
-
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
-
         def sql = armaSqlRegistradas(params)
         def obras = cn.rows(sql)
-
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
-
         return [obras: obras, params: params]
     }
 
@@ -857,14 +852,10 @@ class Reportes4Controller {
 
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
-
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
-
         def sql = armaSqlRegistradas(params)
         def obras = cn.rows(sql)
-
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
 
 
@@ -922,9 +913,9 @@ class Reportes4Controller {
 
 //        document.setMargins(2,2,2,2)
         document.addTitle("ObrasRegistradas " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, fontus, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
 
@@ -932,10 +923,9 @@ class Reportes4Controller {
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headers.add(new Paragraph("REPORTE DE OBRAS INGRESADAS", times12bold));
-        addEmptyLine(headers, 1);
         headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
@@ -1045,22 +1035,19 @@ class Reportes4Controller {
         document = new Document(PageSize.A4.rotate());
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-
-//        document.setMargins(2,2,2,2)
         document.addTitle("ObrasPresupuestadas " + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("documentosObra, janus, presupuesto");
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
 
-
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headers.add(new Paragraph("REPORTE DE OBRAS PRESUPUESTADAS", times12bold));
-        addEmptyLine(headers, 1);
+
         headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
@@ -1107,32 +1094,23 @@ class Reportes4Controller {
 
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
-
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
-
         def sql = armaSqlRegistradas(params)
         def obras = cn.rows(sql)
-
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
 
         //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
-
         def file = File.createTempFile('myExcelDocument', '.xls')
         file.deleteOnExit()
-
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
         WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
         WritableCellFormat formatXls = new WritableCellFormat(font)
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         sheet.setColumnView(0, 12)
@@ -1155,8 +1133,9 @@ class Reportes4Controller {
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL OBRAS INGRESADAS", times16format); sheet.addCell(label);
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL OBRAS INGRESADAS", times16format); sheet.addCell(label);
 
         label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
@@ -1196,13 +1175,10 @@ class Reportes4Controller {
 
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
-
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
-
         def sql = armaSqlPresupuestadas(params)
         def obras = cn.rows(sql)
-
         params.criterio = params.old
 
         //excel
@@ -1219,9 +1195,6 @@ class Reportes4Controller {
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         sheet.setColumnView(0, 12)
@@ -1238,15 +1211,14 @@ class Reportes4Controller {
         def label
         def nmro
         def number
-
         def fila = 6;
-
 
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL OBRAS PRESUPUESTADAS", times16format); sheet.addCell(label);
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL OBRAS PRESUPUESTADAS", times16format); sheet.addCell(label);
 
 
 
@@ -1367,7 +1339,6 @@ class Reportes4Controller {
         def prmsSubtotal = [border: Color.WHITE, colspan: 6,
                             align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
                     prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsCellHead2: prmsCellHead2,
@@ -1391,8 +1362,6 @@ class Reportes4Controller {
         document = new Document(PageSize.A4.rotate());
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-
-//        document.setMargins(2,2,2,2)
         document.addTitle("ObrasContratadas" + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("documentosObra, janus, presupuesto");
@@ -1402,10 +1371,9 @@ class Reportes4Controller {
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headers.add(new Paragraph("REPORTE DE OBRAS CONTRATADAS", times12bold));
-        addEmptyLine(headers, 1);
         headers.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
@@ -1459,34 +1427,25 @@ class Reportes4Controller {
 
     def reporteExcelContratadas () {
 
-
         def cn = dbConnectionService.getConnection()
-
         params.old = params.criterio
         params.criterio = reportesService.limpiaCriterio(params.criterio)
         def sql2 = armaSqlContratadas(params)
         def nuevoRes = cn.rows(sql2)
         params.criterio = params.old
 
-
         //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
-
         def file = File.createTempFile('myExcelDocument', '.xls')
         file.deleteOnExit()
-
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
         WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
         WritableCellFormat formatXls = new WritableCellFormat(font)
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+          WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         sheet.setColumnView(0, 12)
         sheet.setColumnView(1, 60)
@@ -1506,10 +1465,9 @@ class Reportes4Controller {
 
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
-
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL OBRAS CONTRATADAS", times16format); sheet.addCell(label);
-
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL OBRAS CONTRATADAS", times16format); sheet.addCell(label);
         label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
         label = new Label(2, 4, "Tipo", times16format); sheet.addCell(label);
@@ -1622,15 +1580,12 @@ class Reportes4Controller {
 
     def reporteAseguradoras () {
 
-
 //        println("params reporte asg:" + params)
 
         def obras = []
-
         def sql
         def cn
         def res
-
         def sqlBase =  "SELECT\n" +
                 "  a.asgr__id    id,\n" +
                 "  a.asgrfaxx    fax, \n" +
@@ -1648,7 +1603,6 @@ class Reportes4Controller {
         def buscador=""
 
         params.criterio = params.criterio.trim();
-
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeaderHoja3 = [border: Color.WHITE, colspan: 5]
@@ -1701,24 +1655,19 @@ class Reportes4Controller {
         document.setMargins(56.2, 56.2, 50, 28.1);
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-
-//        document.setMargins(2,2,2,2)
         document.addTitle("ObrasContratadas" + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, FONTUS, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
-
-
 
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEMIENTO", times12bold));
         headers.add(new Paragraph("REPORTE DE ASEGURADORAS", times12bold));
-        addEmptyLine(headers, 1);
-        headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
+        headers.add(new Paragraph("QUITO, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
 
@@ -1734,21 +1683,15 @@ class Reportes4Controller {
             case "tipo":
                 filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
                 break;
-
-
         }
 
 
         sql = sqlBase + filtroBuscador
-
         cn = dbConnectionService.getConnection()
-
         res = cn.rows(sql.toString())
-
         PdfPTable tablaRegistradas = new PdfPTable(3);
         tablaRegistradas.setWidthPercentage(100);
         tablaRegistradas.setWidths(arregloEnteros([20, 2, 70]))
-
 
         res.each {
 
@@ -1804,15 +1747,12 @@ class Reportes4Controller {
 
     def reporteExcelAseguradoras() {
 
-
 //        println(params)
 
         def obras = []
-
         def sql
         def cn
         def res
-
         def sqlBase =  "SELECT\n" +
                 "  a.asgr__id    id,\n" +
                 "  a.asgrfaxx    fax, \n" +
@@ -1828,7 +1768,6 @@ class Reportes4Controller {
 
         def filtroBuscador = ""
         def buscador=""
-
         params.criterio = params.criterio.trim();
 
         switch (params.buscador) {
@@ -1843,18 +1782,12 @@ class Reportes4Controller {
             case "tipo":
                 filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
                 break;
-
-
         }
 
 
         sql = sqlBase + filtroBuscador
-
         cn = dbConnectionService.getConnection()
-
         res = cn.rows(sql.toString())
-
-
 
         //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
@@ -1864,14 +1797,11 @@ class Reportes4Controller {
         file.deleteOnExit()
 
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
         WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
         WritableCellFormat formatXls = new WritableCellFormat(font)
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
 
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -1888,17 +1818,15 @@ class Reportes4Controller {
         def label
         def nmro
         def number
-
         def fila = 6;
 
 
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL ASEGURADORAS", times16format); sheet.addCell(label);
-
-
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL DE ASEGURADORAS", times16format); sheet.addCell(label);
 
         label = new Label(0, 4, "Tipo: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
@@ -2607,23 +2535,18 @@ class Reportes4Controller {
         document = new Document(PageSize.A4.rotate());
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-
-//        document.setMargins(2,2,2,2)
         document.addTitle("Contratos" + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, FONTUS, presupuesto");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
-
-
 
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headers.add(new Paragraph("REPORTE DE CONTRATOS", times12bold));
-        addEmptyLine(headers, 1);
         headers.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
@@ -2639,21 +2562,15 @@ class Reportes4Controller {
         addCellTabla(tablaRegistradas, new Paragraph("Nombre de la Obra", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Cantón - Parroquia - Comunidad", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Clase de Obra", times8bold), prmsCellHead2)
-//        addCellTabla(tablaRegistradas, new Paragraph("Tipo de Contrato", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Contratista", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Monto", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("% Anticipo", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Anticipo", times8bold), prmsCellHead2)
-//        addCellTabla(tablaRegistradas, new Paragraph("Fecha Inicio", times8bold), prmsCellHead2)
-//        addCellTabla(tablaRegistradas, new Paragraph("Fecha Fin", times8bold), prmsCellHead2)
-//        addCellTabla(tablaRegistradas, new Paragraph("Plazo", times8bold), prmsCellHead2)
 
         switch (params.buscador) {
             case "cdgo":
             case "memo":
-//            case "fcsb":
             case "ofsl":
-//            case "mnto":
                 buscador = "cntr"+params.buscador
                 filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
                 break;
@@ -2767,12 +2684,9 @@ class Reportes4Controller {
 
     def reporteExcelContratos () {
 
-
         def sql
         def cn
         def res
-
-
         def sqlBase =  "SELECT\n" +
                 "  c.cntr__id    id,\n" +
                 "  c.cntrcdgo    codigo, \n" +
@@ -2806,14 +2720,9 @@ class Reportes4Controller {
                 "  LEFT JOIN prve g ON f.prve__id = g.prve__id\n"
 
         def filtroBuscador = ""
-
         def buscador = ""
 
         params.criterio = params.criterio.trim();
-
-
-
-
 
         switch (params.buscador) {
             case "cdgo":
@@ -2859,12 +2768,8 @@ class Reportes4Controller {
         }
 
         sql = sqlBase + filtroBuscador
-
         cn = dbConnectionService.getConnection()
-
         res = cn.rows(sql.toString())
-
-
 
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
@@ -2879,8 +2784,6 @@ class Reportes4Controller {
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
 
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -2909,10 +2812,9 @@ class Reportes4Controller {
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL CONTRATOS", times16format); sheet.addCell(label);
-
-
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL CONTRATOS", times16format); sheet.addCell(label);
 
         label = new Label(0, 4, "N° Contrato: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Fecha Suscripción", times16format); sheet.addCell(label);
@@ -2929,8 +2831,6 @@ class Reportes4Controller {
         label = new Label(12, 4, "Fecha Inicio", times16format); sheet.addCell(label);
         label = new Label(13, 4, "Fecha Fin", times16format); sheet.addCell(label);
         label = new Label(14, 4, "Plazo", times16format); sheet.addCell(label);
-
-
 
         res.eachWithIndex {i, j->
             label = new Label(0, fila, i?.codigo?.toString()); sheet.addCell(label);
@@ -3193,9 +3093,9 @@ class Reportes4Controller {
 
 //        document.setMargins(2,2,2,2)
         document.addTitle("Contratos" + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("documentosObra, janus, presupuesto");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("documentosObra, fontus, presupuesto");
+        document.addAuthor("Fotnus");
         document.addCreator("Tedein SA");
 
 
@@ -3203,10 +3103,9 @@ class Reportes4Controller {
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
-        headers.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", times18bold));
-        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", times12bold));
+        headers.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times12bold));
         headers.add(new Paragraph("REPORTE DE GARANTÍAS", times12bold));
-        addEmptyLine(headers, 1);
         headers.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
@@ -3353,8 +3252,6 @@ class Reportes4Controller {
         def sql
         def res
         def cn
-
-
         def sqlBase =  "SELECT\n" +
                 "  g.grnt__id    id,\n" +
                 "  g.grntcdgo    codigo, \n" +
@@ -3469,15 +3366,15 @@ class Reportes4Controller {
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL REGISTRADAS", times16format); sheet.addCell(label);
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL REGISTRADAS", times16format); sheet.addCell(label);
 
         label = new Label(0, 4, "N° Contrato: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Contratista", times16format); sheet.addCell(label);
         label = new Label(2, 4, "Tipo de Garantía", times16format); sheet.addCell(label);
         label = new Label(3, 4, "N° Garantía", times16format); sheet.addCell(label);
         label = new Label(4, 4, "Rnov", times16format); sheet.addCell(label);
-//        label = new Label(5, 4, "Original", times16format); sheet.addCell(label);
         label = new Label(5, 4, "Aseguradora", times16format); sheet.addCell(label);
         label = new Label(6, 4, "Documento", times16format); sheet.addCell(label);
         label = new Label(7, 4, "Estado", times16format); sheet.addCell(label);

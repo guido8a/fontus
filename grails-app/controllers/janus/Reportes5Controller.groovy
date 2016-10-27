@@ -235,19 +235,19 @@ class Reportes5Controller {
 
         document.open();
         document.addTitle("Matriz Polinómica " + new Date().format("dd_MM_yyyy"));
-        document.addSubject("Generado por el sistema Janus");
-        document.addKeywords("reporte, janus,matriz");
-        document.addAuthor("Janus");
+        document.addSubject("Generado por el sistema Fontus");
+        document.addKeywords("reporte, FONTUS,matriz");
+        document.addAuthor("Fontus");
         document.addCreator("Tedein SA");
 
 //        println titulo
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1)
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
-        headersTitulo.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", titleFont2));
-        addEmptyLine(headersTitulo, 1);
+        headersTitulo.add(new Paragraph("SERVICIO DE CONTRATACIÓN DE OBRAS", titleFont));
+        headersTitulo.add(new Paragraph("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", titleFont));
         headersTitulo.add(new Paragraph("REPORTE DE AVANCE DE OBRAS", titleFont));
-        headersTitulo.add(new Paragraph("Quito, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
+        headersTitulo.add(new Paragraph("QUITO, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
         addEmptyLine(headersTitulo, 1);
         addEmptyLine(headersTitulo, 1);
 
@@ -321,26 +321,20 @@ class Reportes5Controller {
         def obras = cn.rows(sql)
         params.criterio = params.old
 
-
         //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
 
         def file = File.createTempFile('myExcelDocument', '.xls')
-//        def file = File.createTempFile('myExcelDocument', '.ods')
         file.deleteOnExit()
 
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
         WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
         WritableCellFormat formatXls = new WritableCellFormat(font)
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         sheet.setColumnView(0, 12)
         sheet.setColumnView(1, 60)
@@ -364,8 +358,9 @@ class Reportes5Controller {
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
-        label = new Label(1, 1, "SEP - G.A.D. PROVINCIA DE PICHINCHA", times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL AVANCE DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS", times16format); sheet.addCell(label);
+        label = new Label(1, 2, "DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO", times16format); sheet.addCell(label);
+        label = new Label(1, 3, "REPORTE EXCEL AVANCE DE OBRAS", times16format); sheet.addCell(label);
 
         label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);

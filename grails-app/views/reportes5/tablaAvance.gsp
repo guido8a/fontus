@@ -95,16 +95,6 @@
                 <td><g:formatNumber number="${fila.cntrplzo}" maxFractionDigits="0" minFractionDigits="0"/> días</td>
                 <td><g:formatNumber number="${(fila.av_economico) * 100}" maxFractionDigits="2" minFractionDigits="2"/>%</td>
                 <td><g:formatNumber number="${fila.av_fisico}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                %{--<td>--}%
-                    %{--<g:set var="estado" value=""/>--}%
-                    %{--<g:if test="${fila.obrafcin}">--}%
-                        %{--<g:set var="estado" value="Iniciada el ${fila.obrafcin?.format('dd-MM-yyyy')}"/>--}%
-                        %{--<g:if test="${fila.cntrfcfs}">--}%
-                            %{--<g:set var="estado" value="Finalizada el ${fila.cntrfcfs?.format('dd-MM-yyyy')}"/>--}%
-                        %{--</g:if>--}%
-                    %{--</g:if>--}%
-                    %{--${estado}--}%
-                %{--</td>--}%
             </tr>
         </g:each>
 
