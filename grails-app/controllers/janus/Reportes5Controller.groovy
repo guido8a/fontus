@@ -1192,18 +1192,12 @@ class Reportes5Controller {
         def cn1 = dbConnectionService.getConnection()
         def cn2 = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
-        def lugar = obra.lugar
-        def fecha = obra.fechaPreciosRubros
-        def itemsChofer = [obra.chofer]
-        def itemsVolquete = [obra.volquete]
-        def indi = obra.totales
         def nombre = obra?.nombre
         def codigo = obra?.codigo
         def memo = (obra?.memoCantidadObra ?: '')
         def referencia = (obra?.oficioIngreso ?: '')
         def fechaCreacion = printFecha(obra?.fechaCreacionObra)
         def fechaRubros = printFecha(obra?.fechaPreciosRubros)
-
 
         XSSFWorkbook wb = new XSSFWorkbook()
         org.apache.poi.ss.usermodel.Sheet sheet = wb.createSheet("PAC")
@@ -1232,35 +1226,6 @@ class Reportes5Controller {
 
 
         def fila = 12
-
-//        sheet.setColumnView(0, 8)
-//        sheet.setColumnView(1, 12)
-//        sheet.setColumnView(2, 50)
-//        sheet.setColumnView(3, 8)
-//        sheet.setColumnView(4, 12)
-//        sheet.setColumnView(5, 15)
-//        sheet.setColumnView(6, 15)
-//        sheet.setColumnView(7, 15)
-//        sheet.setColumnView(8, 15)
-//        sheet.setColumnView(9, 15)
-//        sheet.setColumnView(10, 15)
-//        sheet.setColumnView(11, 15)
-//        sheet.setColumnView(12, 15)  // el resto por defecto..
-//
-//        def label = new Label(2, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS".toUpperCase(), times10format); sheet.addCell(label);
-//
-//        label = new Label(2, 2, "${obra?.departamento?.direccion?.nombre}", times10format); sheet.addCell(label);
-//        label = new Label(2, 3, "Matriz de la Fórmula Polinómica", times10format); sheet.addCell(label);
-//        label = new Label(2, 4, "", times10format); sheet.addCell(label);
-//        label = new Label(2, 5, "Obra: ${obra.nombre}", times10format); sheet.addCell(label);
-//        label = new Label(2, 6, "Código: ${obra.codigo}", times10format); sheet.addCell(label);
-//        label = new Label(2, 7, "Memo Cant. Obra: ${obra.memoCantidadObra}", times10format); sheet.addCell(label);
-//        label = new Label(2, 8, "Doc. Referencia: ${obra.oficioIngreso}", times10format); sheet.addCell(label);
-//        label = new Label(2, 9, "Fecha: ${printFecha(obra?.fechaCreacionObra)}", times10format); sheet.addCell(label);
-//        label = new Label(2, 10, "Fecha Act. Precios: ${printFecha(obra?.fechaPreciosRubros)}", times10format);
-//        sheet.addCell(label);
-
-
 
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
         def subSql = ""
@@ -1306,43 +1271,6 @@ class Reportes5Controller {
 
             fila2++
         }
-
-
-
-
-
-//        def sqlRb = "SELECT orden, codigo, rubro, unidad, cantidad from mfrb where obra__id = ${obra.id} order by orden"
-//        def number
-//        cn.eachRow(sqlRb.toString()) { r ->
-//            4.times {
-////                label = new Label(it, fila, r[it]?.toString() ?: "", times08format); sheet.addCell(label);
-//
-//            }
-////            number = new Number(4, fila, r.cantidad?.toDouble()?.round(3) ?: 0, times08format); sheet.addCell(number);
-//            Row drow2 = sheet.createRow(fila++)
-//            drow2.createCell(clmn++).setCellValue("" + r.cantidad)
-//            fila++
-//        }
-//
-//        fila = 13
-//        clmn = 5
-
-//        sql = "SELECT clmncdgo, clmntipo from mfcl where obra__id = ${obra.id} order by  1"
-//        cn.eachRow(sqlRb.toString()) { rb ->
-//            cn1.eachRow(sql.toString()) { r ->
-//                if (r.clmntipo != "R") {
-//                    subSql = "select valor from mfvl where clmncdgo = ${r.clmncdgo} and codigo='${rb.codigo.trim()}' and " +
-//                            "obra__id = ${obra.id}"
-//                    cn2.eachRow(subSql.toString()) { v ->
-//                        number = new Number(clmn++, fila, v.valor?.toDouble()?.round(5) ?: 0.00000, times08format); sheet.addCell(number);
-//                    }
-//                }
-//            }
-//            clmn = 5
-//            fila++
-//        }
-
-
 
 
         def output = response.getOutputStream()

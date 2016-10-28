@@ -5715,7 +5715,6 @@ class ReportesController {
         }
 
         workbook.write();
-        workbook. saveAs(file, FileFormat.OPENXMLWORKBOOK,true);
         workbook.close();
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "matriz.xlsx";
