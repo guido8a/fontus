@@ -16,7 +16,7 @@ class MatrizController extends janus.seguridad.Shield {
     }
 
     def pantallaMatriz(){
-        println "....." + params
+//        println "....." + params
         def obra = params.id
         def cn = dbConnectionService.getConnection()
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} and sbpr__id = ${params.sbpr} order by  1"
@@ -55,7 +55,7 @@ class MatrizController extends janus.seguridad.Shield {
             columnas.add([r[0], col, r[2]])
             cont++
         }
-        println "columnas $columnas"
+//        println "columnas $columnas"
 
         session.indices = indices
         def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'

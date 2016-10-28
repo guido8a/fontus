@@ -11,6 +11,7 @@ import com.lowagie.text.Rectangle
 import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
+import jxl.Sheet
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.write.Label
@@ -20,8 +21,12 @@ import jxl.write.WritableCellFormat
 import jxl.write.WritableFont
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
+import org.apache.poi.ss.usermodel.Row
 
 import java.awt.Color
+
+
+import org.apache.poi.xssf.usermodel.*;
 
 class Reportes5Controller {
 
@@ -1163,6 +1168,188 @@ class Reportes5Controller {
         text = text.replaceAll(~"\\?\\_debugResources=y\\&n=[0-9]*", "")
 
         return text
+    }
+
+    def pruebaExcel () {
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        org.apache.poi.ss.usermodel.Sheet sheet =wb.createSheet("Title")
+        Row row = sheet.createRow(0)
+        // Make first header row:
+        row.createCell(0).setCellValue("Header1")
+
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "VaeExcel.xls";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+
+    def reporteMatriz () {
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def obra = Obra.get(params.id)
+        def lugar = obra.lugar
+        def fecha = obra.fechaPreciosRubros
+        def itemsChofer = [obra.chofer]
+        def itemsVolquete = [obra.volquete]
+        def indi = obra.totales
+        def nombre = obra?.nombre
+        def codigo = obra?.codigo
+        def memo = (obra?.memoCantidadObra ?: '')
+        def referencia = (obra?.oficioIngreso ?: '')
+        def fechaCreacion = printFecha(obra?.fechaCreacionObra)
+        def fechaRubros = printFecha(obra?.fechaPreciosRubros)
+
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        org.apache.poi.ss.usermodel.Sheet sheet = wb.createSheet("PAC")
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+
+        Row row1 = sheet.createRow(1)
+        row1.createCell(1).setCellValue("SERVICIO DE CONTRATACIÓN DE OBRAS")
+        Row row2 = sheet.createRow(2)
+        row2.createCell(1).setCellValue("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO")
+        Row row3 = sheet.createRow(3)
+        row3.createCell(1).setCellValue("Matriz de la Fórmula Polinómica")
+        Row row4 = sheet.createRow(4)
+        row4.createCell(1).setCellValue("Obra: " + nombre)
+        Row row5 = sheet.createRow(5)
+        row5.createCell(1).setCellValue("Código : " + codigo)
+        Row row6 = sheet.createRow(6)
+        row6.createCell(1).setCellValue("Memo Cant. : " + memo)
+        Row row7 = sheet.createRow(7)
+        row7.createCell(1).setCellValue("Doc. Referencia : " + referencia)
+        Row row8 = sheet.createRow(8)
+        row8.createCell(1).setCellValue("Fecha : " + fechaCreacion)
+        Row row9 = sheet.createRow(9)
+        row9.createCell(1).setCellValue("Fecha Act. Precios: " + fechaRubros)
+
+
+        def fila = 12
+
+//        sheet.setColumnView(0, 8)
+//        sheet.setColumnView(1, 12)
+//        sheet.setColumnView(2, 50)
+//        sheet.setColumnView(3, 8)
+//        sheet.setColumnView(4, 12)
+//        sheet.setColumnView(5, 15)
+//        sheet.setColumnView(6, 15)
+//        sheet.setColumnView(7, 15)
+//        sheet.setColumnView(8, 15)
+//        sheet.setColumnView(9, 15)
+//        sheet.setColumnView(10, 15)
+//        sheet.setColumnView(11, 15)
+//        sheet.setColumnView(12, 15)  // el resto por defecto..
+//
+//        def label = new Label(2, 1, "SERVICIO DE CONTRATACIÓN DE OBRAS".toUpperCase(), times10format); sheet.addCell(label);
+//
+//        label = new Label(2, 2, "${obra?.departamento?.direccion?.nombre}", times10format); sheet.addCell(label);
+//        label = new Label(2, 3, "Matriz de la Fórmula Polinómica", times10format); sheet.addCell(label);
+//        label = new Label(2, 4, "", times10format); sheet.addCell(label);
+//        label = new Label(2, 5, "Obra: ${obra.nombre}", times10format); sheet.addCell(label);
+//        label = new Label(2, 6, "Código: ${obra.codigo}", times10format); sheet.addCell(label);
+//        label = new Label(2, 7, "Memo Cant. Obra: ${obra.memoCantidadObra}", times10format); sheet.addCell(label);
+//        label = new Label(2, 8, "Doc. Referencia: ${obra.oficioIngreso}", times10format); sheet.addCell(label);
+//        label = new Label(2, 9, "Fecha: ${printFecha(obra?.fechaCreacionObra)}", times10format); sheet.addCell(label);
+//        label = new Label(2, 10, "Fecha Act. Precios: ${printFecha(obra?.fechaPreciosRubros)}", times10format);
+//        sheet.addCell(label);
+
+
+
+        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
+        def subSql = ""
+        def sqlVl = ""
+        def clmn = 0
+        def col = ""
+        Row drow = sheet.createRow(fila)
+
+        cn.eachRow(sql.toString()) { r ->
+            col = r[1]
+            if (r[2] != "R") {
+                def parts = r[1].split("_")
+                try {
+                    col = Item.get(parts[0].toLong()).nombre
+                } catch (e) {
+                    println "error: " + e
+                    col = parts[0]
+                }
+                col += " " + parts[1]?.replaceAll("T", " Total")?.replaceAll("U", " Unitario")
+            }
+            drow.createCell(clmn++).setCellValue("" + col)
+        }
+        fila++
+
+        def fila2 = 13
+
+        def valores
+        def sqlN = "select * from valores(${obra?.id},0)"
+
+        cn.eachRow(sqlN.toString()){r->
+            def colN = 5
+            Row drow1 = sheet.createRow(fila2)
+            drow1.createCell(0).setCellValue("" + r.ordn)
+            drow1.createCell(1).setCellValue("" + r.cdgo)
+            drow1.createCell(2).setCellValue("" + r.rbro)
+            drow1.createCell(3).setCellValue("" + r.undd)
+            drow1.createCell(4).setCellValue("" + r.cntd)
+            valores = r.vlor.getArray()
+            valores.each{p->
+                drow1.createCell(colN).setCellValue("" + p)
+                colN++
+            }
+
+            fila2++
+        }
+
+
+
+
+
+//        def sqlRb = "SELECT orden, codigo, rubro, unidad, cantidad from mfrb where obra__id = ${obra.id} order by orden"
+//        def number
+//        cn.eachRow(sqlRb.toString()) { r ->
+//            4.times {
+////                label = new Label(it, fila, r[it]?.toString() ?: "", times08format); sheet.addCell(label);
+//
+//            }
+////            number = new Number(4, fila, r.cantidad?.toDouble()?.round(3) ?: 0, times08format); sheet.addCell(number);
+//            Row drow2 = sheet.createRow(fila++)
+//            drow2.createCell(clmn++).setCellValue("" + r.cantidad)
+//            fila++
+//        }
+//
+//        fila = 13
+//        clmn = 5
+
+//        sql = "SELECT clmncdgo, clmntipo from mfcl where obra__id = ${obra.id} order by  1"
+//        cn.eachRow(sqlRb.toString()) { rb ->
+//            cn1.eachRow(sql.toString()) { r ->
+//                if (r.clmntipo != "R") {
+//                    subSql = "select valor from mfvl where clmncdgo = ${r.clmncdgo} and codigo='${rb.codigo.trim()}' and " +
+//                            "obra__id = ${obra.id}"
+//                    cn2.eachRow(subSql.toString()) { v ->
+//                        number = new Number(clmn++, fila, v.valor?.toDouble()?.round(5) ?: 0.00000, times08format); sheet.addCell(number);
+//                    }
+//                }
+//            }
+//            clmn = 5
+//            fila++
+//        }
+
+
+
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "MFPExcel.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
     }
 
 }

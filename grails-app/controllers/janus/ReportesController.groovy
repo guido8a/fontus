@@ -17,6 +17,14 @@ import jxl.WorkbookSettings
 import jxl.write.*
 import java.awt.Color
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.hssf.usermodel.HSSFSheet
+import org.apache.poi.hssf.usermodel.HSSFRow
+import org.apache.poi.hssf.usermodel.HSSFCell
+import org.apache.poi.hssf.usermodel.HSSFDateUtil
+
+
+
 class ReportesController {
 
     def index() {
@@ -5611,9 +5619,11 @@ class ReportesController {
         def indi = obra.totales
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
+
 //        def file = File.createTempFile('matrizFP' + obra.codigo, '.xls')
         def file = File.createTempFile('matrizFP' + obra.codigo, '.xlsx')
         file.deleteOnExit()
+
 
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
         WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.BOLD, false);
@@ -5705,6 +5715,7 @@ class ReportesController {
         }
 
         workbook.write();
+        workbook. saveAs(file, FileFormat.OPENXMLWORKBOOK,true);
         workbook.close();
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "matriz.xlsx";
