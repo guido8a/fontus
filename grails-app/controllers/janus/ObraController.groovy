@@ -450,7 +450,6 @@ class ObraController extends janus.seguridad.Shield {
 
         def sbprMF = [:]
 
-
         programa = Programacion.list();
         tipoObra = TipoObra.list();
         claseObra = ClaseObra.list();
@@ -491,8 +490,17 @@ class ObraController extends janus.seguridad.Shield {
             if (concurso) {
                 if (!concurso.fechaLimiteEntregaOfertas)
                     concurso = null
-
             }
+
+            if(obra.estado != 'R') {
+//                println "obra: ${obra.id}"
+                def valor = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
+                if(obra.valor != valor) {
+                    obra.valor = valor
+                    obra.save(flush: true)
+                }
+            }
+
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0

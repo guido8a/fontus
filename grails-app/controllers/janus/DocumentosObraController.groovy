@@ -6,8 +6,8 @@ class DocumentosObraController {
 
     def index() { }
 
-
     def preciosService
+    def dbConnectionService
 
     def cargarPieSel (){
         def nota = Nota.list()
@@ -29,7 +29,8 @@ class DocumentosObraController {
 
 
     def documentosObra () {
-        def nota = new Nota();
+        def cn = dbConnectionService.getConnection()
+//        def nota = new Nota();
         def auxiliar = new Auxiliar();
         def auxiliarFijo = Auxiliar.get(1);
         def usuario = session.usuario.id
@@ -40,59 +41,14 @@ class DocumentosObraController {
         def notaMemo = Nota.findAllByTipo('memo')
         def notaFormu = Nota.findAllByTipo('formula');
 
-       //totalPresupuesto
-        def detalle
-        detalle= VolumenesObra.findAllByObra(obra,[sort:"orden"])
-
-        def precios = [:]
-
-        def indirecto = obra.totales/100
-
-
-        def total1 = 0;
-        def total2 = 0;
-        def totalPrueba = 0
-
-        def totales
-
-        def totalPresupuesto=0;
-        def totalPresupuestoBien=0;
-
         if(obra.estado != 'R') {
             println "antes de imprimir rubros.. actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
 
-        def valores = preciosService.rbro_pcun_v2(obra.id)
-
-        def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
-
-
-        subPres.each { s->
-            total2 = 0
-            valores.each {
-              if(it.sbprdscr == s.descripcion){
-                totales = it.totl
-                totalPresupuestoBien = (total1 += totales)
-                totalPrueba = total2 += totales
-              }
-            }
-        }
-
-        detalle.each {
-            def res = preciosService.precioUnitarioVolumenObraSinOrderBy("sum(parcial)+sum(parcial_t) precio ",obra.id,it.item.id)
-//            precios.put(it.id.toString(),(res["precio"][0]+res["precio"][0]*indirecto).toDouble().round(2))
-
-            if(res["precio"][0]){
-                precios.put(it.id.toString(),(res["precio"][0]+res["precio"][0]*indirecto).toDouble().round(2))
-            }else{
-                precios.put(it.id.toString(),0)
-            }
-
-            totales =  precios[it.id.toString()]*it.cantidad
-            totalPresupuesto+=totales;
-        }
+        def totalPresupuestoBien = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
+        cn.close()
 
         def firmasAdicionales = Persona.findAllByDepartamento(departamento)
         def funcionFirmar = Funcion.findByCodigo("F")
@@ -104,20 +60,6 @@ class DocumentosObraController {
         def firmas = PersonaRol.findAllByFuncionAndPersonaInList(funcionFirmar, firmasAdicionales)
         def firmaDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
         def coordinadores = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoordinador, personalDireccion)
-
-//        println("Director-->" + firmaDirector)
-
-        //calculo de composición
-
-        def resComp = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${1})")
-        resComp.sort{it.item.codigo}
-
-        def resMano = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${2})")
-        resMano.sort{it.item.codigo}
-
-
-        def resEq = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${3})")
-        resEq.sort{it.item.codigo}
 
         def duenoObra = 0
 
@@ -187,11 +129,18 @@ class DocumentosObraController {
 
         }
 
-        [obra: obra, nota: nota, auxiliar: auxiliar, auxiliarFijo: auxiliarFijo, totalPresupuesto: totalPresupuesto, firmas: firmas.persona,
+        println "obra: $obra, auxiliar: $auxiliar, auxiliarFijo: $auxiliarFijo, " +
+                "firmas: $firmas.persona, totalPresupuestoBien: $totalPresupuestoBien, persona: $persona, " +
+//                "resComp: $resComp, resMano: $resMano, resEq: $resEq, " +
+                "firmaDirector: $firmaDirector, coordinadores: $coordinadores," +
+                "notaMemo: $notaMemo, notaFormu: $notaFormu, duenoObra: $duenoObra, personasUtfpuCoor: $personasUtfpuCoor," +
+                "personasUtfpuDire: $personasUtfpuDire, cordinadorOtros: $coordinadorOtros, duo: $duo, directorUtfpu: $directorUtfpu"
+
+        [obra: obra, auxiliar: auxiliar, auxiliarFijo: auxiliarFijo, firmas: firmas.persona,
                 totalPresupuestoBien: totalPresupuestoBien, persona: persona,
-                resComp: resComp, resMano: resMano, resEq: resEq, firmaDirector: firmaDirector, coordinadores: coordinadores,
+//                resComp: resComp, resMano: resMano, resEq: resEq,
+                firmaDirector: firmaDirector, coordinadores: coordinadores,
                 notaMemo: notaMemo, notaFormu: notaFormu, duenoObra: duenoObra, personasUtfpuCoor: personasUtfpuCoor,
-//                personasUtfpuDire: firmantes, cordinadorOtros: coordinadorOtros, duo: duo, directorUtfpu: directorUtfpu]
                 personasUtfpuDire: personasUtfpuDire, cordinadorOtros: coordinadorOtros, duo: duo, directorUtfpu: directorUtfpu]
 
     }

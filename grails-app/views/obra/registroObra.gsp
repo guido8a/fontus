@@ -329,7 +329,7 @@
 
             <div class="span1" style="margin-left: 506px; font-weight: bold">ESTADO</div>
 
-            <div class="span1">
+            <div class="span1" style="margin-left: 0">
 
                 <g:if test="${obra?.estado == null}">
 
@@ -347,7 +347,12 @@
 
                 </g:else>
             </div>
-            ${obra.valor}
+            <span style="color: #081d30; font-weight: bold">
+                <g:formatNumber number="${obra?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
+                                locale="ec"/>    
+            </span>
+            
+
 
         </div>
 
