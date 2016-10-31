@@ -1258,14 +1258,15 @@ class Reportes5Controller {
         cn.eachRow(sqlN.toString()){r->
             def colN = 5
             Row drow1 = sheet.createRow(fila2)
-            drow1.createCell(0).setCellValue("" + r.ordn)
-            drow1.createCell(1).setCellValue("" + r.cdgo)
-            drow1.createCell(2).setCellValue("" + r.rbro)
-            drow1.createCell(3).setCellValue("" + r.undd)
-            drow1.createCell(4).setCellValue("" + r.cntd)
+            drow1.createCell(0).setCellValue(r.ordn)
+            drow1.createCell(1).setCellValue(r.cdgo)
+            drow1.createCell(2).setCellValue(r.rbro)
+            drow1.createCell(3).setCellValue(r.undd)
+//            drow1.createCell(4).setCellValue("" + r.cntd)
+            drow1.createCell(4).setCellValue(r.cntd)
             valores = r.vlor.getArray()
             valores.each{p->
-                drow1.createCell(colN).setCellValue("" + p)
+                drow1.createCell(colN).setCellValue(p)
                 colN++
             }
 
