@@ -270,12 +270,14 @@ class MatrizController extends janus.seguridad.Shield {
 
         filas = ""
         filasF = ""
-        cont = 1
 
         def estilo
         def estiloF
+        def offset = params.offset?:20
+        cont = offset
 
-        def sq = "select * from valores(${obra}, ${params.sbpr}) order by 1"
+        /** usar el parámetro pagina **/
+        def sq = "select * from valores(${obra}, ${params.sbpr}) order by 1 limit 30 offset $offset"
         def gris = ""
         def i = 0
         cn2.eachRow(sq.toString()) { v ->
@@ -291,11 +293,13 @@ class MatrizController extends janus.seguridad.Shield {
             filasF += "<td class='lb estaticas c_0'>${cont}</td><td class='lb estaticas c_1'>${v.cdgo}</td><td class='lb hh'>${v.rbro}</td>"
             def valores = v.vlor.getArray()
             i = 5
-            valores.each() {
+
+            for(j in (0..valores.size()-1)) {
                 estilo = "class=\"c_" + i + "\" c=\"" + i + "\""
-                filas += "<td $estilo>${it}</td>"
+                filas += "<td " + estilo + ">" + valores[j] + "</td>"
                 i++
             }
+
             filas += "</tr>"
             filasF += "</tr>"
             cont++
