@@ -347,6 +347,7 @@
 
                 </g:else>
             </div>
+            ${obra.valor}
 
         </div>
 

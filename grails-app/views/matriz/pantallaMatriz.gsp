@@ -11,10 +11,6 @@
     <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
     <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}"
             type="text/javascript"></script>
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}"--}%
-            %{--type="text/javascript"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}"--}%
-          %{--rel="stylesheet" type="text/css"/>--}%
     <style type="text/css">
     .gr {
         background-color: #ececec;
@@ -138,7 +134,7 @@
        class="btn btn-ajax btn-new btn-success" id="anterior" title="Anterior">
         <i class="icon-arrow-left"></i> #
     </a>
-    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset), sbpr: 0])}"
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset - 1), sbpr: 0])}"
        class="btn btn-ajax btn-new btn-success" id="siguiente" title="Siguiente">
         <i class="icon-arrow-right"></i> # ${offset}
     </a>

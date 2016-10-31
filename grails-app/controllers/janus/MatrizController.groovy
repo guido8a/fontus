@@ -275,7 +275,7 @@ class MatrizController extends janus.seguridad.Shield {
         def estiloF
         def offset = params.offset?: 0
         println("off " + offset)
-        cont = offset.toInteger()
+        cont = offset.toInteger() + 1
 
         /** usar el parámetro pagina **/
         def sq = "select * from valores(${obra}, ${params.sbpr}) order by 1 limit 30 offset $offset"

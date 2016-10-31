@@ -296,7 +296,7 @@ class FormulaPolinomicaController extends janus.seguridad.Shield {
                     fpx.valor = 0
                 }
                 if (!fpx.save(flush: true)) {
-                    println "erroe save fpx " + fpx.errors
+                    println "error save fpx " + fpx.errors
                 }
 
                 if (it < 10) {

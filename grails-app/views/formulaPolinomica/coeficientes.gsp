@@ -130,7 +130,7 @@
             </a>
             <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir" title="Imprimir la Fórmula Polinómica" style="margin-top: -10px;">
                 <i class="icon-print"></i>
-                Imprimir coeficientes
+                Imprimir aportes
             </g:link>
             <a href="#" id="creaIndice" class="btn" title="Crear Índices" style="margin-top: -10px;">
                 Crear Índices
