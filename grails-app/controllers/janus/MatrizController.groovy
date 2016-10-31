@@ -260,7 +260,7 @@ class MatrizController extends janus.seguridad.Shield {
             columnas.add([r[0], col, r[2]])
             cont++
         }
-        println "columnas $columnas"
+//        println "columnas $columnas"
 
 
         def cn2 = dbConnectionService.getConnection()
@@ -273,13 +273,15 @@ class MatrizController extends janus.seguridad.Shield {
 
         def estilo
         def estiloF
-        def offset = params.offset?:20
-        cont = offset
+        def offset = params.offset?: 0
+        println("off " + offset)
+        cont = offset.toInteger()
 
         /** usar el parámetro pagina **/
         def sq = "select * from valores(${obra}, ${params.sbpr}) order by 1 limit 30 offset $offset"
         def gris = ""
         def i = 0
+        println("sq " + sq)
         cn2.eachRow(sq.toString()) { v ->
 
             gris = (cont%2==0)? 'gr' : 'bl'

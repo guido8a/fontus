@@ -122,6 +122,20 @@
         <i class="icon-print"></i>
         Imprimir Desglose
     </a>
+
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 0, sbpr: 0])}"
+       class="btn btn-ajax btn-new" id="siguiente" title="Siguiente">
+        <i class="icon-arrow-left"></i>
+
+    </a>
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 29, sbpr: 0])}"
+       class="btn btn-ajax btn-new" id="siguiente" title="Siguiente">
+        <i class="icon-arrow-right"></i>
+
+    </a>
+
+
+
 </div>
 
 <div id="list-grupo" role="main" style="margin-top: 10px;margin-left: 0;width: 110%;max-width: 110%;overflow-x: auto">
@@ -170,6 +184,19 @@
 
 
 <script type="text/javascript">
+
+    %{--$("#siguiente").click(function () {--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'matriz', action: 'pantallaMatriz')}',--}%
+            %{--data:{--}%
+                %{--id: ${obra},--}%
+                %{--offset: 20--}%
+            %{--}--}%
+        %{--})--}%
+    %{--});--}%
+
+
 
     var ban = 0
 
