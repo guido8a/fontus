@@ -128,9 +128,9 @@
         <i class="icon-arrow-left"></i>
 
     </a>
-    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 29, sbpr: 0])}"
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset), sbpr: 0])}"
        class="btn btn-ajax btn-new" id="siguiente" title="Siguiente">
-        <i class="icon-arrow-right"></i>
+        <i class="icon-arrow-right"></i> # ${offset}
 
     </a>
 

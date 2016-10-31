@@ -315,7 +315,7 @@ class MatrizController extends janus.seguridad.Shield {
 
         def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'
 
-        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: 0, filas: filas, filasF: filasF]
+        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: cont, filas: filas, filasF: filasF]
     }
 
 
