@@ -17,13 +17,6 @@ import jxl.WorkbookSettings
 import jxl.write.*
 import java.awt.Color
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.apache.poi.hssf.usermodel.HSSFSheet
-import org.apache.poi.hssf.usermodel.HSSFRow
-import org.apache.poi.hssf.usermodel.HSSFCell
-import org.apache.poi.hssf.usermodel.HSSFDateUtil
-
-
 
 class ReportesController {
 

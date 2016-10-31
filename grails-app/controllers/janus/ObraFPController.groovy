@@ -152,7 +152,7 @@ class ObraFPController {
         def camioneta = Item.get(Obra.get(obra__id).transporteCamioneta?.id)
         def acemila   = Item.get(Obra.get(obra__id).transporteAcemila?.id)
         def trnpEspecial =  camioneta || acemila
-        println "3. tranporte especial: " + trnpEspecial
+        println "3. transporte especial: " + trnpEspecial
         transporteEspecial(obra__id)
 
         if (trnpEspecial){
@@ -1215,7 +1215,7 @@ class ObraFPController {
 */
                 tx_cr = "select rbpcpcun pcun from item_pcun_v2 (${item__id}, '${obra.fechaPreciosRubros}', ${obra.lugar.id}," +
                         "${obra.listaPeso1?.id}, ${obra.listaVolumen0?.id}, ${obra.listaVolumen1?.id}, ${obra.listaVolumen2?.id}, ${obra.listaManoObra.id})"
-                println "tarifaHoraria:" + tx_cr
+//                println "tarifaHoraria:" + tx_cr
             } else {
                 tx_cr = "select itempcun pcun from obit where item__id = ${item__id}"
             }

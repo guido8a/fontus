@@ -424,7 +424,7 @@ class ObraController extends janus.seguridad.Shield {
 
     def registroObra() {
         def cn = dbConnectionService.getConnection()
-//        println "---" + params
+        println "---" + params
         def obra
         def perfil = session.perfil
         def persona = Persona.get(session.usuario.id)
@@ -468,6 +468,7 @@ class ObraController extends janus.seguridad.Shield {
                     sbprMF << ["${d.sbpr__id}" : SubPresupuesto.get(d.sbpr__id).descripcion]
             }
 
+            println "obra: ${obra.nombre}"
             def subs = VolumenesObra.findAllByObra(obra).subPresupuesto.unique().sort{it.id}
             def volumen = VolumenesObra.findByObra(obra)
             def formula = FormulaPolinomica.findByObra(obra)

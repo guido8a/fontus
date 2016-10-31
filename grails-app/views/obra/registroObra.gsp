@@ -1724,12 +1724,16 @@
 
         $("#no").click(function () {
             var sb = $("#matriz_gen").val();
+            $("#modal-matriz").modal("hide")
+            $("#dlgLoad").dialog("open");
             location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',id: obra?.id)}?sbpr=" + sb
         });
+
         $("#si").click(function () {
             $("#datos_matriz").show();
             $("#msg_matriz").hide()
         });
+
         $("#cancela").click(function () {
             $("#modal-matriz").modal("hide")
         });
@@ -1792,7 +1796,7 @@
             var borrar = $("#borra_fp").is(':checked');
             ////console.log(sp,tr)
 //                    if (sp != "-1")
-
+            $("#modal-matriz").modal("hide")
             $("#dlgLoad").dialog("open");
 
             $.ajax({
@@ -1800,8 +1804,8 @@
                 url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
                 data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
                 success: function (msg) {
+//                    $("#modal-matriz").modal("hide")
                     $("#dlgLoad").dialog("close");
-                    $("#modal-matriz").modal("hide")
 //                    console.log(msg)
                     var arr = msg.split("_")
                     var ok_msg = arr[0]
@@ -1824,6 +1828,7 @@
                             }
                         });
                     } else {
+                        $("#dlgLoad").dialog("open");
                         location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',
                         params:[id:obra.id,inicio:0,limit:40])}&sbpr=" + sbpr
                     }
