@@ -90,7 +90,7 @@
     </g:if>
 </div>
 
-<div class="span12 btn-group" role="navigation" style="margin-left: 0px;">
+<div class="span10 btn-group" role="navigation" style="margin-left: 0px;">
     <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra])}"
        class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
         <i class="icon-arrow-left"></i>
@@ -115,7 +115,7 @@
     <a href="${g.createLink(controller: 'reportes5', action: 'reporteMatriz', id: "${obra}")}" class="btn btn-ajax btn-new"
        id="reset" title="Resetear">
         <i class="icon-print"></i>
-        a Excel
+        Excel
     </a>
     <a href="${g.createLink(controller: 'reportes2', action: 'reporteDesgloseEquipos', id: "${obra}")}"
        class="btn btn-ajax btn-new" id="desglose" title="Desglose Equipos">
@@ -123,18 +123,29 @@
         Imprimir Desglose
     </a>
 
-    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 0, sbpr: 0])}"
-       class="btn btn-ajax btn-new" id="siguiente" title="Siguiente">
-        <i class="icon-arrow-left"></i>
 
+
+
+
+</div>
+
+<div class="span2 btn-group" role="navigation" style="margin-left: 0px; float: right; margin-top: 8px">
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 0, sbpr: 0])}"
+       class="btn btn-ajax btn-new btn-info" id="inicio" title="Inicio de la tabla">
+        <i class="icon-caret-left"></i>
     </a>
     <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset), sbpr: 0])}"
-       class="btn btn-ajax btn-new" id="siguiente" title="Siguiente">
-        <i class="icon-arrow-right"></i> # ${offset}
-
+       class="btn btn-ajax btn-new btn-success" id="anterior" title="Anterior">
+        <i class="icon-arrow-left"></i> #
     </a>
-
-
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset), sbpr: 0])}"
+       class="btn btn-ajax btn-new btn-success" id="siguiente" title="Siguiente">
+        <i class="icon-arrow-right"></i> # ${offset}
+    </a>
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 0, sbpr: 0])}"
+       class="btn btn-ajax btn-new btn-info" id="fin" title="Fin de la tabla">
+        <i class="icon-caret-right"></i>
+    </a>
 
 </div>
 
