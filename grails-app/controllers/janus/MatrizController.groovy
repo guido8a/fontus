@@ -266,7 +266,7 @@ class MatrizController extends janus.seguridad.Shield {
         def cn2 = dbConnectionService.getConnection()
         def fin = new Date()
 
-        println "1---- ${TimeCategory.minus(fin, inicio)}"
+//        println "1---- ${TimeCategory.minus(fin, inicio)}"
 
         filas = ""
         filasF = ""
@@ -307,15 +307,22 @@ class MatrizController extends janus.seguridad.Shield {
             cont++
         }
         fin = new Date()
-        println "2---- ${TimeCategory.minus(fin, inicio)}"
+//        println "2---- ${TimeCategory.minus(fin, inicio)}"
 //        }
 
         fin = new Date()
-        println "3---- ${TimeCategory.minus(fin, inicio)}"
+//        println "3---- ${TimeCategory.minus(fin, inicio)}"
 
         def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'
 
-        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: cont, filas: filas, filasF: filasF]
+        def cont2 = 0
+        def sql2 = "select * from valores(${obra}, ${params.sbpr})"
+        cn.eachRow(sql2.toString()){
+            cont2++
+        }
+
+//        println("cont " + cont2)
+        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: cont, filas: filas, filasF: filasF, cont: offset.toInteger(), cont2: cont2]
     }
 
 

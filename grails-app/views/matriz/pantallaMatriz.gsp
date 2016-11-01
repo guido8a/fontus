@@ -118,31 +118,32 @@
         <i class="icon-print"></i>
         Imprimir Desglose
     </a>
-
-
-
-
-
 </div>
 
-<div class="span2 btn-group" role="navigation" style="margin-left: 0px; float: right; margin-top: 8px">
+<div class="span2 btn-group" role="navigation" style="float: right; margin-top: 8px">
     <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 0, sbpr: 0])}"
        class="btn btn-ajax btn-new btn-info" id="inicio" title="Inicio de la tabla">
         <i class="icon-caret-left"></i>
     </a>
-    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset), sbpr: 0])}"
-       class="btn btn-ajax btn-new btn-success" id="anterior" title="Anterior">
-        <i class="icon-arrow-left"></i> #
-    </a>
-    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset - 1), sbpr: 0])}"
-       class="btn btn-ajax btn-new btn-success" id="siguiente" title="Siguiente">
-        <i class="icon-arrow-right"></i> # ${offset}
-    </a>
-    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: 0, sbpr: 0])}"
+    <g:if test="${cont != 0}">
+        <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (cont - 30), sbpr: 0])}"
+           class="btn btn-ajax btn-new btn-success" id="anterior" title="Anterior">
+            <i class="icon-arrow-left"></i> # ${cont}
+        </a>
+    </g:if>
+
+    <g:if test="${offset < cont2}">
+        <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: (offset - 1), sbpr: 0])}"
+           class="btn btn-ajax btn-new btn-success" id="siguiente" title="Siguiente">
+            <i class="icon-arrow-right"></i> # ${offset}
+        </a>
+    </g:if>
+
+
+    <a href="${g.createLink(controller: 'matriz', action: 'pantallaMatriz', id: "${obra}", params: [offset: cont2 - 6, sbpr: 0])}"
        class="btn btn-ajax btn-new btn-info" id="fin" title="Fin de la tabla">
         <i class="icon-caret-right"></i>
     </a>
-
 </div>
 
 <div id="list-grupo" role="main" style="margin-top: 10px;margin-left: 0;width: 110%;max-width: 110%;overflow-x: auto">
@@ -368,11 +369,12 @@
         $( document ).ready(function() {
             var rowCount = $('#matriz tr').length;
             var ht = 0;
+            var contador = ${cont + 1}
 
-            console.log( "ready!" );
+//            console.log( "ready!" + contador);
             for (i = 0; i < rowCount; i++) {
-                ht = $("#r" + i).innerHeight()
-                $("#rf" + i).css({"height": ht})
+                ht = $("#r" + (i + contador)).innerHeight()
+                $("#rf" + (i + contador)).css({"height": ht})
             }
         });
 
