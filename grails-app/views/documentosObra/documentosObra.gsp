@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="janus.Nota" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
@@ -96,8 +96,8 @@
                     <div class="span6" style="margin-top: -10px">
 
                         <div id="div_sel">
-                            <g:select name="piePaginaSel" from="${nota?.list()}" value="${nota?.id}" optionValue="descripcion"
-                                      optionKey="id" style="width: 300px;" noSelection="['-1': 'Seleccione una nota...']"/>
+                            <g:select name="piePaginaSel" from="${janus.Nota.findAllByTipoIsNull()}" value="${nota?.id}" optionValue="descripcion"
+                                      optionKey="id" style="width: 300px;" noSelection="['-1': 'Ingrese una nota']"/>
                         </div>
 
                         <div class="btn-group" style="margin-left: 310px; margin-top: -60px; margin-bottom: 10px">

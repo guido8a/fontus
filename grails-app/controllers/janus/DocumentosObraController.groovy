@@ -30,7 +30,7 @@ class DocumentosObraController {
 
     def documentosObra () {
         def cn = dbConnectionService.getConnection()
-//        def nota = new Nota();
+        def nota = new Nota()
         def auxiliar = new Auxiliar();
         def auxiliarFijo = Auxiliar.get(1);
         def usuario = session.usuario.id
@@ -129,14 +129,14 @@ class DocumentosObraController {
 
         }
 
-        println "obra: $obra, auxiliar: $auxiliar, auxiliarFijo: $auxiliarFijo, " +
+        println "obra: $obra, nota: nota, auxiliar: $auxiliar, auxiliarFijo: $auxiliarFijo, " +
                 "firmas: $firmas.persona, totalPresupuestoBien: $totalPresupuestoBien, persona: $persona, " +
 //                "resComp: $resComp, resMano: $resMano, resEq: $resEq, " +
                 "firmaDirector: $firmaDirector, coordinadores: $coordinadores," +
                 "notaMemo: $notaMemo, notaFormu: $notaFormu, duenoObra: $duenoObra, personasUtfpuCoor: $personasUtfpuCoor," +
                 "personasUtfpuDire: $personasUtfpuDire, cordinadorOtros: $coordinadorOtros, duo: $duo, directorUtfpu: $directorUtfpu"
 
-        [obra: obra, auxiliar: auxiliar, auxiliarFijo: auxiliarFijo, firmas: firmas.persona,
+        [obra: obra, nota: nota, auxiliar: auxiliar, auxiliarFijo: auxiliarFijo, firmas: firmas.persona,
                 totalPresupuestoBien: totalPresupuestoBien, persona: persona,
 //                resComp: resComp, resMano: resMano, resEq: resEq,
                 firmaDirector: firmaDirector, coordinadores: coordinadores,
