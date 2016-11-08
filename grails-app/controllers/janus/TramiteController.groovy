@@ -21,121 +21,92 @@ class TramiteController extends janus.seguridad.Shield {
 //        params.id="MEM-132-DGES-13"
         //para montar    showmount -e 192.168.0.13         mount -t nfs 192.168.0.13:/opt/pruebas/sad2013 sad/
         //
-        def memo = params.id
-        def header=[:]
-        def tramites = []
-
-        try {
+//        def memo = params.id
+//        def header=[:]
+//        def tramites = []
+//
+//        try {
             /*mysql */
 
 
 //            def sql = Sql.newInstance("jdbc:mysql://10.0.0.3:3306/dbf", "root","svt2579", "com.mysql.jdbc.Driver")
-            def sql = Sql.newInstance("jdbc:mysql://127.0.0.1:3306/dbf", "root","root", "com.mysql.jdbc.Driver")
-
-            sql.eachRow("select * from docmaster where NMASTER= '${memo}'".toString()) {r->
-                header.put("NMASTER",r["NMASTER"])
-                header.put("MFECHA",r["MFECHA"])
-                header.put("MPRIORI",r["MPRIORI"])
-                header.put("MDE",r["MDE"])
-                header.put("MPARA",r["MPARA"])
-                header.put("MASUNTO",r["MASUNTO"])
-                header.put("MCREADOR",r["MCREADOR"])
-                header.put("MUSDES",r["MUSDES"])
-            }
-            sql.eachRow("select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}'".toString()) {r->
-                def tmp =[:]
-                tmp.put("NMASTER",r["NMASTER"])
-                tmp.put("NTRAMITE",r["NTRAMITE"])
-                tmp.put("TFECHA",r["TFECHA"])
-                tmp.put("TFLIMITE",r["TFLIMITE"])
-                tmp.put("TASUNTO",r["TASUNTO"])
-                tmp.put("TRECIBIDO",r["TRECIBIDO"])
-                tmp.put("TFRECEP",r["TFRECEP"])
-                tmp.put("TECRADOR",r["TCREADOR"])
-                tmp.put("TUSDES",r["TUSDES"])
-                tramites.add(tmp)
-            }
-            sql.close()
-        } catch (e) {
-            println "error "+e
-            e.printStackTrace()
-        }
-        [memo: memo, header: header, tramites: tramites]
+//            def sql = Sql.newInstance("jdbc:mysql://127.0.0.1:3306/dbf", "root","root", "com.mysql.jdbc.Driver")
+//
+//            sql.eachRow("select * from docmaster where NMASTER= '${memo}'".toString()) {r->
+//                header.put("NMASTER",r["NMASTER"])
+//                header.put("MFECHA",r["MFECHA"])
+//                header.put("MPRIORI",r["MPRIORI"])
+//                header.put("MDE",r["MDE"])
+//                header.put("MPARA",r["MPARA"])
+//                header.put("MASUNTO",r["MASUNTO"])
+//                header.put("MCREADOR",r["MCREADOR"])
+//                header.put("MUSDES",r["MUSDES"])
+//            }
+//            sql.eachRow("select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}'".toString()) {r->
+//                def tmp =[:]
+//                tmp.put("NMASTER",r["NMASTER"])
+//                tmp.put("NTRAMITE",r["NTRAMITE"])
+//                tmp.put("TFECHA",r["TFECHA"])
+//                tmp.put("TFLIMITE",r["TFLIMITE"])
+//                tmp.put("TASUNTO",r["TASUNTO"])
+//                tmp.put("TRECIBIDO",r["TRECIBIDO"])
+//                tmp.put("TFRECEP",r["TFRECEP"])
+//                tmp.put("TECRADOR",r["TCREADOR"])
+//                tmp.put("TUSDES",r["TUSDES"])
+//                tramites.add(tmp)
+//            }
+//            sql.close()
+//        } catch (e) {
+//            println "error "+e
+//            e.printStackTrace()
+//        }
+//        [memo: memo, header: header, tramites: tramites]
     }
 
     def seguimiento(){
-        def memo = params.id
-        def tramites = []
-        try {
-//            def sql = Sql.newInstance("jdbc:mysql://10.0.0.3:3306/dbf", "root","svt2579", "com.mysql.jdbc.Driver")
-            def sql = Sql.newInstance("jdbc:mysql://127.0.0.1:3306/dbf", "root","root", "com.mysql.jdbc.Driver")
 
-            sql.eachRow("select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}'".toString()) {r->
-                def tmp =[:]
-                tmp.put("NMASTER",r["NMASTER"])
-                tmp.put("NTRAMITE",r["NTRAMITE"])
-                tmp.put("TFECHA",r["TFECHA"])
-                tmp.put("TFLIMITE",r["TFLIMITE"])
-                tmp.put("TASUNTO",r["TASUNTO"])
-                tmp.put("TRECIBIDO",r["TRECIBIDO"])
-                tmp.put("TFRECEP",r["TFRECEP"])
-                tmp.put("TECRADOR",r["TCREADOR"])
-                tmp.put("TUSDES",r["TUSDES"])
-                tramites.add(tmp)
-            }
-            sql.close()
-        } catch (e) {
-            println "error "+e
-            e.printStackTrace()
-        }
-        [memo: memo, tramites: tramites]
     }
 
     def verTramitesAjax(){
-//        params.id="MEM-132-DGES-13"
-        //para montar    showmount -e 192.168.0.13           mount -t nfs 192.168.0.13:/opt/exportSad /mnt/sad/  /// en el servidor sad  /etc/rc.d/init.d/portmap start   service nfs start
-        //
-        def memo = params.id
-        def header=[:]
-        def tramites = []
 
-        try {
-            /*mysql */
-
-
-//            def sql = Sql.newInstance("jdbc:mysql://10.0.0.3:3306/dbf", "root","svt2579", "com.mysql.jdbc.Driver")
-            def sql = Sql.newInstance("jdbc:mysql://127.0.0.1:3306/dbf", "root","root", "com.mysql.jdbc.Driver")
-
-            sql.eachRow("select * from docmaster where NMASTER= '${memo}'".toString()) {r->
-                header.put("NMASTER",r["NMASTER"])
-                header.put("MFECHA",r["MFECHA"])
-                header.put("MPRIORI",r["MPRIORI"])
-                header.put("MDE",r["MDE"])
-                header.put("MPARA",r["MPARA"])
-                header.put("MASUNTO",r["MASUNTO"])
-                header.put("MCREADOR",r["MCREADOR"])
-                header.put("MUSDES",r["MUSDES"])
-            }
-            println "select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}' "
-            sql.eachRow("select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}'".toString()) {r->
-                def tmp =[:]
-                tmp.put("NMASTER",r["NMASTER"])
-                tmp.put("NTRAMITE",r["NTRAMITE"])
-                tmp.put("TFECHA",r["TFECHA"])
-                tmp.put("TFLIMITE",r["TFLIMITE"])
-                tmp.put("TASUNTO",r["TASUNTO"])
-                tmp.put("TRECIBIDO",r["TRECIBIDO"])
-                tmp.put("TFRECEP",r["TFRECEP"])
-                tmp.put("TECRADOR",r["TCREADOR"])
-                tmp.put("TUSDES",r["TUSDES"])
-                tramites.add(tmp)
-            }
-            sql.close()
-        } catch (e) {
-            println "error "+e
-            e.printStackTrace()
-        }
-        [memo: memo, header: header, tramites: tramites]
+//        def memo = params.id
+//        def header=[:]
+//        def tramites = []
+//
+//        try {
+//
+//            def sql = Sql.newInstance("jdbc:mysql://127.0.0.1:3306/dbf", "root","root", "com.mysql.jdbc.Driver")
+//
+//            sql.eachRow("select * from docmaster where NMASTER= '${memo}'".toString()) {r->
+//                header.put("NMASTER",r["NMASTER"])
+//                header.put("MFECHA",r["MFECHA"])
+//                header.put("MPRIORI",r["MPRIORI"])
+//                header.put("MDE",r["MDE"])
+//                header.put("MPARA",r["MPARA"])
+//                header.put("MASUNTO",r["MASUNTO"])
+//                header.put("MCREADOR",r["MCREADOR"])
+//                header.put("MUSDES",r["MUSDES"])
+//            }
+//            println "select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}' "
+//            sql.eachRow("select * from doctrami where NMASTER= '${memo}' or NTRAMITE = '${memo}'".toString()) {r->
+//                def tmp =[:]
+//                tmp.put("NMASTER",r["NMASTER"])
+//                tmp.put("NTRAMITE",r["NTRAMITE"])
+//                tmp.put("TFECHA",r["TFECHA"])
+//                tmp.put("TFLIMITE",r["TFLIMITE"])
+//                tmp.put("TASUNTO",r["TASUNTO"])
+//                tmp.put("TRECIBIDO",r["TRECIBIDO"])
+//                tmp.put("TFRECEP",r["TFRECEP"])
+//                tmp.put("TECRADOR",r["TCREADOR"])
+//                tmp.put("TUSDES",r["TUSDES"])
+//                tramites.add(tmp)
+//            }
+//            sql.close()
+//        } catch (e) {
+//            println "error "+e
+//            e.printStackTrace()
+//        }
+//        [memo: memo, header: header, tramites: tramites]
     }
 
     def cargarDatos(){

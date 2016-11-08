@@ -217,7 +217,7 @@
 
                 <div class="span1" style="width: 50px; color: #01a">
                     Estado
-                    <g:textField name="estadoSuper" value="${rubro?.estadoSuper}" readonly="true" title="${rubro?.estadoSuper}" class="span12"/>
+                    <g:textField name="estadoSuper" value="${rubro?.estadoSuper}" readonly="true" title="${rubro?.estadoSuper == 'N' ? 'Ingresado' : rubro?.estadoSuper == 'S' ? 'Revisado': 'Registrado'}" class="span12"/>
                 </div>
 
             </div>

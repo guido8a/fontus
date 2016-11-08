@@ -183,7 +183,7 @@
                 <ul class="nav nav-pills ui-corner-top" id="myTab">
                     <li class="active"><a href="#datos">Datos proceso</a></li>
                     <li><a href="#fechas">Fechas del proceso</a></li>
-                    <li><a href="#fechas2">Fechas de control del trámite</a></li>
+                    %{--<li><a href="#fechas2">Fechas de control del trámite</a></li>--}%
                 </ul>
 
                 <div class="tab-content ui-corner-bottom">
@@ -246,10 +246,6 @@
                                                      maxlength="4"/> (Número de certificación de disponibilidad de fondos)
                                     </div>
                                 </div>
-
-
-
-
                                 <div class="control-group">
                                     <div>
                                         <span class="control-label label label-inverse">
@@ -265,8 +261,6 @@
                                         <p class="help-block ui-helper-hidden"></p>
                                     </div>
                                 </div>
-
-
                                 <div class="control-group">
                                     <div>
                                         <span class="control-label label label-inverse">
@@ -306,10 +300,6 @@
                                     </div>
 
                                     <div class="controls">
-                                        %{--
-                                        <g:textField name="codigo" class="" value="${concursoInstance?.codigo}"/>
-                                        --}%
-                                        %{--<span class="uneditable-input">${concursoInstance?.codigo}</span>--}%
                                         <g:textField name="codigo" value="${concursoInstance?.codigo}" maxlength="20" class="allCaps required"/>
                                         <p class="help-block ui-helper-hidden"></p>
                                     </div>
@@ -362,9 +352,6 @@
                                     <p class="help-block ui-helper-hidden"></p>
                                 </div>
                             </div>
-
-
-
                             </div> <!-- fin col 2-->
 
                             <div class="span10">
@@ -385,7 +372,6 @@
                     </div> <!-- fin tab datos -->
 
                     <div class="tab-pane" id="fechas">
-                        %{--<div id="cols" style="float: left;">--}%
 
                         <g:set var="minHour" value="${8}"/>
                         <g:set var="maxHour" value="${17}"/>
@@ -608,159 +594,158 @@
                         </div>
                     </div> <!-- fin tab fechas -->
 
-                    <div class="tab-pane" id="fechas2">
-                        %{--<div id="cols" style="float: left;">--}%
-                        <div class="row" style="margin: 10px;">
-                            <div class="span5">
-                                <a href="#" id="tramites" class="btn btn-primary">
-                                    <i class="icon-search"></i> Ver tramites S.A.D.
-                                </a>
-                            </div>
-                        </div>
+                    %{--<div class="tab-pane" id="fechas2">--}%
+                        %{--<div class="row" style="margin: 10px;">--}%
+                            %{--<div class="span5">--}%
+                                %{--<a href="#" id="tramites" class="btn btn-primary">--}%
+                                    %{--<i class="icon-search"></i> Ver tramites S.A.D.--}%
+                                %{--</a>--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
 
-                        <fielset id="desc_prep" style="padding-bottom: 10px;border: 1px solid #000000;width: 95%;float: left;margin-left: 33px;padding: 10px;margin-bottom: 20px;" class="ui-corner-all">
-                            <legend style="color:#0088CC;border-color: #0088CC;cursor: pointer" id="label_prep" class="active" title="Minimizar">Etapa Preparatoria</legend>
+                        %{--<fielset id="desc_prep" style="padding-bottom: 10px;border: 1px solid #000000;width: 95%;float: left;margin-left: 33px;padding: 10px;margin-bottom: 20px;" class="ui-corner-all">--}%
+                            %{--<legend style="color:#0088CC;border-color: #0088CC;cursor: pointer" id="label_prep" class="active" title="Minimizar">Etapa Preparatoria</legend>--}%
 
-                            <div class="row" style="">
-                                <div class="span6">
-                                    <div class="control-group">
-                                        <div>
-                                            <span class="control-label label label-inverse">
-                                                Fecha Inicio Preparatorio
-                                            </span>
-                                        </div>
+                            %{--<div class="row" style="">--}%
+                                %{--<div class="span6">--}%
+                                    %{--<div class="control-group">--}%
+                                        %{--<div>--}%
+                                            %{--<span class="control-label label label-inverse">--}%
+                                                %{--Fecha Inicio Preparatorio--}%
+                                            %{--</span>--}%
+                                        %{--</div>--}%
 
-                                        <div class="controls">
-                                            <elm:datepicker name="fechaInicioPreparatorio" class="" value="${concursoInstance?.fechaInicioPreparatorio ?: concursoInstance?.fechaPublicacion}" style="width:130px;float: left"/>
-                                            <g:if test="${concursoInstance?.fechaInicioPreparatorio == null}">
-                                                <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Empezar preparatorio" id="inicio_prep" style="margin-left: 5px;">
-                                                    <i class="icon-check"></i>
-                                                </a>
-                                            </g:if>
-                                            <div id="info_prep" style="width: 200px;float: left;margin-left: 10px;">
-                                                <span style="color: ${(duracionPrep < maxPrep) ? 'green' : 'red'}">
-                                                    <g:if test="${concursoInstance.fechaInicioPreparatorio != null}">
+                                        %{--<div class="controls">--}%
+                                            %{--<elm:datepicker name="fechaInicioPreparatorio" class="" value="${concursoInstance?.fechaInicioPreparatorio ?: concursoInstance?.fechaPublicacion}" style="width:130px;float: left"/>--}%
+                                            %{--<g:if test="${concursoInstance?.fechaInicioPreparatorio == null}">--}%
+                                                %{--<a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Empezar preparatorio" id="inicio_prep" style="margin-left: 5px;">--}%
+                                                    %{--<i class="icon-check"></i>--}%
+                                                %{--</a>--}%
+                                            %{--</g:if>--}%
+                                            %{--<div id="info_prep" style="width: 200px;float: left;margin-left: 10px;">--}%
+                                                %{--<span style="color: ${(duracionPrep < maxPrep) ? 'green' : 'red'}">--}%
+                                                    %{--<g:if test="${concursoInstance.fechaInicioPreparatorio != null}">--}%
 
-                                                        <g:if test="${duracionPrep < maxPrep}">
-                                                            <g:if test="${maxPrep - duracionPrep < 2}">
-                                                                <div class="amarillo"></div>
-                                                            </g:if>
-                                                            <g:else>
-                                                                <div class="verde"></div>
-                                                            </g:else>
-                                                        </g:if>
-                                                        <g:else>
-                                                            <g:set var="retraso" value="- ${((new Date()) - (concursoInstance?.fechaInicioPreparatorio + maxPrep))} días de retraso"></g:set>
-                                                            <div class="rojo" title="Retrasado"></div>
-                                                        </g:else>
-                                                        <g:if test="${concursoInstance?.fechaFinPreparatorio == null}">
-                                                            En curso ${retraso}
-                                                        </g:if>
-                                                        <g:else>
-                                                            Terminado
-                                                        </g:else>
+                                                        %{--<g:if test="${duracionPrep < maxPrep}">--}%
+                                                            %{--<g:if test="${maxPrep - duracionPrep < 2}">--}%
+                                                                %{--<div class="amarillo"></div>--}%
+                                                            %{--</g:if>--}%
+                                                            %{--<g:else>--}%
+                                                                %{--<div class="verde"></div>--}%
+                                                            %{--</g:else>--}%
+                                                        %{--</g:if>--}%
+                                                        %{--<g:else>--}%
+                                                            %{--<g:set var="retraso" value="- ${((new Date()) - (concursoInstance?.fechaInicioPreparatorio + maxPrep))} días de retraso"></g:set>--}%
+                                                            %{--<div class="rojo" title="Retrasado"></div>--}%
+                                                        %{--</g:else>--}%
+                                                        %{--<g:if test="${concursoInstance?.fechaFinPreparatorio == null}">--}%
+                                                            %{--En curso ${retraso}--}%
+                                                        %{--</g:if>--}%
+                                                        %{--<g:else>--}%
+                                                            %{--Terminado--}%
+                                                        %{--</g:else>--}%
 
-                                                    </g:if>
-                                                </span>
-                                            </div>
+                                                    %{--</g:if>--}%
+                                                %{--</span>--}%
+                                            %{--</div>--}%
 
-                                            <p class="help-block ui-helper-hidden"></p>
-                                        </div>
-                                    </div>
-                                </div>
+                                            %{--<p class="help-block ui-helper-hidden"></p>--}%
+                                        %{--</div>--}%
+                                    %{--</div>--}%
+                                %{--</div>--}%
 
-                                <div class="span4">
-                                    <div class="control-group">
-                                        <div>
-                                            <span class="control-label label label-inverse">
-                                                Fecha Fin Preparatorio
-                                            </span>
-                                        </div>
+                                %{--<div class="span4">--}%
+                                    %{--<div class="control-group">--}%
+                                        %{--<div>--}%
+                                            %{--<span class="control-label label label-inverse">--}%
+                                                %{--Fecha Fin Preparatorio--}%
+                                            %{--</span>--}%
+                                        %{--</div>--}%
 
-                                        <div class="controls">
-                                            <elm:datepicker name="fechaFinPreparatorio" class="" value="${concursoInstance?.fechaFinPreparatorio}" style="width:130px;"/>
-                                            <p class="help-block ui-helper-hidden"></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        %{--<div class="controls">--}%
+                                            %{--<elm:datepicker name="fechaFinPreparatorio" class="" value="${concursoInstance?.fechaFinPreparatorio}" style="width:130px;"/>--}%
+                                            %{--<p class="help-block ui-helper-hidden"></p>--}%
+                                        %{--</div>--}%
+                                    %{--</div>--}%
+                                %{--</div>--}%
+                            %{--</div>--}%
 
-                            <div class="span11 hide_prep" style="height: 20px;margin: 10px;margin-left: 30px;margin-bottom: 20px;">
-                                <div class="span3" style="background: ${(concursoInstance?.fechaEtapa1 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 1 ${concursoInstance?.fechaEtapa1?.format("dd-MM-yyyy")}</div>
+                            %{--<div class="span11 hide_prep" style="height: 20px;margin: 10px;margin-left: 30px;margin-bottom: 20px;">--}%
+                                %{--<div class="span3" style="background: ${(concursoInstance?.fechaEtapa1 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 1 ${concursoInstance?.fechaEtapa1?.format("dd-MM-yyyy")}</div>--}%
 
-                                <div class="span5" style="background:  ${(concursoInstance?.fechaEtapa2 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 2 ${concursoInstance?.fechaEtapa2?.format("dd-MM-yyyy")}</div>
+                                %{--<div class="span5" style="background:  ${(concursoInstance?.fechaEtapa2 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 2 ${concursoInstance?.fechaEtapa2?.format("dd-MM-yyyy")}</div>--}%
 
-                                <div class="span3" style="background:  ${(concursoInstance?.fechaEtapa3 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 3 ${concursoInstance?.fechaEtapa3?.format("dd-MM-yyyy")}</div>
-                            </div>
-                            <fieldset class="span11 ui-corner-all hide_prep" id="seguimiento" style="padding: 0px;margin-left: 0px;">
-                                <legend style="border:none;background: none;">Seguimiento del tramite</legend>
-                            </fieldset>
+                                %{--<div class="span3" style="background:  ${(concursoInstance?.fechaEtapa3 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 3 ${concursoInstance?.fechaEtapa3?.format("dd-MM-yyyy")}</div>--}%
+                            %{--</div>--}%
+                            %{--<fieldset class="span11 ui-corner-all hide_prep" id="seguimiento" style="padding: 0px;margin-left: 0px;">--}%
+                                %{--<legend style="border:none;background: none;">Seguimiento del tramite</legend>--}%
+                            %{--</fieldset>--}%
 
-                        </fielset>
+                        %{--</fielset>--}%
 
-                        <div class="row">
-                            <div class="span6">
+                        %{--<div class="row">--}%
+                            %{--<div class="span6">--}%
 
-                                <div class="control-group">
-                                    <div>
-                                        <span class="control-label label label-inverse">
-                                            Fecha Inicio Precontractual
-                                        </span>
-                                    </div>
+                                %{--<div class="control-group">--}%
+                                    %{--<div>--}%
+                                        %{--<span class="control-label label label-inverse">--}%
+                                            %{--Fecha Inicio Precontractual--}%
+                                        %{--</span>--}%
+                                    %{--</div>--}%
 
-                                    <div class="controls">
-                                        <elm:datepicker name="fechaInicioPrecontractual" class="" value="${concursoInstance?.fechaInicioPrecontractual}" style="width:130px;"/>
-                                        <p class="help-block ui-helper-hidden"></p>
-                                    </div>
-                                </div>
+                                    %{--<div class="controls">--}%
+                                        %{--<elm:datepicker name="fechaInicioPrecontractual" class="" value="${concursoInstance?.fechaInicioPrecontractual}" style="width:130px;"/>--}%
+                                        %{--<p class="help-block ui-helper-hidden"></p>--}%
+                                    %{--</div>--}%
+                                %{--</div>--}%
 
-                                <div class="control-group">
-                                    <div>
-                                        <span class="control-label label label-inverse">
-                                            Fecha Inicio Contractual
-                                        </span>
-                                    </div>
+                                %{--<div class="control-group">--}%
+                                    %{--<div>--}%
+                                        %{--<span class="control-label label label-inverse">--}%
+                                            %{--Fecha Inicio Contractual--}%
+                                        %{--</span>--}%
+                                    %{--</div>--}%
 
-                                    <div class="controls">
-                                        <elm:datepicker name="fechaInicioContractual" class="" value="${concursoInstance?.fechaInicioContractual}" style="width:130px;"/>
-                                        <p class="help-block ui-helper-hidden"></p>
-                                    </div>
-                                </div>
+                                    %{--<div class="controls">--}%
+                                        %{--<elm:datepicker name="fechaInicioContractual" class="" value="${concursoInstance?.fechaInicioContractual}" style="width:130px;"/>--}%
+                                        %{--<p class="help-block ui-helper-hidden"></p>--}%
+                                    %{--</div>--}%
+                                %{--</div>--}%
 
-                            </div> <!-- fin col 1 -->
+                            %{--</div> <!-- fin col 1 -->--}%
 
-                            <div class="span5">
+                            %{--<div class="span5">--}%
 
-                                <div class="control-group">
-                                    <div>
-                                        <span class="control-label label label-inverse">
-                                            Fecha Fin Precontractual
-                                        </span>
-                                    </div>
+                                %{--<div class="control-group">--}%
+                                    %{--<div>--}%
+                                        %{--<span class="control-label label label-inverse">--}%
+                                            %{--Fecha Fin Precontractual--}%
+                                        %{--</span>--}%
+                                    %{--</div>--}%
 
-                                    <div class="controls">
-                                        <elm:datepicker name="fechaFinPrecontractual" class="" value="${concursoInstance?.fechaFinPrecontractual}" style="width:130px;"/>
-                                        <p class="help-block ui-helper-hidden"></p>
-                                    </div>
-                                </div>
+                                    %{--<div class="controls">--}%
+                                        %{--<elm:datepicker name="fechaFinPrecontractual" class="" value="${concursoInstance?.fechaFinPrecontractual}" style="width:130px;"/>--}%
+                                        %{--<p class="help-block ui-helper-hidden"></p>--}%
+                                    %{--</div>--}%
+                                %{--</div>--}%
 
-                                <div class="control-group">
-                                    <div>
-                                        <span class="control-label label label-inverse">
-                                            Fecha Fin Contractual
-                                        </span>
-                                    </div>
+                                %{--<div class="control-group">--}%
+                                    %{--<div>--}%
+                                        %{--<span class="control-label label label-inverse">--}%
+                                            %{--Fecha Fin Contractual--}%
+                                        %{--</span>--}%
+                                    %{--</div>--}%
 
-                                    <div class="controls">
-                                        <elm:datepicker name="fechaFinContractual" class="" value="${concursoInstance?.fechaFinContractual}" style="width:130px;"/>
-                                        <p class="help-block ui-helper-hidden"></p>
-                                    </div>
-                                </div>
+                                    %{--<div class="controls">--}%
+                                        %{--<elm:datepicker name="fechaFinContractual" class="" value="${concursoInstance?.fechaFinContractual}" style="width:130px;"/>--}%
+                                        %{--<p class="help-block ui-helper-hidden"></p>--}%
+                                    %{--</div>--}%
+                                %{--</div>--}%
 
-                            </div> <!-- fin col 2-->
+                            %{--</div> <!-- fin col 2-->--}%
 
-                        </div>
-                    </div> <!-- fin tab fechas2 -->
+                        %{--</div>--}%
+                    %{--</div> <!-- fin tab fechas2 -->--}%
 
                 </div>
             </g:form>
@@ -786,20 +771,20 @@
 
         </div>
 
-        <div class="modal grandote hide fade " id="modal-tramite" style=";overflow: hidden;">
-            <div class="modal-header btn-info">
-                <button type="button" class="close" data-dismiss="modal">×</button>
+        %{--<div class="modal grandote hide fade " id="modal-tramite" style=";overflow: hidden;">--}%
+            %{--<div class="modal-header btn-info">--}%
+                %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-                <h3 id="modalTitle_tramite">Tramites</h3>
-            </div>
+                %{--<h3 id="modalTitle_tramite">Tramites</h3>--}%
+            %{--</div>--}%
 
-            <div class="modal-body" id="modal-tramite-body">
+            %{--<div class="modal-body" id="modal-tramite-body">--}%
 
-            </div>
+            %{--</div>--}%
 
-            <div class="modal-footer" id="modalTramite_busqueda">
-            </div>
-        </div>
+            %{--<div class="modal-footer" id="modalTramite_busqueda">--}%
+            %{--</div>--}%
+        %{--</div>--}%
 
         <script type="text/javascript">
             function cargarDatos() {
@@ -817,16 +802,18 @@
                 });
             }
 
-            function seguimiento() {
-                $.ajax({
-                    type    : "POST",
-                    url     : "${g.createLink(action:'seguimiento',controller: 'tramite',id: concursoInstance?.memoRequerimiento)}",
-                    success : function (msg) {
-                        $("#seguimiento").html(msg)
-                    }
-                });
-            }
-            seguimiento();
+            %{--function seguimiento() {--}%
+                %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : "${g.createLink(action:'seguimiento',controller: 'tramite',id: concursoInstance?.memoRequerimiento)}",--}%
+                    %{--success : function (msg) {--}%
+                        %{--$("#seguimiento").html(msg)--}%
+                    %{--}--}%
+                %{--});--}%
+            %{--}--}%
+            %{--seguimiento();--}%
+
+
             $('#myTab a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
@@ -977,16 +964,16 @@
                 }
 
             });
-            $("#tramites").click(function () {
-                $.ajax({
-                    type    : "POST",
-                    url     : "${g.createLink(action:'verTramitesAjax',controller: 'tramite',id: concursoInstance?.memoRequerimiento)}",
-                    success : function (msg) {
-                        $("#modal-tramite-body").html(msg);
-                        $("#modal-tramite").modal("show");
-                    }
-                });
-            })
+            %{--$("#tramites").click(function () {--}%
+                %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : "${g.createLink(action:'verTramitesAjax',controller: 'tramite',id: concursoInstance?.memoRequerimiento)}",--}%
+                    %{--success : function (msg) {--}%
+                        %{--$("#modal-tramite-body").html(msg);--}%
+                        %{--$("#modal-tramite").modal("show");--}%
+                    %{--}--}%
+                %{--});--}%
+            %{--})--}%
 
         </script>
     </body>
