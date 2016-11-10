@@ -4,7 +4,7 @@
     <head>
         <meta name="layout" content="main">
         <title>
-            Lista de Procesos
+            Detalles del Proceso
         </title>
         <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
         <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
@@ -192,7 +192,7 @@
 
                             <div class="span5" style="width: 600px;">
                                 <span class="control-label label label-inverse">
-                                    Prefecto
+                                    Director
                                 </span>
 
                                 <div style="width: 400px;" class="controls">
