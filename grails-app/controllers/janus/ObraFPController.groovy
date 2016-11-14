@@ -1,5 +1,7 @@
 package janus
 
+import groovy.time.TimeCategory
+
 class ObraFPController {
     def dbConnectionService
     def obraService
@@ -609,6 +611,7 @@ class ObraFPController {
     }
 
     def rubros(id, sbpr) {
+        def inicio = new Date()
         def cn = dbConnectionService.getConnection()
         def tx_sql = ""
         if (sbpr == 0) {
@@ -660,9 +663,12 @@ class ObraFPController {
                     "obra__id, ${d.clmncdgo}, codigo, 0, sbpr__id from mfrb where obra__id = ${id} and sbpr__id = ${sbpr}")
         }
         cn.close()
+        def fin = new Date()
+        println "...rubros --> ${TimeCategory.minus(fin, inicio)}"
     }
 
     def descomposicion(id, sbpr) {
+        def inicio = new Date()
         def obra = Obra.get(id)
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
@@ -702,6 +708,8 @@ class ObraFPController {
         }
         cn.close()
         cn1.close()
+        def fin = new Date()
+        println "descomposicion --- ${TimeCategory.minus(fin, inicio)}"
     }
 
     def columnaCdgo(id, cmpo, sbpr) {
@@ -746,6 +754,7 @@ class ObraFPController {
     }
 
     def des_Materiales(id, sbpr, conTrnp) {
+        def inicio = new Date()
         def obra = Obra.get(id)
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
@@ -815,7 +824,9 @@ class ObraFPController {
         }
         cn.close()
         cn1.close()
+        def fin = new Date()
 //        println "fin de des_Materiales"
+        println "des_Materiales ---> ${TimeCategory.minus(fin, inicio)}"
     }
 
     def acTransporte(id, sbpr) {  /* la existencia de transporte se mane al llamar la función */

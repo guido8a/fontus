@@ -119,7 +119,8 @@
         </div>
 
         <g:if test="${obra.valor > vmc}">
-            <div style="margin-top: 10px;">
+            <div style="margin-top: 10px;" id="aviso" title="Haga clic para cerrar este aviso">
+                %{--<h3>Haga clic sobre el aviso para cerrar</h3>--}%
                 <div class="alert alert-warning" style="font-weight: bold; font-size: 13px;">
                     <i class="icon icon-info-sign icon-2x pull-left"></i>
                     <p>
@@ -453,6 +454,10 @@
 
                 $("#btnBorrarSP").click(function () {
                     $("#borrarSPDialog").dialog("open")
+                });
+
+                $("#aviso").click(function () {
+                    $("#aviso").hide()
                 });
 
                 $("#btnEditarSP").click(function () {
