@@ -1360,10 +1360,12 @@ class Reportes3Controller {
                     tablaMat += "<td style='width: 45px;text-align: right'>" + (r["itemcpac"] ?: ' ') + "</td>"
                     tablaMat += "<td style='width: 45px;text-align: center'>" + r["tpbncdgo"] + "</td>"
                     tablaMat += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["vae"], format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
-                    tablaMat += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: (r["vae_vlor"] + r["vae_vlor_t"]), format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
+//                    tablaMat += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: (r["vae_vlor"] + r["vae_vlor_t"]), format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
+                    tablaMat += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: (r["vae_vlor"]), format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
                     totalMat += (r["parcial"] + r["parcial_t"])
                     totalMatRel += (r["relativo"] + r["relativo_t"])
-                    totalMatVae += (r["vae_vlor"] + r["vae_vlor_t"])
+//                    totalMatVae += (r["vae_vlor"] + r["vae_vlor_t"])
+                    totalMatVae += (r["vae_vlor"])
                 }
                 tablaMat += "</tr>"
             }
@@ -1396,10 +1398,12 @@ class Reportes3Controller {
                 tablaTrans += "<td style='width: 45px;text-align: right'>" + (r["itemcpac"] ?: ' ') + "</td>"
                 tablaTrans += "<td style='width: 45px;text-align: center'>"  + r["tpbncdgo"] + "</td>"
                 tablaTrans += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["vae_t"], format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
-                tablaTrans += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["vae_vlor_t"], format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
+//                tablaTrans += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["vae_vlor_t"], format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
+                tablaTrans += "<td style='width: 45px;text-align: right'>" + "" + "</td>"
                 total += r["parcial_t"]
                 totalTRel += r["relativo_t"]
-                totalTVae += r["vae_vlor_t"]
+//                totalTVae += r["vae_vlor_t"]
+                totalTVae = 0
                 tablaTrans += "</tr>"
             }
             else {

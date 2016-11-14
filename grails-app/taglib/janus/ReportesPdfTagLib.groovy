@@ -266,6 +266,12 @@ class ReportesPdfTagLib {
                 "    font-size      : 12pt;\n" +
                 "    color          : #17365D;\n" +
                 "}"
+        css += ".subtitulo{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 10pt;\n" +
+                "    color          : #17365D;\n" +
+                "}"
         css += ".numeracion {\n" +
                 "    margin-top     : 0.5cm;\n" +
                 "    margin-bottom  : 0.5cm;\n" +
