@@ -190,30 +190,27 @@ class VolumenObraController extends janus.seguridad.Shield {
             }
         }
 
-//        volumen.cantidad = itemVolumen.cantidad.toDouble()
-        volumen.cantidad = params.canti.toDouble()
+
+        if(params.canti){
+            volumen.cantidad = params.canti.toDouble()
+        }else{
+            volumen.cantidad = itemVolumen.cantidad.toDouble()
+        }
+
         volumen.orden = (volu.orden.size().toInteger()) + 1
         volumen.subPresupuesto = SubPresupuesto.get(params.subDest)
         volumen.obra = obra
         volumen.item = rubro
         if (!volumen.save(flush: true)) {
-//            println "error volumen obra "+volumen.errors
-
             flash.clase = "alert-error"
             flash.message = "Error, no es posible completar la acción solicitada "
-
             redirect(action: "tablaCopiarRubro", params: [obra: obra.id])
-
-//            render "error"
         } else {
             preciosService.actualizaOrden(volumen, "insert")
-
             flash.clase = "alert-success"
             flash.message = "Copiado rubro " + rubro.nombre
-
             redirect(action: "tablaCopiarRubro", params: [obra: obra.id, sub: volumen.subPresupuesto.id])
         }
-
 
     }
 
