@@ -543,7 +543,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def searchTree_ajax() {
-//        println params
+        println "params: search: $params"
 //        def parts = params.search_string.split("~")
         def search = params.search.trim()
         if (search != "") {
@@ -556,8 +556,12 @@ class MantenimientoItemsController extends Shield {
                         }
                     }
                 }
-                ilike("nombre", "%" + search + "%")
+                or {
+                    ilike("nombre", "%" + search + "%")
+                    ilike("codigo", search)
+                }
             }
+
             def departamentos = [], subgrupos = [], grupos = []
             find.each { item ->
                 if (!departamentos.contains(item.departamento))
