@@ -698,7 +698,28 @@
         Factor: <input type="text" id="factor" class="ui-corner-all" style="width:150px;">
     </div>
 
+
+
+
+
+
 </div>
+
+
+<div class="modal hide fade" id="modal-tree">
+    <div class="modal-header" id="modal-header-tree">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+
+        <h3 id="modalTitle-tree"></h3>
+    </div>
+
+    <div class="modal-body" id="modalBody-tree">
+    </div>
+
+    <div class="modal-footer" id="modalFooter-tree">
+    </div>
+</div>
+
 <script type="text/javascript">
 
     $("#quitarRegistro").click(function () {
@@ -2142,40 +2163,64 @@
         });
 
         $("#btn_precio").click(function () {
-            console.log("valor--- precio");
-            if ($('#item_desc').val().length == 0) {
-                $.box({
-                    imageClass: "box_info",
-                    text: "No hay item que agregar al APU",
-                    title: "Alerta",
-                    iconClose: false,
-                    dialog: {
-                        resizable: false,
-                        draggable: false,
-                        buttons: {
-                            "Aceptar": function () {
-                            }
-                        }
-                    }
-                });
-                return false
-            }
-            console.log("id:", $("#item_id").val());
-/*
+
+            var idItem = $("#item_id").val()
+            console.log("id:" + idItem);
+
             $.ajax({
-                type: "POST", url: "${g.createLink(controller: 'rubro',action:'copiaRubro')}",
-                data: "id=${rubro?.id}",
-                success: function (msg) {
-                    $("#dlgLoad").dialog("close")
-                    if (msg == "true") {
-                        alert("Error al generar historico del rubro, comunique este error al administrador del sistema")
-                    } else {
-                        $("#boxHiddenDlg").dialog("close")
-                        agregar(msg, "H");
-                    }
+                type    : "POST",
+                url     : "${createLink(controller: 'rubro', action:'precio_ajax')}",
+                data    : {
+                    item        : idItem,
+                    %{--lugar       : "${lugarId}",--}%
+                    %{--nombreLugar : "${lugarNombre}",--}%
+                    %{--fecha       : "${fecha}",--}%
+                    %{--all         : "${params.all}",--}%
+                    %{--ignore      : "${params.ignore}"--}%
+                },
+                success : function (msg) {
+                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+
+                    btnSave.click(function () {
+                        if ($("#frmSave").valid()) {
+                            btnSave.replaceWith(spinner);
+                        }
+
+                        $.ajax({
+                            type    : "POST",
+                            url     : $("#frmSave").attr("action"),
+                            data    : $("#frmSave").serialize(),
+                            success : function (msg) {
+                                if (msg == "OK") {
+                                    $("#modal-tree").modal("hide");
+                                    var loading = $("<div></div>");
+                                    loading.css({
+                                        textAlign : "center",
+                                        width     : "100%"
+                                    });
+                                    loading.append("Cargando....Por favor espere...<br/>").append(spinnerBg);
+                                    $("#info").html(loading);
+                                } else {
+                                    var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+                                    $("#modalTitle").html("Error");
+                                    $("#modalBody").html("Ha ocurrido un error al guardar");
+                                    $("#modalFooter").html("").append(btnClose);
+                                }
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    $("#modalTitle-tree").html("Nuevo Precio");
+                    $("#modalBody-tree").html(msg);
+                    $("#modalFooter-tree").html("").append(btnOk).append(btnSave);
+                    $("#modal-tree").modal("show");
+//                    $("#fechaPrecio").val($("#fcDefecto").val())
                 }
             });
-*/
+
         });
 
 

@@ -1043,4 +1043,12 @@ class RubroController extends janus.seguridad.Shield {
 
     }
 
+    def precio_ajax () {
+        def item = Item.get(params.item)
+        def precioRubrosItemsInstance = new PrecioRubrosItems()
+        precioRubrosItemsInstance.item = item
+        def fecha = new Date()
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, params: params, fecha: fecha]
+    }
+
 } //fin controller
