@@ -10,85 +10,69 @@
 
 
 
-<div class="row-fluid" style="margin-left: 0px">
-    <div class="span5" style="width: 550px">
-        <b>Subpresupuesto de origen:</b>
-        <g:select name="subpresupuestoOrg" from="${subPres}" optionKey="id" optionValue="descripcion"  noSelection="['' : ' - Seleccione un subpresupuesto - ']" style="width: 300px;font-size: 10px; margin-left: 50px" id="subPres_desc" value="${subPre}"></g:select>
+%{--<div class="row-fluid" style="margin-left: 0px">--}%
+    %{--<div class="span5" style="width: 550px">--}%
+        %{--<b>Subpresupuesto de origen:</b>--}%
+        %{--<g:select name="subpresupuestoOrg" from="${subPres}" optionKey="id" optionValue="descripcion"  noSelection="['' : ' - Seleccione un subpresupuesto - ']" style="width: 300px;font-size: 10px; margin-left: 50px" id="subPres_desc" value="${subPre}"></g:select>--}%
+    %{--</div>--}%
 
-        %{--todo descomentar esto--}%
-        %{--<g:select name="subpresupuestoOrg" from="${subPresupuesto1}" optionKey="id" optionValue="descripcion"  noSelection="['' : ' - Seleccione un subpresupuesto - ']" style="width: 300px;font-size: 10px; margin-left: 50px" id="subPres_desc" value="${subPre}"></g:select>--}%
-    </div>
+    %{--<div class="span4" style="width: 200px">--}%
+        %{--<a href="#" class="btn" id="regresar">--}%
+            %{--<i class="icon-arrow-left"></i>--}%
+            %{--Regresar--}%
+        %{--</a>--}%
 
+    %{--</div>--}%
+%{--</div>--}%
 
-
-    <div class="span4" style="width: 200px">
-        <a href="#" class="btn" id="regresar">
-            <i class="icon-arrow-left"></i>
-            Regresar
-        </a>
-
-    </div>
-
-
-
-</div>
-
-<div class="row-fluid" style="margin-left: 0px">
-    <div class="span5" style="width: 550px">
-        <b>Subpresupuesto de destino:</b>
-        <g:select name="subpresupuestoDes" from="${janus.SubPresupuesto.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 300px;font-size: 10px; margin-left: 45px" id="subPres_destino"
-                  noSelection="['' : ' - Seleccione un subpresupuesto - ']"></g:select>
-
-        %{--todo descomentar esto--}%
-        %{--<g:select name="subpresupuestoDes" from="${subPresupuesto1}" optionKey="id" optionValue="descripcion" style="width: 300px;font-size: 10px; margin-left: 45px" id="subPres_destino"--}%
+%{--<div class="row-fluid" style="margin-left: 0px">--}%
+    %{--<div class="span5" style="width: 550px">--}%
+        %{--<b>Subpresupuesto de destino:</b>--}%
+        %{--<g:select name="subpresupuestoDes" from="${janus.SubPresupuesto.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 300px;font-size: 10px; margin-left: 45px" id="subPres_destino"--}%
                   %{--noSelection="['' : ' - Seleccione un subpresupuesto - ']"></g:select>--}%
+    %{--</div>--}%
+    %{--<div class="span4" style="width: 500px">--}%
 
-
-    </div>
-    <div class="span4" style="width: 500px">
-
-        <a href="#" class="btn  " id="copiar_todos">
-            <i class="icon-copy"></i>
-            Copiar Todos los Rubros
-        </a>
-        <a href="#" class="btn  " id="copiar_sel">
-            <i class="icon-copy"></i>
-            Copiar rubros seleccionados
-        </a>
-
-
-    </div>
-</div>
+        %{--<a href="#" class="btn  " id="copiar_todos">--}%
+            %{--<i class="icon-copy"></i>--}%
+            %{--Copiar Todos los Rubros--}%
+        %{--</a>--}%
+        %{--<a href="#" class="btn  " id="copiar_sel">--}%
+            %{--<i class="icon-copy"></i>--}%
+            %{--Copiar rubros seleccionados--}%
+        %{--</a>--}%
+    %{--</div>--}%
+%{--</div>--}%
 
 
 <table class="table table-bordered table-striped table-condensed table-hover">
-    <thead>
-    <tr>
-        <th style="width: 10px;">
-            *
-        </th>
-        <th style="width: 20px;">
-            #
-        </th>
-        <th style="width: 200px;">
-            Subpresupuesto
-        </th>
-        <th style="width: 80px;">
-            Código
-        </th>
-        <th style="width: 400px;">
-            Rubro
-        </th>
-        <th style="width: 60px" class="col_unidad">
-            Unidad
-        </th>
-        <th style="width: 80px">
-            Cantidad
-        </th>
-        <th class="col_precio" style="display: none;">Unitario</th>
-        <th class="col_total" style="display: none;">C.Total</th>
-    </tr>
-    </thead>
+    %{--<thead>--}%
+    %{--<tr>--}%
+        %{--<th style="width: 10px;">--}%
+            %{--*--}%
+        %{--</th>--}%
+        %{--<th style="width: 20px;">--}%
+            %{--#--}%
+        %{--</th>--}%
+        %{--<th style="width: 200px;">--}%
+            %{--Subpresupuesto--}%
+        %{--</th>--}%
+        %{--<th style="width: 80px;">--}%
+            %{--Código--}%
+        %{--</th>--}%
+        %{--<th style="width: 400px;">--}%
+            %{--Rubro--}%
+        %{--</th>--}%
+        %{--<th style="width: 60px" class="col_unidad">--}%
+            %{--Unidad--}%
+        %{--</th>--}%
+        %{--<th style="width: 80px">--}%
+            %{--Cantidad--}%
+        %{--</th>--}%
+        %{--<th class="col_precio" style="display: none;">Unitario</th>--}%
+        %{--<th class="col_total" style="display: none;">C.Total</th>--}%
+    %{--</tr>--}%
+    %{--</thead>--}%
 
 
     <tbody id="tabla_material">
@@ -116,16 +100,16 @@
 </table>
 
 
-<div id="faltaOrigenDialog">
+%{--<div id="faltaOrigenDialog">--}%
 
-    <fieldset>
-        <div class="span3">
+    %{--<fieldset>--}%
+        %{--<div class="span3">--}%
 
-            Es necesario elegir los subpresupuesto de Origen y de Destino
+            %{--Es necesario elegir los subpresupuesto de Origen y de Destino--}%
 
-        </div>
-    </fieldset>
-</div>
+        %{--</div>--}%
+    %{--</fieldset>--}%
+%{--</div>--}%
 
 
 
@@ -133,114 +117,65 @@
 
     var checkeados = []
 
-    $("#subPres_desc").change(function(){
 
-        var datos = "obra=${obra.id}&sub="+$("#subPres_desc").val()
-        var interval = loading("detalle")
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'tablaCopiarRubro')}",
-            data     : datos,
-            success  : function (msg) {
-                clearInterval(interval)
-                $("#detalle").html(msg)
-            }
-        });
-    });
+//    $("#copiar_todos").click(function () {
 
+        %{--var tbody = $("#tabla_material");--}%
+        %{--var datos--}%
+        %{--var subPresDest = $("#subPres_destino").val()--}%
+        %{--var subPre = $("#subPres_desc").val()--}%
 
-    $("#copiar_todos").click(function () {
-
-
-
-        var tbody = $("#tabla_material");
-        var datos
-        var subPresDest = $("#subPres_destino").val()
-        var subPre = $("#subPres_desc").val()
-
-        if(subPre == "" || subPresDest == ""){
-
-            $("#faltaOrigenDialog").dialog("open")
+        %{--if(subPre == "" || subPresDest == ""){--}%
+            %{--$("#faltaOrigenDialog").dialog("open")--}%
+        %{--} else {--}%
+            %{--tbody.children("tr").each(function () {--}%
+                %{--var trId = $(this).attr("id")--}%
+                %{--datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre--}%
+                %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
+                    %{--data     : datos,--}%
+                    %{--success  : function (msg) {--}%
+                        %{--$("#detalle").html(msg)--}%
+                    %{--}--}%
+                %{--});--}%
+            %{--});--}%
+        %{--}--}%
+//    });
 
 
-        } else {
-
-            tbody.children("tr").each(function () {
-
-                var trId = $(this).attr("id")
-
-                //console.log("ID:" + trId)
+//    $("#copiar_sel").click(function () {
 
 
-                datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre
+        %{--var tbody = $("#tabla_material");--}%
+        %{--var datos--}%
+        %{--var subPresDest = $("#subPres_destino").val()--}%
+        %{--var subPre = $("#subPres_desc").val()--}%
+        %{--var rbros = []--}%
 
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
-                    data     : datos,
-                    success  : function (msg) {
-                        $("#detalle").html(msg)
+        %{--tbody.children("tr").each(function () {--}%
 
-                    }
-                });
+            %{--if(($(this).children("td").children().get(1).checked) == true){--}%
+                %{--var selec = []--}%
+                %{--var trId = $(this).attr("id")--}%
+                %{--var ord = $(this).attr("ord")--}%
+                %{--var canti = $(this).attr("cant")--}%
 
+                %{--datos ="&rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&orden=" + ord + "&canti=" + canti--}%
 
-            });
-        }
+                %{--$.ajax({--}%
+                    %{--type : "POST",--}%
+                    %{--async : false,--}%
+                    %{--url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
+                    %{--data     : datos,--}%
+                    %{--success  : function (msg) {--}%
+                        %{--$("#detalle").html(msg)--}%
+                    %{--}--}%
+                %{--});--}%
 
-    });
+            %{--} else {--}%
+            %{--}--}%
 
-
-    $("#copiar_sel").click(function () {
-
-        var tbody = $("#tabla_material");
-//        var trP = $("#item_row")
-        var datos
-        var subPresDest = $("#subPres_destino").val()
-        var subPre = $("#subPres_desc").val()
-        var rbros = []
-
-
-        tbody.children("tr").each(function () {
-
-//            //console.log($(this).children("td").children().get(1).is(":checked"))
-
-            if(($(this).children("td").children().get(1).checked) == true){
-
-                var selec = []
-
-                var trId = $(this).attr("id")
-                var ord = $(this).attr("ord")
-                var canti = $(this).attr("cant")
-
-
-                datos ="&rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&orden=" + ord + "&canti=" + canti
-
-                $.ajax({
-                    type : "POST",
-                    async : false,
-                    url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
-                    data     : datos,
-                    success  : function (msg) {
-                        $("#detalle").html(msg)
-
-                    }
-                });
-
-
-//                //console.log("id:" + trId)
-            } else {
-
-
-                //console.log("entro else")
-
-
-            }
-
-
-
-
-        });
-
-
-
-    });
+        %{--});--}%
+//    });
 
     %{--$("#ver_todos").click(function(){--}%
     %{--//        $("#calcular").removeClass("active")--}%
@@ -291,32 +226,28 @@
 //
 //    });
 
-    $("#faltaOrigenDialog").dialog({
-
-        autoOpen  : false,
-        resizable : false,
-        modal     : true,
-        draggable : false,
-        width     : 350,
-        height    : 150,
-        position  : 'center',
-        title     : 'Elegir subpresupuestos!',
-        buttons   : {
-            "Aceptar" : function () {
-
-
-                $("#faltaOrigenDialog").dialog("close");
-
-            }
-        }
-
-
-    });
+//    $("#faltaOrigenDialog").dialog({
+//
+//        autoOpen  : false,
+//        resizable : false,
+//        modal     : true,
+//        draggable : false,
+//        width     : 350,
+//        height    : 150,
+//        position  : 'center',
+//        title     : 'Elegir subpresupuestos!',
+//        buttons   : {
+//            "Aceptar" : function () {
+//
+//
+//                $("#faltaOrigenDialog").dialog("close");
+//
+//            }
+//        }
+//    });
 
     $("#regresar").click(function () {
-
        location.href = "${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"
-
     });
 
 </script>

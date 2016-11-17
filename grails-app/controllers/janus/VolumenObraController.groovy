@@ -312,39 +312,29 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         def obra = Obra.get(params.obra)
         def volumenes = VolumenesObra.findAllByObra(obra)
+        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
-        return [obra: obra, volumenes: volumenes]
+        return [obra: obra, volumenes: volumenes, subPres: subPres]
 
     }
 
     def tablaCopiarRubro() {
 
-
         def usuario = session.usuario.id
-
         def persona = Persona.get(usuario)
-
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-
         def grupo = Grupo.findAllByDireccion(direccion)
-
-
         def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
-
-
         def obra = Obra.get(params.obra)
-
         def valores
+
         if (params.sub && params.sub != "null") {
             valores = preciosService.rbro_pcun_v3(obra.id, params.sub)
-
         } else {
             valores = preciosService.rbro_pcun_v2(obra.id)
-
         }
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
 
         def precios = [:]
         def fecha = obra.fechaPreciosRubros
@@ -358,8 +348,6 @@ class VolumenObraController extends janus.seguridad.Shield {
         preciosService.ac_rbroObra(obra.id)
 
         [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores, subPresupuesto1: subPresupuesto1]
-
-
     }
 
 
@@ -387,5 +375,13 @@ class VolumenObraController extends janus.seguridad.Shield {
             def anchos = [20, 80] /*el ancho de las columnas en porcentajes... solo enteros*/
             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Item", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Rubros", anchos: anchos, extras: extras, landscape: true])
         }
+    }
+
+    def origen_ajax () {
+        def obra = Obra.get(params.obra)
+        def origen = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+
+        return [origen: origen]
+
     }
 }
