@@ -51,8 +51,8 @@
                                  value="${g.formatNumber(number: precioRubrosItemsInstance?.precioUnitario, maxFractionDigits: 5, minFractionDigits: 5, format: '##,##0', locale: 'ec')}"
                                  title="Precio"/>
 
-
                     %{--<g:field type="number" name="precioUnitario" class=" required input-small" value="${fieldValue(bean: precioRubrosItemsInstance, field: 'precioUnitario')}"/>--}%
+
                     <span class="add-on" id="spanPeso">
                         $
                     </span>
