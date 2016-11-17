@@ -1147,7 +1147,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def savePrecio_ajax() {
-//        println params
+        println "precio: $params"
         def item = Item.get(params.item.id)
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         if (params.lugar.id != "-1") {

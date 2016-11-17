@@ -238,7 +238,7 @@
 
             <div class="span3" style="width: 180px;">
                 % costos indirectos
-                <input type="text" style="width: 30px;" id="costo_indi" value="21">
+                <input type="text" style="width: 30px;" id="costo_indi" value="24">
             </div>
 
             <div class="span2">
@@ -297,6 +297,8 @@
                         <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
                             <i class="icon-plus"></i>
                         </a>
+
+                        <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Precio" id="btn_precio">$</a>
 
                     </div>
                 </g:if>
@@ -778,7 +780,7 @@
 
 
     function agregar(id,tipo){
-        var tipoItem=$("#item_id").attr("tipo")
+        var tipoItem = $("#item_id").attr("tipo")
 //        console.log("-->" + tipoItem)
         var cant = $("#item_cantidad").val()
         console.log("-->" + cant)
@@ -954,9 +956,6 @@
                             $("#cdgo_buscar").val(codigo)
                             $("#item_desc").val(desc)
                             $("#item_unidad").val(unidad)
-
-
-
                         })
 
                         if (a) {
@@ -2140,9 +2139,46 @@
                     }
                 }
             });
-
-
         });
+
+        $("#btn_precio").click(function () {
+            console.log("valor--- precio");
+            if ($('#item_desc').val().length == 0) {
+                $.box({
+                    imageClass: "box_info",
+                    text: "No hay item que agregar al APU",
+                    title: "Alerta",
+                    iconClose: false,
+                    dialog: {
+                        resizable: false,
+                        draggable: false,
+                        buttons: {
+                            "Aceptar": function () {
+                            }
+                        }
+                    }
+                });
+                return false
+            }
+            console.log("id:", $("#item_id").val());
+/*
+            $.ajax({
+                type: "POST", url: "${g.createLink(controller: 'rubro',action:'copiaRubro')}",
+                data: "id=${rubro?.id}",
+                success: function (msg) {
+                    $("#dlgLoad").dialog("close")
+                    if (msg == "true") {
+                        alert("Error al generar historico del rubro, comunique este error al administrador del sistema")
+                    } else {
+                        $("#boxHiddenDlg").dialog("close")
+                        agregar(msg, "H");
+                    }
+                }
+            });
+*/
+        });
+
+
         </g:if>
         <g:else>
         $("#btn_agregarItem").click(function () {
