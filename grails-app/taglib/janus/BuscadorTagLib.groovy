@@ -45,6 +45,7 @@ class BuscadorTagLib {
     }
 
     def buscador = {atr ->
+//        println("---> " + atr)
         def name = atr.name ? atr.name : " "
         def value = atr.value
         def campos
@@ -127,6 +128,8 @@ class BuscadorTagLib {
         salida += 'data="tc="+$("#tipoCampo").val()+"&campos="+$("#campo :selected").val()+"&operadores="+$("#operador :selected").val()+"&criterios="+$("#criterio").val()'
         salida += '}'
         salida += 'data+="&ordenado="+$("#campoOrdn :selected").val()+"&orden="+$("#orden :selected").val();'
+        println("controlador " + controlador)
+        println("accion " + accion)
         if (controlador) {
             salida += '$.ajax({type: "POST",url: "' + g.createLink(controller: controlador,action: accion) + '",'
         } else {
@@ -162,6 +165,7 @@ class BuscadorTagLib {
 
 
     String listaHtml(name, value, campos, controlador, accion, label = '', lsta = false) {
+//        println("entro")
         def salida = ""
         if (!lsta) {
             salida += '<div class=" filaEntera ui-corner-all barra"   > '
@@ -243,9 +247,6 @@ class BuscadorTagLib {
         salida += '$("#buscarDialog").bind("click",function(){'
         salida += ' enviar();'
         salida += '});'
-
-
-
 
         salida += '</script>'
 

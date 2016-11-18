@@ -1127,23 +1127,23 @@ class MantenimientoItemsController extends Shield {
     }
 
     def checkFcPr_ajax() {
-//        println params
-        if (!params.lugar) {
-            render true
-        } else {
-            def precios = PrecioRubrosItems.withCriteria {
-                and {
-                    eq("lugar", Lugar.get(params.lugar))
-                    eq("fecha", new Date().parse("dd-MM-yyyy", params.fecha))
-                    eq("item", Item.get(params.item))
-                }
-            }
-            if (precios.size() == 0) {
-                render true
-            } else {
-                render false
-            }
-        }
+        println ("paramscheck " + params)
+//        if (!params.lugar) {
+//            render true
+//        } else {
+//            def precios = PrecioRubrosItems.withCriteria {
+//                and {
+//                    eq("lugar", Lugar.get(params.lugar))
+//                    eq("fecha", new Date().parse("dd-MM-yyyy", params.fecha))
+//                    eq("item", Item.get(params.item))
+//                }
+//            }
+//            if (precios.size() == 0) {
+//                render true
+//            } else {
+//                render false
+//            }
+//        }
     }
 
     def savePrecio_ajax() {
