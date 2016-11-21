@@ -7,12 +7,12 @@
 <%@ page import="janus.PrecioRubrosItems" %>
 
 <div id="create-precioRubrosItemsInstance" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave" action="savePrecio1_ajax">
+    <g:form class="form-horizontal" name="frmSave" controller="mantenimientoItems" action="savePrecio_ajax">
         <g:hiddenField name="id" value="${precioRubrosItemsInstance?.id}"/>
         %{--<g:hiddenField id="lugar" name="lugar.id" value="${lugar ? precioRubrosItemsInstance?.lugar?.id : -1}"/>--}%
         <g:hiddenField id="item" name="item.id" value="${precioRubrosItemsInstance?.item?.id}"/>
         %{--<g:hiddenField name="all" value="${params.all}"/>--}%
-        %{--<g:hiddenField name="ignore" value="${params.ignore}"/>--}%
+        <g:hiddenField name="ignore" value="${true}"/>
 
         <div class="tituloTree">
             Item:  ${precioRubrosItemsInstance.item.nombre} <br>
@@ -25,8 +25,11 @@
                 </span>
 
             <div class="controls">
-                <g:select name="lugar.id" from="${janus.Lugar.list() - janus.Lugar.findByCodigo(100)}"
-                          optionKey="id" optionValue="descripcion" id="lugarSel" />
+                %{--<g:select name="lugar.id" from="${janus.Lugar.list() - janus.Lugar.findByCodigo(100)}"--}%
+                          %{--optionKey="id" optionValue="descripcion" id="lugarSel" />--}%
+
+                <elm:select name="lugar.id" from="${janus.Lugar.list() - janus.Lugar.findByCodigo(100)}" optionValue="descripcion" optionKey="id"
+                            optionClass="${{ it?.id }}" id="lugar" noSelection="['-2': 'TODOS']"/>
 
             </div>
         </div>
@@ -77,41 +80,34 @@
 <script type="text/javascript">
 
     $(function () {
-        var lug = []
 
-        $("#lugarSel").change(function () {
-            lug[1] = $(this).val();
-            console.log("--> " + lug)
-        })
+        %{--$("#frmSave").validate({--}%
+            %{--rules          : {--}%
+                %{--fecha : {--}%
+                    %{--remote : {--}%
+                        %{--url  : "${createLink(controller: 'mantenimientoItems', action:'checkFcPr_ajax')}",--}%
+                        %{--type : "post",--}%
+                        %{--data : {--}%
+                            %{--item  : "${precioRubrosItemsInstance.itemId}",--}%
+                            %{--lugar : lug--}%
 
-
-        $("#frmSave").validate({
-            rules          : {
-                fecha : {
-                    remote : {
-                        url  : "${createLink(controller: 'mantenimientoItems', action:'checkFcPr_ajax')}",
-                        type : "post",
-                        data : {
-                            item  : "${precioRubrosItemsInstance.itemId}",
-                            lugar : lug
-
-                        }
-                    }
-                }
-            },
-            messages       : {
-                fecha : {
-                    remote : "Ya existe un precio para esta fecha"
-                }
-            },
-            errorPlacement : function (error, element) {
-                element.parent().find(".help-block").html(error).show();
-            },
-            success        : function (label) {
-                label.parent().hide();
-            },
-            errorClass     : "label label-important"
-        });
+                        %{--}--}%
+                    %{--}--}%
+                %{--}--}%
+            %{--},--}%
+            %{--messages       : {--}%
+                %{--fecha : {--}%
+                    %{--remote : "Ya existe un precio para esta fecha"--}%
+                %{--}--}%
+            %{--},--}%
+            %{--errorPlacement : function (error, element) {--}%
+                %{--element.parent().find(".help-block").html(error).show();--}%
+            %{--},--}%
+            %{--success        : function (label) {--}%
+                %{--label.parent().hide();--}%
+            %{--},--}%
+            %{--errorClass     : "label label-important"--}%
+        %{--});--}%
 
     });
 

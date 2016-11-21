@@ -11,6 +11,9 @@
     <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
     <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
     <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
+    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
+    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -88,13 +91,15 @@
         </a>
     </g:if>
 
+
     <g:if test="${rubro}">
-        %{--<g:if test="${rubro?.codigoEspecificacion}">--}%
             <a href="#" id="detalle" class="btn btn-ajax btn-new" title="Ingresar datos para especificaciones">
                 <i class="icon-list"></i>
                 Especif.
             </a>
-        %{--</g:if>--}%
+        <a href="#" class="btn btn-ajax btn-new btn-info" id="btnImprimirEspecificacion2" title="Imprimir especificación">
+            <i class="icon-print"></i>
+        </a>
     </g:if>
     <g:if test="${rubro}">
         <a href="#" id="foto" class="btn btn-ajax btn-new" title="Cargar ilustración">
@@ -721,6 +726,23 @@
 </div>
 
 <script type="text/javascript">
+
+    $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
+
+    function log(msg, error) {
+        var sticky = false;
+        var theme = "success";
+        if (error) {
+            sticky = true;
+            theme = "error";
+        }
+        $.jGrowl(msg, {
+            speed: 'slow',
+            sticky: sticky,
+            theme: theme,
+            themeState: ''
+        });
+    }
 
     $("#quitarRegistro").click(function () {
         var idRubroR = '${rubro?.id}'
@@ -1389,6 +1411,12 @@
 
         $("#detalle").click(function () {
             location.href="${createLink(controller: 'rubro', action: 'especificaciones')}/" + '${rubro?.id}'
+        });
+
+
+        $("#btnImprimirEspecificacion2").click(function () {
+            var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificaciones')}?id=" + '${rubro?.id}'
+            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
         });
 
         $("#borrar").click(function () {
@@ -2172,20 +2200,12 @@
                 url     : "${createLink(controller: 'rubro', action:'precio_ajax')}",
                 data    : {
                     item        : idItem,
-                    %{--lugar       : "${lugarId}",--}%
-                    %{--nombreLugar : "${lugarNombre}",--}%
-                    %{--fecha       : "${fecha}",--}%
-                    %{--all         : "${params.all}",--}%
-                    %{--ignore      : "${params.ignore}"--}%
                 },
                 success : function (msg) {
                     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
 
                     btnSave.click(function () {
-                        if ($("#frmSave").valid()) {
-                            btnSave.replaceWith(spinner);
-                        }
 
                         $.ajax({
                             type    : "POST",
@@ -2194,18 +2214,10 @@
                             success : function (msg) {
                                 if (msg == "OK") {
                                     $("#modal-tree").modal("hide");
-                                    var loading = $("<div></div>");
-                                    loading.css({
-                                        textAlign : "center",
-                                        width     : "100%"
-                                    });
-                                    loading.append("Cargando....Por favor espere...<br/>").append(spinnerBg);
-                                    $("#info").html(loading);
+                                    log("Precios creados correctamente!", false);
                                 } else {
-                                    var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                                    $("#modalTitle").html("Error");
-                                    $("#modalBody").html("Ha ocurrido un error al guardar");
-                                    $("#modalFooter").html("").append(btnClose);
+                                    $("#modal-tree").modal("hide");
+                                    log("Error al crear uno o más precios!", true);
                                 }
                             }
                         });

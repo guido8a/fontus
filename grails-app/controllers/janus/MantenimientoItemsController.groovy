@@ -1149,21 +1149,60 @@ class MantenimientoItemsController extends Shield {
     def savePrecio_ajax() {
         println "precio: $params"
         def item = Item.get(params.item.id)
+        def errores = ""
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         if (params.lugar.id != "-1") {
-            def precioRubrosItemsInstance = new PrecioRubrosItems(params)
-            if (precioRubrosItemsInstance.save(flush: true)) {
-                render "OK"
+            if(params.lugar.id != "-2"){
+                def precioRubrosItemsInstance = new PrecioRubrosItems(params)
+                if (precioRubrosItemsInstance.save(flush: true)) {
+                    render "OK"
+                } else {
+                    println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
+                    render "NO"
+                }
+            }else{
+
+
+            def precios = PrecioRubrosItems.withCriteria {
+                and {
+                    eq("lugar", Lugar.get(1))
+                    eq("fecha", params.fecha)
+                    eq("item", item)
+                }
+            }
+
+            if (precios.size() == 0) {
+                (janus.Lugar.list() - janus.Lugar.findByCodigo(100)).each {
+                    def precioRubrosItemsInstanceTodos = new PrecioRubrosItems()
+                    precioRubrosItemsInstanceTodos.precioUnitario = params.precioUnitario.toDouble()
+                    precioRubrosItemsInstanceTodos.lugar = Lugar.get(it.id)
+                    precioRubrosItemsInstanceTodos.item = Item.get(params.item.id)
+                    precioRubrosItemsInstanceTodos.fecha = params.fecha
+                    println("---> " + precioRubrosItemsInstanceTodos)
+                    if(!precioRubrosItemsInstanceTodos.save(flush: true)){
+
+                        errores += precioRubrosItemsInstanceTodos.errors
+                    }else{
+                    }
+                }
             } else {
-                println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
                 render "NO"
             }
+
+
+
+
+
+
+                if(errores == ""){
+                    render "OK"
+                }else{
+                    render "NO"
+                }
+            }
+
         } else {
-//            def tipo = ["C"]
             if (params.ignore == "true") {
-//                if (params.all == "true") {
-//                    tipo.add("V")
-//                }
                 def error = 0
                 Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
                     def precios = PrecioRubrosItems.withCriteria {
@@ -1180,7 +1219,6 @@ class MantenimientoItemsController extends Shield {
                         precioRubrosItemsInstance.item = Item.get(params.item.id)
                         precioRubrosItemsInstance.fecha = params.fecha
                         if (precioRubrosItemsInstance.save(flush: true)) {
-//                            println "OK"
                         } else {
                             println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
                             error++
