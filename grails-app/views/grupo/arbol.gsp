@@ -50,11 +50,6 @@
         <input type="button" class="btn pull-right" value="Cerrar todo" onclick="$('#tree').jstree('close_all');">
     </form>
 
-    %{--<div class="btn-group">--}%
-    %{--<input type="button" class="btn" value="Cerrar todo" onclick="$('#tree').jstree('close_all');">--}%
-    %{--<input type="button" class="btn" value="Abrir todo" onclick="$('#tree').jstree('open_all');">--}%
-    %{--</div>--}%
-
     <div id="tree" class="ui-corner-all"></div>
 
     <div id="info" class="ui-corner-all"></div>
@@ -574,7 +569,8 @@
                 url = "${createLink(action:'showDp_ajax')}";
                 break;
             case "rubro":
-                url = "${createLink(action:'showRb_ajax')}";
+                %{--url = "${createLink(action:'showRb_ajax')}";--}%
+                url = "${createLink(action:'showRb_nuevo_ajax')}";
                 break;
         }
         if (url != "") {

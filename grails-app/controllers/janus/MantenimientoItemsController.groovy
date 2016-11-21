@@ -1174,7 +1174,46 @@ class MantenimientoItemsController extends Shield {
             if (precios.size() == 0) {
                 (janus.Lugar.list() - janus.Lugar.findByCodigo(100)).each {
                     def precioRubrosItemsInstanceTodos = new PrecioRubrosItems()
-                    precioRubrosItemsInstanceTodos.precioUnitario = params.precioUnitario.toDouble()
+                    switch (Lugar.get(it.id).descripcion) {
+                        case "QUITO":
+                            precioRubrosItemsInstanceTodos.precioUnitario = params.precioUnitario.toDouble()
+                            break;
+                        case "GUAYAQUIL":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.01)*100000)/100000
+                            break;
+                        case "TUNGURAHUA":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.01)*100000)/100000
+                            break;
+                        case "NAPO":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.05)*100000)/100000
+                            break;
+                        case "MANABI":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.03)*100000)/100000
+                            break;
+                        case "BOLIVAR":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.03)*100000)/100000
+                            break;
+                        case "EL ORO":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.04)*100000)/100000
+                            break;
+                        case "LOJA":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.06)*100000)/100000
+                            break;
+                        case "CAÑAR":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.06)*100000)/100000
+                            break;
+                        case "IMBABURA":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.02)*100000)/100000
+                            break;
+                        case "ESMERALDAS":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.1)*100000)/100000
+                            break;
+                        case "ORELLANA":
+                            precioRubrosItemsInstanceTodos.precioUnitario = ((params.precioUnitario.toDouble()*1.1)*100000)/100000
+                            break;
+                    }
+
+//                    precioRubrosItemsInstanceTodos.precioUnitario = params.precioUnitario.toDouble()
                     precioRubrosItemsInstanceTodos.lugar = Lugar.get(it.id)
                     precioRubrosItemsInstanceTodos.item = Item.get(params.item.id)
                     precioRubrosItemsInstanceTodos.fecha = params.fecha

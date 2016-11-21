@@ -41,6 +41,13 @@ class GrupoController extends janus.seguridad.Shield {
         return [rubro: rubro, items: items]
     }
 
+    def showRb_nuevo_ajax() {
+        def rubro = Item.get(params.id)
+        def items = Rubro.findAllByRubro(rubro)
+        items.sort { it.item.codigo }
+        return [rubro: rubro, items: items]
+    }
+
     def showDp_ajax() {
         def departamentoItemInstance = DepartamentoItem.get(params.id)
         return [departamentoItemInstance: departamentoItemInstance]
