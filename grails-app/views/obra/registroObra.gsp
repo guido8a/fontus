@@ -347,11 +347,13 @@
 
                 </g:else>
             </div>
+%{--
             <span style="color: #081d30; font-weight: bold">
                 <g:formatNumber number="${obra?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
                                 locale="ec"/>    
             </span>
-            
+--}%
+
 
 
         </div>

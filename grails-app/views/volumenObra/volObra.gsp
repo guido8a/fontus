@@ -65,10 +65,12 @@
                     Regresar
                 </a>
                 %{--<a href="#" class="btn btn-ajax btn-new btn-warning" id="calcular" title="Calcular precios">--}%
-                <a href="#" class="btn btn-ajax btn-new btn-params" id="calcular" title="Calcular precios">
-                    <i class="icon-table"></i>
-                    Calcular
-                </a>
+                <g:if test="${session.perfil.codigo == 'CSTO'}">
+                    <a href="#" class="btn btn-ajax btn-new btn-params" id="calcular" title="Calcular precios">
+                        <i class="icon-table"></i>
+                        Calcular
+                    </a>
+                </g:if>
                 <a href="#" class="btn btn-ajax btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos" style="display: none">
                     <i class="icon-print"></i>
                     Reporte Grupos/Subgrupos
