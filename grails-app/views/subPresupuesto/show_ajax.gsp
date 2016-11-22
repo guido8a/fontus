@@ -1,7 +1,7 @@
 
 <%@ page import="janus.SubPresupuesto" %>
 
-<div id="show-subPresupuesto" class="span5" role="main">
+<div id="show-subPresupuesto" class="span6" role="main">
 
     <form class="form-horizontal">
     
@@ -23,15 +23,15 @@
     </g:if>
     
     <g:if test="${subPresupuestoInstance?.descripcion}">
-        <div class="control-group">
+        <div class="control-group span4">
             <div>
-                <span id="descripcion-label" class="control-label label label-inverse">
+                <span id="descripcion-label" class="control-label label label-inverse span1">
                     Descripcion
                 </span>
             </div>
             <div class="controls">
         
-                <span aria-labelledby="descripcion-label">
+                <span aria-labelledby="descripcion-label span3">
                     <g:fieldValue bean="${subPresupuestoInstance}" field="descripcion"/>
                 </span>
         

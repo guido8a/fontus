@@ -11,6 +11,7 @@ class VolumenesObra implements Serializable {
 
     String rutaCritica = "N"
     String descripcion
+    Area   area
 
     static auditable = [ignore: ["orden"]]
     static mapping = {
@@ -32,6 +33,7 @@ class VolumenesObra implements Serializable {
 
             rutaCritica column: 'vlobrtcr'
             descripcion column: 'vlobdscr'
+            area column: 'area__id'
         }
     }
     static constraints = {
@@ -42,5 +44,6 @@ class VolumenesObra implements Serializable {
 
         rutaCritica(blank: true, nullable: true, maxSize: 1, inList: ['S', 'N'], attributes: [title: 'ruta critica'])
         descripcion(blank: true, nullable: true, maxSize: 1023, attributes: [title: 'descripción del rubro de la obra'])
+        area(blank: false, nullable: false )
     }
 }

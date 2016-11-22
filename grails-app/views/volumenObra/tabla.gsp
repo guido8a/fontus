@@ -57,11 +57,11 @@
         <th style="width: 120px;">
             Subpresupuesto
         </th>
+        <th style="width: 100px;">
+            Área
+        </th>
         <th style="width: 80px;">
             Código
-        </th>
-        <th style="width: 100px;">
-            Especificación
         </th>
         <th style="width: 300px;">
             Rubro
@@ -83,12 +83,13 @@
 
     <g:each in="${valores}" var="val" status="j">
     %{--<tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">--}%
-        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
+        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}" item="${val}"
+            dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}" area="${val.area__id}">
 
             <td style="width: 20px" class="orden">${val.vlobordn}</td>
             <td style="width: 200px" class="sub">${val.sbprdscr.trim()}</td>
+            <td class="cdes">${val.area?.trim()}</td>
             <td class="cdgo">${val.rbrocdgo.trim()}</td>
-            <td class="cdes">${val.itemcdes?.trim()}</td>
             <td class="nombre">${val.rbronmbr.trim()}</td>
             <td style="width: 60px !important;text-align: center" class="col_unidad">${val.unddcdgo.trim()}</td>
             <td style="text-align: right" class="cant">
@@ -438,18 +439,24 @@
         $("#vol_id").val($(this).attr("id"))     /* gdo: id del registro a editar */
         $("#item_codigo").val($(this).find(".cdgo").html())
         $("#item_id").val($(this).attr("item"))
-        $("#subPres").val($(this).attr("sub"))
+        $("#sbpr").val($(this).attr("sub"))
+
+        $("#area").val($(this).attr("area"))
+        console.log('area', $("#area").val(), 'ok')
+
         $("#item_descripcion").val($(this).attr("dscr"))
 
         $("#item_nombre").val($(this).find(".nombre").html())
         $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
         $("#item_orden").val($(this).find(".orden").html())
-        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'cargaCombosEditar')}",
+/*
+        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'cargaCombosEditar')}",
             data: "id=" + $(this).attr("sub"),
             success: function (msg) {
                 $("#div_cmb_sub").html(msg)
             }
         });
+*/
 //        //console.log($(this).attr("id"))
     });
 

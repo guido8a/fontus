@@ -42,9 +42,9 @@ class SubPresupuestoController extends janus.seguridad.Shield {
 
 
         def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1','2', '3');
-        def subpreFiltrado = []
+//        def subpreFiltrado = []
         def var
-        subpreFiltrado=SubPresupuesto.findAllByGrupo(grupoFiltrado[0])
+//        subpreFiltrado=SubPresupuesto.findAllByGrupo(grupoFiltrado[0])
 
 
         def subPresupuestoInstance
@@ -111,7 +111,8 @@ class SubPresupuestoController extends janus.seguridad.Shield {
 //            flash.clase = "alert-success"
             def message = "Se ha actualizado correctamente Sub Presupuesto " + subPresupuestoInstance.descripcion
 
-            render "ok_"+ message + '_' + g.select (name:"subpresupuesto", from: subpreFiltrado , optionKey:"id", optionValue:"descripcion", style:"width: 280px;;font-size: 10px", id:"subPres", value: subPresupuestoInstance.id)
+//            render "ok_"+ message + '_' + g.select (name:"subpresupuesto", from: subpreFiltrado , optionKey:"id", optionValue:"descripcion", style:"width: 280px;;font-size: 10px", id:"subPres", value: subPresupuestoInstance.id)
+            render "ok_" + message
 
 
         } else {
@@ -124,20 +125,11 @@ class SubPresupuestoController extends janus.seguridad.Shield {
 
 //            flash.clase = "alert-success"
              def message = "Se ha creado correctamente Sub Presupuesto " + subPresupuestoInstance.descripcion
-//            render "ok_"+flash.message + '_' +  g.select(name: "subpresupuesto", from: SubPresupuesto.list([order: 'descripcion']), optionKey: "id", optionValue: "descripcion", style: "width: 300px;font-size: 10px", id: "subPres", value: subPresupuestoInstance.id)
-            render "ok_"+ message + '_' + g.select (name:"subpresupuesto", from: subpreFiltrado , optionKey:"id", optionValue:"descripcion", style:"width: 280px;;font-size: 10px", id:"subPres", value: subPresupuestoInstance.id)
+
+//            render "ok_"+ message + '_' + g.select (name:"subpresupuesto", from: subpreFiltrado , optionKey:"id", optionValue:"descripcion", style:"width: 280px;;font-size: 10px", id:"subPres", value: subPresupuestoInstance.id)
+            render "ok_" + message
 
         }
-//        if (params.volob.toString() == "1") {
-////            def sel = g.select(name: "subpresupuesto", from: SubPresupuesto.list([order: 'descripcion']), optionKey: "id", optionValue: "descripcion", style: "width: 300px;font-size: 10px", id: "subPres", value: subPresupuestoInstance.id)
-//
-//            def sel = g.select (name:"subpresupuesto", from: subpreFiltrado , optionKey:"id", optionValue:"descripcion", style:"width: 280px;;font-size: 10px", id:"subPres", value: subPresupuestoInstance.id)
-//
-//            render sel
-//
-//                } else {
-//            redirect(action: 'list')
-//        }
     } //save
 
     def show_ajax() {
@@ -182,11 +174,7 @@ class SubPresupuestoController extends janus.seguridad.Shield {
 
 
     def delete2() {
-
         def subPresupuestoInstance = SubPresupuesto.get(params.id)
-//
-//        println("paramsdelete:" + params)
-//        println("sub" + subPresupuestoInstance)
 
         if (!subPresupuestoInstance) {
             flash.clase = "alert-error"
@@ -198,16 +186,16 @@ class SubPresupuestoController extends janus.seguridad.Shield {
         try {
             subPresupuestoInstance.delete(flush: true)
 
-            def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1','2', '3');
-            def subpreFiltrado = []
+//            def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1','2', '3');
+//            def subpreFiltrado = []
             def var
-            subpreFiltrado=SubPresupuesto.findAllByGrupo(grupoFiltrado[0])
+//            subpreFiltrado=SubPresupuesto.findAllByGrupo(grupoFiltrado[0])
 
 
 //            flash.clase = "alert-success"
             def message = "Se ha eliminado correctamente Sub Presupuesto " + subPresupuestoInstance.descripcion
 
-            render "ok_"+ message + '_' + g.select (name:"subpresupuesto", from: subpreFiltrado , optionKey:"id", optionValue:"descripcion", style:"width: 280px;;font-size: 10px", id:"subPres", value: subPresupuestoInstance.id)
+            render "ok_"+ message
 //            render "ok_"+flash.message + '_' + g.select(name: "subpresupuesto", from: SubPresupuesto.list([order: 'descripcion', sort: 'descripcion']), optionKey: "id", optionValue: "descripcion", style: "width: 280px;font-size: 10px", id: "subPres", value: subPresupuestoInstance.id)
         }
         catch (DataIntegrityViolationException e) {

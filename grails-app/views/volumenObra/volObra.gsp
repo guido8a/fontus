@@ -1,4 +1,5 @@
-<%@ page import="janus.Grupo" %>
+<%@ page import="janus.SubPresupuesto; janus.Area" %>
+
 <!doctype html>
 <html>
     <head>
@@ -17,7 +18,7 @@
 
         <style type="text/css">
             .boton {
-                padding: 2px 6px;
+                padding: 2px 2px;
                 margin-top: -10px
             }
         </style>
@@ -60,7 +61,8 @@
 
         <div class="row" style="display: inline">
             <div class="span5" role="navigation" style="margin-left: 35px; width: 460px">
-                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-ajax btn-new " id="atras" title="Regresar a la obra">
+                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+                   class="btn btn-ajax btn-new " id="atras" title="Regresar a la obra">
                     <i class="icon-arrow-left"></i>
                     Regresar
                 </a>
@@ -78,26 +80,41 @@
             </div>
 
         <div class="row-fluid" style="margin-left: 0px">
-            <div class="span3" style="width: 160px; margin-top: -20px;">
-                <b>Tipo de Obra:</b><g:select name="grupos" id="grupos" from="${grupoFiltrado}" optionKey="id" optionValue="descripcion"
-                      style="margin-left: 0px; width: 150px; font-size: 13px; font-weight: bold" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>
+            <div class="span3" style="width: 380px; margin-top: -20px;">
+                <b>Subpresupuesto:</b><g:select name="sbpr" id="sbpr" from="${janus.SubPresupuesto.findAllByIdGreaterThan(0, [sort: 'descripcion'])}" optionKey="id"
+                                                optionValue="descripcion" style="margin-left: 0px; width: 300px; font-size: 13px; font-weight: bold"/>
+                <g:if test="${duenoObra == 1}">
+                    <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto">
+                        <i class="icon-plus"></i>
+                    </a>
+                    <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto">
+                        <i class="icon-minus"></i>
+                    </a>
+                    <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto">
+                        <i class="icon-edit"></i>
+                    </a>
+
+                </g:if>
+
             </div>
 
+
+
             <div class="" style="margin-left: 0px">
-                <div class="span4" style="width: 500px; margin-top: -20px;">
-                    <b>Crear Subpresupuesto / Ingresar Rubros:</b>
+                <div class="span4" style="width: 320px; margin-top: -20px;">
+                    <b>Área del Subpresupuesto / Ingresar Rubros:</b>
                     <span id="sp">
-                        <span id="div_cmb_sub"><g:select name="subpresupuesto" from="${subpreFiltrado}" optionKey="id" optionValue="descripcion"
-                             style="font-size: 12px; width: 400px" id="subPres"/></span>
+                        <span id="div_cmb_sub"><g:select name="area" id="area" from="${janus.Area.list()}" optionKey="id" optionValue="descripcion"
+                             style="font-size: 12px; width: 240px" /></span>
                     </span>
                     <g:if test="${duenoObra == 1}">
-                        <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto1">
+                        <a href="#" class="btn boton" id="btnCrearArea" title="Crear area de subpresupuesto">
                             <i class="icon-plus"></i>
                         </a>
-                        <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto">
+                        <a href="#" class="btn boton" id="btnBorrarArea" title="Borrar area de subpresupuesto">
                             <i class="icon-minus"></i>
                         </a>
-                        <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto">
+                        <a href="#" class="btn boton" id="btnEditarArea" title="Editar area de subpresupuesto">
                             <i class="icon-edit"></i>
                         </a>
 
@@ -247,6 +264,14 @@
 
         </div>
 
+        <div id="borrarAreaDialog">
+            <fieldset>
+                <div class="span3">
+                    Está seguro que desea borrar el área de subpresupuesto?
+                </div>
+            </fieldset>
+        </div>
+
 
 
 
@@ -386,19 +411,14 @@
 
                 $("#btnCrearSP").click(function () {
                     var $btnOrig = $(this).clone(true);
-
-//                    $(this).replaceWith(spinner);
                     $.ajax({
                         type    : "POST",
-                        url     : "${createLink(controller:"subPresupuesto",action:'form_ajax')}?obra=" + ${obra?.id},
+                        url     : "${createLink(controller:"subPresupuesto", action:'form_ajax')}?obra=" + ${obra?.id},
                         success : function (msg) {
                             $("#modalBody-sp").html(msg);
-
                             var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
                             var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
                             var $frm = $("#frmSave-SubPresupuesto");
-
                             btnSave.click(function () {
                                 spinner.replaceWith($btnOrig);
                                 if ($frm.valid()) {
@@ -413,41 +433,34 @@
                                     success : function (msg) {
                                         var p = msg.split("_");
                                         var alerta;
-
                                         if (msg != "NO") {
-//                                    $("#sp").html(msg);
-
                                             alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
                                             $("#modal-SubPresupuesto").modal("hide");
                                             $("#div_cmb_sub").html(p[2])
-
                                         }
                                         else {
-
                                             alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
-
                                         }
-
-                                        $("#mensaje").html(alerta);
+                                        $("#mensaje").html(alerta)
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 500);
                                     }
                                 });
-
                                 return false;
                             });
-
                             btnOk.click(function () {
                                 spinner.replaceWith($btnOrig);
                             });
 
                             $("#modalHeader-sp").removeClass("btn-edit btn-show btn-delete");
-                            $("#modalTitle-sp").html("Crear Sub Presupuesto");
+                            $("#modalTitle-sp").html("Crear Subpresupuesto");
                             $("#modalFooter-sp").html("").append(btnOk).append(btnSave);
                             $("#modal-SubPresupuesto").modal("show");
-
                             $("#volob").val("1");
                         }
                     });
@@ -464,60 +477,49 @@
 
                 $("#btnEditarSP").click(function () {
                     var $btnOrig = $(this).clone(true);
-
-                    var idSp = $("#subPres").val();
+                    var idSp = $("#sbpr").val();
                     $.ajax({
                         type    : "POST",
-                        url     : "${createLink(controller:"subPresupuesto",action:'form_ajax')}",
+                        url     : "${createLink(controller:"subPresupuesto", action:'form_ajax')}",
                         data    : {
                             id : idSp
                         },
                         success : function (msg) {
                             $("#modalBody-sp").html(msg);
-
                             var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
                             var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
                             var $frm = $("#frmSave-SubPresupuesto");
-
                             btnSave.click(function () {
                                 spinner.replaceWith($btnOrig);
                                 if ($frm.valid()) {
                                     btnSave.replaceWith(spinner);
                                 }
                                 var data = $frm.serialize();
-//                        var data =
-
                                 $.ajax({
                                     type    : "POST",
                                     url     : $frm.attr("action"),
                                     data    : data,
                                     success : function (msg) {
-
                                         var p = msg.split("_");
                                         var alerta;
-
                                         if (msg != "NO") {
-//                                    $("#sp").html(msg);
                                             $("#modal-SubPresupuesto").modal("hide");
-
                                             alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
                                             $("#modal-SubPresupuesto").modal("hide");
                                             $("#div_cmb_sub").html(p[2])
-
                                         } else {
                                             alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
                                         }
-
                                         $("#mensaje").html(alerta);
-
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 500);
                                     }
                                 });
-
                                 return false;
                             });
 
@@ -526,19 +528,142 @@
                             });
 
                             $("#modalHeader-sp").removeClass("btn-edit btn-show btn-delete");
-                            $("#modalTitle-sp").html("Editar Sub Presupuesto");
+                            $("#modalTitle-sp").html("Editar Subpresupuesto");
                             $("#modalFooter-sp").html("").append(btnOk).append(btnSave);
                             $("#modal-SubPresupuesto").modal("show");
-
                             $("#volob").val("1");
                         }
                     });
                     return false;
-
                 });
 
-                $("#borrarSPDialog").dialog({
 
+                $("#btnCrearArea").click(function () {
+                    var $btnOrig = $(this).clone(true);
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(controller:"area", action:'form_ajax')}?obra=" + ${obra?.id},
+                        success : function (msg) {
+                            $("#modalBody-sp").html(msg);
+                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                            var $frm = $("#frmSave-Area");
+                            btnSave.click(function () {
+                                spinner.replaceWith($btnOrig);
+                                if ($frm.valid()) {
+                                    btnSave.replaceWith(spinner);
+                                }
+                                var data = $frm.serialize();
+
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : $frm.attr("action"),
+                                    data    : data,
+                                    success : function (msg) {
+                                        var p = msg.split("_");
+                                        var alerta;
+                                        if (msg != "NO") {
+                                            alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                            alerta += p[1];
+                                            alerta += '</div>';
+                                            $("#modal-SubPresupuesto").modal("hide");
+                                            $("#div_cmb_sub").html(p[2])
+                                        }
+                                        else {
+                                            alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                            alerta += p[1];
+                                            alerta += '</div>';
+                                        }
+                                        $("#mensaje").html(alerta)
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 500);
+                                    }
+                                });
+                                return false;
+                            });
+                            btnOk.click(function () {
+                                spinner.replaceWith($btnOrig);
+                            });
+
+                            $("#modalHeader-sp").removeClass("btn-edit btn-show btn-delete");
+                            $("#modalTitle-sp").html("Crear Area de subpresupuesto");
+                            $("#modalFooter-sp").html("").append(btnOk).append(btnSave);
+                            $("#modal-SubPresupuesto").modal("show");
+                            $("#volob").val("1");
+                        }
+                    });
+                    return false;
+                });
+
+                $("#btnEditarArea").click(function () {
+                    var $btnOrig = $(this).clone(true);
+                    var idSp = $("#area").val();
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(controller:"area", action:'form_ajax')}",
+                        data    : {
+                            id : idSp
+                        },
+                        success : function (msg) {
+                            $("#modalBody-sp").html(msg);
+                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                            var $frm = $("#frmSave-Area");
+                            btnSave.click(function () {
+                                spinner.replaceWith($btnOrig);
+                                if ($frm.valid()) {
+                                    btnSave.replaceWith(spinner);
+                                }
+                                var data = $frm.serialize();
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : $frm.attr("action"),
+                                    data    : data,
+                                    success : function (msg) {
+                                        var p = msg.split("_");
+                                        var alerta;
+                                        if (msg != "NO") {
+                                            $("#modal-SubPresupuesto").modal("hide");
+                                            alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                            alerta += p[1];
+                                            alerta += '</div>';
+                                            $("#modal-SubPresupuesto").modal("hide");
+                                            $("#div_cmb_sub").html(p[2])
+                                        } else {
+                                            alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                            alerta += p[1];
+                                            alerta += '</div>';
+                                        }
+                                        $("#mensaje").html(alerta);
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 500);
+                                    }
+                                });
+                                return false;
+                            });
+
+                            btnOk.click(function () {
+                                spinner.replaceWith($btnOrig);
+                            });
+
+                            $("#modalHeader-sp").removeClass("btn-edit btn-show btn-delete");
+                            $("#modalTitle-sp").html("Editar Subpresupuesto");
+                            $("#modalFooter-sp").html("").append(btnOk).append(btnSave);
+                            $("#modal-SubPresupuesto").modal("show");
+                            $("#volob").val("1");
+                        }
+                    });
+                    return false;
+                });
+
+                $("#btnBorrarArea").click(function () {
+                    $("#borrarAreaDialog").dialog("open")
+                });
+
+
+                $("#borrarSPDialog").dialog({
                     autoOpen  : false,
                     resizable : false,
                     modal     : true,
@@ -549,14 +674,10 @@
                     title     : 'Borrar Subpresupuesto',
                     buttons   : {
                         "Aceptar"  : function () {
-
-                            var id = $("#subPres").val();
-
-//                            //console.log("id:" + id)
-
+                            var id = $("#sbpr").val();
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(controller:"subPresupuesto",action:'delete2')}",
+                                url     : "${createLink(controller:"subPresupuesto", action:'delete2')}",
                                 data    : {
                                     id : id
                                 },
@@ -564,11 +685,9 @@
                                     var p = msg.split("_");
                                     var alerta;
                                     if (msg != "NO") {
-
                                         alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                         alerta += p[1];
                                         alerta += '</div>';
-
                                         $("#div_cmb_sub").html(p[2])
                                     } else {
                                         alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
@@ -576,18 +695,62 @@
                                         alerta += '</div>';
                                     }
                                     $("#mensaje").html(alerta);
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 500);
                                 }
                             });
-
                             $("#borrarSPDialog").dialog("close");
                         },
                         "Cancelar" : function () {
-
                             $("#borrarSPDialog").dialog("close");
-
                         }
                     }
+                });
 
+                $("#borrarAreaDialog").dialog({
+                    autoOpen  : false,
+                    resizable : false,
+                    modal     : true,
+                    draggable : false,
+                    width     : 350,
+                    height    : 180,
+                    position  : 'center',
+                    title     : 'Borrar el área de Subpresupuesto',
+                    buttons   : {
+                        "Aceptar"  : function () {
+                            var id = $("#area").val();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(controller:"area", action:'delete')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    var p = msg.split("_");
+                                    var alerta;
+                                    if (msg != "NO") {
+                                        alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                        alerta += p[1];
+                                        alerta += '</div>';
+                                        $("#div_cmb_sub").html(p[2])
+                                    } else {
+                                        alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                        alerta += p[1];
+                                        alerta += '</div>';
+                                    }
+                                    $("#mensaje").html(alerta);
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 500);
+                                }
+                            });
+                            $("#borrarSPDialog").dialog("close");
+                        },
+                        "Cancelar" : function () {
+                            $("#borrarAreaDialog").dialog("close");
+                        }
+                    }
                 });
 
                 $("#item_agregar").click(function () {
@@ -602,8 +765,10 @@
                     var orden = $("#item_orden").val()
                     var rubro = $("#item_id").val()
                     var cod = $("#item_codigo").val()
-                    var sub = $("#subPres").val()
+                    var sub = $("#sbpr").val()
                     var dscr = $("#item_descripcion").val()
+                    var area = $("#area").val()
+
                     var ord = 1
                     console.log('class', $("#ordenarDesc").hasClass('active'))
                     if($("#ordenarDesc").hasClass('active')){
@@ -625,7 +790,7 @@
                     if (msn.length == 0) {
                         var datos = "rubro=" + rubro + "&cantidad=" + cantidad + "&orden=" + orden + "&sub=" + sub +
                                 "&obra=${obra.id}" + "&cod=" + cod + "&ord=" + ord + '&override=' + $("#override").val() +
-                                "&dscr=" + dscr
+                                "&dscr=" + dscr + "&area=" + area
 //                        //console.log(datos)
                         if ($("#vol_id").val() * 1 > 0)
                             datos += "&id=" + $("#vol_id").val()

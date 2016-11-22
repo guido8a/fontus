@@ -129,7 +129,8 @@
                                 <g:if test="${rub1.item.departamento.subgrupo.grupo.id == 1}">
                                     <tr>
                                         <td style="width: 80px">${rub1?.item?.codigo}</td>
-                                        <td><acta:clean str="${rub1?.item?.nombre ?: ''}"/></td>
+                                        <td><acta:clean str="${rub1?.item?.nombre}"/></td>
+                                        %{--<td>${rub1?.item?.nombre.encodeAsHTML()}</td>--}%
                                     </tr>
                                 </g:if>
                             </g:each>

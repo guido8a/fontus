@@ -130,6 +130,11 @@
                             action="formArchivo">Cargar datos de items</g:link> desde archivos excel XLS.
                 </div><br>
 
+                <div class="item" texto="sbpr">
+                    <g:link controller="area"
+                            action="list">Area de un subpresupuesto</g:link> para detalle de volúmenes de obra.
+                </div><br>
+
                 %{--
                                 <div class="item" texto="tpbn">
                                     <g:link controller="tipoDeBien" action="list">Tipo de Bien</g:link> Detalle de si el bien se halla dentro de la lista de bienes producidos a nivel nacional.

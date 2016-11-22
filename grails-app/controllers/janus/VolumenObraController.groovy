@@ -11,33 +11,21 @@ class VolumenObraController extends janus.seguridad.Shield {
         def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1', '2', '3');
         def subpreFiltrado = []
         def var
-//        println "grupo "+grupoFiltrado.id
-//        def grupos = Grupo.list([sort: "descripcion"])
-        subpreFiltrado = SubPresupuesto.findAllByGrupo(grupoFiltrado[0],[sort:"descripcion"])
-//        println("-->>" + subpreFiltrado)
+        subpreFiltrado = SubPresupuesto.list([sort:"descripcion"])
+
 
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-        def grupo = Grupo.findAllByDireccion(direccion)
-//
-//        println("direccion:" + direccion)
-//        println("grupo:" + grupo)
+//        def grupo = Grupo.findAllByDireccion(direccion)
 
-        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+//        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+        def subPresupuesto1 = SubPresupuesto.list()
 
         def obra = Obra.get(params.id)
         def volumenes = VolumenesObra.findAllByObra(obra)
 
-//        def personasUtfpu = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
-//        def responsableObra = obra?.responsableObra?.id
         def duenoObra = 0
-
-//        personasUtfpu.each{
-//            if(it.id == responsableObra ){
-//                duenoObra = 1
-//            }
-//        }
 
         duenoObra = esDuenoObra(obra)? 1 : 0
 
@@ -45,7 +33,6 @@ class VolumenObraController extends janus.seguridad.Shield {
         def valorLicitacion = TipoProcedimiento.findBySigla("LICO").minimo
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
-//        println "subs "+subpreFiltrado.descripcion
 
         [obra: obra, volumenes: volumenes, campos: campos, subPresupuesto1: subPresupuesto1, grupoFiltrado: grupoFiltrado,
          subpreFiltrado: subpreFiltrado, grupos: grupoFiltrado, persona: persona, vmc: valorMenorCuantia, duenoObra: duenoObra,
@@ -55,7 +42,8 @@ class VolumenObraController extends janus.seguridad.Shield {
     def cargarSubpres() {
 //        println("params" + params)
         def grupo = Grupo.get(params.grupo)
-        def subs = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+//        def subs = SubPresupuesto.findAllByGrupo(grupo,[sort:"descripcion"])
+        def subs = SubPresupuesto.list([sort:"descripcion"])
         [subs: subs]
     }
 
@@ -144,6 +132,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         volumen.obra = obra
         volumen.item = rubro
         volumen.descripcion = params.dscr
+        volumen.area = Area.get(params.area)
 
         if (!volumen.save(flush: true)) {
             println "error volumen obra " + volumen.errors
@@ -222,7 +211,8 @@ class VolumenObraController extends janus.seguridad.Shield {
         def persona = Persona.get(usuario)
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
         def grupo = Grupo.findAllByDireccion(direccion)
-        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+//        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+        def subPresupuesto1 = SubPresupuesto.list()
         def obra = Obra.get(params.obra)
         def duenoObra = 0
         def valores
@@ -255,6 +245,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         def todosSub = SubPresupuesto.get(0)
         subPres.add (todosSub)
 
+//        println "valores: $valores"
 
         [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
          subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]

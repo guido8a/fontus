@@ -1150,7 +1150,6 @@ class Reportes5Controller {
         def obra = Obra.get(params.id)
         def volObra = VolumenesObra.findAllByObra(obra)
         def rubros = volObra.item
-//        println("rubros " + rubros)
 
         return [obra: obra, rubros: rubros]
     }

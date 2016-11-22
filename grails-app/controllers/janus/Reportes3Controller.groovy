@@ -908,10 +908,11 @@ class Reportes3Controller {
         def corregido
         def text = (rubro.nombre ?: '')
         text = text.decodeHTML()
+        println "text: $text"
         text = text.replaceAll(/</, /&lt;/);
         text = text.replaceAll(/>/, /&gt;/);
         text = text.replaceAll(/"/, /&quot;/);
-        rubro.nombre = text
+//        rubro.nombre = text
 
         def fecha
         def fecha1
@@ -1003,6 +1004,8 @@ class Reportes3Controller {
 //            println "res "+res
             def tx = r.itemnmbr
             tx = tx.replaceAll(/&QUOT/, /&quot/)
+            tx = tx.replaceAll(/</, /&lt;/)
+            tx = tx.replaceAll(/>/, /&gt;/)
             def codigo = r.itemcdgo
 
             if (r["grpocdgo"] == 3) {

@@ -17,38 +17,45 @@ class ActaTagLib {
 
     Closure clean = { attrs ->
         def replace = [
-                "&aacute;": "á",
-                "&eacute;": "é",
-                "&iacute;": "í",
-                "&oacute;": "ó",
-                "&uacute;": "ú",
-                "&ntilde;": "ñ",
-                "&Aacute;": "Á",
-                "&Eacute;": "É",
-                "&Iacute;": "Í",
-                "&Oacute;": "Ó",
-                "&Uacute;": "Ú",
-                "&Ntilde;": "Ñ",
-                "&deg;"   : "°",
-                "&nbsp;"  : " ",
-                "&acute;" : "",
+//                "&aacute;": "á",
+//                "&eacute;": "é",
+//                "&iacute;": "í",
+//                "&oacute;": "ó",
+//                "&uacute;": "ú",
+//                "&ntilde;": "ñ",
+//                "&Aacute;": "Á",
+//                "&Eacute;": "É",
+//                "&Iacute;": "Í",
+//                "&Oacute;": "Ó",
+//                "&Uacute;": "Ú",
+//                "&Ntilde;": "Ñ",
+//                "&deg;"   : "°",
+//                "&nbsp;"  : " ",
+//                "&acute;" : "'",
                 "&lt;" : "<",
                 "&gt;" : ">",
-                "&uuml;" : "ü",
-                "&Uuml;" : "Ú",
-                "&#35;" : "#",
-                "&sol;" : "/"
-//                ">" : "&gt;",   -- no usar en texto html
-//                "<" : "&lt;",
+                "&amp;": "&"
+//                "&uuml;" : "ü",
+//                "&Uuml;" : "Ú",
+//                "&#35;" : "#"
+//                "&sol;" : "/"
         ]
         def str = attrs.str
-//        println "attrs.... ${attrs.str}"
-        replace.each { busca, nuevo ->
+//        println "attrs.... $str"
+/*
+        replace.each { nuevo, busca ->
             if(str){
                 str = str.replaceAll(busca, nuevo)
             }
         }
-//        println("str " + str)
+*/
+        if(str){
+            str = str.replaceAll(/</, /&lt;/);
+            str = str.replaceAll(/>/, /&gt;/);
+            str = str.replaceAll(/"/, /&quot;/);
+            str = str.replaceAll(/&/, /&amp;/);
+        }
+//        print(" ->>> " + str)
         out << str
     }
 

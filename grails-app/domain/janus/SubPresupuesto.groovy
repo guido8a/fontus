@@ -2,7 +2,7 @@ package janus
 class SubPresupuesto implements Serializable {
     String descripcion
     String tipo
-    Grupo grupo
+//    Grupo grupo
     static auditable = true
     static mapping = {
         table 'sbpr'
@@ -14,7 +14,7 @@ class SubPresupuesto implements Serializable {
             id column: 'sbpr__id'
             descripcion column: 'sbprdscr'
             tipo column: 'sbprtipo'
-            grupo column: 'grpo__id'
+//            grupo column: 'grpo__id'
         }
     }
     static constraints = {
