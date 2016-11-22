@@ -2076,32 +2076,35 @@
                                     urlVaeEx += "1";
                                     location.href = urlVaeEx;
                                 },
-                                "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {
-                                    %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
-                                    %{--location.href = url;--}%
+//                                "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {
+                            "Imprimir las Especificaciones de los Rubros utilizados en la Obra": function () {
 
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                                        data: {
-                                            id: idObra,
-                                            tipo: "ie"
-                                        },
-                                        success: function (msg) {
+                                    %{--$.ajax({--}%
+                                        %{--type: "POST",--}%
+                                        %{--url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
+                                        %{--data: {--}%
+                                            %{--id: idObra,--}%
+                                            %{--tipo: "ie"--}%
+                                        %{--},--}%
+                                        %{--success: function (msg) {--}%
 
-                                            var parts = msg.split('*');
+                                            %{--var parts = msg.split('*');--}%
 
-                                            if (parts[0] == 'SI') {
-                                                $("#divError").hide();
-                                                var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
-                                                location.href = url;
-                                            } else {
-                                                $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                                                $("#divError").show()
-                                            }
+                                            %{--if (parts[0] == 'SI') {--}%
+                                                %{--$("#divError").hide();--}%
+                                                %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
+                                                %{--location.href = url;--}%
+                                            %{--} else {--}%
+                                                %{--$("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
+                                                %{--$("#divError").show()--}%
+                                            %{--}--}%
 
-                                        }
-                                    });
+                                        %{--}--}%
+                                    %{--});--}%
+
+
+                                var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
+                                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
 
                                 },
 

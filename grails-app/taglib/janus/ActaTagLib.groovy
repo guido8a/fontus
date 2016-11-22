@@ -31,7 +31,13 @@ class ActaTagLib {
                 "&Ntilde;": "Ñ",
                 "&deg;"   : "°",
                 "&nbsp;"  : " ",
-                "&acute;" : ""
+                "&acute;" : "",
+                "&lt;" : "<",
+                "&gt;" : ">",
+                "&uuml;" : "ü",
+                "&Uuml;" : "Ú",
+                "&#35;" : "#",
+                "&sol;" : "/"
 //                ">" : "&gt;",   -- no usar en texto html
 //                "<" : "&lt;",
         ]
@@ -42,6 +48,7 @@ class ActaTagLib {
                 str = str.replaceAll(busca, nuevo)
             }
         }
+//        println("str " + str)
         out << str
     }
 

@@ -1146,6 +1146,15 @@ class Reportes5Controller {
         return [rubro: rubro, espe: espe, desc: desc, pago: pago, nombre: nombre, items: items]
     }
 
+    def reporteEspecificacionesObra () {
+        def obra = Obra.get(params.id)
+        def volObra = VolumenesObra.findAllByObra(obra)
+        def rubros = volObra.item
+//        println("rubros " + rubros)
+
+        return [obra: obra, rubros: rubros]
+    }
+
 
     def reemplazar (texto) {
         def text = (texto ?: '')
@@ -1156,6 +1165,8 @@ class Reportes5Controller {
         text = text.replaceAll("<p>&nbsp;</p>", "<br/>")
 //        text = text.replaceAll("&nbsp;", " ")
         text = text.replaceAll("&aacute;", "á")
+        text = text.replaceAll("&Uuml;", "Ú")
+        text = text.replaceAll("&uuml;", "ü")
 
         text = text.decodeHTML()
 
