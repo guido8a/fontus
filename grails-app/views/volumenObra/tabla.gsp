@@ -39,12 +39,12 @@
         %{--</a>--}%
 
         %{--<a href="#" class="btn  " id="imprimir_sub_vae">--}%
-            %{--<i class="icon-print"></i>--}%
-            %{--Subpre. VAE--}%
+        %{--<i class="icon-print"></i>--}%
+        %{--Subpre. VAE--}%
         %{--</a>--}%
         %{--<a href="#" class="btn  " id="imprimir_vae_excel">--}%
-            %{--<i class="icon-table"></i>--}%
-            %{--VAE Excel--}%
+        %{--<i class="icon-table"></i>--}%
+        %{--VAE Excel--}%
         %{--</a>--}%
     </div>
 </div>
@@ -129,11 +129,15 @@
         <div class="span3" style="margin-top: 5px;">
             <g:checkBox name="todos_name" class="todosSub" /> Imprimir todos los subpresupuestos.
         </div>
-        <div class="span3" style="margin-top: 5px;">
-            <g:checkBox name="vae_name" class="vaeSub" /> VAE
-        </div>
+        <g:if test="${session.perfil.codigo == 'CSTO'}">
+            <div class="span3" style="margin-top: 5px;">
+                <g:checkBox name="vae_name" class="vaeSub" /> VAE
+            </div>
+        </g:if>
     </fieldset>
 </div>
+
+
 
 <script type="text/javascript">
 
@@ -177,6 +181,11 @@
                 }else{
                     sub = $("#subPres_desc").val()
                 }
+                var perf = 0
+
+                if(${session.perfil.codigo == 'CSTO'}){
+                    perf = 1
+                }
 
                 if (vaeCheck != true){
                     var dsps =
@@ -184,7 +193,7 @@
                     var dsvs =
                     ${obra.distanciaVolumen}
 
-                    var datos = "?obra=${obra.id}Wsub=" + sub
+                    var datos = "?obra=${obra.id}Wsub=" + sub + "Wperf=" + perf
                     var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                 }else{
@@ -208,7 +217,7 @@
                 }
 
                 if (vaeCheck != true){
-                    location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',id: obra?.id)}?sub=" + subExcel;
+                    location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',id: obra?.id)}?sub=" + subExcel + "Wperf=" + perf;
                 }else{
                     location.href = "${g.createLink(controller: 'reportes5',action: 'reporteVaeExcel',id: obra?.id)}?sub=" + subExcel;
                 }
@@ -243,9 +252,9 @@
 
             if (key == "espc") {
                 %{--var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +--}%
-                        %{--'?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
+                %{--'?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
                 %{--if (child.opener == null)--}%
-                    %{--child.opener = self;--}%
+                %{--child.opener = self;--}%
                 %{--window.toolbar.visible = false;--}%
                 %{--window.menubar.visible = false;--}%
 
@@ -454,14 +463,14 @@
         $("#item_nombre").val($(this).find(".nombre").html())
         $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
         $("#item_orden").val($(this).find(".orden").html())
-/*
-        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'cargaCombosEditar')}",
-            data: "id=" + $(this).attr("sub"),
-            success: function (msg) {
-                $("#div_cmb_sub").html(msg)
-            }
-        });
-*/
+        /*
+         $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'cargaCombosEditar')}",
+         data: "id=" + $(this).attr("sub"),
+         success: function (msg) {
+         $("#div_cmb_sub").html(msg)
+         }
+         });
+         */
 //        //console.log($(this).attr("id"))
     });
 

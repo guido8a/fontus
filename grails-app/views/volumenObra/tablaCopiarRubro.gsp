@@ -246,8 +246,6 @@
 //        }
 //    });
 
-    $("#regresar").click(function () {
-       location.href = "${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"
-    });
+
 
 </script>
