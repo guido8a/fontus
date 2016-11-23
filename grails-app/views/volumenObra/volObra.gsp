@@ -193,9 +193,11 @@
                         <input type="hidden" value="" id="vol_id">
 
                         <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
+
                             <a href="#" class="btn btn-primary" title="agregar" id="item_agregar" style="margin-top: 20px;">
                                 <i class="icon-plus"></i>
                             </a>
+
                         </g:if>
                         <g:else>
                             <g:if test="${obra.estado != 'R' && obra?.departamento?.id == persona?.departamento?.id}">
@@ -216,11 +218,13 @@
 
                 <div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle"></div>
 
+                <g:if test="${session.perfil.codigo == 'CSTO'}">
                 <div style="width: 99.7%;height: 30px;overflow-y: auto;float: right;text-align: right" id="total">
                     <b>TOTAL:</b>
 
                     <div id="divTotal" style="width: 150px;float: right;height: 30px;font-weight: bold;font-size: 12px;margin-right: 20px"></div>
                 </div>
+                </g:if>
             </div>
         </div>
 
@@ -281,7 +285,7 @@
 
             function loading(div) {
                 y = 0;
-                $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>")
+                $("#" + div).html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
                 var interval = setInterval(function () {
                     if (y == 30) {
                         $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
@@ -754,6 +758,7 @@
                 });
 
                 $("#item_agregar").click(function () {
+                    $("#item_agregar").hide(600);
                     $("#calcular").removeClass("active")
                     $(".col_delete").show()
                     $(".col_precio").hide()
@@ -770,7 +775,7 @@
                     var area = $("#area").val()
 
                     var ord = 1
-                    console.log('class', $("#ordenarDesc").hasClass('active'))
+//                    console.log('class', $("#ordenarDesc").hasClass('active'))
                     if($("#ordenarDesc").hasClass('active')){
                         ord = 2
                     } else {
@@ -822,6 +827,7 @@
                                         $("#item_orden").val($("#item_orden").val() * 1 + 1)
                                     }
                                 }
+                                $("#item_agregar").show(500);
                             }
                         });
                     } else {
@@ -840,8 +846,8 @@
                                 width     : 500
                             }
                         });
+                        $("#item_agregar").show(500);
                     }
-
                 });
 
                 $(document).ready(function () {

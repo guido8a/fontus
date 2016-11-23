@@ -9,7 +9,6 @@ import janus.ejecucion.Planilla
 import janus.ejecucion.ReajustePlanilla
 import janus.ejecucion.TipoPlanilla
 
-
 class ActaTagLib {
 
     static namespace = "acta"

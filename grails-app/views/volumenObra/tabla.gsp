@@ -9,8 +9,17 @@
     <div class="span-6" style="margin-bottom: 5px">
         <b>Subpresupuesto:</b>
         <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 500px;font-size: 12px; margin-right: 10px" id="subPres_desc" value="${subPre}"
+                  style="width: 300px;font-size: 12px; margin-right: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'Seleccione..']"/>
+
+        <b>Area:</b>
+        <span id="div_cmb_area"><g:select name="area" id="areaSp" from="${areas}" optionKey="id" optionValue="descripcion"
+                                         style="font-size: 12px; width: 240px"  value="${areaSel}"/>
+        </span>
+
+        <a href="#" class="btn btn-ajax btn-new btn-params" id="botonIr" title="Ir a detalle de volumenes de obra">
+            <i class="icon-check"></i> Ir
+        </a>
 
         <a href="#" class="btn btn-ajax btn-new ${params.ord == '1'? 'active': ''}" id="ordenarAsc" title="Ordenar Ascendentemente">
             <i class="icon-arrow-up"></i>
@@ -423,14 +432,14 @@
         });
     });
 
-    $("#subPres_desc").change(function () {
+    $("#botonIr").click(function () {
         $("#ver_todos").removeClass("active")
         $("#divTotal").html("")
         $("#calcular").removeClass("active")
 
-        var datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1
+        var datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1 + "&area=" + $("#areaSp").val()
         var interval = loading("detalle")
-        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'tabla')}",
+        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'tabla')}",
             data: datos,
             success: function (msg) {
                 clearInterval(interval)
@@ -439,6 +448,15 @@
         });
     });
 
+    $("#subPres_desc").change(function () {
+        $.ajax({
+            type    : "POST", url : "${g.createLink(controller: 'volumenObra', action:'cargarAreas')}",
+            data    : "sbpr=" + $("#subPres_desc").val() + "&obra=" + ${obra.id},
+            success : function (msg) {
+                $("#div_cmb_area").html(msg)
+            }
+        });
+    });
 
     var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + $(".item_row").attr("id") + "Wobra=${obra.id}"
 

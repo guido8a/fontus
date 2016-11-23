@@ -347,13 +347,13 @@
 
                 </g:else>
             </div>
-%{--
+
+            <g:if test="${session.perfil.codigo == 'CSTO'}">
             <span style="color: #081d30; font-weight: bold">
                 <g:formatNumber number="${obra?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
                                 locale="ec"/>    
             </span>
---}%
-
+            </g:if>
 
 
         </div>
@@ -935,22 +935,19 @@
             <div class="botones">
 
                 <ul class="nav">
-                    <li><a href="#" id="btnVar"><i class="icon-pencil"></i>Variables</a></li>
+                    <g:if test="${session.perfil.codigo == 'CSTO'}">
+                        <li><a href="#" id="btnVar"><i class="icon-pencil"></i>Variables</a></li>
+                    </g:if>
                     <li><a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"><i
                             class="icon-list-alt"></i>Vol. Obra
                     </a></li>
-                    <li><a href="#" id="matriz"><i class="icon-th"></i>Matriz FP</a></li>
-                    <li>
-                        %{--
-                                                <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btnFormula" params="[obra: obra?.id]" title="Coeficientes">
-                                                    Fórmula Pol.
-                                                </g:link>
-                        --}%
-                        <a href="#" id="btnFormula"><i class="icon-money"></i>Fórmula Pol.</a>
-
-                    </li>
-                    %{--<li><a href="#">FP Liquidación</a></li>--}%
+                    <g:if test="${session.perfil.codigo == 'CSTO'}">
+                        <li><a href="#" id="matriz"><i class="icon-th"></i>Matriz FP</a></li>
+                        <li><a href="#" id="btnFormula"><i class="icon-money"></i>Fórmula Pol.</a></li>
+                    </g:if>
                     <li><a href="#" id="btnRubros"><i class="icon-money"></i>Rubros</a></li>
+
+                    <g:if test="${session.perfil.codigo == 'CSTO'}">
                     <li><a href="#" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>
                     %{--<li><a href="${g.createLink(controller: 'documentosObra', action: 'documentosObra', id: obra?.id)}" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>--}%
                     <li><a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}"><i
@@ -961,6 +958,8 @@
                                 class="icon-paste"></i>Composición
                         </g:link>
                     </li>
+                    </g:if>
+
                     <li>
                         <g:link controller="documentoObra" action="list" id="${obra.id}">
                             <i class="icon-book"></i>Biblioteca
@@ -969,9 +968,9 @@
                     <li>
                         <a href="#" id="btnMapa"><i class="icon-flag"></i>Mapa</a>
                     </li>
-                    <li>
-                        <a href="#" id="btnVeri"><i class="icon-ok"></i>Precios no Act.</a>
-                    </li>
+
+                    <g:if test="${session.perfil.codigo == 'CSTO'}">
+                    <li><a href="#" id="btnVeri"><i class="icon-ok"></i>Precios no Act.</a></li>
                     <g:if test="${obra?.tipo != 'D'}">
                         <li>
                             <g:link controller="variables" action="composicionVae" id="${obra?.id}"><i
@@ -979,15 +978,8 @@
                             </g:link>
                         </li>
                     </g:if>
-
-                    <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">
-                        <li>
-                            <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"
-                               id="btnPlanillas">
-                                <i class="icon-file-alt"></i>Planillas
-                            </a>
-                        </li>
                     </g:if>
+
 
                 </ul>
 

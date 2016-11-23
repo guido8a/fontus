@@ -5,6 +5,7 @@ import janus.pac.TipoProcedimiento
 class VolumenObraController extends janus.seguridad.Shield {
     def buscadorService
     def preciosService
+    def dbConnectionService
 
     def volObra() {
 
@@ -47,6 +48,18 @@ class VolumenObraController extends janus.seguridad.Shield {
         [subs: subs]
     }
 
+    def cargarAreas() {
+        println("params" + params)
+        def cn = dbConnectionService.getConnection()
+        def lsta = []
+        cn.eachRow("select distinct area__id from vlob where obra__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
+            lsta.add(d.area__id)
+        }
+        def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+
+        [areas: areas]
+    }
+
 
 
     def setMontoObra() {
@@ -65,7 +78,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         // actualiza el rendimiento de rubros transporte TR%
         /** existe el peligro de que este rubro sea actualizado en otra obra mientras se procesa la obra actual **/
-        preciosService.ac_transporteDesalojo(obra.id)
+//        preciosService.ac_transporteDesalojo(obra.id)
 
         render "ok"
     }
@@ -139,7 +152,7 @@ class VolumenObraController extends janus.seguridad.Shield {
             render "error"
         } else {
             preciosService.actualizaOrden(volumen, "insert")
-            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: params.ord])
+            redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: params.ord, area: params.area])
         }
     }
 
@@ -206,7 +219,10 @@ class VolumenObraController extends janus.seguridad.Shield {
 
     /** carga tabla de detalle de volúmenes de obra **/
     def tabla() {
-        println "params tabla Vlob--->>>> "+params
+        println "params tabla Vlob--->>>> $params"
+        def cn = dbConnectionService.getConnection()
+        def subPre = params.sub?.toInteger()
+        def areaSel = 0
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
@@ -218,6 +234,10 @@ class VolumenObraController extends janus.seguridad.Shield {
         def valores
         def orden
 
+        if(params.area && params.area != 'null'){
+            areaSel = params.area.toInteger()
+        }
+
         if (params.ord == '1') {
             orden = 'asc'
         } else {
@@ -227,27 +247,46 @@ class VolumenObraController extends janus.seguridad.Shield {
         // actualiza el rendimiento de rubros transporte TR% si la obra no está registrada y herr. menor
         if(obra.estado != 'R') {
             println "actualiza desalojo y herramienta menor"
-            preciosService.ac_transporteDesalojo(obra.id)
+//            preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
 
-        if (params.sub && params.sub != "-1" ) {
-            valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
+        if (subPre && subPre != "-1" ) {
+            valores = preciosService.rbro_pcun_v5(obra.id, subPre, areaSel, orden)
         }
-        if(params.sub == '0') {
+        if(subPre == 0) {
             valores = preciosService.rbro_pcun_v4(obra.id, orden)
         }
 
-        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+//        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        def lsta = []
+        cn.eachRow("select distinct sbpr__id from vlob where obra__id = ${obra.id}".toString()) {d ->
+            lsta.add(d.sbpr__id)
+        }
+        def subPres = SubPresupuesto.findAllByIdInList(lsta)
+
         def estado = obra.estado
 
         duenoObra = esDuenoObra(obra)? 1 : 0
         def todosSub = SubPresupuesto.get(0)
         subPres.add (todosSub)
 
-//        println "valores: $valores"
+        println "..........1"
 
-        [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
+        def areas = []
+        if(subPre > 0) {
+            lsta = []
+            cn.eachRow("select distinct area__id from vlob where obra__id = ${obra.id} and sbpr__id = ${subPre}".toString()) {d ->
+                lsta.add(d.area__id)
+            }
+            areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+        }
+
+
+        println "subPres: $subPres"
+        cn.close()
+
+        [subPres: subPres, subPre: subPre, obra: obra, valores: valores, areaSel: areaSel, areas: areas,
          subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
     }
 
