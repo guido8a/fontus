@@ -8,6 +8,8 @@ import janus.ejecucion.PeriodoPlanilla
 import janus.ejecucion.Planilla
 import janus.ejecucion.ReajustePlanilla
 import janus.ejecucion.TipoPlanilla
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document
 
 class ActaTagLib {
 
@@ -50,10 +52,12 @@ class ActaTagLib {
         }
 */
         if(str){
-            str = str.replaceAll(/</, /&lt;/);
-            str = str.replaceAll(/>/, /&gt;/);
-            str = str.replaceAll(/"/, /&quot;/);
-            str = str.replaceAll(/&/, /&amp;/);
+//            str = str.replaceAll(/</, /&lt;/);
+//            str = str.replaceAll(/>/, /&gt;/);
+//            str = str.replaceAll(/"/, /&quot;/);
+//            str = str.replaceAll(/&/, /&amp;/);
+
+           str = groovy.xml.XmlUtil.escapeXml(str)
         }
 //        print(" ->>> " + str)
         out << str
