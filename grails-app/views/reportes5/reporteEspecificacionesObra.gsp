@@ -128,9 +128,8 @@
                             <g:each in="${janus.Rubro.findAllByRubro(rubro)}" var="rub1" status="i">
                                 <g:if test="${rub1.item.departamento.subgrupo.grupo.id == 1}">
                                     <tr>
-                                        <td style="width: 80px">${rub1?.item?.codigo}</td>
+                                        %{--<td style="width: 80px">${rub1?.item?.codigo}</td>--}%
                                         <td><acta:clean str="${rub1?.item?.nombre}"/></td>
-                                        %{--<td>${rub1?.item?.nombre.encodeAsHTML()}</td>--}%
                                     </tr>
                                 </g:if>
                             </g:each>
@@ -150,7 +149,7 @@
                             <g:each in="${janus.Rubro.findAllByRubro(rubro)}" var="rub3" status="i">
                                 <g:if test="${rub3.item.departamento.subgrupo.grupo.id == 3}">
                                     <tr>
-                                        <td style="width: 80px">${rub3?.item?.codigo}</td>
+                                        %{--<td style="width: 80px">${rub3?.item?.codigo}</td>--}%
                                         <td><acta:clean str="${rub3?.item?.nombre}"/></td>
                                     </tr>
                                 </g:if>
@@ -172,7 +171,7 @@
                             <g:each in="${janus.Rubro.findAllByRubro(rubro)}" var="rub" status="i">
                                 <g:if test="${rub.item.departamento.subgrupo.grupo.id == 2}">
                                     <tr>
-                                        <td style="width: 80px">${rub?.item?.codigo}</td>
+                                        %{--<td style="width: 80px">${rub?.item?.codigo}</td>--}%
                                         <td><acta:clean str="${rub?.item?.nombre}"/></td>
                                     </tr>
                                 </g:if>

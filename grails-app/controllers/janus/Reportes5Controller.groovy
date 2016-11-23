@@ -1135,6 +1135,12 @@ class Reportes5Controller {
 
 
     def reporteEspecificaciones () {
+
+        if(params.par){
+            def vol1 = VolumenesObra.get(params.rub)
+            params.id = vol1.item.id
+        }
+
         def rubro = Item.get(params.id)
         def desc = reemplazar(rubro?.descripcion)
         def espe = reemplazar(rubro?.especificaciones)

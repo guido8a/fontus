@@ -242,12 +242,17 @@
             }
 
             if (key == "espc") {
-                var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +
-                        '?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
-                if (child.opener == null)
-                    child.opener = self;
-                window.toolbar.visible = false;
-                window.menubar.visible = false;
+                %{--var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +--}%
+                        %{--'?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
+                %{--if (child.opener == null)--}%
+                    %{--child.opener = self;--}%
+                %{--window.toolbar.visible = false;--}%
+                %{--window.menubar.visible = false;--}%
+
+                var rubro = $(this).attr("id");
+                var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificaciones')}?rub=" + rubro + "Wpar=" + 1
+                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+
             }
 
             if (key == 'print-key1') {

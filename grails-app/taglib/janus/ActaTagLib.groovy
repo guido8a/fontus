@@ -8,8 +8,7 @@ import janus.ejecucion.PeriodoPlanilla
 import janus.ejecucion.Planilla
 import janus.ejecucion.ReajustePlanilla
 import janus.ejecucion.TipoPlanilla
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document
+
 
 class ActaTagLib {
 
