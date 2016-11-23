@@ -3,7 +3,12 @@
 <div id="create-precioRubrosItemsInstance" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave" action="savePrecio_ajax">
         <g:hiddenField name="id" value="${precioRubrosItemsInstance?.id}"/>
-        <g:hiddenField id="lugar" name="lugar.id" value="${lugar ? precioRubrosItemsInstance?.lugar?.id : -1}"/>
+        <g:if test="${lugarNombre == 'todos los lugares'}">
+            <g:hiddenField id="lugar" name="lugar.id" value="${-2}"/>
+        </g:if>
+        <g:else>
+            <g:hiddenField id="lugar" name="lugar.id" value="${lugar ? precioRubrosItemsInstance?.lugar?.id : -1}"/>
+        </g:else>
         <g:hiddenField id="item" name="item.id" value="${precioRubrosItemsInstance?.item?.id}"/>
         <g:hiddenField name="all" value="${params.all}"/>
         <g:hiddenField name="ignore" value="${params.ignore}"/>

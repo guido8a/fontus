@@ -74,19 +74,13 @@
 
         <div id="treeArea" class="hide" style="float: left;margin-top: 15px;">
 
-            %{--Poner fechapr defecto--}%
-            %{--<div class="btn-group">--}%
-            %{--<input type="button" class="btn" value="Cerrar todo" onclick="$('#tree').jstree('close_all');">--}%
-            %{--<input type="button" class="btn" value="Abrir todo" onclick="$('#tree').jstree('open_all');">--}%
-            %{--</div>--}%
-
             <div class="btn-toolbar" style="margin-top: -30px;">
                 <div class="btn-group" data-toggle="buttons-checkbox">
                     %{--<a href="#" id="all" class="btn toggleTipo">--}%
                     %{--Todas las listas--}%
                     %{--</a>--}%
                     <a href="#" id="ignore" class="btn toggleTipo">
-                        Todos los lugares
+                    <i class="icon-bookmark"></i> Todos los lugares
                     </a>
                 </div>
 

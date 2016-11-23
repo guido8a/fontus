@@ -1112,6 +1112,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def formPrecio_ajax() {
+//        println("form " + params)
         def item = Item.get(params.item)
         def lugar = null
 //        println "formPrecio_ajax" + params
@@ -1147,7 +1148,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def savePrecio_ajax() {
-        println "precio: $params"
+//        println "precio: $params"
         def item = Item.get(params.item.id)
         def errores = ""
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
@@ -1161,7 +1162,6 @@ class MantenimientoItemsController extends Shield {
                     render "NO"
                 }
             }else{
-
 
             def precios = PrecioRubrosItems.withCriteria {
                 and {
@@ -1217,7 +1217,7 @@ class MantenimientoItemsController extends Shield {
                     precioRubrosItemsInstanceTodos.lugar = Lugar.get(it.id)
                     precioRubrosItemsInstanceTodos.item = Item.get(params.item.id)
                     precioRubrosItemsInstanceTodos.fecha = params.fecha
-                    println("---> " + precioRubrosItemsInstanceTodos)
+//                    println("---> " + precioRubrosItemsInstanceTodos)
                     if(!precioRubrosItemsInstanceTodos.save(flush: true)){
 
                         errores += precioRubrosItemsInstanceTodos.errors
@@ -1227,11 +1227,6 @@ class MantenimientoItemsController extends Shield {
             } else {
                 render "NO"
             }
-
-
-
-
-
 
                 if(errores == ""){
                     render "OK"
