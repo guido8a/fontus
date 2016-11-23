@@ -236,9 +236,81 @@
         selector: '.item_row',
         callback: function (key, options) {
             var m = "clicked: " + $(this).attr("id");
-            if (key == "print") {
 
-            }
+                if (key == "print") {
+
+                }
+
+                if (key == 'print-key1') {
+                    var dsps =
+                    ${obra.distanciaPeso}
+                    var dsvs =
+                    ${obra.distanciaVolumen}
+                    %{--var volqueta = ${precioVol}--}%
+                    %{--var chofer = ${precioChof}--}%
+                    var clickImprimir = $(this).attr("id");
+
+//                console.log("c" + clickImprimir)
+
+                    var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
+
+                    %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}"--}%
+                    var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos
+                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                }
+
+                if (key == 'print-key2') {
+                    var dsps =
+                    ${obra.distanciaPeso}
+                    var dsvs =
+                    ${obra.distanciaVolumen}
+                    %{--var volqueta = ${precioVol}--}%
+                    %{--var chofer = ${precioChof}--}%
+                    var clickImprimir = $(this).attr("id");
+                    var fechaSalida2 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
+
+                    %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}" + "Wdesglose=${1}"--}%
+                    var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "Wdesglose=${1}" + "WfechaSalida=" + fechaSalida2
+
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos
+                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                }
+
+                if (key == 'print-key3') {
+                    var dsps =
+                    ${obra.distanciaPeso}
+                    var dsvs =
+                    ${obra.distanciaVolumen}
+                    %{--var volqueta = ${precioVol}--}%
+                    %{--var chofer = ${precioChof}--}%
+                    var clickImprimir = $(this).attr("id");
+//                console.log("c" + clickImprimir)
+
+                    var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
+                    %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}"--}%
+                    var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1
+
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos
+                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                }
+
+                if (key == 'print-key4') {
+                    var dsps =
+                    ${obra.distanciaPeso}
+                    var dsvs =
+                    ${obra.distanciaVolumen}
+                    %{--var volqueta = ${precioVol}--}%
+                    %{--var chofer = ${precioChof}--}%
+                    var clickImprimir = $(this).attr("id");
+                    var fechaSalida2 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}';
+                    %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}" + "Wdesglose=${1}"--}%
+                    var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "Wdesglose=${1}" + "WfechaSalida=" + fechaSalida2
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos;
+//                console.log("url "  + url)
+                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                }
+
 
             if (key == "foto") {
                 %{--var child = window.open('${createLink(controller:"rubro",action:"showFoto")}/'+$(this).attr("item"), 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
@@ -251,93 +323,19 @@
             }
 
             if (key == "espc") {
-                %{--var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +--}%
-                %{--'?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
-                %{--if (child.opener == null)--}%
-                %{--child.opener = self;--}%
-                %{--window.toolbar.visible = false;--}%
-                %{--window.menubar.visible = false;--}%
-
                 var rubro = $(this).attr("id");
                 var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificaciones')}?rub=" + rubro + "Wpar=" + 1
                 location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
 
             }
 
-            if (key == 'print-key1') {
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
-                %{--var volqueta = ${precioVol}--}%
-                %{--var chofer = ${precioChof}--}%
-                var clickImprimir = $(this).attr("id");
 
-//                console.log("c" + clickImprimir)
-
-                var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
-
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}"--}%
-                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1
-                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos
-                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-            }
-
-            if (key == 'print-key2') {
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
-                %{--var volqueta = ${precioVol}--}%
-                %{--var chofer = ${precioChof}--}%
-                var clickImprimir = $(this).attr("id");
-                var fechaSalida2 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
-
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}" + "Wdesglose=${1}"--}%
-                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "Wdesglose=${1}" + "WfechaSalida=" + fechaSalida2
-
-                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos
-                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-            }
-
-            if (key == 'print-key3') {
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
-                %{--var volqueta = ${precioVol}--}%
-                %{--var chofer = ${precioChof}--}%
-                var clickImprimir = $(this).attr("id");
-//                console.log("c" + clickImprimir)
-
-                var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}"--}%
-                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1
-
-                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos
-                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-            }
-
-            if (key == 'print-key4') {
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
-                %{--var volqueta = ${precioVol}--}%
-                %{--var chofer = ${precioChof}--}%
-                var clickImprimir = $(this).attr("id");
-                var fechaSalida2 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}';
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid="+$(".item_row").attr("id") +"Wobra=${obra.id}" + "Wdesglose=${1}"--}%
-                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "Wdesglose=${1}" + "WfechaSalida=" + fechaSalida2
-                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos;
-//                console.log("url "  + url)
-                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-            }
         },
 
         %{--<g:if test="${obra?.estado!='R'}">--}%
         items: {
-//            "edit": {name: "Editar", icon: "edit"},
+
+            <g:if test="${session.perfil.codigo == 'CSTO'}">
             "print": {name: "Imprimir", icon: "print",
                 items: {
                     "print-key1": {"name": "Imprimir sin Desglose", icon: "print"
@@ -348,6 +346,8 @@
                 }
             },
             "foto": {name: "Ilustración", icon: "doc"},
+            </g:if>
+
             "espc": {name: "Especificaciones", icon: "doc"}
         }
     });
