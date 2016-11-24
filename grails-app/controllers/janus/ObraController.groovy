@@ -231,8 +231,6 @@ class ObraController extends janus.seguridad.Shield {
             tmp.each { tm ->
                 crono += tm.porcentaje
             }
-//            println "volObra: " + it.item.codigo + " tmp " + tmp.volumenObra.id + "  " + tmp.porcentaje + "  " + tmp.precio + "  " + tmp.cantidad
-//            println "crono " + crono
             if (crono.toDouble().round(2) != 100.00) {
                 msg += "<br><span class='label-azul'>Error:</span> La suma de porcentajes del volumen de obra: ${it.item.codigo} (${crono.toDouble().round(2)}) en el cronograma es diferente de 100%"
             }
@@ -420,6 +418,17 @@ class ObraController extends janus.seguridad.Shield {
         obra.save(flush: true)
         flash.message = "Memo S.I.F. aprobado"
         render "ok"
+    }
+
+    def revisarObra () {
+        def obra = Obra.get(params.id)
+        obra.estado = 'S'
+       if(obra.save(flush: true)){
+           render "ok"
+       }else{
+           render "no"
+       }
+
     }
 
     def registroObra() {

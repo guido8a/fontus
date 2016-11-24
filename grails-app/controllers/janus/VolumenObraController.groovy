@@ -269,6 +269,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         duenoObra = esDuenoObra(obra)? 1 : 0
         def todosSub = SubPresupuesto.get(0)
+        println("--> " + todosSub)
         subPres.add (todosSub)
 
         println "..........1"

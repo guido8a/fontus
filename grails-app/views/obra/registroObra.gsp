@@ -178,8 +178,6 @@
                     <button class="btn" id="eliminarObra"><i class="icon-remove"></i> Eliminar la Obra</button>
                 </g:if>
             </g:if>
-
-
         </g:if>
         <g:if test="${obra?.id != null}">
 
@@ -188,15 +186,20 @@
 
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${duenoObra == 1 && (Concurso.countByObra(obra) == 0)}">
-                <g:if test="${obra?.fechaInicio == null}">
-                    <button class="btn" id="cambiarEstado"><i class="icon-retweet"></i> Cambiar de Estado</button>
-                </g:if>
+              <g:if test="${obra?.estado == 'N'}">
+                  <g:if test="${obra?.fechaInicio == null}">
+                      <button class="btn btn-warning" id="revisarObra" title="Cambiar estado de la obra a revisado"><i class="icon-check"></i> Revisar Obra</button>
+                  </g:if>
+              </g:if>
+              <g:if test="${obra?.estado == 'S'}">
+                  <g:if test="${obra?.fechaInicio == null}">
+                      <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i> Cambiar de Estado</button>
+                  </g:if>
+              </g:if>
             </g:if>
 
             <g:if test="${obra?.id != null}">
-            %{--<g:if test="${duenoObra == 1 || obra?.id == null}">--}%
                 <button class="btn" id="copiarObra"><i class="icon-copy"></i> Copiar Obra</button>
-            %{--</g:if>--}%
             </g:if>
 
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
@@ -205,12 +208,6 @@
             </g:if>
         </g:if>
 
-    %{--
-            <g:if test="${obra && obra?.tipo != 'D' && obra?.estado != 'R'}">
-                <button class="btn" id="btn-setAdminDirecta"><i class="icon-ok"></i> Admin. directa
-                </button>
-            </g:if>
-    --}%
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
             <g:if test="${!obra?.fechaInicio}">
                 <button class="btn" id="btn-adminDirecta"><i class="icon-ok"></i> Iniciar obra
@@ -844,6 +841,15 @@
                 Una vez registrada los datos de la obra no podrán ser editados.
             </span>
 
+        </div>
+    </fieldset>
+</div>
+
+
+<div id="revisarDialog">
+    <fieldset>
+        <div class="span3">
+            Está seguro de querer cambiar el estado de la obra a revisado?
         </div>
     </fieldset>
 </div>
@@ -1917,13 +1923,16 @@
         });
 
         $("#cambiarEstado").click(function () {
-
             if (${obra?.id != null}) {
-
                 $("#estadoDialog").dialog("open")
-
             }
+        });
 
+
+        $("#revisarObra").click(function () {
+            if (${obra?.id != null}) {1
+                $("#revisarDialog").dialog("open")
+            }
         });
 
         $("#btnDocumentos").click(function () {
@@ -2068,40 +2077,12 @@
                                     urlVaeEx += "1";
                                     location.href = urlVaeEx;
                                 },
-//                                "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {
                             "Imprimir las Especificaciones de los Rubros utilizados en la Obra": function () {
-
-                                    %{--$.ajax({--}%
-                                        %{--type: "POST",--}%
-                                        %{--url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
-                                        %{--data: {--}%
-                                            %{--id: idObra,--}%
-                                            %{--tipo: "ie"--}%
-                                        %{--},--}%
-                                        %{--success: function (msg) {--}%
-
-                                            %{--var parts = msg.split('*');--}%
-
-                                            %{--if (parts[0] == 'SI') {--}%
-                                                %{--$("#divError").hide();--}%
-                                                %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
-                                                %{--location.href = url;--}%
-                                            %{--} else {--}%
-                                                %{--$("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
-                                                %{--$("#divError").show()--}%
-                                            %{--}--}%
-
-                                        %{--}--}%
-                                    %{--});--}%
-
-
-                                var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
+                                 var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
                                 location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-
                                 },
 
                                 "Cancelar": function () {
-
                                 }
                             }
                         }
@@ -2327,7 +2308,6 @@
                             url: "${g.createLink(action: 'regitrarObra')}",
                             data: "id=${obra?.id}",
                             success: function (msg) {
-//                                ////console.log(msg)
                                 if (msg != "ok") {
                                     $.box({
                                         imageClass: "box_info",
@@ -2391,6 +2371,66 @@
                 },
                 "Cancelar": function () {
                     $("#estadoDialog").dialog("close");
+                }
+            }
+
+        });
+
+
+
+
+        $("#revisarDialog").dialog({
+
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 350,
+            height: 160,
+            position: 'center',
+            title: 'Cambiar estado de la Obra a Revisado',
+            buttons: {
+                "Aceptar": function () {
+
+                    $("#dlgLoad").dialog("open");
+
+                    var estadoCambiado = $("#estado").val();
+
+                    if (estadoCambiado == 'N') {
+                        $.ajax({
+                            type: "POST",
+                            url: "${g.createLink(controller: 'obra',action: 'revisarObra')}",
+                            data: "id=${obra?.id}",
+                            success: function (msg) {
+                                if (msg != "ok") {
+                                    $.box({
+                                        imageClass: "box_info",
+                                        text: msg,
+                                        title: "Errores",
+                                        iconClose: false,
+                                        dialog: {
+                                            resizable: false,
+                                            draggable: false,
+                                            width: 900,
+                                            buttons: {
+                                                "Aceptar": function () {
+                                                    $("#dlgLoad").dialog("close");
+                                                }
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    $("#dlgLoad").dialog("close");
+                                    location.reload(true)
+                                }
+                            }
+                        });
+                    } else {
+                    }
+                    $("#revisarDialog").dialog("close");
+                },
+                "Cancelar": function () {
+                    $("#revisarDialog").dialog("close");
                 }
             }
 
