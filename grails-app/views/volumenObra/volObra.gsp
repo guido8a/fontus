@@ -170,15 +170,13 @@
 
                     <div class="span8" style="margin-left: -20px;">
                         <b>Rubro</b>
-                        %{--<input type="text" style="width: 420px;font-size: 10px" id="item_nombre" disabled="true">--}%
-                        <input type="text" style="width: 760px;font-size: 12px" id="item_nombre" readonly="true">
-
+                        <input type="text" style="width: 720px;font-size: 12px" id="item_nombre" readonly="true">
                     </div>
 
-                    %{--<div class="span2" style="margin-left: 0px; width: 780px;">--}%
-                        %{--<b>Descripción:</b>--}%
-                        %{--<input type="text" style="width: 680px" id="item_descripcion" value="">--}%
-                    %{--</div>--}%
+                    <div class="span2" style="margin-left: -20px; width: 80px;">
+                        <b>Unidad:</b>
+                        <input type="text" style="width: 80px" id="item_unidad" value="" readonly="true">
+                    </div>
                     <div class="span1" style="margin-left: 20px; width: 100px;">
                         <b>Cantidad:</b>
                         <input type="text" style="width: 90px;text-align: right" id="item_cantidad" value="">
@@ -388,13 +386,14 @@
                             success  : function (msg) {
 //                        console.log("msg "+msg)
                                 if (msg != "-1") {
-
                                     var parts = msg.split("&&")
                                     $("#item_id").val(parts[0])
                                     $("#item_nombre").val(parts[2])
+                                    $("#item_unidad").val(parts[3])
                                 } else {
                                     $("#item_id").val("")
                                     $("#item_nombre").val("")
+                                    $("#item_unidad").val("")
                                 }
                             }
                         });
@@ -407,6 +406,7 @@
 
                         $("#item_id").val("")
                         $("#item_nombre").val("")
+                        $("#item_unidad").val("")
 
                     } else {
 //                ////console.log("no reset")
@@ -824,6 +824,7 @@
                                         $("#item_id").val("")
                                         $("#item_nombre").val("")
                                         $("#item_cantidad").val("")
+                                        $("#item_unidad").val("")
                                         $("#item_orden").val($("#item_orden").val() * 1 + 1)
                                     }
                                 }

@@ -481,14 +481,15 @@
         $("#item_nombre").val($(this).find(".nombre").html())
         $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
         $("#item_orden").val($(this).find(".orden").html())
-        /*
-         $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'cargaCombosEditar')}",
-         data: "id=" + $(this).attr("sub"),
-         success: function (msg) {
-         $("#div_cmb_sub").html(msg)
-         }
-         });
-         */
+        $("#item_unidad").val($(this).find(".col_unidad").html().toString().trim())
+
+         %{--$.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'cargaCombosEditar')}",--}%
+         %{--data: "id=" + $(this).attr("sub"),--}%
+         %{--success: function (msg) {--}%
+         %{--$("#div_cmb_sub").html(msg)--}%
+         %{--}--}%
+         %{--});--}%
+
 //        //console.log($(this).attr("id"))
     });
 

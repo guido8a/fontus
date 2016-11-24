@@ -219,7 +219,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 
     /** carga tabla de detalle de volúmenes de obra **/
     def tabla() {
-        println "params tabla Vlob--->>>> $params"
+//        println "params tabla Vlob--->>>> $params"
         def cn = dbConnectionService.getConnection()
         def subPre = params.sub?.toInteger()
         def areaSel = 0
@@ -268,11 +268,12 @@ class VolumenObraController extends janus.seguridad.Shield {
         def estado = obra.estado
 
         duenoObra = esDuenoObra(obra)? 1 : 0
-        def todosSub = SubPresupuesto.get(0)
-        println("--> " + todosSub)
-        subPres.add (todosSub)
 
-        println "..........1"
+        def todosSub = SubPresupuesto.get(0)
+//        subPres.add(todosSub)
+        subPres += todosSub
+
+//        println "..........1"
 
         def areas = []
         if(subPre > 0) {
@@ -284,7 +285,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         }
 
 
-        println "subPres: $subPres"
+//        println "subPres: $subPres"
         cn.close()
 
         [subPres: subPres, subPre: subPre, obra: obra, valores: valores, areaSel: areaSel, areas: areas,
