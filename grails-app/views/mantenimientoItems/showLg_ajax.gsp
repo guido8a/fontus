@@ -346,8 +346,6 @@
 
         var $valor = $("<input type='number' placeholder='Sueldo " + (new Date().getFullYear()) + "'/> ");
 
-
-
         $valor.bind({
             keydown : function (ev) {
                 var dec = 5;
@@ -379,15 +377,8 @@
         });
 
         btnCalc.click(function () {
-
-
            valorSueldo = $valor.val();
-
-
-
-
             $(this).replaceWith(spinner);
-
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action: 'calcPrecioRef_ajax')}",
@@ -399,12 +390,9 @@
                     $("#btnCalc").hide();
                     $("#spanRef").text("Precio ref: " + msg);
                     $("#btnPrint").show();
-
                 }
             });
-
           return valorSueldo
-
         });
 
         var $p1 = $("<p>").html("Por favor ingrese el sueldo básico para el Obrero del año " + (new Date().getFullYear()));
@@ -512,20 +500,7 @@
     });
 
     $("#btnPrint").click(function () {
-
-        %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirCalculoValor', id: item.id)}?valor=" + valorSueldo--}%
-
         $("#imprimirDialog").dialog("open");
-
-
-        %{--var datos = "item=${item.nombre}&valor=" + $("spanRef").val()--}%
-        %{--$.ajax({type: "POST", url: "${g.createLink(controller: 'reportes3',action:'imprimirCalculoValor')}",--}%
-            %{--data: datos,--}%
-            %{--success: function (msg) {--}%
-
-            %{--}--}%
-        %{--});--}%
-
     });
 
   $("#imprimirDialog").dialog({
@@ -549,13 +524,8 @@
               "Cancelar" : function () {
 
                   $("#imprimirDialog").dialog("close");
-
               }
-
-
-
           }
-
   })
 
 </script>

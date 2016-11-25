@@ -104,7 +104,7 @@
                 <div class="span4" style="width: 320px; margin-top: -20px;">
                     <b>Área del Subpresupuesto / Ingresar Rubros:</b>
                     <span id="sp">
-                        <span id="div_cmb_sub"><g:select name="area" id="area" from="${janus.Area.list()}" optionKey="id" optionValue="descripcion"
+                        <span id="div_cmb_sub"><g:select name="area" id="area" from="${janus.Area.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
                              style="font-size: 12px; width: 240px" /></span>
                     </span>
                     <g:if test="${duenoObra == 1}">

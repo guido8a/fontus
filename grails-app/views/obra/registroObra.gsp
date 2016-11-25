@@ -92,7 +92,7 @@
 
 <div class="span12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;float: left;height: 35px;">
     <button class="btn" id="lista"><i class="icon-book"></i> Lista</button>
-    <button class="btn" id="listaLq"><i class="icon-book"></i> Liquidación</button>
+    %{--<button class="btn" id="listaLq"><i class="icon-book"></i> Liquidación</button>--}%
     <button class="btn btn-info" id="nuevo"><i class="icon-plus"></i> Nuevo</button>
 
     <g:if test="${persona?.departamento?.codigo != 'DNCP'}">
@@ -116,9 +116,9 @@
 
         </g:if>
         <g:if test="${obra?.id != null}">
-
             <button class="btn" id="btnImprimir"><i class="icon-print"></i> Imprimir</button>
         </g:if>
+
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
                 <g:if test="${obra?.fechaInicio == null}">
@@ -229,6 +229,10 @@
 
     <g:if test="${obra?.estado != 'R'}">
         <button class="btn" id="revisarPrecios"><i class="icon-check"></i> Precios 0</button>
+    </g:if>
+    <g:if test="${obra?.id != null && obra?.estado != 'R'}">
+        <button class="btn" id="ordenarVlob"><i class="icon-sort"></i> Orden
+        </button>
     </g:if>
 
 </div>
@@ -346,7 +350,7 @@
             </div>
 
             <g:if test="${session.perfil.codigo == 'CSTO'}">
-            <span style="color: #081d30; font-weight: bold">
+            <span style="color: #081d30; font-weight: bold" id="valorObra">
                 <g:formatNumber number="${obra?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
                                 locale="ec"/>    
             </span>
@@ -2764,6 +2768,10 @@
             }
         });
 
+        $("#ordenarVlob").click(function () {
+            location.href = "${g.createLink(action: 'ordenaVlob', id: obra?.id)}"
+        });
+
         function busqueda() {
             var buscarPor = $("#buscarPor").val();
             var criterio = $(".criterio").val();
@@ -2783,7 +2791,26 @@
                     $("#dlgLoad").dialog("close");
                 }
             });
-        }
+        };
+
+
+        $("#valorObra").click(function () {
+            var btn = $(this);
+            btn.replaceWith(spinner)
+
+            $.ajax({
+                type: "POST",
+                url: "${createLink(action:'calculaValor')}",
+                data: "obra=${obra?.id}",
+                success: function (msg) {
+                    $("#valorObra").html(msg);
+                    spinner.replaceWith(btn);
+                }
+            });
+            return false;
+        });
+
+
     });
 
     $("#errorDialog").dialog({
@@ -2801,7 +2828,6 @@
                 $("#errorDialog").dialog("close");
             }
         }
-
     });
 
 </script>

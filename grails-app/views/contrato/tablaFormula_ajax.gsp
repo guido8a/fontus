@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 23/11/15
-  Time: 03:16 PM
---%>
-
 
  <div id="tabs" style="width: 700px; height: 700px; text-align: center">
 

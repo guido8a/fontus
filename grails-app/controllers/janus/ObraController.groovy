@@ -501,17 +501,6 @@ class ObraController extends janus.seguridad.Shield {
                     concurso = null
             }
 
-            if(obra.estado != 'R') {
-//                println "obra: ${obra.id}"
-                def valor = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
-                if(obra.valor != valor) {
-                    obra.valor = valor
-                    obra.save(flush: true)
-                }
-            }
-
-            cn.close()
-
             duenoObra = esDuenoObra(obra) ? 1 : 0
 
             println "dueÑo: " + duenoObra
@@ -1425,23 +1414,72 @@ class ObraController extends janus.seguridad.Shield {
 
 
     def formIva_ajax () {
-
     }
 
 
     def guardarIva_ajax () {
-
         def paux = Parametros.first()
         def nuevoIva = params.iva_name
 
         paux.iva = nuevoIva.toInteger()
-
         try{
             paux.save(flush: true)
             render "ok"
         }catch (e){
             render "no"
         }
+    }
+
+    def calculaValor() {
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.obra)
+        if(obra.estado != 'R') {
+//                println "obra: ${obra.id}"
+            def valor = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
+            if(obra.valor != valor) {
+                obra.valor = valor
+                obra.save(flush: true)
+            }
+        }
+        cn.close()
+        render g.formatNumber(number: obra.valor, format:"##,##0", maxFractionDigits: 2, minFractionDigits: 2)
+    }
+
+    def ordenaVlob () {
+//        println "params: $params"
+        def cn = dbConnectionService.getConnection()
+        def obra = Obra.get(params.id)
+
+        def sbpr = cn.rows("select distinct ordn.sbpr__id, sbprdscr, ordnsbpr from ordn, sbpr where obra__id = ${obra.id} and " +
+                "sbpr.sbpr__id = ordn.sbpr__id order by ordnsbpr".toString())
+
+        def orden = cn.rows("select ordn.ordn__id, sbprdscr, areadscr, ordnordn from ordn, sbpr, area where obra__id = ${obra.id} and " +
+                "sbpr.sbpr__id = ordn.sbpr__id and area.area__id = ordn.area__id order by ordnordn".toString())
+        cn.close()
+
+        [obra: obra, orden: orden, sbpr: sbpr]
+    }
+
+    def cambiaSbpr() {
+//        println "cambiaSbpr params $params"
+        def cn = dbConnectionService.getConnection()
+        def id = params.sbpr.toInteger()
+        def ordn = params.valor.toInteger()
+        def sql = "select * from ordn_cambia_sbpr($id, $ordn)"
+        cn.execute(sql.toString())
+        cn.close()
+        render "ok"
+    }
+
+    def cambiaOrdn() {
+        println "cambiaSbpr params $params"
+        def cn = dbConnectionService.getConnection()
+        def id = params.ordn.toInteger()
+        def ordn = params.valor.toInteger()
+        def sql = "select * from ordn_cambia_area($id, $ordn)"
+        cn.execute(sql.toString())
+        cn.close()
+        render "ok"
     }
 
 
