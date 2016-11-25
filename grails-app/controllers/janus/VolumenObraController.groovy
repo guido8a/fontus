@@ -49,7 +49,7 @@ class VolumenObraController extends janus.seguridad.Shield {
     }
 
     def cargarAreas() {
-        println("params" + params)
+//        println("params" + params)
         def cn = dbConnectionService.getConnection()
         def lsta = []
         cn.eachRow("select distinct area__id from vlob where obra__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
@@ -355,17 +355,29 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
-        def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-        def grupo = Grupo.findAllByDireccion(direccion)
-        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+//        def direccion = Direccion.get(persona?.departamento?.direccion?.id)
+//        def grupo = Grupo.findAllByDireccion(direccion)
+//        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
         def obra = Obra.get(params.obra)
         def valores
+        def subpre = params.sub.toInteger()
+        def area
 
-        if (params.sub && params.sub != "null") {
-            valores = preciosService.rbro_pcun_v3(obra.id, params.sub)
-        } else {
-            valores = preciosService.rbro_pcun_v2(obra.id)
+        if(params.area && params.area != '-1'){
+            area = params.area.toInteger()
         }
+
+//        if (params.sub && params.sub != "null") {
+//            valores = preciosService.rbro_pcun_v5(obra.id, subpre, area, "asc")
+//        } else {
+//            valores = preciosService.rbro_pcun_v4(obra.id, 'asc')
+//        }
+
+
+        if(subpre && subpre != '-1'){
+          valores = preciosService.rbro_pcun_v5(obra.id, subpre, area, "asc")
+        }
+
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
@@ -380,7 +392,8 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         preciosService.ac_rbroObra(obra.id)
 
-        [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores, subPresupuesto1: subPresupuesto1]
+//        [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores, subPresupuesto1: subPresupuesto1]
+        [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores]
     }
 
 
@@ -415,8 +428,39 @@ class VolumenObraController extends janus.seguridad.Shield {
     def origen_ajax () {
         def obra = Obra.get(params.obra)
         def origen = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        return [origen: origen, obra: obra]
+    }
 
-        return [origen: origen]
+    def cargarAreaOrigen_ajax () {
+        def cn = dbConnectionService.getConnection()
+        def lsta = []
+        if(params.obra){
+            cn.eachRow("select distinct area__id from vlob where obra__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
+                lsta.add(d.area__id)
+            }
+        }
 
+        def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+        return [areas: areas]
+    }
+
+    def cargarSubDestino_ajax () {
+        def obra = Obra.get(params.obra)
+        def destino = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        return [destino: destino, obra: obra]
+    }
+
+
+    def cargarAreaDestino_ajax () {
+        def cn = dbConnectionService.getConnection()
+        def lsta = []
+        if(params.obra){
+            cn.eachRow("select distinct area__id from vlob where obra__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
+                lsta.add(d.area__id)
+            }
+        }
+
+        def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+        return [areas: areas]
     }
 }

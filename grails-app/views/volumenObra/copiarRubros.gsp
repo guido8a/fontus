@@ -15,6 +15,18 @@
     <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>
     <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
     <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
+
+    <style type="text/css">
+
+     .colorOrigen {
+         color: #3768ff;
+     }
+
+     .colorDestino {
+         color: #3f8825;
+     }
+
+    </style>
 </head>
 
 <body>
@@ -36,26 +48,38 @@
 </div>
 
 <div class="row-fluid span-12">
-    <div class="span5">
-        <b>Obra:</b>
+    <div class="span4">
+        <b class="colorOrigen"><label>Obra Origen:</label></b>
         <g:select name="obra" from="${janus.Obra.list()}" optionKey="id" optionValue="descripcion"
-                  noSelection="['-1' : 'Seleccione una obra...' ]" style="width: 300px;font-size: 10px; margin-left: 50px" id="obraSel" value="${obra?.id}"></g:select>
+                  noSelection="['-1' : 'Seleccione una obra...' ]" style="width: 400px;font-size: 10px;" id="obraSel" value="${obra?.id}"/>
     </div>
-    <div class="span6" >
-        <b class="span4">Subpresupuesto de origen:</b>
-        <div class="span4" id="divOrigen">
+    <div class="span4" >
+        <b class="colorOrigen"><label>Subpresupuesto Origen:</label></b>
+        <div id="divOrigen">
+        </div>
+    </div>
+    <div class="span4" style="margin-left: -20px">
+        <b class="colorOrigen"><label>Área Origen:</label></b>
+        <div id="divAreaOrigen">
         </div>
     </div>
 </div>
 
 <div class="row-fluid span-12">
-    <div class="span5">
+    <div class="span4">
+        <b class="colorDestino"><label>Obra Destino:</label></b>
+        <g:select name="obra_destino" from="${janus.Obra.list()}" optionKey="id" optionValue="descripcion"
+                  noSelection="['-1' : 'Seleccione una obra...' ]" style="width: 400px;font-size: 10px;" id="obraDes" value="${obra?.id}"/>
     </div>
-    <div class="span6">
-        <b class="span4">Subpresupuesto de destino:</b>
-        <div class="span4">
-            <g:select name="subpresupuestoDes" from="${subPres}" optionKey="id" optionValue="descripcion" style="width: 300px;font-size: 10px;" id="subPres_destino"
-                      noSelection="['-1' : 'Seleccione un subpresupuesto...']" title="${"Obra: " + obra?.descripcion}"></g:select>
+    <div class="span4">
+        <b class="colorDestino"><label>Subpresupuesto Destino:</label></b>
+        <div id="divDestino">
+
+        </div>
+    </div>
+    <div class="span4" style="margin-left: -20px">
+        <b class="colorDestino"><label>Área Destino:</label></b>
+        <div id="divAreaDestino">
         </div>
     </div>
 </div>
@@ -137,8 +161,29 @@
         var obra = $("#obraSel").val()
         $("#detalle").html('')
         cargarComboOrigen(obra)
-
     });
+
+
+    cargarComboDestino($("#obraDes").val());
+
+    function cargarComboDestino(obra) {
+        $.ajax({type : "POST",
+            url : "${g.createLink(controller: 'volumenObra',action:'cargarSubDestino_ajax')}",
+            data     : {
+                obra: obra
+            },
+            success  : function (msg) {
+                $("#divDestino").html(msg)
+            }
+        });
+    }
+
+    $("#obraDes").change(function(){
+        var obra = $("#obraDes").val()
+//        $("#detalle").html('')
+        cargarComboDestino(obra)
+    });
+
 
 
     function loading(div) {
@@ -159,12 +204,14 @@
         var interval = loading("detalle")
         var obra = $("#obraSel").val();
         var sub = $("#subPresOrigen").val()
+        var area = $("#areaCopiar").val()
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'volumenObra',action:'tablaCopiarRubro')}",
             data : {
                 obra: obra,
-                sub: sub
+                sub: sub,
+                area: area
             },
             success  : function (msg) {
                 clearInterval(interval)
@@ -177,65 +224,65 @@
 
 
 
-    $("#copiar_todos").click(function () {
+    %{--$("#copiar_todos").click(function () {--}%
 
-        var tbody = $("#tabla_material");
-        var datos
-        var subPresDest = $("#subPres_destino").val()
-        var subPre = $("#subPresOrigen").val()
+        %{--var tbody = $("#tabla_material");--}%
+        %{--var datos--}%
+        %{--var subPresDest = $("#subPres_destino").val()--}%
+        %{--var subPre = $("#subPresOrigen").val()--}%
 
-        if(subPre == "-1" || subPresDest == "-1"){
-            $("#faltaOrigenDialog").dialog("open")
-        } else {
-            tbody.children("tr").each(function () {
-                var trId = $(this).attr("id")
-                datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre
-                $.ajax({
-                    type : "POST",
-                    url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
-                    data     : datos,
-                    success  : function (msg) {
-                        $("#detalle").html(msg)
-                    }
-                });
-            });
-        }
-    });
+        %{--if(subPre == "-1" || subPresDest == "-1"){--}%
+            %{--$("#faltaOrigenDialog").dialog("open")--}%
+        %{--} else {--}%
+            %{--tbody.children("tr").each(function () {--}%
+                %{--var trId = $(this).attr("id")--}%
+                %{--datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre--}%
+                %{--$.ajax({--}%
+                    %{--type : "POST",--}%
+                    %{--url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
+                    %{--data     : datos,--}%
+                    %{--success  : function (msg) {--}%
+                        %{--$("#detalle").html(msg)--}%
+                    %{--}--}%
+                %{--});--}%
+            %{--});--}%
+        %{--}--}%
+    %{--});--}%
 
 
-    $("#copiar_sel").click(function () {
+    %{--$("#copiar_sel").click(function () {--}%
 
-        var tbody = $("#tabla_material");
-        var datos
-        var subPresDest = $("#subPres_destino").val()
-        var subPre = $("#subPresOrigen").val()
-        var rbros = []
+        %{--var tbody = $("#tabla_material");--}%
+        %{--var datos--}%
+        %{--var subPresDest = $("#subPres_destino").val()--}%
+        %{--var subPre = $("#subPresOrigen").val()--}%
+        %{--var rbros = []--}%
 
-        tbody.children("tr").each(function () {
+        %{--tbody.children("tr").each(function () {--}%
 
-            if(($(this).children("td").children().get(1).checked) == true){
-                var selec = []
-                var trId = $(this).attr("id")
-                var ord = $(this).attr("ord")
-                var canti = $(this).attr("cant")
+            %{--if(($(this).children("td").children().get(1).checked) == true){--}%
+                %{--var selec = []--}%
+                %{--var trId = $(this).attr("id")--}%
+                %{--var ord = $(this).attr("ord")--}%
+                %{--var canti = $(this).attr("cant")--}%
 
-                datos ="&rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&orden=" + ord + "&canti=" + canti
+                %{--datos ="&rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&orden=" + ord + "&canti=" + canti--}%
 
-                $.ajax({
-                    type : "POST",
-                    async : false,
-                    url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
-                    data     : datos,
-                    success  : function (msg) {
-                        $("#detalle").html(msg)
-                    }
-                });
+                %{--$.ajax({--}%
+                    %{--type : "POST",--}%
+                    %{--async : false,--}%
+                    %{--url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
+                    %{--data     : datos,--}%
+                    %{--success  : function (msg) {--}%
+                        %{--$("#detalle").html(msg)--}%
+                    %{--}--}%
+                %{--});--}%
 
-            } else {
-            }
+            %{--} else {--}%
+            %{--}--}%
 
-        });
-    });
+        %{--});--}%
+    %{--});--}%
 
     $("#faltaOrigenDialog").dialog({
         autoOpen  : false,
