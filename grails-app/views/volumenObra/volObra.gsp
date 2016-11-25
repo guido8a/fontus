@@ -163,26 +163,26 @@
 
                     %{--Inicia registro de vlob--}%
                     <div class="span1" style="margin-left: 20px; width: 100px;">
-                        <b>Código</b>
+                        <b>Código:</b>
                         <input type="text" style="width: 60px;;font-size: 12px" id="item_codigo" class="allCaps">
                         <input type="hidden" style="width: 60px" id="item_id">
                     </div>
 
                     <div class="span8" style="margin-left: -20px;">
-                        <b>Rubro</b>
+                        <b>Rubro:</b>
                         <input type="text" style="width: 720px;font-size: 12px" id="item_nombre" readonly="true">
                     </div>
 
-                    <div class="span2" style="margin-left: -20px; width: 80px;">
+                    <div class="span2" style="margin-left: -30px; width: 80px;">
                         <b>Unidad:</b>
-                        <input type="text" style="width: 80px" id="item_unidad" value="" readonly="true">
+                        <input type="text" style="width: 60px" id="item_unidad" value="" readonly="true">
                     </div>
-                    <div class="span1" style="margin-left: 20px; width: 100px;">
+                    <div class="span1" style="margin-left: 0px; width: 100px;">
                         <b>Cantidad:</b>
                         <input type="text" style="width: 90px;text-align: right" id="item_cantidad" value="">
                     </div>
 
-                    <div class="span1" style="margin-left: 20px; width: 90px;">
+                    <div class="span1" style="margin-left: 10px; width: 90px;">
                         <b>Orden:</b>
                         <input type="text" style="width: 50px;text-align: right" id="item_orden" value="${(volumenes?.size() > 0) ? volumenes.size() + 1 : 1}">
                     </div>
@@ -378,9 +378,8 @@
                 });
 
                 $("#item_codigo").blur(function () {
-//            ////
                     if ($("#item_id").val() == "" && $("#item_codigo").val() != "") {
-//                console.log($("#item_id").val())
+                console.log($("#item_id").val())
                         $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'buscarRubroCodigo')}",
                             data     : "codigo=" + $("#item_codigo").val(),
                             success  : function (msg) {
@@ -871,9 +870,7 @@
                 }
 
                 $("#item_cantidad").focus(function () {
-                    console.log("focccc")
                     if (($("#item_nombre").val()) && ($("#item_codigo").val().substr(0, 2) == 'TR') && !aviso) {
-//                        console.log("ssssssssss i ")
                         aviso = true;
                         alerta("Rubro para transporte", "Debe registrar la distancia de desalojo en Variables de " +
                            "la obra, en la sección Transporte Especial");

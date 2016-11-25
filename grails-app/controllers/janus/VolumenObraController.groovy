@@ -97,6 +97,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         def rubro = Item.findByCodigoAndTipoItem(params.codigo?.trim()?.toUpperCase(), TipoItem.get(2))
         if (rubro) {
             render "" + rubro.id + "&&" + rubro.tipoLista?.id + "&&" + rubro.nombre + "&&" + rubro.unidad?.codigo
+
             return
         } else {
             render "-1"
@@ -391,7 +392,8 @@ class VolumenObraController extends janus.seguridad.Shield {
         def url = g.createLink(action: "buscaRubro", controller: "rubro")
         def funcionJs = "function(){"
         funcionJs += '$("#modal-rubro").modal("hide");'
-        funcionJs += '$("#item_id").val($(this).attr("regId"));$("#item_codigo").val($(this).attr("prop_codigo"));$("#item_nombre").val($(this).attr("prop_nombre"))'
+//        funcionJs += '$("#item_id").val($(this).attr("regId"));$("#item_codigo").val($(this).attr("prop_codigo"));$("#item_nombre").val($(this).attr("prop_nombre"))'
+        funcionJs += '$("#item_id").val($(this).attr("regId"));$("#item_codigo").val($(this).attr("prop_codigo"));$("#item_nombre").val($(this).attr("prop_nombre"));$("#item_unidad").val($(this).attr("prop_unidad"))'
         funcionJs += '}'
         def numRegistros = 20
         def extras = " and tipoItem = 2 and codigo not like 'H%'"  // no lista los que inician con H
