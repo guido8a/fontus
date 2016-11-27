@@ -1446,7 +1446,7 @@ class ObraController extends janus.seguridad.Shield {
     }
 
     def ordenaVlob () {
-//        println "params: $params"
+        println "params: $params"
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
 
@@ -1467,6 +1467,8 @@ class ObraController extends janus.seguridad.Shield {
         def ordn = params.valor.toInteger()
         def sql = "select * from ordn_cambia_sbpr($id, $ordn)"
         cn.execute(sql.toString())
+//        sql = "select * from ordn_actualiza($obra)"
+        cn.execute(sql.toString())
         cn.close()
         render "ok"
     }
@@ -1479,6 +1481,17 @@ class ObraController extends janus.seguridad.Shield {
         def sql = "select * from ordn_cambia_area($id, $ordn)"
         cn.execute(sql.toString())
         cn.close()
+        render "ok"
+    }
+
+    def guardarCambiosOrden() {
+        println "guardarCambiosOrden --> $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from ordn_actualiza(${params.obra.toInteger()})"
+        cn.execute(sql.toString())
+        cn.close()
+        flash.clase = "alert-success"
+        flash.message = "El orden de las cantidades de obra se han modificado correctamente"
         render "ok"
     }
 

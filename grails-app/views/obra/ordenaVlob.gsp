@@ -10,6 +10,15 @@
 
 <body>
 
+<div class="span12" id="mensaje">
+    <g:if test="${flash.message}">
+        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            ${flash.message}
+        </div>
+    </g:if>
+</div>
+
 <div class="row" style="margin-bottom: 10px;">
     <div class="span9 btn-group" role="navigation">
         <g:link controller="obra" action="registroObra" params="[obra: obra?.id]"
@@ -17,6 +26,9 @@
             <i class="icon-double-angle-left"></i>
             Regresar a Obra
         </g:link>
+        <a href="#" class="btn btn-success" id="btnSave"><i class="icon-save"></i> Guardar</a>
+        <a href="#" class="btn btn-warning" id="btnActualiza"><i class="icon-save"></i> Actualizar distribución de subspresupuestos y areas</a>
+
     </div>
 </div>
 
@@ -115,12 +127,11 @@
 
 <script type="text/javascript">
     decimales = 0;
-//    tabla = $(".table");
 
-    beforeDoEdit = function (sel, tf) {
-        var tipo = sel.data("tipo");
-        tf.data("tipo", tipo);
-    };
+//    beforeDoEdit = function (sel, tf) {
+//        var tipo = sel.data("tipo");
+//        tf.data("tipo", tipo);
+//    };
 
     textFieldBinds = {
         keyup: function () {
@@ -176,64 +187,17 @@
         return false;
     });
 
-//    tabla = $(".table");
-
-    beforeDoEdit = function (sel, tf) {
-        var tipo = sel.data("tipo");
-        tf.data("tipo", tipo);
-    };
-
-    textFieldBinds = {
-        keyup: function () {
-            var tipo = $(this).data("tipo");
-            var td = $(this).parents("td");
-            var val = $(this).val();
-            var thTot = $("th." + tipo);
-            var tds = $(".editable[data-tipo=" + tipo + "]").not(td);
-
-            var tot = parseFloat(val);
-            tds.each(function () {
-                tot += parseFloat($(this).data("valor"));
-            });
-            thTot.text(tot);
-        }
-    };
-
-    $(".editable").first().addClass("selected");
 
     $("#btnSave").click(function () {
-//                var btn = $(this);
-        var str = "";
-        $(".editable").each(function () {
-            var td = $(this);
-            var id = td.data("id");
-            var valor = parseFloat(td.data("valor"));
-            var orig = parseFloat(td.data("original"));
-
-            if (valor != orig) {
-                if (str != "") {
-                    str += "&";
-                }
-                str += "valor=" + id + "_" + valor;
-            }
-        });
-        if (str != "") {
-//                    btn.hide().after(spinner);
             $.ajax({
                 type: "POST",
-                url: "${createLink(action:'saveCambiosPolinomica')}",
-                data: str,
+                url: "${createLink(action:'guardarCambiosOrden')}",
+                data: "obra=" + ${obra.id},
                 success: function (msg) {
-//                            spinner.remove();
-//                            btn.show();
                     var parts = msg.split("_");
-                    var ok = parts[0];
-                    var no = parts[1];
-                    doHighlight({elem: $(ok), clase: "ok"});
-                    doHighlight({elem: $(no), clase: "no"});
+                    location.reload();
                 }
             });
-        }
         return false;
     });
 
