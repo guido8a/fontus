@@ -870,14 +870,11 @@
 </div>
 
 <div id="eliminarObraDialog">
-
     <fieldset>
         <div class="span3">
             Esta seguro que desea eliminar la Obra:<div style="font-weight: bold">${obra?.nombre}</div>
-
         </div>
     </fieldset>
-
 </div>
 
 <div id="noEliminarDialog">
@@ -1917,13 +1914,9 @@
         });
 
         $("#eliminarObra").click(function () {
-
             if (${obra?.id != null}) {
-
                 $("#eliminarObraDialog").dialog("open");
-
             }
-
         });
 
         $("#cambiarEstado").click(function () {
@@ -2668,7 +2661,6 @@
         });
 
         $("#eliminarObraDialog").dialog({
-
             autoOpen: false,
             resizable: false,
             modal: true,
@@ -2679,45 +2671,27 @@
             title: 'Eliminar Obra',
             buttons: {
                 "Aceptar": function () {
-
                     if (${volumen?.id != null || formula?.id != null}) {
-
                         $("#noEliminarDialog").dialog("open")
-
                     }
-
                     else {
-
                         $.ajax({
                             type: "POST",
                             url: "${createLink(action: 'delete')}",
                             data: "id=${obra?.id}",
                             success: function (msg) {
-
                                 if (msg == 'ok') {
-
                                     location.href = "${createLink(action: 'registroObra')}"
-
-                                } else {
-
                                 }
-
                             }
                         });
-
                     }
-
                     $("#eliminarObraDialog").dialog("close")
-
                 },
                 "Cancelar": function () {
-
                     $("#eliminarObraDialog").dialog("close")
-
                 }
-
             }
-
         });
 
         $("#noEliminarDialog").dialog({

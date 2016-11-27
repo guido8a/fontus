@@ -119,6 +119,14 @@
 </p>
 </div>
 
+<div id="reiniciar">
+    <fieldset>
+        <div class="span3">
+            Esta seguro que desea reiniciar el ordenamiento de rubros de la Obra:<div style="font-weight: bold">${obra?.nombre}</div>
+        </div>
+    </fieldset>
+</div>
+
 
 <div id="ajx_frma" style="width:520px;"></div>
 
@@ -191,7 +199,7 @@
     $("#btnSave").click(function () {
             $.ajax({
                 type: "POST",
-                url: "${createLink(action:'guardarCambiosOrden')}",
+                url: "${createLink(action: 'guardarCambiosOrden')}",
                 data: "obra=" + ${obra.id},
                 success: function (msg) {
                     var parts = msg.split("_");
@@ -201,10 +209,61 @@
         return false;
     });
 
+    $("#btnActualiza").click(function () {
+        if (${obra?.id != null}) {
+            $("#reiniciar").dialog("open");
+        }
+/*
+            $.ajax({
+                type: "POST",
+                url: "${createLink(action: 'reiniciaOrdn')}",
+                data: "id=" + ${obra.id},
+                success: function (msg) {
+                    var parts = msg.split("_");
+                    location.reload();
+                }
+            });
+*/
+        return false;
+    });
+
     $("#tabs").tabs({
         heightStyle: "fill",
         activate: function (event, ui) {
             ui.newPanel.find(".editable").first().addClass("selected");
+        }
+    });
+
+    $("#reiniciar").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        draggable: false,
+        width: 350,
+        height: 220,
+        position: 'center',
+        title: 'Eliminar Obra',
+        buttons: {
+            "Aceptar": function () {
+                $.ajax({
+                    type: "POST",
+                    url: "${createLink(action: 'reiniciaOrdn')}",
+                    data: "id=" + ${obra.id},
+                    success: function (msg) {
+                        var parts = msg.split("_");
+                        location.reload();
+                    }
+                });
+            },
+            "Cancelar": function () {
+                $("#reiniciar").dialog("close")
+            }
+        }
+    });
+
+    $("#eliminarObra").click(function () {
+        if (${obra?.id != null}) {
+            $("#eliminarObraDialog").dialog("open");
         }
     });
 

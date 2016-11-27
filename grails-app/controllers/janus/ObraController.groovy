@@ -1449,6 +1449,9 @@ class ObraController extends janus.seguridad.Shield {
         println "params: $params"
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
+        if(cn.rows("select count(*) cnta from ordn where obra__id = ${params.id}".toString())[0].cnta == 0) {
+            cn.execute("select * from ordn_vlob(${params.id})".toString())
+        }
 
         def sbpr = cn.rows("select distinct ordn.sbpr__id, sbprdscr, ordnsbpr from ordn, sbpr where obra__id = ${obra.id} and " +
                 "sbpr.sbpr__id = ordn.sbpr__id order by ordnsbpr".toString())
@@ -1495,5 +1498,12 @@ class ObraController extends janus.seguridad.Shield {
         render "ok"
     }
 
+    def reiniciaOrdn() {
+        println "reiniciaOrdn --> $params"
+        def cn = dbConnectionService.getConnection()
+        cn.execute("select * from ordn_vlob(${params.id})".toString())
+        cn.close()
+        redirect action: 'ordenaVlob', params: params
+    }
 
 } //fin controller
