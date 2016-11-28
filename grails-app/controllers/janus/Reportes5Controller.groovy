@@ -1243,7 +1243,7 @@ class Reportes5Controller {
 
         def fila = 12
 
-        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
+        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by 1 limit 100 offset 100"
         def subSql = ""
         def sqlVl = ""
         def clmn = 0
@@ -1269,7 +1269,7 @@ class Reportes5Controller {
         def fila2 = 13
 
         def valores
-        def sqlN = "select * from valores(${obra?.id},0)"
+        def sqlN = "select * from valores(${obra?.id}, 0, 101, 200)"  /* desde columna 0 a columna 100 */
 
         cn.eachRow(sqlN.toString()){r->
             def colN = 5
