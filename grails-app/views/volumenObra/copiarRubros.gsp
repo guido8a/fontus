@@ -135,7 +135,7 @@
 <div id="faltaOrigenDialog">
     <fieldset>
         <div class="span3">
-            Para continuar seleccione un presupuesto de origen y uno de destino.
+            Para continuar seleccione un presupuesto de origen y uno de destino, con sus respectivas áreas.
         </div>
     </fieldset>
 </div>
@@ -224,65 +224,73 @@
 
 
 
-    %{--$("#copiar_todos").click(function () {--}%
+    $("#copiar_todos").click(function () {
 
-        %{--var tbody = $("#tabla_material");--}%
-        %{--var datos--}%
-        %{--var subPresDest = $("#subPres_destino").val()--}%
-        %{--var subPre = $("#subPresOrigen").val()--}%
-
-        %{--if(subPre == "-1" || subPresDest == "-1"){--}%
-            %{--$("#faltaOrigenDialog").dialog("open")--}%
-        %{--} else {--}%
-            %{--tbody.children("tr").each(function () {--}%
-                %{--var trId = $(this).attr("id")--}%
-                %{--datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre--}%
-                %{--$.ajax({--}%
-                    %{--type : "POST",--}%
-                    %{--url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
-                    %{--data     : datos,--}%
-                    %{--success  : function (msg) {--}%
-                        %{--$("#detalle").html(msg)--}%
-                    %{--}--}%
-                %{--});--}%
-            %{--});--}%
-        %{--}--}%
-    %{--});--}%
+        var tbody = $("#tabla_material");
+        var datos
+        var subPresDest = $("#subPres_destino").val()
+        var subPre = $("#subPresOrigen").val()
 
 
-    %{--$("#copiar_sel").click(function () {--}%
+        var areaOrigen = $("#areaCopiar").val()
+        var areaDestino = $("#areaCopiarDestino").val()
+        var obraDestino = $("#obraDes").val()
 
-        %{--var tbody = $("#tabla_material");--}%
-        %{--var datos--}%
-        %{--var subPresDest = $("#subPres_destino").val()--}%
-        %{--var subPre = $("#subPresOrigen").val()--}%
-        %{--var rbros = []--}%
+        if(areaOrigen == "-1" || areaDestino == "-1"){
+            $("#faltaOrigenDialog").dialog("open")
+        } else {
+            tbody.children("tr").each(function () {
+                var trId = $(this).attr("id");
+                datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&areaOrigen=" + areaOrigen + "&areaDestino=" + areaDestino + "&obraDestino=" + obraDestino;
+                $.ajax({
+                    type : "POST",
+                    url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
+                    data     : datos,
+                    success  : function (msg) {
+                        $("#detalle").html(msg)
+                    }
+                });
+            });
+        }
+    });
 
-        %{--tbody.children("tr").each(function () {--}%
 
-            %{--if(($(this).children("td").children().get(1).checked) == true){--}%
-                %{--var selec = []--}%
-                %{--var trId = $(this).attr("id")--}%
-                %{--var ord = $(this).attr("ord")--}%
-                %{--var canti = $(this).attr("cant")--}%
+    $("#copiar_sel").click(function () {
 
-                %{--datos ="&rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&orden=" + ord + "&canti=" + canti--}%
+        var tbody = $("#tabla_material");
+        var datos
+        var subPresDest = $("#subPres_destino").val()
+        var subPre = $("#subPresOrigen").val()
+        var areaOrigen = $("#areaCopiar").val()
+        var areaDestino = $("#areaCopiarDestino").val()
+        var obraDestino = $("#obraDes").val()
+        var rbros = []
 
-                %{--$.ajax({--}%
-                    %{--type : "POST",--}%
-                    %{--async : false,--}%
-                    %{--url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
-                    %{--data     : datos,--}%
-                    %{--success  : function (msg) {--}%
-                        %{--$("#detalle").html(msg)--}%
-                    %{--}--}%
-                %{--});--}%
+        tbody.children("tr").each(function () {
 
-            %{--} else {--}%
-            %{--}--}%
+            if(($(this).children("td").children().get(1).checked) == true){
+                var selec = []
+                var trId = $(this).attr("id")
+                var ord = $(this).attr("ord")
+                var canti = $(this).attr("cant")
 
-        %{--});--}%
-    %{--});--}%
+                datos ="&rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre + "&orden=" + ord + "&canti=" + canti + "&areaOrigen=" + areaOrigen + "&areaDestino=" + areaDestino + "&obraDestino=" + obraDestino;
+
+                $.ajax({
+                    type : "POST",
+                    async : false,
+                    url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
+                    data     : datos,
+                    success  : function (msg) {
+                        $("#detalle").html(msg)
+                    }
+                });
+
+            } else {
+            }
+
+        });
+    });
 
     $("#faltaOrigenDialog").dialog({
         autoOpen  : false,
@@ -290,7 +298,7 @@
         modal     : true,
         draggable : false,
         width     : 350,
-        height    : 150,
+        height    : 200,
         position  : 'center',
         title     : 'Elegir subpresupuestos!',
         buttons   : {
