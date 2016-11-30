@@ -227,7 +227,7 @@
 
     </g:else>
 
-    <g:if test="${obra?.estado != 'R'}">
+    <g:if test="${obra?.estado != 'R' && session.perfil.codigo == 'CSTO'}">
         <button class="btn" id="revisarPrecios"><i class="icon-check"></i> Precios 0</button>
     </g:if>
     <g:if test="${obra?.id != null && obra?.estado != 'R'}">
@@ -1871,6 +1871,7 @@
             $.ajax({
                 type: "POST",
                 url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
+                %{--url: "${createLink(action: 'validaciones', controller: 'obraMF')}",--}%
                 data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
                 success: function (msg) {
 //                    $("#modal-matriz").modal("hide")
@@ -2107,9 +2108,9 @@
                             resizable: false,
                             draggable: false,
                             width: 600,
-                            height: 280,
+                            height: ${session.perfil.codigo == 'CSTO'? 240 : 170},
                             buttons: {
-
+                                <g:if test="${session.perfil.codigo == 'CSTO'}">
                                 "Con desglose de Trans.": function () {
                                     url += "1";
                                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
@@ -2136,9 +2137,10 @@
                                     urlVaeEx += "1";
                                     location.href = urlVaeEx;
                                 },
-                                "Imprimir las Especificaciones de los Rubros utilizados en la Obra": function () {
-                                    var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
-                                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                                </g:if>
+                            "Imprimir las Especificaciones de los Rubros utilizados en la Obra": function () {
+                                 var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
+                                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                                 },
 
                                 "Cancelar": function () {
@@ -2544,10 +2546,6 @@
             $("#modal-formula").modal("hide")
         });
 
-
-        $("#cancelarImpresion").click(function () {
-            $("#modal-imprimir").modal("hide")
-        });
         $(".btnFormula__s").click(function () {
             var url = $(this).attr("href");
 
