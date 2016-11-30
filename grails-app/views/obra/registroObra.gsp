@@ -1081,7 +1081,7 @@
                 <p style="margin-top: 20px">Desea volver a generar la matriz?, o generar una nueva matriz?</p>
                 <a href="#" class="btn btn-info" id="no">NO <i class="icon-arrow-right"></i> Ver la Matriz existente</a>
                 <a href="#" class="btn btn-danger" id="si">SI <i class="icon-arrow-right"></i> Generar Matriz</a>
-                <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Imprimir Matriz</a>
+                <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Copiar a Excel</a>
                 %{--<a href="${g.createLink(controller: 'reportes5', action: 'reporteMatriz', id: "${obra?.id}")}" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Imprimir Matriz</a>--}%
                 <a href="#" class="btn btn-primary" id="cancela" style="margin-left: 50px;">Cancelar</a>
 
@@ -1153,7 +1153,7 @@
                           style="margin-right: 20px; width: 400px" id="seleccionadoImpresion"></g:select>
 
                 <div style="float: right">
-                    <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Imprimir</a>
+                    <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Generar Excel</a>
                     <a href="#" class="btn btn-primary" id="cancelarImpresion">Cancelar</a>
                 </div>
             </div>
@@ -1186,27 +1186,13 @@
 
 <script type="text/javascript">
 
+    $("#cancelarImpresion").click(function () {
+        $("#modal-imprimir").modal("hide")
+    });
+
     $("#imprimirSeleccionado").click(function () {
         var seleccionado = $("#seleccionadoImpresion").val()
-            %{--$.ajax({--}%
-                %{--type: 'POST',--}%
-                %{--url: '${createLink(controller: 'reportes5', action: 'nuevoReporteMatriz')}',--}%
-                %{--data:{--}%
-                    %{--id: '${obra?.id}',--}%
-                    %{--sel: seleccionado--}%
-                %{--},--}%
-                %{--success: function (msg){--}%
-
-                %{--}--}%
-            %{--})--}%
-
-
-
-
-
         location.href = "${g.createLink(controller: 'reportes5',action: 'nuevoReporteMatriz',id: obra?.id)}?sel=" + seleccionado;
-
-
     });
 
     $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
@@ -1418,23 +1404,6 @@
 
     });
 
-    %{--function loadPersonas2() {--}%
-
-    %{--var idObra = ${obra?.id}--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${g.createLink(action:'getPersonas')}",--}%
-    %{--data    : {id : ${persona?.departamento?.id},--}%
-    %{--obra      : idObra--}%
-
-    %{--},--}%
-    %{--success : function (msg) {--}%
-
-    %{--$("#filaPersonas").html(msg);--}%
-    %{--}--}%
-    %{--});--}%
-    %{--}--}%
-
 
     function loadPersonas() {
 
@@ -1442,7 +1411,6 @@
 
         var idP
         var idDep1
-
 
         <g:if test="${persona?.departamento?.codigo == 'DNCP'}">
         <g:if test="${obra}">
