@@ -503,12 +503,39 @@ class ObraController extends janus.seguridad.Shield {
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
 
-            println "dueÑo: " + duenoObra
+//            println "dueÑo: " + duenoObra
+
+
+            def resultado
+            def listaImp = [:]
+            def sql2 = "SELECT count(*) from mfcl where obra__id = ${obra.id} order by 1"
+            cn.eachRow(sql2.toString()){ e->
+                resultado = e[0]
+            }
+
+            def dividido = (resultado.toInteger() / 100)
+            def f = Math.round(dividido)
+            def inicio = 0
+            def finalImp = 100
+            def texto
+
+            if(resultado.toInteger() != 0){
+                (1..f).eachWithIndex{ n, m->
+//                    println("entro " + n + " " + m)
+                    texto = "Desde ${inicio + 1} hasta ${finalImp + 1}"
+                    listaImp << ["${m}": "${texto}"]
+                    inicio = finalImp
+                    finalImp = (finalImp +100)
+                }
+            }
+
+
+//            println("arreglo " + listaImp)
 
             [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
              claseObra: claseObra, grupoDir: grupo, dire  : direccion, depar: departamentos, concurso: concurso,
-             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF]
+             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF, listaImpresion: listaImp, existeRubros: resultado]
         } else {
             duenoObra = 0
 

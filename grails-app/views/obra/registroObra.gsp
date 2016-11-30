@@ -186,16 +186,16 @@
 
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${duenoObra == 1 && (Concurso.countByObra(obra) == 0)}">
-              <g:if test="${obra?.estado == 'N'}">
-                  <g:if test="${obra?.fechaInicio == null}">
-                      <button class="btn btn-warning" id="revisarObra" title="Cambiar estado de la obra a revisado"><i class="icon-check"></i> Revisar Obra</button>
-                  </g:if>
-              </g:if>
-              <g:if test="${obra?.estado == 'S'}">
-                  <g:if test="${obra?.fechaInicio == null}">
-                      <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i> Cambiar de Estado</button>
-                  </g:if>
-              </g:if>
+                <g:if test="${obra?.estado == 'N'}">
+                    <g:if test="${obra?.fechaInicio == null}">
+                        <button class="btn btn-warning" id="revisarObra" title="Cambiar estado de la obra a revisado"><i class="icon-check"></i> Revisar Obra</button>
+                    </g:if>
+                </g:if>
+                <g:if test="${obra?.estado == 'S'}">
+                    <g:if test="${obra?.fechaInicio == null}">
+                        <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i> Cambiar de Estado</button>
+                    </g:if>
+                </g:if>
             </g:if>
 
             <g:if test="${obra?.id != null}">
@@ -350,10 +350,10 @@
             </div>
 
             <g:if test="${session.perfil.codigo == 'CSTO'}">
-            <span style="color: #081d30; font-weight: bold" id="valorObra">
-                <g:formatNumber number="${obra?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
-                                locale="ec"/>    
-            </span>
+                <span style="color: #081d30; font-weight: bold" id="valorObra">
+                    <g:formatNumber number="${obra?.valor}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
+                                    locale="ec"/>
+                </span>
             </g:if>
 
 
@@ -366,14 +366,14 @@
             <div class="span2">
                 <g:textField name="oficioIngreso" class="memo allCaps" value="${obra?.oficioIngreso}" maxlength="20"
                              style="width: 120px; margin-left: -10px" title="Número del Oficio de Ingreso"/>
-%{--
-                <g:if test="${obra}">
-                    <a class="btn btn-small btn-info " id="tramites"
-                       href="${g.createLink(action: 'verTramites', controller: 'tramite', id: obra?.oficioIngreso)}"
-                       rel="tooltip" title="Ver trámites" style="margin-top: -10px;">
-                        <i class="icon-file-alt"></i></a>
-                </g:if>
---}%
+                %{--
+                                <g:if test="${obra}">
+                                    <a class="btn btn-small btn-info " id="tramites"
+                                       href="${g.createLink(action: 'verTramites', controller: 'tramite', id: obra?.oficioIngreso)}"
+                                       rel="tooltip" title="Ver trámites" style="margin-top: -10px;">
+                                        <i class="icon-file-alt"></i></a>
+                                </g:if>
+                --}%
             </div>
 
             <div class="span1 formato" style="width: 220px; margin-left: 40px;">MEMORANDO CANTIDAD DE OBRA</div>
@@ -523,21 +523,21 @@
                                             maxlength="127"
                                             title="Referencia de la disposición para realizar la Obra"/></div>
 
-%{--
-            <div class="span1" style="width: 120px;">Longitud de la vía(m):</div>
+            %{--
+                        <div class="span1" style="width: 120px;">Longitud de la vía(m):</div>
 
-            <div class="span1"><g:textField name="longitudVia" class="referencia number" type="number"
-                                            style="width: 60px; margin-left: -20px" maxlength="9"
-                                            value="${g.formatNumber(number: obra?.longitudVia, maxFractionDigits: 1, minFractionDigits: 1, format: '##,##0', locale: 'ec')}"
-                                            title="Longitud de la vía en metros. Sólo obras viales"/></div>
+                        <div class="span1"><g:textField name="longitudVia" class="referencia number" type="number"
+                                                        style="width: 60px; margin-left: -20px" maxlength="9"
+                                                        value="${g.formatNumber(number: obra?.longitudVia, maxFractionDigits: 1, minFractionDigits: 1, format: '##,##0', locale: 'ec')}"
+                                                        title="Longitud de la vía en metros. Sólo obras viales"/></div>
 
-            <div class="span1" style="width: 110px; margin-left: -10px">Ancho de la vía(m):</div>
+                        <div class="span1" style="width: 110px; margin-left: -10px">Ancho de la vía(m):</div>
 
-            <div class="span1"><g:textField name="anchoVia" class="referencia number" type="number"
-                                            style="width: 50px; margin-left: -10px" maxlength="4"
-                                            value="${g.formatNumber(number: obra?.anchoVia, maxFractionDigits: 1, minFractionDigits: 1, format: '##,##0', locale: 'ec')}"
-                                            title="Ancho de la vía en metros. Sólo obras viales"/></div>
---}%
+                        <div class="span1"><g:textField name="anchoVia" class="referencia number" type="number"
+                                                        style="width: 50px; margin-left: -10px" maxlength="4"
+                                                        value="${g.formatNumber(number: obra?.anchoVia, maxFractionDigits: 1, minFractionDigits: 1, format: '##,##0', locale: 'ec')}"
+                                                        title="Ancho de la vía en metros. Sólo obras viales"/></div>
+            --}%
         </div>
 
         <div class="span12" id="filaPersonas">
@@ -955,16 +955,16 @@
                     <li><a href="#" id="btnRubros"><i class="icon-money"></i>Rubros</a></li>
 
                     <g:if test="${session.perfil.codigo == 'CSTO'}">
-                    <li><a href="#" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>
+                        <li><a href="#" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>
                     %{--<li><a href="${g.createLink(controller: 'documentosObra', action: 'documentosObra', id: obra?.id)}" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>--}%
-                    <li><a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}"><i
-                            class="icon-calendar"></i>Cronograma
-                    </a></li>
-                    <li>
-                        <g:link controller="variables" action="composicion" id="${obra?.id}"><i
-                                class="icon-paste"></i>Composición
-                        </g:link>
-                    </li>
+                        <li><a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}"><i
+                                class="icon-calendar"></i>Cronograma
+                        </a></li>
+                        <li>
+                            <g:link controller="variables" action="composicion" id="${obra?.id}"><i
+                                    class="icon-paste"></i>Composición
+                            </g:link>
+                        </li>
                     </g:if>
 
                     <li>
@@ -977,14 +977,14 @@
                     </li>
 
                     <g:if test="${session.perfil.codigo == 'CSTO'}">
-                    <li><a href="#" id="btnVeri"><i class="icon-ok"></i>Precios no Act.</a></li>
-                    <g:if test="${obra?.tipo != 'D'}">
-                        <li>
-                            <g:link controller="variables" action="composicionVae" id="${obra?.id}"><i
-                                    class="icon-paste"></i>Fijar VAE
-                            </g:link>
-                        </li>
-                    </g:if>
+                        <li><a href="#" id="btnVeri"><i class="icon-ok"></i>Precios no Act.</a></li>
+                        <g:if test="${obra?.tipo != 'D'}">
+                            <li>
+                                <g:link controller="variables" action="composicionVae" id="${obra?.id}"><i
+                                        class="icon-paste"></i>Fijar VAE
+                                </g:link>
+                            </li>
+                        </g:if>
                     </g:if>
 
 
@@ -1070,7 +1070,7 @@
                 </g:else>
 
             %{--${sbprMF}--}%
-                <span style="margin-left: 100px;">Generada para:</span>
+                <span style="margin-left: 100px;"><b>Generada para:</b></span>
                 <g:select name="matriz_gen" from="${sbprMF}" optionKey="key" optionValue="value"
                           style="margin-right: 20px; width: 400px"></g:select>
 
@@ -1078,10 +1078,12 @@
                 %{--${sb.key} ${sb.value}<br/>--}%
                 %{--</g:each>--}%
 
-                <p style="margin-top: 20px">Desea volver a generar la matriz? o generar otra matriz</p>
-                <a href="#" class="btn btn-info" id="no">No -> Ver la Matriz existente</a>
-                <a href="#" class="btn btn-danger" id="si">Si -> Generar Matriz</a>
-                <a href="#" class="btn btn-info" id="cancela" style="margin-left: 200px;">Cancelar</a>
+                <p style="margin-top: 20px">Desea volver a generar la matriz?, o generar una nueva matriz?</p>
+                <a href="#" class="btn btn-info" id="no">NO <i class="icon-arrow-right"></i> Ver la Matriz existente</a>
+                <a href="#" class="btn btn-danger" id="si">SI <i class="icon-arrow-right"></i> Generar Matriz</a>
+                <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Imprimir Matriz</a>
+                %{--<a href="${g.createLink(controller: 'reportes5', action: 'reporteMatriz', id: "${obra?.id}")}" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Imprimir Matriz</a>--}%
+                <a href="#" class="btn btn-primary" id="cancela" style="margin-left: 50px;">Cancelar</a>
 
             </div>
 
@@ -1133,6 +1135,32 @@
 
     </div>
 
+
+
+    <div class="modal hide fade mediumModal" id="modal-imprimir" style=";overflow: hidden;">
+        <div class="modal-header btn-primary">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+
+            <h3 id="modal_title_impresion">
+            </h3>
+        </div>
+
+        <div class="modal-body" id="modal_body_impresion">
+            <div id="msg_impr">
+
+                <span style="margin-left: 0px;">Seleccione el rango de la impresión: </span>
+                <g:select name="seccion_matriz" from="${listaImpresion}" optionKey="key" optionValue="value"
+                          style="margin-right: 20px; width: 400px" id="seleccionadoImpresion"></g:select>
+
+                <div style="float: right">
+                    <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Imprimir</a>
+                    <a href="#" class="btn btn-primary" id="cancelarImpresion">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </g:if>
 
 <div id="admDirecta">
@@ -1157,6 +1185,29 @@
 
 
 <script type="text/javascript">
+
+    $("#imprimirSeleccionado").click(function () {
+        var seleccionado = $("#seleccionadoImpresion").val()
+            %{--$.ajax({--}%
+                %{--type: 'POST',--}%
+                %{--url: '${createLink(controller: 'reportes5', action: 'nuevoReporteMatriz')}',--}%
+                %{--data:{--}%
+                    %{--id: '${obra?.id}',--}%
+                    %{--sel: seleccionado--}%
+                %{--},--}%
+                %{--success: function (msg){--}%
+
+                %{--}--}%
+            %{--})--}%
+
+
+
+
+
+        location.href = "${g.createLink(controller: 'reportes5',action: 'nuevoReporteMatriz',id: obra?.id)}?sel=" + seleccionado;
+
+
+    });
 
     $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
 
@@ -1729,6 +1780,17 @@
             $("#modal-matriz").modal("show")
         });
 
+
+        $("#imprimir_matriz").click(function () {
+            if(${existeRubros.toInteger() != 0}){
+                $("#modal_title_impresion").html("Imprimir matriz");
+                $("#msg_impr").show();
+                $("#modal-imprimir").modal("show")
+            }else{
+                alert("No existen datos para imprimir!")
+            }
+        });
+
         $("#no").click(function () {
             var sb = $("#matriz_gen").val();
             $("#modal-matriz").modal("hide")
@@ -2074,9 +2136,9 @@
                                     urlVaeEx += "1";
                                     location.href = urlVaeEx;
                                 },
-                            "Imprimir las Especificaciones de los Rubros utilizados en la Obra": function () {
-                                 var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
-                                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+                                "Imprimir las Especificaciones de los Rubros utilizados en la Obra": function () {
+                                    var url = "${g.createLink(controller: 'reportes5',action: 'reporteEspecificacionesObra')}?id=" + '${obra?.id}'
+                                    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                                 },
 
                                 "Cancelar": function () {
@@ -2482,6 +2544,10 @@
             $("#modal-formula").modal("hide")
         });
 
+
+        $("#cancelarImpresion").click(function () {
+            $("#modal-imprimir").modal("hide")
+        });
         $(".btnFormula__s").click(function () {
             var url = $(this).attr("href");
 

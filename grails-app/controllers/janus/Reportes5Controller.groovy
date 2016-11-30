@@ -1204,6 +1204,7 @@ class Reportes5Controller {
 
 
     def reporteMatriz () {
+
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def cn2 = dbConnectionService.getConnection()
@@ -1241,18 +1242,160 @@ class Reportes5Controller {
         row9.createCell(1).setCellValue("Fecha Act. Precios: " + fechaRubros)
 
 
-        def fila = 12
+//            def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by 1 limit 100 offset 100"
+        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by 1"
+            def subSql = ""
+            def sqlVl = ""
+            def clmn = 0
+            def col = ""
 
-        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by 1 limit 100 offset 100"
+            Row drow = sheet.createRow(fila)
+            cn.eachRow(sql.toString()) { r ->
+                col = r[1]
+                if (r[2] != "R") {
+                    def parts = r[1].split("_")
+                    try {
+                        col = Item.get(parts[0].toLong()).nombre
+                    } catch (e) {
+                        println "error: " + e
+                        col = parts[0]
+                    }
+                    col += " " + parts[1]?.replaceAll("T", " Total")?.replaceAll("U", " Unitario")
+                }
+                drow.createCell(clmn++).setCellValue("" + col)
+            }
+            fila++
+
+            def fila2 = 13
+
+            def valores
+            def sqlN = "select * from valores(${obra?.id}, 0, 0, 100)"  /* desde columna 0 a columna 100 */
+//        def sqlN = "select * from valores(${obra?.id}, 0)"  /* desde columna 0 a columna 100 */
+
+            cn.eachRow(sqlN.toString()){r->
+                def colN = 5
+                Row drow1 = sheet.createRow(fila2)
+                drow1.createCell(0).setCellValue(r.ordn)
+                drow1.createCell(1).setCellValue(r.cdgo)
+                drow1.createCell(2).setCellValue(r.rbro)
+                drow1.createCell(3).setCellValue(r.undd)
+                drow1.createCell(4).setCellValue(r.cntd)
+                valores = r.vlor.getArray()
+                valores.each{p->
+                    drow1.createCell(colN).setCellValue(p)
+                    colN++
+                }
+
+                fila2++
+            }
+
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "MFPExcel.xlsx";
+            response.setContentType("application/octet-stream")
+            response.setHeader("Content-Disposition", header);
+            wb.write(output)
+
+    }
+
+
+
+    def nuevoReporteMatriz () {
+
+        println("params " + params)
+
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def obra = Obra.get(params.id)
+        def nombre = obra?.nombre
+        def codigo = obra?.codigo
+        def memo = (obra?.memoCantidadObra ?: '')
+        def referencia = (obra?.oficioIngreso ?: '')
+        def fechaCreacion = printFecha(obra?.fechaCreacionObra)
+        def fechaRubros = printFecha(obra?.fechaPreciosRubros)
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        org.apache.poi.ss.usermodel.Sheet sheet = wb.createSheet("PAC")
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+
+        Row row1 = sheet.createRow(1)
+        row1.createCell(1).setCellValue("SERVICIO DE CONTRATACIÓN DE OBRAS")
+        Row row2 = sheet.createRow(2)
+        row2.createCell(1).setCellValue("DIRECCIÓN NACIONAL DE COSTOS Y PLANEAMIENTO")
+        Row row3 = sheet.createRow(3)
+        row3.createCell(1).setCellValue("Matriz de la Fórmula Polinómica")
+        Row row4 = sheet.createRow(4)
+        row4.createCell(1).setCellValue("Obra: " + nombre)
+        Row row5 = sheet.createRow(5)
+        row5.createCell(1).setCellValue("Código : " + codigo)
+        Row row6 = sheet.createRow(6)
+        row6.createCell(1).setCellValue("Memo Cant. : " + memo)
+        Row row7 = sheet.createRow(7)
+        row7.createCell(1).setCellValue("Doc. Referencia : " + referencia)
+        Row row8 = sheet.createRow(8)
+        row8.createCell(1).setCellValue("Fecha : " + fechaCreacion)
+        Row row9 = sheet.createRow(9)
+        row9.createCell(1).setCellValue("Fecha Act. Precios: " + fechaRubros)
+
+        def seleccionado = params.sel.toInteger()
+
+        def fila = 12
+        def resultado
+        def sql2 = "SELECT count(*) from mfcl where obra__id = ${obra.id} order by 1"
+        cn.eachRow(sql2.toString()){ e->
+            resultado = e[0]
+        }
+//        println("----> " + resultado)
+
+        def dividido = (resultado.toInteger() / 100)
+        def f = Math.round(dividido)
+        def inicio = 0
+        def finalImp = 100
+        def texto
+        def listaImp = [:]
+
+//        println("f " + f)
+
+        if(resultado.toInteger() != 0){
+
+
+            (1..f).any {t->
+//                println("t " + t)
+                  if((seleccionado+1) != t){
+                    inicio = finalImp
+                    finalImp = (finalImp +100)
+                      return false
+                }else{
+                    return true
+                }
+            }
+        }
+
+//        println("inicio imp " + inicio)
+//        println("final imp " + finalImp)
+
+
+
+        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by 1 limit 101 offset ${inicio}"
         def subSql = ""
         def sqlVl = ""
-        def clmn = 0
+        def clmn = 5
         def col = ""
-        Row drow = sheet.createRow(fila)
 
+        Row drow = sheet.createRow(fila)
+        drow.createCell(0).setCellValue("ORDEN")
+        drow.createCell(1).setCellValue("CÓDIGO")
+        drow.createCell(2).setCellValue("RUBRO")
+        drow.createCell(3).setCellValue("UNIDAD")
+        drow.createCell(4).setCellValue("CANTIDAD")
         cn.eachRow(sql.toString()) { r ->
+//            println("--> " + r)
             col = r[1]
             if (r[2] != "R") {
+//                println("<<<<<<" + r[2])
                 def parts = r[1].split("_")
                 try {
                     col = Item.get(parts[0].toLong()).nombre
@@ -1261,15 +1404,19 @@ class Reportes5Controller {
                     col = parts[0]
                 }
                 col += " " + parts[1]?.replaceAll("T", " Total")?.replaceAll("U", " Unitario")
+
+                drow.createCell(clmn++).setCellValue("" + col)
+            }else{
+
             }
-            drow.createCell(clmn++).setCellValue("" + col)
+//            drow.createCell(clmn++).setCellValue("" + col)
         }
         fila++
 
         def fila2 = 13
 
         def valores
-        def sqlN = "select * from valores(${obra?.id}, 0, 101, 200)"  /* desde columna 0 a columna 100 */
+        def sqlN = "select * from valores(${obra?.id}, 0, ${inicio}, ${finalImp})"  /* desde columna 0 a columna 100 */
 
         cn.eachRow(sqlN.toString()){r->
             def colN = 5
@@ -1278,7 +1425,6 @@ class Reportes5Controller {
             drow1.createCell(1).setCellValue(r.cdgo)
             drow1.createCell(2).setCellValue(r.rbro)
             drow1.createCell(3).setCellValue(r.undd)
-//            drow1.createCell(4).setCellValue("" + r.cntd)
             drow1.createCell(4).setCellValue(r.cntd)
             valores = r.vlor.getArray()
             valores.each{p->
@@ -1295,6 +1441,7 @@ class Reportes5Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
-    }
 
+
+    }
 }
