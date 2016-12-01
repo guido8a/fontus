@@ -321,8 +321,33 @@ class MatrizController extends janus.seguridad.Shield {
             cont2++
         }
 
+
+        def resultado
+        def listaImp = [:]
+        def sql3 = "SELECT count(*) from mfcl where obra__id = ${obra} order by 1"
+        cn.eachRow(sql3.toString()){ e->
+            resultado = e[0]
+        }
+
+        def dividido = (resultado.toInteger() / 100)
+        def f = Math.round(dividido)
+        def inicio3 = 0
+        def finalImp = 100
+        def texto
+
+        if(resultado.toInteger() != 0){
+            (1..f).eachWithIndex{ n, m->
+//                    println("entro " + n + " " + m)
+                texto = "Desde ${inicio3 + 1} hasta ${finalImp + 1}"
+                listaImp << ["${m}": "${texto}"]
+                inicio3 = finalImp
+                finalImp = (finalImp +100)
+            }
+        }
+
 //        println("cont " + cont2)
-        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: cont, filas: filas, filasF: filasF, cont: offset.toInteger(), cont2: cont2]
+        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: cont, filas: filas,
+         filasF: filasF, cont: offset.toInteger(), cont2: cont2, listaImpresion: listaImp, existeRubros: resultado]
     }
 
 

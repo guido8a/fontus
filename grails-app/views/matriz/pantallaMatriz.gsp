@@ -108,11 +108,13 @@
         <i class="icon-refresh"></i>
         Limpiar selección
     </a>
-    <a href="${g.createLink(controller: 'reportes5', action: 'reporteMatriz', id: "${obra}")}" class="btn btn-ajax btn-new"
-       id="reset" title="Resetear">
-        <i class="icon-print"></i>
-        Excel
-    </a>
+    %{--<a href="${g.createLink(controller: 'reportes5', action: 'reporteMatriz', id: "${obra}")}" class="btn btn-ajax btn-new"--}%
+       %{--id="reset" title="Resetear">--}%
+        %{--<i class="icon-print"></i>--}%
+        %{--Excel--}%
+    %{--</a>--}%
+
+    <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Excel</a>
     <a href="${g.createLink(controller: 'reportes2', action: 'reporteDesgloseEquipos', id: "${obra}")}"
        class="btn btn-ajax btn-new" id="desglose" title="Desglose Equipos">
         <i class="icon-print"></i>
@@ -190,8 +192,52 @@
     </div>
 </div>
 
+<div class="modal hide fade mediumModal" id="modal-imprimir" style=";overflow: hidden;">
+    <div class="modal-header btn-primary">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+
+        <h3 id="modal_title_impresion">
+        </h3>
+    </div>
+
+    <div class="modal-body" id="modal_body_impresion">
+        <div id="msg_impr">
+
+            <span style="margin-left: 0px;">Seleccione el rango de la impresión: </span>
+            <g:select name="seccion_matriz" from="${listaImpresion}" optionKey="key" optionValue="value"
+                      style="margin-right: 20px; width: 400px" id="seleccionadoImpresion"/>
+
+            <div style="float: right">
+                <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Generar Excel</a>
+                <a href="#" class="btn btn-primary" id="cancelarImpresion">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
+
+
+    $("#cancelarImpresion").click(function () {
+        $("#modal-imprimir").modal("hide")
+    });
+
+    $("#imprimirSeleccionado").click(function () {
+        var seleccionado = $("#seleccionadoImpresion").val()
+        location.href = "${g.createLink(controller: 'reportes5',action: 'nuevoReporteMatriz',id: obra)}?sel=" + seleccionado;
+    });
+
+    $("#imprimir_matriz").click(function () {
+        if(${existeRubros.toInteger() != 0}){
+            $("#modal_title_impresion").html("Imprimir matriz");
+            $("#msg_impr").show();
+            $("#modal-imprimir").modal("show")
+        }else{
+            alert("No existen datos para imprimir!")
+        }
+    });
+
 
     %{--$("#siguiente").click(function () {--}%
         %{--$.ajax({--}%
