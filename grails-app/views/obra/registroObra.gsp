@@ -1838,8 +1838,8 @@
 
             $.ajax({
                 type: "POST",
-                url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
-                %{--url: "${createLink(action: 'validaciones', controller: 'obraMF')}",--}%
+                %{--url: "${createLink(action: 'validaciones', controller: 'obraFP')}",--}%
+                url: "${createLink(action: 'validaciones', controller: 'obraMF')}",  /***** nuevo *****/
                 data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
                 success: function (msg) {
 //                    $("#modal-matriz").modal("hide")
