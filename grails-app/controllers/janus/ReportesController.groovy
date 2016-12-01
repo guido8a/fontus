@@ -4337,6 +4337,7 @@ class ReportesController {
     }
 
     def reporteExcelVolObra() {
+        println("params " + params)
         def obra = Obra.get(params.id)
         def detalle
         detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
@@ -4440,8 +4441,11 @@ class ReportesController {
         label = new Label(3, 15, "RUBRO", times16format); sheet.addCell(label);
         label = new Label(4, 15, "UNIDAD", times16format); sheet.addCell(label);
         label = new Label(5, 15, "CANTIDAD", times16format); sheet.addCell(label);
-        label = new Label(6, 15, "UNITARIO", times16format); sheet.addCell(label);
-        label = new Label(7, 15, "C.TOTAL", times16format); sheet.addCell(label);
+        if(params.perf.toInteger() == 1){
+            label = new Label(6, 15, "UNITARIO", times16format); sheet.addCell(label);
+            label = new Label(7, 15, "C.TOTAL", times16format); sheet.addCell(label);
+        }
+
 
         valores.each {
             number = new Number(0, fila, numero++); sheet.addCell(number);
@@ -4450,16 +4454,21 @@ class ReportesController {
             label = new Label(3, fila, it.rbronmbr.toString()); sheet.addCell(label);
             label = new Label(4, fila, it.unddcdgo.toString()); sheet.addCell(label);
             number = new Number(5, fila, it.vlobcntd); sheet.addCell(number);
-            number = new Number(6, fila, it.pcun); sheet.addCell(number);
-            number = new Number(7, fila, it.totl); sheet.addCell(number);
+            if(params.perf.toInteger() == 1){
+                number = new Number(6, fila, it.pcun); sheet.addCell(number);
+                number = new Number(7, fila, it.totl); sheet.addCell(number);
+            }
             fila++
             totales = it.totl
             totalPresupuesto = (total1 += totales);
             ultimaFila = fila
         }
 
-        label = new Label(6, ultimaFila, "TOTAL ", times16format); sheet.addCell(label);
-        number = new Number(7, ultimaFila, totalPresupuesto); sheet.addCell(number);
+        if(params.perf.toInteger() == 1){
+            label = new Label(6, ultimaFila, "TOTAL ", times16format); sheet.addCell(label);
+            number = new Number(7, ultimaFila, totalPresupuesto); sheet.addCell(number);
+
+        }
 
 
 

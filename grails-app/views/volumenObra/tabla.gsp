@@ -212,7 +212,7 @@
                     ${obra.distanciaVolumen}
                     var datos = "?obra=${obra.id}Wsub=" + sub
                     var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos
-                    console.log(url)
+//                    console.log(url)
                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                 }
                 $("#imprimirSubpresupuesto").dialog("close");
@@ -225,8 +225,14 @@
                     subExcel = $("#subPres_desc").val()
                 }
 
+                var perf = 0
+
+                if(${session.perfil.codigo == 'CSTO'}){
+                    perf = 1
+                }
+
                 if (vaeCheck != true){
-                    location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',id: obra?.id)}?sub=" + subExcel + "Wperf=" + perf;
+                    location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',id: obra?.id)}?sub=" + subExcel + "&perf=" + perf;
                 }else{
                     location.href = "${g.createLink(controller: 'reportes5',action: 'reporteVaeExcel',id: obra?.id)}?sub=" + subExcel;
                 }
