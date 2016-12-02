@@ -9,6 +9,7 @@ div.jGrowl div.success {
 }
 
 div.jGrowl div.error {
-    background-color : #97464b;
-    color            : #2e0909;
+    /*background-color : #97464b;*/
+    background-color : #eb2321;
+    color            : #fafff3;
 }

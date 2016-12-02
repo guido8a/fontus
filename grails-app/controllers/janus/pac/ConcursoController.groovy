@@ -4,6 +4,7 @@ import janus.Administracion
 import janus.Comunidad
 import janus.Contrato
 import janus.Obra
+import janus.ObraConcurso
 import janus.Parroquia
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -133,7 +134,7 @@ class ConcursoController extends janus.seguridad.Shield {
             }
 
         } else {
-           // println "entro reporte"
+            // println "entro reporte"
             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
             session.dominio = Concurso
             session.funciones = funciones
@@ -233,7 +234,7 @@ class ConcursoController extends janus.seguridad.Shield {
 
 //                redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Concurso", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "REPORTE PAC, anchos: anchos, extras: extras, landscape: true])
 
-                  redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Pac", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "REPORTE DE PAC", anchos: anchos, extras: extras, landscape: true])
+                redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Pac", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "REPORTE DE PAC", anchos: anchos, extras: extras, landscape: true])
 
             } else {
                 def lista2 = buscadorService.buscar(Pac, "Pac", "excluyente", params, true, extras)
@@ -247,7 +248,7 @@ class ConcursoController extends janus.seguridad.Shield {
                 }
                 render(view: '../tablaBuscadorColDer', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs])
             }
-          } else {
+        } else {
 //            println "entro reporte"
             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
             session.dominio = Pac
@@ -665,7 +666,60 @@ class ConcursoController extends janus.seguridad.Shield {
             render "error"
         else
             render "ok"
+    }
 
+    def tabla_obras_ajax() {
+        def concursoObra = janus.pac.Concurso.get(params.concurso)
+        def obrasConcurso = ObraConcurso.findAllByConcurso(concursoObra)
+        return [obras: obrasConcurso, concurso: concursoObra]
+    }
+
+
+
+    def agregarObra_ajax (){
+        println("params agregar obra " + params)
+        def concurso = janus.pac.Concurso.get(params.concurso)
+        def obra
+
+        if(!params.obra || params.obra == '' || !params.valor){
+            render "no_Seleccione una obra!"
+        }else{
+            obra = Obra.get(params.obra)
+
+            def existentes = ObraConcurso.findAllByConcursoAndObra(concurso, obra)
+
+            if(existentes){
+                render "no_Esta obra ya se encuentra agregada al concurso!"
+            }else{
+                def obraConcurso = new ObraConcurso()
+                obraConcurso.concurso = concurso
+                obraConcurso.obra = obra
+                obraConcurso.valor = params.valor.toDouble()
+
+                if(obraConcurso.save(flus: true)){
+                    render "ok_Obra agregada correctamente al concurso!"
+                }else{
+                    render "no_Error al agregar la obra al concurso!"
+                }
+            }
+        }
+
+
+    }
+
+    def eliminarObra_ajax () {
+        def concurso = janus.pac.Concurso.get(params.concurso)
+
+        if(concurso.estado == 'R'){
+            render "no_Este concurso ya se encuentra registrado, no se puede remover las obras!"
+        }else{
+            def obraConcurso = ObraConcurso.get(params.obra)
+            if(!obraConcurso.delete(flush: true)){
+                render "ok_Obra removida correctamente del concurso"
+            }else{
+                render "no_Error al borrar la obra del concurso"
+            }
+        }
     }
 
 

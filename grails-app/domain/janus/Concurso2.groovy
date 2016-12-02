@@ -1,5 +1,5 @@
 package janus
-class Concurso2 implements Serializable {
+class Concurso implements Serializable {
 
     Obra obra
     TipoCuenta tipoCuenta
