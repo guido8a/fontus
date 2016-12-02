@@ -217,7 +217,7 @@ class ObraMFController {
             transporte += equipos
         else
             transporte = equipos
-        def hayEquipos = (transporte > 0)
+        def hayEquipos = (transporte > 0.000001)
 
         /*---- Fin de la consideración del DESGLOSE de transporte --------- */
 
@@ -279,20 +279,24 @@ class ObraMFController {
         fin = new Date()
         println "...9. completa rubros --> ${TimeCategory.minus(fin, inicio)}"
 
-        descomposicion(obra__id, sbpr)
+//        descomposicion(obra__id, sbpr)
+        mf_descomposicion(obra__id, sbpr) //nuevo
         fin = new Date()
         println "...10. completa descomposicion --> ${TimeCategory.minus(fin, inicio)}"
 
-        des_Materiales(obra__id, sbpr, conTransporte)
+//        des_Materiales(obra__id, sbpr, conTransporte)
+        mf_materiales(obra__id, sbpr, conTransporte)
         fin = new Date()
         println "...11. completa des_Materiales --> ${TimeCategory.minus(fin, inicio)}"
 //        println "11. completa des_Materiales, conTranp: $conTransporte ... Hay equipos: $hayEquipos"
         if (hayEquipos) {
             println "ejecuta hayEquipos"
             if (conTransporte) acTransporte(obra__id, sbpr)
-            acEquipos(obra__id, sbpr)
+//            acEquipos(obra__id, sbpr)
+            mf_equipos(obra__id, sbpr)
         }
-        println "11. completa hayEquipos"
+        fin = new Date()
+        println "...11+. completa hayEquipos --> ${TimeCategory.minus(fin, inicio)}"
 
         acManoDeObra(obra__id, sbpr)                      /* cambio obra__id */
         println "12. completa acManoDeObra"
@@ -696,23 +700,16 @@ class ObraMFController {
             tx_sql += "where item.item__id = vlob.item__id and obra__id = ${id} and "
             tx_sql += "vlobcntd > 0 and undd.undd__id = item.undd__id and sbpr__id = ${sbpr} "
         }
-//        println "descomposicion: " + tx_sql
-        def contador = 1
+        println "descomposicion: " + tx_sql
+
         cn.eachRow(tx_sql.toString()) { row ->
             if (obra.estado != 'R') {
-/*
-                tx_cr = "select itemcdgo, parcial pcun, cmpo from rb_precios (${rodes_Materialesw.item__id}, "
-                tx_cr += "${obra.lugarId},'${obra.fechaPreciosRubros}',null, null, null, null) where grpocdgo = 2"
-*/
-                //tx_cr = "select itemcdgo, parcial pcun, cmpo from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 2"  //v2
                 tx_cr = "select item__id, itemcdgo, parcial pcun from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 2"  //v2
             } else {
-                //tx_cr = "select itemcdgo, parcial pcun, cmpo from rb_precios_r(${id}, ${row.item__id}) where grpocdgo = 2"
                 tx_cr = "select item__id, itemcdgo, parcial pcun from rb_precios_r(${id}, ${row.item__id}) where grpocdgo = 2"
             }
             //println "descomposicion: tx_cr: " + tx_cr
             cn1.eachRow(tx_cr.toString()) { cr ->
-                //poneValores(id, cr.cmpo, cr.pcun, cr.pcun * row.vlobcntd, row.vlobcntd, row.itemcdgo)
                 poneValores(id, cr.item__id, cr.pcun, cr.pcun * row.vlobcntd, row.vlobcntd, row.itemcdgo, sbpr)
             }
         }
@@ -751,7 +748,8 @@ class ObraMFController {
         ejecutaSQL("update mfvl set valor = ${pcun} where obra__id = ${id} and clmncdgo = ${clmn} and codigo = '${rbro}' " +
                 "and sbpr__id = ${sbpr}")
         clmn = columnaCdgo(id, cmpo + "_T", sbpr)
-        ejecutaSQL("update mfvl set valor = ${incr} where obra__id = ${id} and clmncdgo = ${clmn} and codigo = '${rbro}' " +
+//        ejecutaSQL("update mfvl set valor = ${incr} where obra__id = ${id} and clmncdgo = ${clmn} and codigo = '${rbro}' " +
+        ejecutaSQL("update mfvl set valor = ${pcun * cntd} where obra__id = ${id} and clmncdgo = ${clmn} and codigo = '${rbro}' " +
                 "and sbpr__id = ${sbpr}")
         ejecutaSQL("update mfvl set valor = valor + ${pcun * cntd} where obra__id = ${id} and clmncdgo = ${clmn} and " +
                 "codigo = 'sS1'  and sbpr__id = ${sbpr}")
@@ -770,19 +768,6 @@ class ObraMFController {
         def cn1 = dbConnectionService.getConnection()
         def tx_cr = ""
         def tx_sql = ""
-/*
-        def tx_sql = "select rdvl, rdps, dsps, dsvl from transporte(${id})"
-        def rdvl = 0.0
-        def rdps = 0.0
-        def dsvl = 0.0
-        def dsps = 0.0
-        cn.eachRow(tx_sql.toString()) {row ->
-            rdvl = row.rdvl
-            rdps = row.rdps
-            dsvl = row.dsvl
-            dsps = row.dsps
-        }
-*/
         if (sbpr == 0) {
             tx_sql = "select item.item__id, itemcdgo, sum(vlobcntd) vlobcntd, itemnmbr, unddcdgo "
             tx_sql += "from vlob, item, undd "
@@ -800,36 +785,20 @@ class ObraMFController {
         cn.eachRow(tx_sql.toString()) { row ->
             if (conTrnp) {
                 if (obra.estado != 'R') {
-/*
-                    tx_cr = "select itemcdgo, parcial pcun, cmpo from rb_precios (${row.item__id}, "
-                    tx_cr += "${obra.lugarId},'${obra.fechaPreciosRubros}',null, null, null, null) where grpocdgo = 1"
-*/
-                    //tx_cr = "select itemcdgo, parcial pcun, cmpo from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 1"  //v2
                     tx_cr = "select item__id, itemcdgo, parcial pcun from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 1"  //v2
                 } else {
-                    //tx_cr = "select itemcdgo, parcial pcun, cmpo from rb_precios_r(${id}, ${row.item__id}) where grpocdgo = 1"
                     tx_cr = "select item__id, itemcdgo, parcial pcun from rb_precios_r(${id}, ${row.item__id}) where grpocdgo = 1"
                 }
             } else {
                 if (obra.estado != 'R') {
-/*
-                    tx_cr = "select itemcdgo, parcial + parcial_t pcun, cmpo from rb_precios (${row.item__id}, "
-                    tx_cr += "${obra.lugarId},'${obra.fechaPreciosRubros}',${dsps}, ${dsvl}, ${rdps}, ${rdvl}) where grpocdgo = 1"
-*/
-
-                    //tx_cr = "select itemcdgo, parcial + parcial_t pcun, cmpo from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 1"
                     tx_cr = "select item__id, itemcdgo, parcial + parcial_t pcun from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 1"
-
                 } else {
-                    //tx_cr = "select itemcdgo, parcial + parcial_t pcun, cmpo from rb_precios_r(${id}, ${row.item__id}) where grpocdgo = 1"
                     tx_cr = "select item__id, itemcdgo, parcial + parcial_t pcun from rb_precios_r(${id}, ${row.item__id}) where grpocdgo = 1"
                 }
             }
 //            println "des_Materiales: " + tx_cr
             cn1.eachRow(tx_cr.toString()) { cr ->
-                //poneValores(id, cr.cmpo, cr.pcun, cr.pcun * row.vlobcntd, row.vlobcntd, row.itemcdgo)
                 poneValores(id, cr.item__id, cr.pcun, cr.pcun * row.vlobcntd, row.vlobcntd, row.itemcdgo, sbpr)
-                //if (row.itemcdgo == "C-0020") println "${cr.pcun}  +  ${cr.pcun * row.vlobcntd}"
             }
         }
         cn.close()
@@ -918,10 +887,6 @@ class ObraMFController {
         println "acEquipos: " + tx_sql
         cn.eachRow(tx_sql.toString()) { row ->
             if (obra.estado != 'R') {
-/*
-                tx_cr = "select sum(parcial) pcun from rb_precios (${row.item__id}, ${obra.lugarId},"
-                tx_cr += "'${obra.fechaPreciosRubros}',null, null, null, null) where grpocdgo = 3 and cmbs = 'S'"
-*/
                 tx_cr = "select sum(parcial) pcun from vlob_pcun_v2 (${id},${row.item__id}) where grpocdgo = 3 and cmbs = 'S'"  //v2
             } else {
                 tx_cr = "select sum(parcial) pcun from rb_precios_r (${id}, ${row.item__id}) where grpocdgo = 3 and cmbs = 'S'"
@@ -931,17 +896,13 @@ class ObraMFController {
                     clmn = columnaCdgo(id, "${id_equipo}_T", sbpr)
                     cntd = rubroCantidad(id, row.itemcdgo, sbpr)
                     ejecutaSQL("update mfvl set valor = ${d.pcun * cntd} where obra__id = ${id} and codigo = '${row.itemcdgo}' " +
-                            " and clmncdgo = ${clmn}")
+                            " and clmncdgo = ${clmn} and sbpr__id = ${sbpr}")
                     clmn = columnaCdgo(id, "${id_equipo}_U", sbpr)
                     ejecutaSQL("update mfvl set valor = ${d.pcun} where obra__id = ${id} and codigo = '${row.itemcdgo}' " +
-                            " and clmncdgo = ${clmn}")
+                            " and clmncdgo = ${clmn} and sbpr__id = ${sbpr}")
                 }
             }
             if (obra.estado != 'R') {
-/*
-                tx_cr = "select sum(parcial) pcun from rb_precios (${row.item__id}, ${obra.lugarId},"
-                tx_cr += "'${obra.fechaPreciosRubros}',null, null, null, null) where grpocdgo = 3 and cmbs = 'N'"
-*/
                 tx_cr = "select sum(parcial) pcun from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 3 and cmbs = 'N'"   //v2
             } else {
                 tx_cr = "select sum(parcial) pcun from rb_precios_r (${id}, ${row.item__id}) where grpocdgo = 3 and cmbs = 'N'"
@@ -949,24 +910,18 @@ class ObraMFController {
             //println "calculo de herramientas: " + tx_cr
             cn1.eachRow(tx_cr.toString()) { d ->
                 if (d.pcun > 0) {
-//                    clmn = columnaCdgo(id, id_saldo + "_T")
                     clmn = columnaCdgo(id, id_herramientas + "_T", sbpr)
                     cntd = rubroCantidad(id, row.itemcdgo, sbpr)
                     ejecutaSQL("update mfvl set valor = ${d.pcun * cntd} where obra__id = ${id} and codigo = '${row.itemcdgo}' " +
-                            " and clmncdgo = ${clmn}")
+                            " and clmncdgo = ${clmn} and sbpr__id = ${sbpr}")
 
-                    //clmn = columnaCdgo(id, id_saldo + "_U")
                     clmn = columnaCdgo(id, id_herramientas + "_U", sbpr)
                     ejecutaSQL("update mfvl set valor = ${d.pcun} where obra__id = ${id} and codigo = '${row.itemcdgo}' " +
-                            " and clmncdgo = ${clmn}")
+                            " and clmncdgo = ${clmn} and sbpr__id = ${sbpr}")
                 }
             }
 
             if (obra.estado != 'R') {
-/*
-                tx_cr = "select sum(parcial) pcun from rb_precios (${row.item__id}, ${obra.lugarId},"
-                tx_cr += "'${obra.fechaPreciosRubros}',null, null, null, null) where grpocdgo = 3"
-*/
                 tx_cr = "select sum(parcial) pcun from vlob_pcun_v2 (${id}, ${row.item__id}) where grpocdgo = 3"   //v2
             } else {
                 tx_cr = "select sum(parcial) pcun from rb_precios_r (${id}, ${row.item__id}) where grpocdgo = 3"
@@ -976,8 +931,7 @@ class ObraMFController {
                     clmn = columnaCdgo(id, "TOTAL_T", sbpr)
                     cntd = rubroCantidad(id, row.itemcdgo, sbpr)
                     ejecutaSQL("update mfvl set valor = valor + ${d.pcun * cntd} where obra__id = ${id} and codigo = '${row.itemcdgo}' " +
-                            " and clmncdgo = ${clmn}")
-                    //if (row.itemcdgo == "C-0020") println "aumenta a eqTOTAL_T:  incr:" +  d.pcun * cntd
+                            " and clmncdgo = ${clmn} and sbpr__id = ${sbpr}")
                 }
             }
         }
@@ -986,7 +940,6 @@ class ObraMFController {
         actualizaS1(id, "${id_equipo}_T", sbpr)
         actualizaS1(id, "${id_saldo}_T", sbpr)
 
-        actualizaS1(id, "${id_herramientas}_T", sbpr)
         actualizaS1(id, "${id_herramientas}_T", sbpr)
     }
 
@@ -1162,7 +1115,7 @@ class ObraMFController {
                 "clmndscr like '%_T' and v.clmncdgo = c1.clmncdgo and c.sbpr__id = v.sbpr__id and c.sbpr__id = ${sbpr}) " +
                 "where obra__id = ${id} and valor = 0 and " +
                 "codigo = 'sS2' and clmncdgo in (select clmncdgo from mfcl where clmndscr like '%_T' and sbpr__id = ${sbpr})"
-        println "completaTotalS2 tx: $tx"
+//        println "completaTotalS2 tx: $tx"
         ejecutaSQL(tx)
 
         if (hayEqpo) {
@@ -1341,7 +1294,7 @@ class ObraMFController {
         def suma = 0.0
 
         granTotal = totalSx(id, 'TOTAL_T', 'sS2', sbpr)
-        println ".....1 el gran total es: $granTotal"
+//        println ".....1 el gran total es: $granTotal"
         tx_sql = "select clmncdgo, clmndscr from mfcl where obra__id = ${id} and clmntipo in ('M', 'D') and sbpr__id = ${sbpr}"
         suma = 0
         cn.eachRow(tx_sql.toString()) { row ->
@@ -1387,6 +1340,27 @@ class ObraMFController {
         def cn = dbConnectionService.getConnection()
         def cont = 0
         cn.execute("select * from mf_rubros($obra__id, $sbpr)".toString())
+        cn.close()
+    }
+
+    def mf_descomposicion(obra__id, sbpr) {
+        def cn = dbConnectionService.getConnection()
+        def cont = 0
+        cn.execute("select * from mf_descomposicion($obra__id, $sbpr)".toString())
+        cn.close()
+    }
+
+    def mf_materiales(obra__id, sbpr, conTransporte) {
+        def cn = dbConnectionService.getConnection()
+        def cont = 0
+        cn.execute("select * from mf_desMateriales($obra__id, $sbpr, $conTransporte)".toString())
+        cn.close()
+    }
+
+    def mf_equipos(obra__id, sbpr) {
+        def cn = dbConnectionService.getConnection()
+        def cont = 0
+        cn.execute("select * from mf_equipos($obra__id, $sbpr)".toString())
         cn.close()
     }
 
