@@ -1460,16 +1460,19 @@ class ObraController extends janus.seguridad.Shield {
     def calculaValor() {
         def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.obra)
+        def valor = 0.0
         if(obra.estado != 'R') {
-//                println "obra: ${obra.id}"
-            def valor = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
+            valor = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
+            println "obra: ${obra.id}, valor: $valor"
             if(obra.valor != valor) {
                 obra.valor = valor
                 obra.save(flush: true)
             }
+        } else {
+            valor = obra.valor
         }
         cn.close()
-        render g.formatNumber(number: obra.valor, format:"##,##0", maxFractionDigits: 2, minFractionDigits: 2)
+        render g.formatNumber(number: valor, format:"##,##0", maxFractionDigits: 2, minFractionDigits: 2)
     }
 
     def ordenaVlob () {

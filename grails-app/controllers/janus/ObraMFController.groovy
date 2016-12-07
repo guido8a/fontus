@@ -299,25 +299,34 @@ class ObraMFController {
         println "...11+. completa hayEquipos --> ${TimeCategory.minus(fin, inicio)}"
 
         acManoDeObra(obra__id, sbpr)                      /* cambio obra__id */
-        println "12. completa acManoDeObra"
+        fin = new Date()
+        println "12. completa acManoDeObra --> ${TimeCategory.minus(fin, inicio)}"
+
         acTotal(obra__id, sbpr)                           /* cambio obra__id */
-        println "13. completa acTotal"
+        fin = new Date()
+        println "13. completa acTotal --> ${TimeCategory.minus(fin, inicio)}"
 
         if (hayEquipos) desgloseTrnp(obra__id, conTransporte, sbpr)      /* cambio obra__id */
-        println "14. completa desgloseTrnp ---- hayEquipos: $hayEquipos"
+        fin = new Date()
+        println "14. completa desgloseTrnp --> ${TimeCategory.minus(fin, inicio)}"
 
         completaTotalS2(obra__id, hayEquipos, sbpr)
-        println "15. completa completaTotalS2"
+        fin = new Date()
+        println "15. completa completaTotalS2 --> ${TimeCategory.minus(fin, inicio)}"
         acTotalS2(obra__id, sbpr)                         /* cambio obra__id */
-        println "16. completa acTotalS2"
+        fin = new Date()
+        println "16. completa acTotalS2 --> ${TimeCategory.minus(fin, inicio)}"
 
         tarifaHoraria(obra__id, sbpr)
-        println "17. completa tarifaHoraria"
+        fin = new Date()
+        println "17. completa tarifaHoraria --> ${TimeCategory.minus(fin, inicio)}"
 
         cuadrillaTipo(obra__id, sbpr)            /* cambio obra__id */
-        println "pasa fcuadrillaTipo"
+        fin = new Date()
+        println "pasa fcuadrillaTipo --> ${TimeCategory.minus(fin, inicio)}"
         formulaPolinomica(obra__id, sbpr)                 /* cambio obra__id */
-        println "completa formulaPolinomica"
+        fin = new Date()
+        println "completa formulaPolinomica --> ${TimeCategory.minus(fin, inicio)}"
 
         acColumnasMo(obra__id, sbpr)
         //guarda subpresupuestos

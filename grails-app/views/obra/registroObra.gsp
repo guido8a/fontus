@@ -122,7 +122,7 @@
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
                 <g:if test="${obra?.fechaInicio == null}">
-                    <button class="btn" id="cambiarEstado"><i class="icon-retweet"></i> Cambiar de Estado</button>
+                    <button class="btn" id="cambiarEstado"><i class="icon-retweet"></i> Registrar Obra</button>
                 </g:if>
             </g:if>
 
@@ -193,7 +193,7 @@
                 </g:if>
                 <g:if test="${obra?.estado == 'S'}">
                     <g:if test="${obra?.fechaInicio == null}">
-                        <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i> Cambiar de Estado</button>
+                        <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i>  Registrar Obra</button>
                     </g:if>
                 </g:if>
             </g:if>
@@ -1079,10 +1079,11 @@
                 %{--</g:each>--}%
 
                 <p style="margin-top: 20px">Desea volver a generar la matriz?, o generar una nueva matriz?</p>
-                <a href="#" class="btn btn-info" id="no">NO <i class="icon-arrow-right"></i> Ver la Matriz existente</a>
-                <a href="#" class="btn btn-danger" id="si">SI <i class="icon-arrow-right"></i> Generar Matriz</a>
-                <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Copiar a Excel</a>
-                %{--<a href="${g.createLink(controller: 'reportes5', action: 'reporteMatriz', id: "${obra?.id}")}" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Imprimir Matriz</a>--}%
+                %{--<a href="#" class="btn btn-info" id="no">NO <i class="icon-arrow-right"></i> Ver la Matriz existente</a>--}%
+                <a href="#" class="btn btn-info" id="no">Ver la Matriz existente</a>
+                %{--<a href="#" class="btn btn-danger" id="si">SI <i class="icon-arrow-right"></i> Generar Matriz</a>--}%
+                <a href="#" class="btn btn-danger" id="si">Generar Matriz</a>
+                <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Exportar Matriz a Excel</a>
                 <a href="#" class="btn btn-primary" id="cancela" style="margin-left: 50px;">Cancelar</a>
 
             </div>
@@ -1137,7 +1138,7 @@
 
 
 
-    <div class="modal hide fade mediumModal" id="modal-imprimir" style=";overflow: hidden;">
+    <div class="modal hide fade" id="modal-imprimir" style=";overflow: hidden;">
         <div class="modal-header btn-primary">
             <button type="button" class="close" data-dismiss="modal">×</button>
 
@@ -1148,11 +1149,11 @@
         <div class="modal-body" id="modal_body_impresion">
             <div id="msg_impr">
 
-                <span style="margin-left: 0px;">Seleccione el rango de la impresión: </span>
+                <span>Rango de columnas de la matriz a exportar: </span>
                 <g:select name="seccion_matriz" from="${listaImpresion}" optionKey="key" optionValue="value"
-                          style="margin-right: 20px; width: 400px" id="seleccionadoImpresion"></g:select>
+                          style="margin-right: 20px; width: 280px" id="seleccionadoImpresion"></g:select>
 
-                <div style="float: right">
+                <div style="float: right; margin-top: 20px;">
                     <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Generar Excel</a>
                     <a href="#" class="btn btn-primary" id="cancelarImpresion">Cancelar</a>
                 </div>
@@ -1750,8 +1751,9 @@
 
 
         $("#imprimir_matriz").click(function () {
+            $("#modal-matriz").modal("hide")
             if(${existeRubros.toInteger() != 0}){
-                $("#modal_title_impresion").html("Imprimir matriz");
+                $("#modal_title_impresion").html("Exportar Matriz a Excel");
                 $("#msg_impr").show();
                 $("#modal-imprimir").modal("show")
             }else{
@@ -2801,19 +2803,23 @@
 
 
         $("#valorObra").click(function () {
-            var btn = $(this);
-            btn.replaceWith(spinner)
+            var vl = $("#estadoNom").val();
+            if(vl != "R") {
+                var btn = $(this);
+                btn.replaceWith(spinner)
 
-            $.ajax({
-                type: "POST",
-                url: "${createLink(action:'calculaValor')}",
-                data: "obra=${obra?.id}",
-                success: function (msg) {
-                    $("#valorObra").html(msg);
-                    spinner.replaceWith(btn);
-                }
-            });
-            return false;
+                $.ajax({
+                    type: "POST",
+                    url: "${createLink(action:'calculaValor')}",
+                    data: "obra=${obra?.id}",
+                    success: function (msg) {
+                        console.log("retorna:", msg);
+                        spinner.replaceWith(btn);
+                        $("#valorObra").html(msg);
+                    }
+                });
+                return false;
+            }
         });
 
 
