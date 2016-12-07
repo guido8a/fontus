@@ -1149,9 +1149,9 @@
         <div class="modal-body" id="modal_body_impresion">
             <div id="msg_impr">
 
-                <span>Rango de columnas de la matriz a exportar: </span>
+                <span>Rango de columnas de la Matriz a exportar:  </span>
                 <g:select name="seccion_matriz" from="${listaImpresion}" optionKey="key" optionValue="value"
-                          style="margin-right: 20px; width: 280px" id="seleccionadoImpresion"></g:select>
+                          style="margin-left: 10px; width: 240px" id="seleccionadoImpresion"></g:select>
 
                 <div style="float: right; margin-top: 20px;">
                     <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Generar Excel</a>
