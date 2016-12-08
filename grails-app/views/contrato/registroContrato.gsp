@@ -125,7 +125,7 @@
 
     %{--<g:hiddenField name="oferta" class="oferta" value="${contrato?.oferta?.id}"/>--}%
 
-        <g:if test="${contrato?.codigo != null}">
+        %{--<g:if test="${contrato?.codigo != null}">--}%
 
         %{--<div class="span12">--}%
 
@@ -137,41 +137,41 @@
 
         %{--</div>--}%
 
-            <div class="span12" style="margin-top: 5px">
+            %{--<div class="span12" style="margin-top: 5px">--}%
 
-                <div class="span1 formato">Parroquia</div>
-                <div class="span4"><g:textField name="parroquia" class="parroquia" value="${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}" disabled="true"/></div>
+                %{--<div class="span1 formato">Parroquia</div>--}%
+                %{--<div class="span4"><g:textField name="parroquia" class="parroquia" value="${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}" disabled="true"/></div>--}%
 
-                <div class="span1 formato">Cantón</div>
+                %{--<div class="span1 formato">Cantón</div>--}%
 
-                <div class="span2"><g:textField name="canton" class="canton" value="${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}" disabled="true"/></div>
+                %{--<div class="span2"><g:textField name="canton" class="canton" value="${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}" disabled="true"/></div>--}%
 
-            </div>
+            %{--</div>--}%
 
-            <div class="span12" style="margin-top: 5px">
+            %{--<div class="span12" style="margin-top: 5px">--}%
 
-                <div class="span1 formato">Clase Obra</div>
+                %{--<div class="span1 formato">Clase Obra</div>--}%
 
-                <div class="span3"><g:textField name="claseObra" class="claseObra" value="${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}" disabled="true"/></div>
+                %{--<div class="span3"><g:textField name="claseObra" class="claseObra" value="${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}" disabled="true"/></div>--}%
 
-            </div>
+            %{--</div>--}%
 
-            <div class="span12" style="margin-top: 5px">
+            %{--<div class="span12" style="margin-top: 5px">--}%
 
-                <div class="span1 formato">Contratista</div>
+                %{--<div class="span1 formato">Contratista</div>--}%
 
-                <div class="span4"><g:textField name="contratista" class="contratista" value="${contrato?.oferta?.proveedor?.nombre}" disabled="true"  style="width: 320px"/></div>
+                %{--<div class="span4"><g:textField name="contratista" class="contratista" value="${contrato?.oferta?.proveedor?.nombre}" disabled="true"  style="width: 320px"/></div>--}%
 
-                <div class="span4 formato">Fecha presentación de la Oferta</div>
+                %{--<div class="span4 formato">Fecha presentación de la Oferta</div>--}%
 
-                <div class="span1"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"
-                                                disabled="true" style="width: 100px; margin-left: -180px"/></div>
+                %{--<div class="span1"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"--}%
+                                                %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
 
-            </div>
+            %{--</div>--}%
 
-        </g:if>
+        %{--</g:if>--}%
 
-        <g:else>
+        %{--<g:else>--}%
 
         %{--<div class="span12" style="margin-top: 5px" align="center">--}%
 
@@ -199,7 +199,9 @@
                     %{--noSelection="['-1': 'Seleccione...']" id="ofertas" optionValue="descripcion" optionKey="id" optionClass="${{ it.monto + "_" + it.plazo }}"/>--}%
 
                     <elm:select name="oferta.id" id="ofertas" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}" optionKey="id"
-                                optionValue="descripcion" noSelection="['-1': 'Seleccione']" class="required"  optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre}}"/>
+                                optionValue="descripcion" noSelection="['-1': 'Seleccione']"
+                                class="required"
+                                optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre}}" value="${contrato?.oferta?.id}"/>
 
                 </div>
 
@@ -244,15 +246,26 @@
                 <div class="span1 formato">Contratista</div>
 
                 <div class="span3">
-                    <g:textField name="contratista" class="contratista" id="contratista" disabled="true"/>
+                    <g:textField name="contratista" class="contratista" id="contratista" disabled="true" value="${contrato?.oferta?.proveedor}" />
                 </div>
             </div>
 
-            <div class="span5" style="margin-top: 20px" align="center">
-                <div class="span5" id="filaFecha">
 
-                </div>
-            </div>
+          <g:if test="${contrato}">
+              <div class="span5" style="margin-top: 20px" align="center">
+                  <div class="span3 formato" style="margin-left: -15px">Fecha presentación de la Oferta</div>
+
+                  <div class="span2"><g:textField name="fechaPresentacion" class="fechaPresentacion" id="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy')}"
+                                                  disabled="true" style="width: 100px; margin-left: -180px"/></div>
+              </div>
+          </g:if>
+          <g:else>
+              <div class="span5" style="margin-top: 20px" align="center">
+                  <div class="span5" id="filaFecha">
+
+                  </div>
+              </div>
+          </g:else>
 
 
 
@@ -288,7 +301,7 @@
 
                       </div>
 
-        </g:else>
+        %{--</g:else>--}%
 
     </fieldset>
 
@@ -623,6 +636,25 @@
 </div>
 
 <script type="text/javascript">
+
+    if('${contrato}'){
+        cargarTablaObras()
+    }
+
+
+    function cargarTablaObras () {
+
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'contrato', action: 'tablaObras_ajax')}",
+            data:{
+                oferta: '${contrato?.oferta?.id}'
+            },
+            success: function (msg){
+                $("#obras_oferta").html(msg)
+            }
+        });
+    }
 
     function updateAnticipo() {
         var porcentaje = $("#porcentajeAnticipo").val();

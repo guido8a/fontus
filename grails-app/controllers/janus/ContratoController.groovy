@@ -395,7 +395,7 @@ class ContratoController extends janus.seguridad.Shield {
         def formulaPolinomicaReajusteInstance = new FormulaPolinomicaReajuste()
 
         render(view: '../formulaPolinomicaReajuste/_form', model: [formulaPolinomicaReajusteInstance: formulaPolinomicaReajusteInstance,
-            cntr: params.cntr])
+                                                                   cntr: params.cntr])
     }
 
     def grabaFprj() {
@@ -406,11 +406,11 @@ class ContratoController extends janus.seguridad.Shield {
         println "nueva: cntr: ${fprj.contrato} tp: ${fprj.tipoFormulaPolinomica.codigo} " +
                 "dscr: ${fprj.descripcion}"
 
-            if(!fprj.save(flush: true)){
-                println "error al crear la FP del contrato, errores: " + fprj.errors
-            } else {
-                println "+++si guarda fprj, $fprj"
-            }
+        if(!fprj.save(flush: true)){
+            println "error al crear la FP del contrato, errores: " + fprj.errors
+        } else {
+            println "+++si guarda fprj, $fprj"
+        }
 
         def fp = FormulaPolinomicaContractual.findAllByContratoAndReajuste(fprj.contrato, fprjDsde)
         fp.each {
@@ -437,7 +437,7 @@ class ContratoController extends janus.seguridad.Shield {
         if(params.id) {
             fpReajuste = FormulaPolinomicaReajuste.get(params.id)
         } else
-          fpReajuste = FormulaPolinomicaReajuste.findByContrato(contrato)
+            fpReajuste = FormulaPolinomicaReajuste.findByContrato(contrato)
 
         if(fpReajuste == null){
             copiaFpDesdeObra(contrato, false)
@@ -996,6 +996,8 @@ class ContratoController extends janus.seguridad.Shield {
     def save() {
         def contratoInstance
         def oferta
+        def obrasConcurso
+        def obrasContrato
 
         println("-->> save" + params)
 
@@ -1035,7 +1037,10 @@ class ContratoController extends janus.seguridad.Shield {
             contratoInstance.properties = params
             contratoInstance.periodoInec = indice
 
-
+            obrasContrato = ObraContrato.findAllByContrato(contratoInstance)
+            obrasContrato.each {
+                it.delete(flush: true)
+            }
 
 
         }//es edit
@@ -1053,7 +1058,24 @@ class ContratoController extends janus.seguridad.Shield {
             contratoInstance = new Contrato(params)
             contratoInstance.periodoInec = indice
 
+
+
+
+
+
         } //es create
+
+
+
+        oferta = Oferta.get(params."oferta.id")
+        obrasConcurso = ObraConcurso.findAllByConcurso(oferta.concurso)
+
+
+
+
+
+
+
         if (!contratoInstance.save(flush: true)) {
 
             flash.clase = "alert-error"
@@ -1072,16 +1094,30 @@ class ContratoController extends janus.seguridad.Shield {
             flash.message = str
             redirect(action: 'registroContrato')
             return
+        }else{
+
+            obrasConcurso.each {
+                def obraC = new ObraContrato()
+                obraC.contrato = contratoInstance
+                obraC.obra = it.obra
+                obraC.valor = it.valor
+
+                obraC.save(flush: true)
+            }
+
+            if (params.id) {
+                flash.clase = "alert-success"
+                flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance.codigo
+            } else {
+                flash.clase = "alert-success"
+                flash.message = "Se ha creado correctamente Contrato " + contratoInstance.id
+            }
+            redirect(action: 'registroContrato', params: [contrato: contratoInstance.id])
+
+
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance.codigo
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Contrato " + contratoInstance.id
-        }
-        redirect(action: 'registroContrato', params: [contrato: contratoInstance.id])
+
     } //save
 
     def show_ajax() {
@@ -1150,7 +1186,7 @@ class ContratoController extends janus.seguridad.Shield {
 
 //        println "formulas: $formulas"
 
-         return [contrato: contrato, subpresupuesto: subPres, formulas: formulas, fpsp: fpsp]
+        return [contrato: contrato, subpresupuesto: subPres, formulas: formulas, fpsp: fpsp]
     }
 
     def saveAsignarFormula () {
