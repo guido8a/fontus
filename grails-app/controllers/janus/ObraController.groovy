@@ -215,6 +215,7 @@ class ObraController extends janus.seguridad.Shield {
 
 
     def regitrarObra() {
+        def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
         def obrafp = new ObraFPController()
 
@@ -276,6 +277,12 @@ class ObraController extends janus.seguridad.Shield {
             }
         }
 //        println "totp "+totalP
+        def valor = cn.rows("select sum(totl) suma from rbro_pcun_v2(${obra.id})".toString())[0].suma?:0
+        if(obra.valor != valor) {
+            obra.valor = valor
+            obra.save(flush: true)
+        }
+
         def valorMenorCuantia = TipoProcedimiento.findBySigla("MCD").techo
         def valorObra = obra.valor
         if (valorObra <= valorMenorCuantia) {
