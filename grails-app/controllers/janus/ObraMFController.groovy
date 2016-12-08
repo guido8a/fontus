@@ -334,6 +334,9 @@ class ObraMFController {
         fin = new Date()
         println "...fin de proceso --> ${TimeCategory.minus(fin, inicio)}"
 
+        flash.clase = "alert-success"
+        flash.message = "Se ha generado correctamente la Matriz de la fórmula polinómica"
+
         render "ok_${sbpr}"
     }
 

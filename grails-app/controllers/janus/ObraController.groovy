@@ -507,7 +507,11 @@ class ObraController extends janus.seguridad.Shield {
 
 
             def listaImp = [:]
-            def resultado = cn.rows("SELECT coalesce(count(*), 0) cnta from mfcl where obra__id = ${obra.id} order by 1".toString())[0].cnta
+            def resultado = 0
+
+            if(obra.id){
+                resultado = cn.rows("SELECT coalesce(count(*), 0) cnta from mfcl where obra__id = ${obra.id} order by 1".toString())[0].cnta
+            }
 
             def dividido = (resultado.toInteger() / 100)
             def f = Math.round(dividido)
@@ -539,8 +543,7 @@ class ObraController extends janus.seguridad.Shield {
 
             [campos: campos, prov: prov, persona: persona, matrizOk: matrizOk, perfil: perfil, programa: programa,
              tipoObra: tipoObra, claseObra: claseObra, grupoDir: grupo, dire: direccion, depar: departamentos,
-             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF,
-             existeRubros: resultado, tiempo: tiempo]
+             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF]
         }
     }
 

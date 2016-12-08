@@ -1058,7 +1058,7 @@
 
         <div class="modal-body" id="modal_body_matriz">
             <div id="msg_matriz">
-                <g:if test="${obra.desgloseTransporte == 'S'}">
+                <g:if test="${obra.desgloseTransporte == 'S' && existeRubros > 0}">
                     <p style="font-size: 14px; text-align: center;">Ya existe una matriz generada <b>con</b> desglose transporte
                     </p>
                     <p style="font-size: 14px; text-align: center; color: #570000"><strong>Aviso</strong>: La matriz tiene <strong>${existeRubros}
@@ -1870,8 +1870,7 @@
                             }
                         });
                     } else {
-                        $("#spanOk").html("Se ha generado la Matriz");
-                        $("#divOk").show()
+                        location.reload();
                     }
 /*
                     } else {
