@@ -995,8 +995,9 @@ class ContratoController extends janus.seguridad.Shield {
 
     def save() {
         def contratoInstance
+        def oferta
 
-//        println("-->> save" + params)
+        println("-->> save" + params)
 
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
@@ -1005,7 +1006,6 @@ class ContratoController extends janus.seguridad.Shield {
         if (params.memo) {
             params.memo = params.memo.toString().toUpperCase()
         }
-
 
         if (params.fechaSubscripcion) {
             params.fechaSubscripcion = new Date().parse("dd-MM-yyyy", params.fechaSubscripcion)
@@ -1034,6 +1034,10 @@ class ContratoController extends janus.seguridad.Shield {
             }//no existe el objeto
             contratoInstance.properties = params
             contratoInstance.periodoInec = indice
+
+
+
+
         }//es edit
         else {
 
@@ -1043,13 +1047,8 @@ class ContratoController extends janus.seguridad.Shield {
                     flash.message = "No se puede grabar el Contrato, elija una oferta válida "
                     redirect(action: 'registroContrato')
                     return
-
-
                 }
-
-
             }
-
 
             contratoInstance = new Contrato(params)
             contratoInstance.periodoInec = indice
@@ -1077,7 +1076,6 @@ class ContratoController extends janus.seguridad.Shield {
 
         if (params.id) {
             flash.clase = "alert-success"
-//            flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance.id
             flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance.codigo
         } else {
             flash.clase = "alert-success"
@@ -1278,6 +1276,17 @@ class ContratoController extends janus.seguridad.Shield {
             fpsp.save(flush: true)
         }
 
+    }
+
+
+    def tablaObras_ajax() {
+
+        println("params tabla oferta " + params)
+        def oferta = Oferta.get(params.oferta)
+        def concurso = oferta.concurso
+        def obras = ObraConcurso.findAllByConcurso(concurso)
+
+        return [obras: obras]
     }
 
 

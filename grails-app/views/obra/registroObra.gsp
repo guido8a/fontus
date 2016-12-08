@@ -2339,7 +2339,7 @@
 //
                     var estadoCambiado = $("#estado").val();
 
-                    if (estadoCambiado == 'N') {
+                    if (estadoCambiado == 'S') {
                         estadoCambiado = 'R';
                         $.ajax({
                             type: "POST",
