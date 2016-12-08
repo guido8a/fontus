@@ -1061,6 +1061,8 @@
                 <g:if test="${obra.desgloseTransporte == 'S'}">
                     <p style="font-size: 14px; text-align: center;">Ya existe una matriz generada <b>con</b> desglose transporte
                     </p>
+                    <p style="font-size: 14px; text-align: center; color: #570000"><strong>Aviso</strong>: La matriz tiene <strong>${existeRubros}
+                    columnas</strong>. Ver la matriz tomará <strong>${tiempo} segundos </strong> aproximadamente</p>
                 </g:if>
                 <g:else>
                     <g:if test="${obra.desgloseTransporte == 'N'}">
@@ -1868,10 +1870,16 @@
                             }
                         });
                     } else {
+                        $("#spanOk").html("Se ha generado la Matriz");
+                        $("#divOk").show()
+                    }
+/*
+                    } else {
                         $("#dlgLoad").dialog("open");
                         location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',
                         params:[id:obra.id,inicio:0,limit:40])}&sbpr=" + sbpr
                     }
+*/
                 },
                 error: function () {
                     $("#dlgLoad").dialog("close");

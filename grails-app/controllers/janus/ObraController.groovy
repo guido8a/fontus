@@ -506,12 +506,8 @@ class ObraController extends janus.seguridad.Shield {
 //            println "dueÑo: " + duenoObra
 
 
-            def resultado
             def listaImp = [:]
-            def sql2 = "SELECT count(*) from mfcl where obra__id = ${obra.id} order by 1"
-            cn.eachRow(sql2.toString()){ e->
-                resultado = e[0]
-            }
+            def resultado = cn.rows("SELECT coalesce(count(*), 0) cnta from mfcl where obra__id = ${obra.id} order by 1".toString())[0].cnta
 
             def dividido = (resultado.toInteger() / 100)
             def f = Math.round(dividido)
@@ -529,19 +525,22 @@ class ObraController extends janus.seguridad.Shield {
                 }
             }
 
-
+            def tiempo = Math.floor((resultado ** 2) * 0.00004 + resultado * 0.005).toInteger()
+            println "tiempo: $tiempo"
 //            println("arreglo " + listaImp)
 
             [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
              claseObra: claseObra, grupoDir: grupo, dire  : direccion, depar: departamentos, concurso: concurso,
-             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF, listaImpresion: listaImp, existeRubros: resultado]
+             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF, listaImpresion: listaImp,
+             existeRubros: resultado, tiempo: tiempo]
         } else {
             duenoObra = 0
 
             [campos: campos, prov: prov, persona: persona, matrizOk: matrizOk, perfil: perfil, programa: programa,
              tipoObra: tipoObra, claseObra: claseObra, grupoDir: grupo, dire: direccion, depar: departamentos,
-             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF]
+             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF,
+             existeRubros: resultado, tiempo: tiempo]
         }
     }
 
