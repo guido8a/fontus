@@ -1316,13 +1316,23 @@ class ContratoController extends janus.seguridad.Shield {
 
 
     def tablaObras_ajax() {
-
-        println("params tabla oferta " + params)
+//        println("params tabla oferta " + params)
         def oferta = Oferta.get(params.oferta)
         def concurso = oferta.concurso
         def obras = ObraConcurso.findAllByConcurso(concurso)
 
         return [obras: obras]
+    }
+
+    def calcularMonto_ajax () {
+        def oferta = Oferta.get(params.oferta)
+        def concurso = oferta.concurso
+        def obras = ObraConcurso.findAllByConcurso(concurso)
+        def montoTotal = 0
+        obras.each {
+            montoTotal += it.valor
+        }
+        render montoTotal
     }
 
 

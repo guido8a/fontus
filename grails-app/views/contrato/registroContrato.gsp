@@ -201,7 +201,7 @@
                     <elm:select name="oferta.id" id="ofertas" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}" optionKey="id"
                                 optionValue="descripcion" noSelection="['-1': 'Seleccione']"
                                 class="required"
-                                optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre}}" value="${contrato?.oferta?.id}"/>
+                                optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"/>
 
                 </div>
 
@@ -251,21 +251,21 @@
             </div>
 
 
-          <g:if test="${contrato}">
+          %{--<g:if test="${contrato}">--}%
               <div class="span5" style="margin-top: 20px" align="center">
                   <div class="span3 formato" style="margin-left: -15px">Fecha presentación de la Oferta</div>
 
-                  <div class="span2"><g:textField name="fechaPresentacion" class="fechaPresentacion" id="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy')}"
+                  <div class="span2"><g:textField name="fechaPresentacion_name" id="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy')}"
                                                   disabled="true" style="width: 100px; margin-left: -180px"/></div>
               </div>
-          </g:if>
-          <g:else>
-              <div class="span5" style="margin-top: 20px" align="center">
-                  <div class="span5" id="filaFecha">
+          %{--</g:if>--}%
+          %{--<g:else>--}%
+              %{--<div class="span5" style="margin-top: 20px" align="center">--}%
+                  %{--<div class="span5" id="filaFecha">--}%
 
-                  </div>
-              </div>
-          </g:else>
+                  %{--</div>--}%
+              %{--</div>--}%
+          %{--</g:else>--}%
 
 
 
@@ -941,42 +941,28 @@
     });
 
     $("#btn-desregistrar").click(function () {
-
         $.ajax({
             type    : "POST",
             url     : "${createLink(action: 'cambiarEstado')}",
             data    : "id=${contrato?.id}",
             success : function (msg) {
-
-                %{--location.href = "${g.createLink(action: 'registroContrato')}";--}%
                 location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
             }
         });
-
     });
 
     $("#btn-cancelar").click(function () {
-
         if (${contrato?.id == null}) {
-
             location.href = "${g.createLink(action: 'registroContrato')}";
-
         } else {
-
             location.href = "${g.createLink(action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
-
         }
-
-    })
+    });
 
     $("#btn-borrar").click(function () {
-
         if (${contrato?.codigo != null}) {
-
             $("#borrarContrato").dialog("open")
-
         }
-
     });
 
     $("#borrarContrato").dialog({
@@ -1045,18 +1031,21 @@
             var cla = $selected.attr("class");
             var parte = cla.split("_");
             var pro = parte[2];
+            var fecha = parte[3];
 //                    console.log($selected.val())
 //            $("#contratista").val($selected.text());
             $("#contratista").val(pro);
-            $.ajax({
-                type    : "POST",
-                url     : "${g.createLink(action:'getFecha')}",
-                data    : {id : idOferta
-                },
-                success : function (msg) {
-                    $("#filaFecha").html(msg);
-                }
-            });
+            $("#fechaPresentacion").val(fecha)
+            %{--$.ajax({--}%
+                %{--type    : "POST",--}%
+                %{--url     : "${g.createLink(action:'getFecha')}",--}%
+                %{--data    : {id : idOferta--}%
+                %{--},--}%
+                %{--success : function (msg) {--}%
+                    %{--$("#filaFecha").html(msg);--}%
+
+                %{--}--}%
+            %{--});--}%
 
             $.ajax({
                 type    : "POST",
@@ -1079,11 +1068,24 @@
                 }
             });
 
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(controller: 'contrato', action: 'calcularMonto_ajax')}",
+                data:{
+                    oferta: idOferta
+                },
+                success: function (msg){
+//                    console.log("msg " + msg)
+                    $("#monto").val(number_format(msg, 2,"."));
+                }
+            });
+
+
             var cl = $selected.attr("class");
             var parts = cl.split("_");
             var m = parts[0];
             var p = parts[1];
-            $("#monto").val(number_format(m, 2,"."));
+//            $("#monto").val(number_format(m, 2,"."));
             $("#plazo").val(p);
         }
         else {
