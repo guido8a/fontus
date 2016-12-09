@@ -99,13 +99,10 @@
         </g:if>
     </g:if>
 
-    <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
+    <fieldset class="" style="position: relative; border-bottom: 1px solid black;">
+        <div class="span12" style="margin-top: 20px; margin-left: 40px;">
 
-        <div class="span12" style="margin-top: 10px; margin-bottom: 5px;">
-
-            %{--<g:if test="${contrato?.codigo != null}">--}%
-
-            <div class="span2 formato">Contrato N°</div>
+            <div class="span1 formato">Contrato N°</div>
 
             <div class="span3"><g:textField name="codigo" maxlength="20" class="codigo required caps" value="${contrato?.codigo}"/></div>
 
@@ -190,7 +187,7 @@
 
         %{--</div>--}%
 
-            <div class="span5" style="margin-top: 5px" align="center">
+            <div class="span5" style="margin-top: 5px">
                 <div class="span1 formato">Oferta</div>
 
                 <div class="span3" id="div_ofertas">
@@ -200,7 +197,7 @@
 
                     <elm:select name="oferta.id" id="ofertas" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}" optionKey="id"
                                 optionValue="descripcion" noSelection="['-1': 'Seleccione']"
-                                class="required"
+                                class="required" style="width: 300px"
                                 optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"/>
 
                 </div>
@@ -217,7 +214,7 @@
 
 
 
-            <div class="span7" style="margin-top: 5px; float: right" align="center">
+            <div class="" style="float: right; width: 700px" align="center">
 
                 <table class="table table-bordered table-striped table-condensed table-hover">
                     <thead>
@@ -245,8 +242,9 @@
             <div class="span5" style="margin-top: 20px" align="center">
                 <div class="span1 formato">Contratista</div>
 
-                <div class="span3">
-                    <g:textField name="contratista" class="contratista" id="contratista" disabled="true" value="${contrato?.oferta?.proveedor}" />
+                <div class="span3" style="margin-left: 5px;">
+                    <g:textField name="contratista" class="contratista" id="contratista" disabled="true" value="${contrato?.oferta?.proveedor}"
+                    style="width: 280px; margin-left: 25px;"/>
                 </div>
             </div>
 

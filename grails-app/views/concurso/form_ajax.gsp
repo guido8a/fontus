@@ -187,7 +187,7 @@
         <ul class="nav nav-pills ui-corner-top" id="myTab">
             <li class="active"><a href="#datos">Datos proceso</a></li>
             <li><a href="#fechas">Fechas del proceso</a></li>
-            <li><a href="#obras">Obras asignadas</a></li>
+            <li><a href="#obras">Obras del proceso</a></li>
             %{--<li><a href="#fechas2">Fechas de control del trámite</a></li>--}%
         </ul>
 
