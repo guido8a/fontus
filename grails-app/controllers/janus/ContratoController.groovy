@@ -1348,8 +1348,10 @@ class ContratoController extends janus.seguridad.Shield {
         def valores = preciosService.rbro_pcun_v4(obra.id, 'asc')
         def vocr
         def errores = ''
+        def area
 
         valores.each {v->
+          area = VolumenesObra.findBySubPresupuestoAndItemAndObra(SubPresupuesto.get(v.sbpr__id), Item.get(v.item__id), obra).area
           vocr = new VolumenContrato()
           vocr.item = Item.get(v.item__id)
           vocr.obraContrato = obraContrato
@@ -1358,6 +1360,7 @@ class ContratoController extends janus.seguridad.Shield {
           vocr.volumenOrden = (v.vlobordn).toInteger()
           vocr.volumenPrecio = (v.vlobpcun).toDouble()
           vocr.volumenSubtotal = (v.totl).toDouble()
+          vocr.area = area
 
           if(!vocr.save(flush: true)){
               errores += vocr.errors

@@ -119,6 +119,7 @@
             <button class="btn" id="btnImprimir"><i class="icon-print"></i> Imprimir</button>
         </g:if>
 
+
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
                 <g:if test="${obra?.fechaInicio == null}">
@@ -184,8 +185,9 @@
             <button class="btn" id="btnImprimir"><i class="icon-print"></i> Imprimir</button>
         </g:if>
 
+
         <g:if test="${obra?.liquidacion == 0}">
-            <g:if test="${duenoObra == 1 && (Concurso.countByObra(obra) == 0)}">
+            <g:if test="${duenoObra == 1 /*&& (Concurso.countByObra(obra) == 0)*/}">
                 <g:if test="${obra?.estado == 'N'}">
                     <g:if test="${obra?.fechaInicio == null}">
                         <button class="btn btn-warning" id="revisarObra" title="Cambiar estado de la obra a revisado"><i class="icon-check"></i> Revisar Obra</button>
