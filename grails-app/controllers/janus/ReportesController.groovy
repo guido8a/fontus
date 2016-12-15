@@ -788,15 +788,20 @@ class ReportesController {
 
 
     def imprimirRubrosExcel() {
-        println("params " + params)
-
-
+        println("imprimirRubrosExcel " + params)
+        def cn = dbConnectionService.getConnection()
         def obra = Obra.get(params.id.toLong())
         def lugar = obra.lugar
         def fecha = obra.fechaPreciosRubros
         def itemsChofer = [obra.chofer]
         def itemsVolquete = [obra.volquete]
         def indi = obra.totales
+
+        def rubros = cn.rows("select distinct vlob.item__id, itemcdgo codigo from vlob, item where item.item__id = vlob.item__id and " +
+                "obra__id = ${obra.id} order by itemcdgo limit 100 offset ${params.sel.toInteger() * 100}".toString())
+        def rubro
+
+
 
         def resultadoExcel = VolumenesObra.findAllByObra(obra).item.unique().size()
         def divididoExcel = (resultadoExcel.toInteger()/100)
@@ -828,10 +833,11 @@ class ReportesController {
 
         preciosService.ac_rbroObra(obra.id)
 //        println("------>>> " + VolumenesObra.findAllByObra(obra).item.unique().size())
-        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i = i + inicioExcel ->
-            println("--> " + i)
-            def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
-            WritableSheet sheet = workbook.createSheet(rubro.codigo, i)
+//        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i = i + inicioExcel ->
+        rubros.eachWithIndex { rbro, i ->
+            def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rbro.item__id)
+            WritableSheet sheet = workbook.createSheet(rbro.codigo, i)
+            rubro = Item.get(rbro.item__id)
             rubroAExcel(sheet, res, rubro, fecha, indi)
         }
         workbook.write();

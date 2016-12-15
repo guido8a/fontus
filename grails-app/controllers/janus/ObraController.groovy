@@ -552,12 +552,18 @@ class ObraController extends janus.seguridad.Shield {
             def textoExcel
             def listaImpExcel = [:]
 
+            println resultadoExcel
             if(resultadoExcel.toInteger() != 0){
                 (1..fExcel).eachWithIndex{ s, d->
-                    textoExcel = "Desde ${inicioExcel + 1} hasta ${finalExcel + 1}"
+                    if(s*100 + inicioExcel > resultadoExcel){
+                        textoExcel = "Desde ${inicioExcel + 1} hasta ${resultadoExcel}"
+                    } else {
+                        textoExcel = "Desde ${inicioExcel + 1} hasta ${finalExcel}"
+                    }
+
                     listaImpExcel << ["${d}": "${textoExcel}"]
                     inicioExcel = finalExcel
-                    finalExcel = (finalExcel +100)
+                    finalExcel = (finalExcel + 100)
                 }
             }
 
