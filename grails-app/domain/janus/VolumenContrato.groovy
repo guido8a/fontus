@@ -32,5 +32,7 @@ class VolumenContrato {
     }
 
     static constraints = {
+
+        volumenRuta(blank: true, nullable: true)
     }
 }

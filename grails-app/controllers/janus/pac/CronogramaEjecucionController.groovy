@@ -1984,7 +1984,7 @@ class CronogramaEjecucionController extends janus.seguridad.Shield {
         def vol2
 
         def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
-        def periodos = CronogramaEjecucion.executeQuery("select max(periodo) from CronogramaContrato where contrato = :c", [c: contrato])
+        def periodos = CronogramaEjecucion.executeQuery("select max(periodo) from CronogramaContratoN where contrato = :c", [c: contrato])
         println "periodos: $periodos"
 
         def hayPrej = PeriodoEjecucion.findAllByContrato(contrato)

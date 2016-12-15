@@ -15,7 +15,6 @@ import jxl.write.WritableCellFormat
 import jxl.write.WritableFont
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
-import org.springframework.dao.DataIntegrityViolationException
 
 import java.awt.Color
 
@@ -1922,7 +1921,7 @@ class Reportes2Controller {
                     cronos = Cronograma.findAllByVolumenObra(vol)
                     break;
                 case "contrato":
-                    cronos = CronogramaContrato.findAllByVolumenObra(vol)
+                    cronos = CronogramaContratoN.findAllByVolumenObra(vol)
                     break;
             }
             def totalDolRow = 0, totalPrcRow = 0, totalCanRow = 0

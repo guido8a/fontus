@@ -540,11 +540,34 @@ class ObraController extends janus.seguridad.Shield {
             println "tiempo: $tiempo"
 //            println("arreglo " + listaImp)
 
+
+            //impresion excel rubros
+
+
+            def resultadoExcel = VolumenesObra.findAllByObra(obra).item.unique().size()
+            def divididoExcel = (resultadoExcel.toInteger()/100)
+            def fExcel = Math.ceil(divididoExcel)
+            def inicioExcel = 0
+            def finalExcel = 100
+            def textoExcel
+            def listaImpExcel = [:]
+
+            if(resultadoExcel.toInteger() != 0){
+                (1..fExcel).eachWithIndex{ s, d->
+                    textoExcel = "Desde ${inicioExcel + 1} hasta ${finalExcel + 1}"
+                    listaImpExcel << ["${d}": "${textoExcel}"]
+                    inicioExcel = finalExcel
+                    finalExcel = (finalExcel +100)
+                }
+            }
+
+
+
             [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
              claseObra: claseObra, grupoDir: grupo, dire  : direccion, depar: departamentos, concurso: concurso,
              personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF, listaImpresion: listaImp,
-             existeRubros: resultado, tiempo: tiempo]
+             existeRubros: resultado, tiempo: tiempo, rangoExcel: listaImpExcel]
         } else {
             duenoObra = 0
 

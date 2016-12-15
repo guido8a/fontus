@@ -97,7 +97,6 @@ class VolumenObraController extends janus.seguridad.Shield {
         def rubro = Item.findByCodigoAndTipoItem(params.codigo?.trim()?.toUpperCase(), TipoItem.get(2))
         if (rubro) {
             render "" + rubro.id + "&&" + rubro.tipoLista?.id + "&&" + rubro.nombre + "&&" + rubro.unidad?.codigo
-
             return
         } else {
             render "-1"
@@ -454,5 +453,41 @@ class VolumenObraController extends janus.seguridad.Shield {
 
         def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
         return [areas: areas]
+    }
+
+    def volObraContrato() {
+
+        def contrato = Contrato.get(params.id)
+        def obrasContrato = ObraContrato.findAllByContrato(contrato)
+        def vocr = VolumenContrato.findAllByObraContratoInList(obrasContrato)
+
+        def subpresupuestos = vocr.subPresupuesto.unique()
+
+        def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
+
+        return [contrato: contrato, subPres: subpresupuestos, campos: campos]
+    }
+
+    def tablaRubrosContrato_ajax() {
+
+        def contrato = Contrato.get(params.contrato)
+        def subpresupuesto = SubPresupuesto.get(params.sub)
+        def obrasContrato = ObraContrato.findAllByContrato(contrato)
+        def volumenes = VolumenContrato.findAllByObraContratoInListAndSubPresupuesto(obrasContrato, subpresupuesto)
+
+        return[valores: volumenes]
+    }
+
+    def borrarRubroContrato_ajax () {
+        def volumen = VolumenContrato.get(params.id)
+        if(volumen.delete(flush: true)){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
+
+    def agregarItemContrato_ajax () {
+        println("--> " + params)
     }
 }

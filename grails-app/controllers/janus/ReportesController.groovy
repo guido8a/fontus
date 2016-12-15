@@ -788,12 +788,34 @@ class ReportesController {
 
 
     def imprimirRubrosExcel() {
-        def obra = Obra.get(params.obra.toLong())
+        println("params " + params)
+
+
+        def obra = Obra.get(params.id.toLong())
         def lugar = obra.lugar
         def fecha = obra.fechaPreciosRubros
         def itemsChofer = [obra.chofer]
         def itemsVolquete = [obra.volquete]
         def indi = obra.totales
+
+        def resultadoExcel = VolumenesObra.findAllByObra(obra).item.unique().size()
+        def divididoExcel = (resultadoExcel.toInteger()/100)
+//        def fExcel = Math.ceil(divididoExcel)
+        def fExcel = params.sel.toInteger()
+        def inicioExcel = 0
+        def finalExcel = 100
+
+//        println("resultado " + )
+
+        if(fExcel > 0){
+            (1..fExcel).eachWithIndex{ s, d->
+                inicioExcel = finalExcel
+                finalExcel = (finalExcel +100)
+            }
+        }
+
+        println("inicio " + inicioExcel)
+
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
         def file = File.createTempFile('myExcelDocument', '.xls')
@@ -803,8 +825,11 @@ class ReportesController {
         WritableCellFormat formatXls = new WritableCellFormat(font)
         def row = 0
 
+
         preciosService.ac_rbroObra(obra.id)
-        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i ->
+//        println("------>>> " + VolumenesObra.findAllByObra(obra).item.unique().size())
+        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i = i + inicioExcel ->
+            println("--> " + i)
             def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
             WritableSheet sheet = workbook.createSheet(rubro.codigo, i)
             rubroAExcel(sheet, res, rubro, fecha, indi)

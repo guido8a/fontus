@@ -1514,7 +1514,7 @@ class PlanillaController extends janus.seguridad.Shield {
 //        println "obra: $obra.id"
 
         /* aqui se valida que haya cronograma de contrato y formula polinomica de contrato */
-        def existeCrng = CronogramaContrato.findAllByContrato(contrato).size()
+        def existeCrng = CronogramaContratoN.findAllByContrato(contrato).size()
         def pcs = FormulaPolinomicaContractual.findAllByContrato(contrato).size()
         if (existeCrng == 0 || pcs < 8) {
             flash.message = "<h3>No es posible crear planillas</h3><ul>"

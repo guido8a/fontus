@@ -1,6 +1,6 @@
 package janus
 
-class CronogramaContrato {
+class CronogramaContratoN {
 
 
     VolumenContrato volumenContrato
@@ -12,19 +12,19 @@ class CronogramaContrato {
 
     static auditable = true
     static mapping = {
-        table 'crng'
+        table 'crct'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'crng__id'
+        id column: 'crct__id'
         id generator: 'identity'
         version false
         columns {
-            id column: 'crng__id'
+            id column: 'crct__id'
             volumenContrato column: 'vocr__id'
             obraContrato column: 'obcr__id'
-            cronogramaPeriodo column: 'crngprdo'
-            cronogramaCantidad column: 'crngcntd'
-            cronogramaPorcentaje column: 'crngprct'
-            cronogramaPrecio column: 'crngprco'
+            cronogramaPeriodo column: 'crctprdo'
+            cronogramaCantidad column: 'crctcntd'
+            cronogramaPorcentaje column: 'crctprct'
+            cronogramaPrecio column: 'crctprco'
 
         }
     }

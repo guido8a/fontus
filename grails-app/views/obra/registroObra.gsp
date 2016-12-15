@@ -1131,14 +1131,9 @@
                     <a href="#" class="btn btn-info" id="irFP">Ir a la Fórmula Polinómica</a>
                     <a href="#" class="btn btn-info" id="cancelaFP" style="margin-left: 360px;">Cancelar</a>
                 </g:else>
-
             </div>
-
         </div>
-
     </div>
-
-
 
     <div class="modal hide fade" id="modal-imprimir" style=";overflow: hidden;">
         <div class="modal-header btn-primary">
@@ -1153,7 +1148,7 @@
 
                 <span>Rango de columnas de la Matriz a exportar:  </span>
                 <g:select name="seccion_matriz" from="${listaImpresion}" optionKey="key" optionValue="value"
-                          style="margin-left: 10px; width: 240px" id="seleccionadoImpresion"></g:select>
+                          style="margin-left: 10px; width: 240px" id="seleccionadoImpresion"/>
 
                 <div style="float: right; margin-top: 20px;">
                     <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Generar Excel</a>
@@ -1163,6 +1158,29 @@
         </div>
     </div>
 
+
+    <div class="modal hide fade" id="modal-imprimir_excel" style=";overflow: hidden;">
+        <div class="modal-header btn-primary">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+
+            <h3 id="modal_tittle_impresion_excel">
+            </h3>
+        </div>
+
+        <div class="modal-body" id="modal_body_excel">
+            <div id="msg_impr_excel">
+
+                <span>Rango de rubros a exportar:  </span>
+                <g:select name="seccion_matriz_excel" from="${rangoExcel}" optionKey="key" optionValue="value"
+                          style="margin-left: 10px; width: 240px" id="seleccionadoImpresionExcel"/>
+
+                <div style="float: right; margin-top: 20px;">
+                    <a href="#" class="btn btn-success" id="imprimirSeleccionadoExcel"><i class="icon-print"></i> Generar Excel</a>
+                    <a href="#" class="btn btn-primary" id="cancelarImpresionExcel">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </g:if>
 
@@ -1197,6 +1215,17 @@
         var seleccionado = $("#seleccionadoImpresion").val()
         location.href = "${g.createLink(controller: 'reportes5',action: 'nuevoReporteMatriz',id: obra?.id)}?sel=" + seleccionado;
     });
+
+
+    $("#cancelarImpresionExcel").click(function () {
+        $("#modal-imprimir_excel").modal("hide")
+    });
+
+    $("#imprimirSeleccionadoExcel").click(function () {
+        var seleccionado = $("#seleccionadoImpresionExcel").val()
+        location.href = "${g.createLink(controller: 'reportes',action: 'imprimirRubrosExcel',id: obra?.id)}?sel=" + seleccionado;
+    });
+
 
     $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
 
@@ -2097,9 +2126,18 @@
                                     location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
                                 },
                                 "Exportar Rubros a Excel": function () {
-                                    var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
-                                    url += "1";
-                                    location.href = url;
+                                    %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
+//                                    url += "1";
+//                                    location.href = url;
+
+
+
+                                        $("#modal_tittle_impresion_excel").html("Imprimir Rubros a Excel");
+                                        $("#msg_impr_excel").show();
+                                        $("#modal-imprimir_excel").modal("show")
+
+
+
                                 },
                                 "VAE con desglose de Trans.": function () {
                                     urlVae += "1";
@@ -2127,6 +2165,12 @@
                     });
             return false;
         });
+
+
+        $("#imprimir_excel_rubros").click(function () {
+
+        });
+
 
         $("#btn-consultar").click(function () {
             $("#dlgLoad").dialog("open");

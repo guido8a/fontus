@@ -18,6 +18,10 @@
     <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
     <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
 
+    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
+    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
+    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
+
     <style type="text/css">
 
     .formato {
@@ -71,18 +75,6 @@
             <button class="btn" id="btn-registrar"><i class="icon-exclamation"></i> Registrar</button>
         </g:if>
 
-
-
-    %{--<g:if test="${contrato?.estado != 'R' && }">--}%
-
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-
-    %{--</g:else>--}%
-
-
-
-    %{--<button class="btn" id="btn-salir"><i class="icon-ban-circle"></i> Salir</button>--}%
     </div>
 </div>
 
@@ -120,186 +112,79 @@
 
         <div class="linea" style="height: 85%;"></div>
 
-    %{--<g:hiddenField name="oferta" class="oferta" value="${contrato?.oferta?.id}"/>--}%
+        <div class="span5" style="margin-top: 5px">
+            <div class="span1 formato">Oferta</div>
 
-        %{--<g:if test="${contrato?.codigo != null}">--}%
+            <div class="span3" id="div_ofertas">
+                <elm:select name="oferta.id" id="ofertas" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}" optionKey="id"
+                            optionValue="descripcion" noSelection="['-1': 'Seleccione']"
+                            class="required" style="width: 300px"
+                            optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"/>
 
-        %{--<div class="span12">--}%
-
-        %{--<div class="span1 formato">Obra</div>--}%
-        %{--<div class="span4"><g:textField name="obra" id="obraCodigo" class="obraCodigo required" autocomplete="off" value="${contrato?.oferta?.concurso?.obra?.codigo}" disabled="true"/></div>--}%
-
-        %{--<div class="span1 formato">Nombre</div>--}%
-        %{--<div class="span3"><g:textField name="nombre" class="nombreObra" value="${contrato?.oferta?.concurso?.obra?.nombre}" style="width: 500px" disabled="true"/></div>--}%
-
-        %{--</div>--}%
-
-            %{--<div class="span12" style="margin-top: 5px">--}%
-
-                %{--<div class="span1 formato">Parroquia</div>--}%
-                %{--<div class="span4"><g:textField name="parroquia" class="parroquia" value="${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}" disabled="true"/></div>--}%
-
-                %{--<div class="span1 formato">Cantón</div>--}%
-
-                %{--<div class="span2"><g:textField name="canton" class="canton" value="${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}" disabled="true"/></div>--}%
-
-            %{--</div>--}%
-
-            %{--<div class="span12" style="margin-top: 5px">--}%
-
-                %{--<div class="span1 formato">Clase Obra</div>--}%
-
-                %{--<div class="span3"><g:textField name="claseObra" class="claseObra" value="${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}" disabled="true"/></div>--}%
-
-            %{--</div>--}%
-
-            %{--<div class="span12" style="margin-top: 5px">--}%
-
-                %{--<div class="span1 formato">Contratista</div>--}%
-
-                %{--<div class="span4"><g:textField name="contratista" class="contratista" value="${contrato?.oferta?.proveedor?.nombre}" disabled="true"  style="width: 320px"/></div>--}%
-
-                %{--<div class="span4 formato">Fecha presentación de la Oferta</div>--}%
-
-                %{--<div class="span1"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"--}%
-                                                %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
-
-            %{--</div>--}%
-
-        %{--</g:if>--}%
-
-        %{--<g:else>--}%
-
-        %{--<div class="span12" style="margin-top: 5px" align="center">--}%
-
-        %{--<div class="span2 formato">Obra</div>--}%
-
-        %{--<div class="span3">--}%
-        %{--<input type="hidden" id="obraId" value="${contrato?.oferta?.concurso?.obra?.codigo}" name="obra.id">--}%
-        %{--<g:textField name="obra" id="obraCodigo" class="obraCodigo required txtBusqueda" value="${contrato?.oferta?.concurso?.obra?.codigo}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="span1 formato">Nombre</div>--}%
-
-        %{--<div class="span5">--}%
-        %{--<g:textField name="nombre" class="nombreObra" id="nombreObra" style="width: 400px" disabled="true"/>--}%
-        %{--</div>--}%
-
-        %{--</div>--}%
-
-            <div class="span5" style="margin-top: 5px">
-                <div class="span1 formato">Oferta</div>
-
-                <div class="span3" id="div_ofertas">
-                    %{--<g:select name="oferta.id" from="" noSelection="['-1': 'Seleccione']" id="oferta" optionKey="id"/>--}%
-                    %{--<g:select name="oferta.id" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}"--}%
-                    %{--noSelection="['-1': 'Seleccione...']" id="ofertas" optionValue="descripcion" optionKey="id" optionClass="${{ it.monto + "_" + it.plazo }}"/>--}%
-
-                    <elm:select name="oferta.id" id="ofertas" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}" optionKey="id"
-                                optionValue="descripcion" noSelection="['-1': 'Seleccione']"
-                                class="required" style="width: 300px"
-                                optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"/>
-
-                </div>
-
-                %{--<div class="span3 formato" style="margin-left: -1px">Fecha presentación de la Oferta</div>--}%
-
-                %{--<div class="span2"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"--}%
-                %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
-
-
-                %{--<div class="span2"><g:textField name="fechaPresentacion" class="fechaPresentacion" id="fechaPresentacion"--}%
-                %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
             </div>
+        </div>
 
 
 
-            <div class="" style="float: right; width: 700px" align="center">
+        <div class="" style="float: right; width: 700px" align="center">
 
-                <table class="table table-bordered table-striped table-condensed table-hover">
-                    <thead>
-                    <tr>
-                        <th style="width: 5px;">
-                            Código
-                        </th>
-                        <th style="width: 160px;">
-                            Nombre
-                        </th>
-                        <th style="width: 20px;">
-                            Valor
-                        </th>
-                        <th style="width: 10px;">
-                            Provincia
-                        </th>
+            <table class="table table-bordered table-striped table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 5px;">
+                        Código
+                    </th>
+                    <th style="width: 160px;">
+                        Nombre
+                    </th>
+                    <th style="width: 20px;">
+                        Valor
+                    </th>
+                    <th style="width: 10px;">
+                        Provincia
+                    </th>
+                    <th style="width: 10px;">
+                        Acciones
+                    </th>
 
-                    </tr>
-                    </thead>
-                </table>
-                <div style="width: 99.7%;height: 150px;overflow-y: auto;float: right;" id="obras_oferta"></div>
+                </tr>
+                </thead>
+            </table>
+            <div style="width: 99.7%;height: 150px;overflow-y: auto;float: right;" id="obras_oferta"></div>
+        </div>
+
+
+        <div class="span5" style="margin-top: 20px" align="center">
+            <div class="span1 formato">Contratista</div>
+
+            <div class="span3" style="margin-left: 5px;">
+                <g:textField name="contratista" class="contratista" id="contratista" disabled="true" value="${contrato?.oferta?.proveedor}"
+                             style="width: 280px; margin-left: 25px;"/>
             </div>
+        </div>
 
 
-            <div class="span5" style="margin-top: 20px" align="center">
-                <div class="span1 formato">Contratista</div>
+        <div class="span5" style="margin-top: 20px" align="center">
+            <div class="span3 formato" style="margin-left: -15px">Fecha presentación de la Oferta</div>
 
-                <div class="span3" style="margin-left: 5px;">
-                    <g:textField name="contratista" class="contratista" id="contratista" disabled="true" value="${contrato?.oferta?.proveedor}"
-                    style="width: 280px; margin-left: 25px;"/>
-                </div>
-            </div>
-
-
-          %{--<g:if test="${contrato}">--}%
-              <div class="span5" style="margin-top: 20px" align="center">
-                  <div class="span3 formato" style="margin-left: -15px">Fecha presentación de la Oferta</div>
-
-                  <div class="span2"><g:textField name="fechaPresentacion_name" id="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy')}"
-                                                  disabled="true" style="width: 100px; margin-left: -180px"/></div>
-              </div>
-          %{--</g:if>--}%
-          %{--<g:else>--}%
-              %{--<div class="span5" style="margin-top: 20px" align="center">--}%
-                  %{--<div class="span5" id="filaFecha">--}%
-
-                  %{--</div>--}%
-              %{--</div>--}%
-          %{--</g:else>--}%
+            <div class="span2"><g:textField name="fechaPresentacion_name" id="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy')}"
+                                            disabled="true" style="width: 100px; margin-left: -180px"/></div>
+        </div>
 
 
 
+        <div class="span5" style="margin-top: 20px" align="center">
+            <g:if test="${contrato}">
+                %{--<a href="#" class="btn btn-info" id="verRubrosContrato" iden="${contrato?.id}"><i class="icon-list-alt"></i> Ver Rubros</a>--}%
+                <g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">
+                    <i class="icon-list-alt"></i> Ver Rubros
+                </g:link>
+            </g:if>
+        </div>
 
-        %{--<div class="span12" style="margin-top: 5px" align="center">--}%
+        <div class="span12" style="margin-top: 5px" align="center">
 
-        %{--<div class="span2 formato">Parroquia</div>--}%
-
-        %{--<div class="span3"><g:textField name="parroquia" class="parroquia" id="parr"/></div>--}%
-
-        %{--</div>--}%
-
-        %{--<div class="span12" style="margin-top: 5px" align="center">--}%
-
-        %{--<div class="span2 formato">Cantón</div>--}%
-
-        %{--<div class="span3"><g:textField name="canton" class="canton" id="canton"/></div>--}%
-
-        %{--</div>--}%
-
-        %{--<div class="span12" style="margin-top: 5px" align="center">--}%
-
-        %{--<div class="span2 formato">Clase Obra</div>--}%
-
-        %{--<div class="span3"><g:textField name="claseObra" class="claseObra" id="clase"/></div>--}%
-
-        %{--</div>--}%
-
-
-
-
-                      <div class="span12" style="margin-top: 5px" align="center">
-
-                      </div>
-
-        %{--</g:else>--}%
+        </div>
 
     </fieldset>
 
@@ -424,15 +309,15 @@
                              style="width: 30px; text-align: right"/> %
             </div>
 
-%{--
-            <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
-                <div class="span2 formato">La multa por retraso de obra incluye el valor del reajuste</div>
+            %{--
+                        <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
+                            <div class="span2 formato">La multa por retraso de obra incluye el valor del reajuste</div>
 
-                <div class="span1">
-                    <g:checkBox name="conReajuste" checked="${contrato?.conReajuste == 1 ? 'true' : ''}"/>
-                </div>
-            </div>
---}%
+                            <div class="span1">
+                                <g:checkBox name="conReajuste" checked="${contrato?.conReajuste == 1 ? 'true' : ''}"/>
+                            </div>
+                        </div>
+            --}%
 
 
         </div>
@@ -636,6 +521,9 @@
 </div>
 
 <script type="text/javascript">
+
+
+
 
     if('${contrato}'){
         cargarTablaObras()
@@ -1035,14 +923,14 @@
             $("#contratista").val(pro);
             $("#fechaPresentacion").val(fecha)
             %{--$.ajax({--}%
-                %{--type    : "POST",--}%
-                %{--url     : "${g.createLink(action:'getFecha')}",--}%
-                %{--data    : {id : idOferta--}%
-                %{--},--}%
-                %{--success : function (msg) {--}%
-                    %{--$("#filaFecha").html(msg);--}%
+            %{--type    : "POST",--}%
+            %{--url     : "${g.createLink(action:'getFecha')}",--}%
+            %{--data    : {id : idOferta--}%
+            %{--},--}%
+            %{--success : function (msg) {--}%
+            %{--$("#filaFecha").html(msg);--}%
 
-                %{--}--}%
+            %{--}--}%
             %{--});--}%
 
             $.ajax({

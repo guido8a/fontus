@@ -158,7 +158,7 @@ class ContratoController extends janus.seguridad.Shield {
 
         //tiene q tener cronograma y formula polinomica
         def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
-        def cronos = CronogramaContrato.findAllByVolumenObraInList(detalle)
+        def cronos = CronogramaContratoN.findAllByVolumenObraInList(detalle)
 //        println "suma de la obra: ${cronos.precio.sum()}, valor de la obra: ${contrato.monto}"
         if (cronos.precio.sum().round(2) != contrato.monto.round(2)) {
             errores += "<li>No cuadra los totales del cronograma ${cronos.precio.sum()} con el valor del contrato: ${contrato.monto}</li>"
@@ -187,7 +187,7 @@ class ContratoController extends janus.seguridad.Shield {
         }
         def crono = 0
         detalle.each {
-            def tmp = CronogramaContrato.findAllByVolumenObra(it)
+            def tmp = CronogramaContratoN.findAllByVolumenObra(it)
             tmp.each { tm ->
                 crono += tm.porcentaje
 //                crono += tm.precio
@@ -1321,7 +1321,7 @@ class ContratoController extends janus.seguridad.Shield {
         def concurso = oferta.concurso
         def obras = ObraConcurso.findAllByConcurso(concurso)
 
-        return [obras: obras]
+        return [obras: obras, oferta: oferta]
     }
 
     def calcularMonto_ajax () {
@@ -1335,6 +1335,60 @@ class ContratoController extends janus.seguridad.Shield {
         render montoTotal
     }
 
+    def copiarRubros_ajax (){
+
+        def obra = Obra.get(params.obra)
+        def oferta = Oferta.get(params.oferta)
+        def contrato = Contrato.findByOferta(oferta)
+        def obraContrato = ObraContrato.findByContratoAndObra(contrato, obra)
+
+        def volumenes = VolumenesObra.findAllByObra(obra)
+        def cn = dbConnectionService.getConnection()
+        def lista = []
+        def valores = preciosService.rbro_pcun_v4(obra.id, 'asc')
+        def vocr
+        def errores = ''
+
+        valores.each {v->
+          vocr = new VolumenContrato()
+          vocr.item = Item.get(v.item__id)
+          vocr.obraContrato = obraContrato
+          vocr.subPresupuesto = SubPresupuesto.get(v.sbpr__id)
+          vocr.volumenCantidad = (v.vlobcntd).toDouble()
+          vocr.volumenOrden = (v.vlobordn).toInteger()
+          vocr.volumenPrecio = (v.vlobpcun).toDouble()
+          vocr.volumenSubtotal = (v.totl).toDouble()
+
+          if(!vocr.save(flush: true)){
+              errores += vocr.errors
+          }else{
+
+          }
+        }
+
+        if(errores == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+    def revisarRubros_ajax () {
+
+        def obra = Obra.get(params.obra)
+        def oferta = Oferta.get(params.oferta)
+        def contrato = Contrato.findByOferta(oferta)
+        def obraContrato = ObraContrato.findByContratoAndObra(contrato, obra)
+
+        def obrasContrato = ObraContrato.findAllByContrato(contrato)
+        def vocr = VolumenContrato.findAllByObraContratoInList(obrasContrato)
+
+        if(vocr.obraContrato.contains(obraContrato)){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
 
 
 } //fin controller
