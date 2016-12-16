@@ -440,7 +440,7 @@ class ObraController extends janus.seguridad.Shield {
 
     def registroObra() {
         def cn = dbConnectionService.getConnection()
-        println "---" + params
+//        println "---" + params
         def obra
         def perfil = session.perfil
         def persona = Persona.get(session.usuario.id)
@@ -483,7 +483,7 @@ class ObraController extends janus.seguridad.Shield {
                     sbprMF << ["${d.sbpr__id}" : SubPresupuesto.get(d.sbpr__id).descripcion]
             }
 
-            println "obra: ${obra.nombre}"
+//            println "obra: ${obra.nombre}"
             def subs = VolumenesObra.findAllByObra(obra).subPresupuesto.unique().sort{it.id}
             def volumen = VolumenesObra.findByObra(obra)
             def formula = FormulaPolinomica.findByObra(obra)
@@ -537,7 +537,7 @@ class ObraController extends janus.seguridad.Shield {
             }
 
             def tiempo = Math.floor((resultado ** 2) * 0.00004 + resultado * 0.005).toInteger()
-            println "tiempo: $tiempo"
+//            println "tiempo: $tiempo"
 //            println("arreglo " + listaImp)
 
 
@@ -548,26 +548,21 @@ class ObraController extends janus.seguridad.Shield {
             def divididoExcel = (resultadoExcel.toInteger()/100)
             def fExcel = Math.ceil(divididoExcel)
             def inicioExcel = 0
-            def finalExcel = 100
             def textoExcel
             def listaImpExcel = [:]
 
-            println resultadoExcel
+//            println "tramos: $fExcel, inicio: $inicioExcel, total: $resultadoExcel"
             if(resultadoExcel.toInteger() != 0){
                 (1..fExcel).eachWithIndex{ s, d->
-                    if(s*100 + inicioExcel > resultadoExcel){
+                    if(inicioExcel + 100 > resultadoExcel){
                         textoExcel = "Desde ${inicioExcel + 1} hasta ${resultadoExcel}"
                     } else {
-                        textoExcel = "Desde ${inicioExcel + 1} hasta ${finalExcel}"
+                        textoExcel = "Desde ${inicioExcel + 1} hasta ${inicioExcel + 100}"
+                        inicioExcel += 100
                     }
-
                     listaImpExcel << ["${d}": "${textoExcel}"]
-                    inicioExcel = finalExcel
-                    finalExcel = (finalExcel + 100)
                 }
             }
-
-
 
             [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
