@@ -1337,7 +1337,10 @@ class ContratoController extends janus.seguridad.Shield {
 
     def copiarRubros_ajax (){
 
+        println("obra " + params)
+
         def obra = Obra.get(params.obra)
+        println("obra " + obra)
         def oferta = Oferta.get(params.oferta)
         def contrato = Contrato.findByOferta(oferta)
         def obraContrato = ObraContrato.findByContratoAndObra(contrato, obra)

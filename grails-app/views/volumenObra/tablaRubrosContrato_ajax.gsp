@@ -21,7 +21,7 @@
                 <g:formatNumber number="${val.volumenCantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
                                 locale="ec"/>
             </td>
-            <td class="col_precio" style="display: none;text-align: right" id="i_${val.id}"><g:formatNumber
+            <td class="col_precio" style="text-align: right" id="i_${val.id}"><g:formatNumber
                     number="${val.volumenPrecio}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
             <td class="col_total total" style="display: none;text-align: right">
                 <g:formatNumber number="${val.volumenSubtotal}" format="##,##0" minFractionDigits="2"  maxFractionDigits="2"  locale="ec"/>

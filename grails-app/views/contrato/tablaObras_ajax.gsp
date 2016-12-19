@@ -41,6 +41,7 @@
     }
 
     $(".copiarRubros").click(function () {
+        var obraC = $(this).attr("iden")
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'contrato', action: 'revisarRubros_ajax')}',
@@ -55,7 +56,7 @@
                             type: "POST",
                             url: "${g.createLink(controller: 'contrato',action:'copiarRubros_ajax')}",
                             data: {
-                                obra: $(this).attr("iden"),
+                                obra: obraC,
                                 oferta: '${oferta?.id}'
                             },
                             success: function (msg) {

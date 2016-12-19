@@ -110,16 +110,19 @@
     </div>
 </div>
 
-%{--<div class="row-fluid" style="margin-left: 0px">--}%
 <div class="span12" style="margin-left: 0px">
-    %{--<g:if test="${msg}">--}%
-    %{--<div class="alert ${flash.clase ?: 'alert-info'}" role="status" style="width: 80%">${msg}</div>--}%
-    %{--</g:if>--}%
-    <div class="span-6" style="margin-bottom: 5px">
-        <b>Subpresupuesto:</b>
-        <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 300px;font-size: 12px; margin-right: 10px" id="subPresContrato"
+
+    <div class="span-5" style="margin-bottom: 5px">
+
+        <b>Obra:</b>
+        <g:select name="obra_name" from="${obraSel}" optionKey="id" optionValue="descripcion"
+                  style="width: 300px;font-size: 12px; margin-right: 10px" id="obrasContrato"
                   noSelection="['-1': 'Seleccione..']"/>
+
+        <b>Subpresupuesto:</b>
+        %{--<g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"--}%
+                  %{--style="width: 300px;font-size: 12px; margin-right: 10px" id="subPresContrato"--}%
+                  %{--noSelection="['-1': 'Seleccione..']"/>--}%
 
         %{--<b>Area:</b>--}%
         %{--<span id="div_cmb_area"><g:select name="area" id="areaSp" from="${areas}" optionKey="id" optionValue="descripcion"--}%
@@ -129,6 +132,12 @@
         %{--<a href="#" class="btn btn-ajax btn-new btn-params" id="botonIr" title="Ir a detalle de volumenes de obra">--}%
         %{--<i class="icon-check"></i> Ir--}%
         %{--</a>--}%
+    </div>
+
+    <div class="span-4" style="margin-bottom: 5px" id="divSub">
+    </div>
+
+    <div class="span-4" style="margin-bottom: 5px" id="divArea">
     </div>
 </div>
 
@@ -151,8 +160,11 @@
             <th style="width: 40px" class="col_unidad">
                 Unidad
             </th>
-            <th style="width: 70px">
+            <th style="width: 40px">
                 Cantidad
+            </th>
+            <th style="width: 40px">
+                Precio
             </th>
             <th style="width: 40px">
                 Borrar
@@ -208,6 +220,28 @@
 
 <script type="text/javascript">
 
+    $("#obrasContrato").change(function () {
+        var ob = $(this).val()
+        if(ob != '-1'){
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(controller: 'volumenObra', action: 'subpresupuesto_ajax')}",
+                data:{
+                    obra: ob
+                },
+                success: function (msg) {
+                    $("#detalle").html('')
+                    $("#divSub").html(msg)
+                }
+            }) ;
+        }else{
+            $("#detalle").html('');
+            $("#divSub").html('')
+            $("#divArea").html('')
+        }
+
+    });
+
     function loading(div) {
         y = 0;
         $("#" + div).html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
@@ -223,19 +257,20 @@
     }
 
 
-    $("#subPresContrato").change(function () {
-        var sb = $(this).val();
-        cargarTabla(sb)
-    });
+//    $("#subPresContrato").change(function () {
+//        var sb = $(this).val();
+//        cargarTabla(sb)
+//    });
 
-    function cargarTabla(sub) {
+    function cargarTabla(sub, area) {
         var interval = loading("detalle");
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'volumenObra', action: 'tablaRubrosContrato_ajax')}',
             data:{
                 contrato: '${contrato?.id}',
-                sub: sub
+                sub: sub,
+                area: area
             },
             success: function (msg) {
                 clearInterval(interval);

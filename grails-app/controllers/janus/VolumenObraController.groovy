@@ -462,18 +462,27 @@ class VolumenObraController extends janus.seguridad.Shield {
         def vocr = VolumenContrato.findAllByObraContratoInList(obrasContrato)
 
         def subpresupuestos = vocr.subPresupuesto.unique()
+        def obras = vocr.obraContrato.obra.unique()
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
 
-        return [contrato: contrato, subPres: subpresupuestos, campos: campos]
+        return [contrato: contrato, subPres: subpresupuestos, campos: campos, obraSel: obras]
     }
 
     def tablaRubrosContrato_ajax() {
 
         def contrato = Contrato.get(params.contrato)
-        def subpresupuesto = SubPresupuesto.get(params.sub)
+        def subpresupuesto
         def obrasContrato = ObraContrato.findAllByContrato(contrato)
-        def volumenes = VolumenContrato.findAllByObraContratoInListAndSubPresupuesto(obrasContrato, subpresupuesto)
+        def volumenes
+        def area
+        if(params.area == 'no'){
+            volumenes = VolumenContrato.findAllByObraContratoInList(obrasContrato)
+        }else{
+            subpresupuesto = SubPresupuesto.get(params.sub.toInteger())
+            area = Area.get(params.area)
+            volumenes = VolumenContrato.findAllByObraContratoInListAndSubPresupuestoAndArea(obrasContrato, subpresupuesto,area)
+        }
 
         return[valores: volumenes]
     }
@@ -489,5 +498,26 @@ class VolumenObraController extends janus.seguridad.Shield {
 
     def agregarItemContrato_ajax () {
         println("--> " + params)
+    }
+
+    def subpresupuesto_ajax () {
+//        println("params su " + params)
+        def obra = Obra.get(params.obra)
+        def obraContrato = ObraContrato.findAllByObra(obra)
+        def vocr = VolumenContrato.findAllByObraContratoInList(obraContrato)
+        def subpresupuestos = vocr.subPresupuesto.unique()
+
+        return[subPres: subpresupuestos, obra: obra]
+    }
+
+    def area_ajax () {
+
+        def obra = Obra.get(params.obra)
+        def obraContrato = ObraContrato.findAllByObra(obra)
+        def subpresupuesto = SubPresupuesto.get(params.sub)
+        def vocr = VolumenContrato.findAllByObraContratoInListAndSubPresupuesto(obraContrato,subpresupuesto)
+        def areas = vocr.area.unique()
+
+        return[areas: areas, sub: subpresupuesto]
     }
 }

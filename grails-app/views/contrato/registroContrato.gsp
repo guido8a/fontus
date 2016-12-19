@@ -74,6 +74,11 @@
         <g:if test="${contrato?.id && contrato?.estado != 'R'}">
             <button class="btn" id="btn-registrar"><i class="icon-exclamation"></i> Registrar</button>
         </g:if>
+        <g:if test="${contrato}">
+            <g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">
+                <i class="icon-list-alt"></i> Ver Rubros
+            </g:link>
+        </g:if>
 
     </div>
 </div>
@@ -173,14 +178,13 @@
 
 
 
-        <div class="span5" style="margin-top: 20px" align="center">
-            <g:if test="${contrato}">
-                %{--<a href="#" class="btn btn-info" id="verRubrosContrato" iden="${contrato?.id}"><i class="icon-list-alt"></i> Ver Rubros</a>--}%
-                <g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">
-                    <i class="icon-list-alt"></i> Ver Rubros
-                </g:link>
-            </g:if>
-        </div>
+        %{--<div class="span5" style="margin-top: 20px" align="center">--}%
+        %{--<g:if test="${contrato}">--}%
+        %{--<g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">--}%
+        %{--<i class="icon-list-alt"></i> Ver Rubros--}%
+        %{--</g:link>--}%
+        %{--</g:if>--}%
+        %{--</div>--}%
 
         <div class="span12" style="margin-top: 5px" align="center">
 
