@@ -66,13 +66,14 @@ class ObraService {
 //        println "responsableRol $responsableRol, dir: ${obra?.responsableObra?.departamento?.direccion?.id} per: ${Persona.get(usro).departamento?.direccion?.id}"
         if (responsableRol) {
 //            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
-            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(usro).departamento?.direccion?.id) {
+            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(usro).departamento?.direccion?.id &&
+                    obra?.responsableObra?.departamento?.direccion?.id) {
                 dueno = true
             } else {
                 dueno = personasUtfpu.contains(responsableRol) && (Persona.get(usro).departamento?.codigo == 'DNCP')
             }
         }
-//        println "es dueño: $dueno"
+        println "es dueño: $dueno"
         dueno
     }
 

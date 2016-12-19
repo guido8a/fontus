@@ -4,7 +4,7 @@
         <meta name="layout" content="admin"/>
         <title>Perfil</title>
         <g:set var="entityName" value="${message(code: 'prfl.label', default: 'Perfiles')}"/>
-        <title>Gestión de Permisos, Módulos y Perfiles</title>
+        <title>Permisos por Módulos y Perfiles</title>
     </head>
 
     <body>

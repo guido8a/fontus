@@ -79,7 +79,7 @@
 
     <g:each in="${valores}" var="val" status="">
 
-        <tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}" ord="${val.vlobordn}" cant="${val.vlobcntd}">
+        <tr class="item_row" id="${val.item__id}">
 
             <td style="width: 10px" class="sel"><g:checkBox class="chec" name="selec" checked="false" id="seleccionar1" value="${val.item__id}"/></td>
             %{--<td style="width: 10px" class="sel"><input type="checkbox" id="seleccionar1" class="chec" checked="false" value="${val.item__id}"></td>--}%

@@ -1320,6 +1320,7 @@ class ContratoController extends janus.seguridad.Shield {
         def oferta = Oferta.get(params.oferta)
         def concurso = oferta.concurso
         def obras = ObraConcurso.findAllByConcurso(concurso)
+//        def obras = ObraContrato.findAllByContrato(contrato)
 
         return [obras: obras, oferta: oferta]
     }
@@ -1337,7 +1338,7 @@ class ContratoController extends janus.seguridad.Shield {
 
     def copiarRubros_ajax (){
 
-        println("obra " + params)
+        println("copiarRubros_ajax: " + params)
 
         def obra = Obra.get(params.obra)
         println("obra " + obra)
@@ -1372,11 +1373,14 @@ class ContratoController extends janus.seguridad.Shield {
           }
         }
 
+/*
         if(errores == ''){
             render "ok"
         }else{
             render "no"
         }
+*/
+        redirect controller: 'volumenObra', action: 'volObraContrato', params: params
     }
 
     def revisarRubros_ajax () {

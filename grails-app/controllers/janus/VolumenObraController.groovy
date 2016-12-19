@@ -157,65 +157,26 @@ class VolumenObraController extends janus.seguridad.Shield {
     }
 
     def copiarItem() {
-
-//        println "copiarItem "+ params
-
-        def obra = Obra.get(params.obra)
-        def rubro = Item.get(params.rubro)
-        def sbprDest = SubPresupuesto.get(params.subDest)
-        def sbpr = SubPresupuesto.get(params.sub)
-        def areaOrigen = Area.get(params.areaOrigen)
-        def areaDestino = Area.get(params.areaDestino)
+        def cn = dbConnectionService.getConnection()
+        println "copiarItem "+ params
+        def sbprDest = SubPresupuesto.get(params.subDest).id
         def obraDestino = Obra.get(params.obraDestino)
+        def sql = "select max(vlobordn) ordn from vlob where obra__id = ${params.obraDestino}"
+//        println "sql orden: $sql"
+        def orden = cn.rows(sql.toString())[0].ordn + 1
+//        println "orden: $orden"
+        sql = "insert into vlob(sbpr__id, item__id, obra__id, vlobcntd, vlobordn, vlobdias, area__id) " +
+                "select ${params.subDest}, item__id, ${params.obraDestino}, vlobcntd, ${orden}, 0.00, area__id from vlob " +
+                "where obra__id = ${params.obra} and item__id = ${params.rubro}"
+        println "inserta: $sql"
 
-        def itemVolumen = VolumenesObra.findByItemAndSubPresupuestoAndArea(rubro, sbpr,areaOrigen)
-        def itemVolumenDest = VolumenesObra.findByItemAndSubPresupuestoAndObraAndArea(rubro, sbprDest, obraDestino, areaDestino)
-
-//        println("---> origen " +  itemVolumen)
-//        println("---> destino " +  itemVolumenDest)
-
-        def volumen
-
-        def volu = VolumenesObra.list()
-
-        if (params.id)
-            volumen = VolumenesObra.get(params.id)
-        else {
-            if (itemVolumenDest) {
-                flash.clase = "alert-error"
-                flash.message = "No se puede copiar el rubro " + rubro.nombre
-                redirect(action: "tablaCopiarRubro", params: [obra: obra.id, sub: sbpr.id, area: areaOrigen.id, band: 1])
-                return
-            } else {
-//                volumen = VolumenesObra.findByObraAndItemAndSubPresupuesto(obra, rubro, sbprDest)
-//                if (volumen == null)
-                    volumen = new VolumenesObra()
-            }
+        try {
+            println "sql: $sql"
+            cn.execute(sql)
+        } catch (e) {
+            println "e " + e
         }
-
-        if(params.canti){
-            volumen.cantidad = params.canti.toDouble()
-        }else{
-            volumen.cantidad = itemVolumen.cantidad.toDouble()
-        }
-
-        volumen.orden = (volu.orden.size().toInteger()) + 1
-//        volumen.orden = 100
-        volumen.area = areaDestino
-        volumen.subPresupuesto = SubPresupuesto.get(params.subDest)
-        volumen.obra = obraDestino
-        volumen.item = rubro
-        if (!volumen.save(flush: true)) {
-            flash.clase = "alert-error"
-            flash.message = "Error, al copiar los rubros "
-            redirect(action: "tablaCopiarRubro", params: [obra: obra.id])
-        } else {
-            preciosService.actualizaOrden(volumen, "insert")
-            flash.clase = "alert-success"
-            flash.message = "Copiado rubro " + rubro.nombre
-            redirect(action: "tablaCopiarRubro", params: [obra: obra.id, sub: volumen.subPresupuesto.id])
-        }
-
+        redirect(action: "tablaCopiarRubro", params: params)
     }
 
 
@@ -353,9 +314,7 @@ class VolumenObraController extends janus.seguridad.Shield {
     }
 
     def tablaCopiarRubro() {
-
-        println("tabla " + params)
-
+//        println("tabla " + params)
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
         def obra = Obra.get(params.obra)
@@ -382,7 +341,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         def prvl = 0
         def indirecto = obra.totales / 100
 
-        preciosService.ac_rbroObra(obra.id)
+//        preciosService.ac_rbroObra(obra.id)
 
         [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores]
     }
@@ -456,17 +415,20 @@ class VolumenObraController extends janus.seguridad.Shield {
     }
 
     def volObraContrato() {
+        println "volObraContrato ............ $params"
 
-        def contrato = Contrato.get(params.id)
-        def obrasContrato = ObraContrato.findAllByContrato(contrato)
-        def vocr = VolumenContrato.findAllByObraContratoInList(obrasContrato)
+        def obcr = ObraContrato.get(params.id)
 
-        def subpresupuestos = vocr.subPresupuesto.unique()
-        def obras = vocr.obraContrato.obra.unique()
+//        def obrasContrato = ObraContrato.findAllByContrato(contrato)
+//        def vocr = VolumenContrato.findAllByObraContratoInList(obrasContrato)
+//
+//        def subpresupuestos = vocr.subPresupuesto.unique()
 
-        def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
+//        def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
+//        [contrato: contrato, subPres: subpresupuestos, campos: campos, obraSel: obras]
 
-        return [contrato: contrato, subPres: subpresupuestos, campos: campos, obraSel: obras]
+        def subPresupuesto1 = SubPresupuesto.list()
+        [obra: obcr.obra, subPresupuesto1: subPresupuesto1, contrato: obcr.contrato]
     }
 
     def tablaRubrosContrato_ajax() {

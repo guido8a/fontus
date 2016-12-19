@@ -161,7 +161,7 @@
             <div class="row-fluid" style="margin-top: 10px; width: 640px">
 
                 <div class="span2" style="width: 70px;">
-                    Cantón
+                    Puesto en obra
                 </div>
 
                 <div class="span4">

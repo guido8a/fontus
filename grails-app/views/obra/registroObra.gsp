@@ -120,6 +120,7 @@
         </g:if>
 
 
+%{--
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
                 <g:if test="${obra?.fechaInicio == null}">
@@ -128,9 +129,7 @@
             </g:if>
 
             <g:if test="${obra?.id != null}">
-            %{--<g:if test="${duenoObra == 1 || obra?.id == null}">--}%
                 <button class="btn" id="copiarObra"><i class="icon-copy"></i> Copiar Obra</button>
-            %{--</g:if>--}%
             </g:if>
 
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
@@ -138,18 +137,21 @@
                 </button>
             </g:if>
         </g:if>
+--}%
     %{--
           <g:if test="${obra && obra?.tipo != 'D' && obra?.estado != 'R'}">
               <button class="btn" id="btn-setAdminDirecta"><i class="icon-ok"></i> Admin. directa
               </button>
           </g:if>
     --}%
+%{--
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
             <g:if test="${!obra?.fechaInicio}">
                 <button class="btn" id="btn-adminDirecta"><i class="icon-ok"></i> Iniciar obra
                 </button>
             </g:if>
         </g:if>
+--}%
         <g:if test="${obra?.estado == 'R' && obra?.tipo != 'D'}">
             <g:if test="${!obra?.fechaInicio}">
                 <button class="btn" id="btn-memoSIF"><i class="icon-file-text"></i> Memo al S.I.F.
@@ -185,20 +187,22 @@
             <button class="btn" id="btnImprimir"><i class="icon-print"></i> Imprimir</button>
         </g:if>
 
-
-        <g:if test="${obra?.liquidacion == 0}">
-            <g:if test="${duenoObra == 1 /*&& (Concurso.countByObra(obra) == 0)*/}">
-                <g:if test="${obra?.estado == 'N'}">
-                    <g:if test="${obra?.fechaInicio == null}">
-                        <button class="btn btn-warning" id="revisarObra" title="Cambiar estado de la obra a revisado"><i class="icon-check"></i> Revisar Obra</button>
-                    </g:if>
-                </g:if>
-                <g:if test="${obra?.estado == 'S'}">
-                    <g:if test="${obra?.fechaInicio == null}">
-                        <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i>  Registrar Obra</button>
-                    </g:if>
+        <g:if test="${duenoObra == 1 && (Concurso.countByObra(obra) == 0)}">
+            <g:if test="${obra?.estado == 'N'}">
+                <g:if test="${obra?.fechaInicio == null}">
+                    <button class="btn btn-warning" id="revisarObra" title="Cambiar estado de la obra a revisado"><i class="icon-check"></i> Revisar Obra</button>
                 </g:if>
             </g:if>
+            <g:if test="${obra?.estado == 'S'}">
+                <g:if test="${obra?.fechaInicio == null}">
+                    <button class="btn btn-success" id="cambiarEstado" title="Cambiar estado de la obra a registrado"><i class="icon-retweet"></i>  Registrar Obra</button>
+                </g:if>
+            </g:if>
+        </g:if>
+
+
+%{--
+        <g:if test="${obra?.liquidacion == 0}">
 
             <g:if test="${obra?.id != null}">
                 <button class="btn" id="copiarObra"><i class="icon-copy"></i> Copiar Obra</button>
@@ -209,6 +213,7 @@
                 </button>
             </g:if>
         </g:if>
+--}%
 
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
             <g:if test="${!obra?.fechaInicio}">

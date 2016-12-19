@@ -136,19 +136,19 @@
             <table class="table table-bordered table-striped table-condensed table-hover">
                 <thead>
                 <tr>
-                    <th style="width: 5px;">
+                    <th style="width: 60px;">
                         Código
                     </th>
-                    <th style="width: 160px;">
+                    <th style="width: 330px;">
                         Nombre
                     </th>
-                    <th style="width: 20px;">
+                    <th style="width: 80px;">
                         Valor
                     </th>
-                    <th style="width: 10px;">
+                    <th style="width: 120px;">
                         Provincia
                     </th>
-                    <th style="width: 10px;">
+                    <th style="width: 110px;">
                         Acciones
                     </th>
 

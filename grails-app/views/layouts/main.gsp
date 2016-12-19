@@ -10,8 +10,6 @@
         <meta name="author" content="tedein">
 
         <elm:favicon/>
-        %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.8.2.js')}"></script>--}%
-        %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.9.1.custom.min.js')}"></script>--}%
         <script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.9.1.js')}"></script>
         <script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.2.custom.min.js')}"></script>
 
@@ -20,9 +18,9 @@
         %{--<script src="${resource(dir: 'js/jquery/plugins/jquery.countdown', file: 'jquery.countdown.min.js')}"></script>--}%
         <script src="${resource(dir: 'js/jquery/plugins/jquery.countdown', file: 'jquery.countdown.js')}"></script>
         <script src="${resource(dir: 'js/jquery/plugins/jquery.countdown', file: 'jquery.countdown-es.js')}"></script>
+
         <script src="${resource(dir: 'js/jquery/plugins', file: 'date.js')}"></script>
         <script src="${resource(dir: 'js/jquery/plugins/paginate/js', file: 'jquery.luz.paginate.js')}"></script>
-
         <script src="${resource(dir: 'js/jquery/i18n', file: 'jquery.ui.datepicker-es.js')}"></script>
 
         %{--Fuentes--}%
@@ -31,7 +29,6 @@
 
         <!-- Le styles -->
         <link href="${resource(dir: 'css/bootstrap/css', file: 'bootstrap.css')}" rel="stylesheet">
-
         <link href="${resource(dir: 'fontawsome/css', file: 'font-awesome.css')}" rel="stylesheet">
 
         <link href="${resource(dir: 'css', file: 'mobile2.css')}" rel="stylesheet">
@@ -61,17 +58,8 @@
 
         @media (min-width: 1200px)
         </style>
-        %{--<link href="${resource(dir: 'css/bootstrap/css', file: 'bootstrap-responsive.css')}" rel="stylesheet">--}%
-
-        %{--<link href="${resource(dir: 'js/jquery/css/twitBoot', file: 'jquery-ui-1.9.1.custom.min.css')}" rel="stylesheet">--}%
         <link href="${resource(dir: 'js/jquery/css/bw', file: 'jquery-ui-1.10.2.custom.min.css')}" rel="stylesheet">
-
         <link href="${resource(dir: 'js/jquery/plugins/jquery.countdown', file: 'jquery.countdown.css')}" rel="stylesheet">
-
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-      <!--<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
-    %{--<![endif]-->--}%
 
         <link rel="shortcut icon" href="${resource(dir: 'images/ico', file: 'fontus_16.png')}">
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${resource(dir: 'images/ico', file: 'fontus.png')}">
@@ -100,22 +88,11 @@
             var spinner2 = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
             var urlLogin = "${resource(dir:'images', file:'spinnerLogin_24.gif')}";
             var spinnerLogin = $("<img style='margin-left:15px;' src='" + urlLogin + "' alt='Cargando...'/>");
-
             var ot = document.title;
 
-//            function resetTimer() {
-//                var ahora = new Date();
-//                var fin = ahora.clone().add(20).minute();
-//                $("#countdown").countdown('change', {
-//                    until : fin
-//                });
-//                $(".countdown_amount").removeClass("highlight");
-//                document.title = ot;
-//            }
             function resetTimer() {
                 var ahora = new Date();
                 var fin = ahora.clone().add(20).minute();
-//                fin.add(1).second()
                 $("#countdown").countdown('option', {
                     until : fin
                 });
