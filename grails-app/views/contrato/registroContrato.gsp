@@ -150,7 +150,21 @@
                 </tr>
                 </thead>
             </table>
-            <div style="width: 99.7%;height: 150px;overflow-y: auto;float: right;" id="obras_oferta"></div>
+            <div style="width: 99.7%;height: 120px;overflow-y: auto;float: right;" id="obras_oferta"></div>
+
+            <table class="table table-bordered table-striped table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 60px;">
+                        Total:
+                    </th>
+                    <th style="width: 60px;" id="thTotal">
+
+                    </th>
+                </tr>
+                </thead>
+            </table>
+
         </div>
 
         <div class="span5" style="margin-top: 20px" align="center">
@@ -518,14 +532,13 @@
 
 
 
-
-
     if('${contrato}'){
         cargarTablaObras(${contrato?.id})
     }
 
 
     function cargarTablaObras (contrato) {
+        var ofertaC = ${contrato?.oferta?.id}
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'contrato', action: 'tablaObras_ajax')}",
@@ -534,7 +547,8 @@
                 contrato: contrato
             },
             success: function (msg){
-                $("#obras_oferta").html(msg)
+                $("#obras_oferta").html(msg);
+                calcularMonto(ofertaC)
             }
         });
     }
@@ -906,12 +920,15 @@
 
     $(".monto").change(function () {
         var montoValor = $(this).val()
+        var r = (str_replace(",","",montoValor))
+//        console.log("rrr " + r)
         var porcentaje = $("#porcentajeAnticipo").val()
-        var resultado = montoValor*(porcentaje/100)
-        $("#anticipo").val(resultado)
+        var resultado = (r*(porcentaje/100))
+//        $("#anticipo").val(resultado)
+        $("#anticipo").val(number_format(resultado, 2,"."))
     })
 
-    $(".porcentajeAnticipo").change(function () {
+    $("#porcentajeAnticipo").change(function () {
         $(".monto").change()
     })
 
@@ -924,20 +941,9 @@
             var parte = cla.split("_");
             var pro = parte[2];
             var fecha = parte[3];
-//                    console.log($selected.val())
-//            $("#contratista").val($selected.text());
+
             $("#contratista").val(pro);
             $("#fechaPresentacion").val(fecha)
-            %{--$.ajax({--}%
-            %{--type    : "POST",--}%
-            %{--url     : "${g.createLink(action:'getFecha')}",--}%
-            %{--data    : {id : idOferta--}%
-            %{--},--}%
-            %{--success : function (msg) {--}%
-            %{--$("#filaFecha").html(msg);--}%
-
-            %{--}--}%
-            %{--});--}%
 
             $.ajax({
                 type    : "POST",
@@ -970,6 +976,7 @@
                 success: function (msg){
 //                    console.log("msg " + msg)
                     $("#monto").val(number_format(msg, 2,"."));
+                    $("#thTotal").html(number_format(msg, 2,"."))
                 }
             });
 
@@ -985,8 +992,22 @@
             $("#contratista").val("");
             $("#fechaPresentacion").val('');
             $("#obras_oferta").html('')
+            $("#thTotal").html('')
         }
     });
+
+    function calcularMonto (idOferta) {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'contrato', action: 'calcularMonto_ajax')}",
+            data:{
+                oferta: idOferta
+            },
+            success: function (msg){
+                $("#thTotal").html(number_format(msg, 2,"."))
+            }
+        });
+    }
 
 
 </script>
