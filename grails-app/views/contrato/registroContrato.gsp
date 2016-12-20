@@ -75,11 +75,6 @@
         <g:if test="${contrato?.id && contrato?.estado != 'R'}">
             <button class="btn" id="btn-registrar"><i class="icon-exclamation"></i> Registrar</button>
         </g:if>
-    %{--<g:if test="${contrato}">--}%
-    %{--<g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">--}%
-    %{--<i class="icon-list-alt"></i> Ver Rubros--}%
-    %{--</g:link>--}%
-    %{--</g:if>--}%
 
     </div>
 </div>
@@ -183,23 +178,13 @@
                                             disabled="true" style="width: 100px; margin-left: -180px"/></div>
         </div>
 
-
-
-        %{--<div class="span5" style="margin-top: 20px" align="center">--}%
-        %{--<g:if test="${contrato}">--}%
-        %{--<g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">--}%
-        %{--<i class="icon-list-alt"></i> Ver Rubros--}%
-        %{--</g:link>--}%
-        %{--</g:if>--}%
-        %{--</div>--}%
-
         <div class="span12" style="margin-top: 5px" align="center">
 
         </div>
 
     </fieldset>
 
-    <fieldset class="" style="position: relative; height: 150px; border-bottom: 1px solid black;padding: 10px;">
+    <fieldset class="" style="position: relative; height: 180px; border-bottom: 1px solid black;padding: 10px;">
 
         <div class="span12" style="margin-top: 10px">
 
@@ -211,10 +196,8 @@
         </div>
 
         <div class="span12" style="margin-top: 5px">
-
             <div class="span2 formato">Objeto del Contrato</div>
-            <div class="span9" style="margin-left: -20px"><g:textArea name="objeto" class="activo" rows="5" cols="5" style="height: 79px; width: 900px; resize: none" value="${contrato?.objeto}"/></div>
-
+            <div class="span9" style="margin-left: -20px"><g:textArea name="objeto" class="activo required" rows="5" cols="5" style="height: 79px; width: 900px; resize: none" value="${contrato?.objeto}"/></div>
         </div>
 
     </fieldset>
@@ -226,7 +209,7 @@
             <div class="span2 formato">Multa por retraso de obra</div>
 
             <div class="span3">
-                <g:textField name="multaRetraso" class="number" style="width: 50px"
+                <g:textField name="multaRetraso" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaRetraso, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
 
@@ -234,7 +217,7 @@
             <div class="span2 formato">Multa por no presentación de planilla</div>
 
             <div class="span3">
-                <g:textField name="multaPlanilla" class="number" style="width: 50px"
+                <g:textField name="multaPlanilla" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaPlanilla, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
 
@@ -245,14 +228,14 @@
             <div class="span2 formato">Multa por incumplimiento del cronograma</div>
 
             <div class="span3">
-                <g:textField name="multaIncumplimiento" class="number" style="width: 50px"
+                <g:textField name="multaIncumplimiento" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaIncumplimiento, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
 
             <div class="span2 formato">Multa por no acatar disposiciones del fiscalizador</div>
 
             <div class="span3">
-                <g:textField name="multaDisposiciones" class="number" style="width: 50px"
+                <g:textField name="multaDisposiciones" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaDisposiciones, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
 
@@ -277,7 +260,7 @@
             <div class="span2 formato">Anticipo sin reajuste</div>
 
             <div class="span1">
-                <g:textField name="porcentajeAnticipo" class="anticipo activo"
+                <g:textField name="porcentajeAnticipo" class="anticipo activo required"
                              value="${g.formatNumber(number: contrato?.porcentajeAnticipo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
                              style="width: 30px; text-align: right"/> %
             </div>
@@ -311,22 +294,10 @@
             <div class="span2 formato">Indirectos</div>
 
             <div class="span1">
-                <g:textField name="indirectos" class="anticipo activo"
+                <g:textField name="indirectos" class="anticipo activo required"
                              value="${g.formatNumber(number: contrato?.indirectos, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
                              style="width: 30px; text-align: right"/> %
             </div>
-
-            %{--
-                        <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
-                            <div class="span2 formato">La multa por retraso de obra incluye el valor del reajuste</div>
-
-                            <div class="span1">
-                                <g:checkBox name="conReajuste" checked="${contrato?.conReajuste == 1 ? 'true' : ''}"/>
-                            </div>
-                        </div>
-            --}%
-
-
         </div>
 
     </fieldset>
@@ -340,42 +311,16 @@
             <div class="botones">
 
                 <ul class="nav">
-                    %{--<li>--}%
-                    %{--<g:link controller="garantia" action="garantiasContrato" id="">--}%
-                    %{--<i class="icon-pencil"></i>Garantías--}%
-                    %{--</g:link>--}%
-                    %{--<a href="#"><i class="icon-pencil"></i> Garantías</a>--}%
-                    %{--<g:link controller="garantia" action="garantiasContrato" id="${contrato?.id}">--}%
-                    %{--<i class="icon-pencil"></i> Garantías--}%
-                    %{--</g:link>--}%
 
-                    %{--</li>--}%
-                    %{--<li><a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"><i class="icon-list-alt"></i>Vol. Obra--}%
-                    %{--</a></li>--}%
                     <li>
-                    %{--<a href="#" id="btnCronograma">--}%
                         <g:link controller="cronogramaContrato" action="index" id="${contrato?.id}">
                             <i class="icon-th"></i> Cronograma contrato
                         </g:link>
-                    %{--</a>--}%
+
                     </li>
-                    %{--<g:if test="${janus.ejecucion.Planilla.countByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('A')) > 0 && contrato.oferta.concurso.obra.fechaInicio}">--}%
-                    %{--<li>--}%
-                    %{--<g:link controller="cronogramaEjecucion" action="index" id="${contrato?.id}">--}%
-                    %{--<i class="icon-th"></i>Cronograma ejecucion--}%
-                    %{--</g:link>--}%
-                    %{--</li>--}%
-                    %{--</g:if>--}%
-                    %{--<li>--}%
-                    %{--<g:link controller="formulaPolinomica" action="coeficientes" id="${obra?.id}">--}%
-                    %{--Fórmula Pol.--}%
-                    %{--</g:link>--}%
-                    %{--</li>--}%
-                    %{--<li><a href="#" id="btnFormula"><i class="icon-file"></i>F. Polinómica</a></li>--}%
+
                     <li>
-                        %{--<a href="${g.createLink(controller: 'contrato', action: 'polinomicaContrato', id: contrato?.id)}">--}%
-                        %{--<i class="icon-calendar"></i> F. Polinómica--}%
-                        %{--</a>--}%
+
                         <g:link action="copiarPolinomica" id="${contrato?.id}"><i class="icon-superscript"></i> F. polinómica</g:link>
                     </li>
 
@@ -390,19 +335,6 @@
                             <i class="icon-plus"></i> Asignar F. Polinómica
                         </g:link>
                     </li>
-
-                    %{--<li>--}%
-                    %{--<g:link controller="planilla" action="list" id="${contrato?.id}">--}%
-                    %{--<i class=" icon-file-alt"></i>Planillas--}%
-                    %{--</g:link>--}%
-                    %{--</li>--}%
-
-                    %{--<li>--}%
-                    %{--<g:link action="fechasPedidoRecepcion" id="${contrato?.id}">--}%
-                    %{--<i class=" icon-calendar-empty"></i>Fechas de pedido de recepción--}%
-                    %{--</g:link>--}%
-                    %{--</li>--}%
-
                 </ul>
 
             </div>
@@ -412,70 +344,6 @@
 </g:if>
 
 
-%{--<g:if test="${contrato}">--}%
-%{--<div class="navbar navbar-inverse" style="margin-top: 20px;padding-left: 5px;" align="center">--}%
-
-%{--<div class="navbar-inner">--}%
-%{--<div class="botones">--}%
-
-%{--<ul class="nav">--}%
-%{--<li>--}%
-%{--<g:link controller="garantia" action="garantiasContrato" id="">--}%
-%{--<i class="icon-pencil"></i>Garantías--}%
-%{--</g:link>--}%
-%{--<a href="#"><i class="icon-pencil"></i> Garantías</a>--}%
-%{--<g:link controller="garantia" action="garantiasContrato" id="${contrato?.id}">--}%
-%{--<i class="icon-pencil"></i> Garantías--}%
-%{--</g:link>--}%
-
-%{--</li>--}%
-%{--<li><a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"><i class="icon-list-alt"></i>Vol. Obra--}%
-%{--</a></li>--}%
-%{--<li>--}%
-%{--<a href="#" id="btnCronograma">--}%
-%{--<g:link controller="cronogramaContrato" action="index" id="${contrato?.id}">--}%
-%{--<i class="icon-th"></i>Cronograma contrato--}%
-%{--</g:link>--}%
-%{--</a>--}%
-%{--</li>--}%
-%{--<g:if test="${janus.ejecucion.Planilla.countByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('A')) > 0 && contrato.oferta.concurso.obra.fechaInicio}">--}%
-%{--<li>--}%
-%{--<g:link controller="cronogramaEjecucion" action="index" id="${contrato?.id}">--}%
-%{--<i class="icon-th"></i>Cronograma ejecucion--}%
-%{--</g:link>--}%
-%{--</li>--}%
-%{--</g:if>--}%
-%{--<li>--}%
-%{--<g:link controller="formulaPolinomica" action="coeficientes" id="${obra?.id}">--}%
-%{--Fórmula Pol.--}%
-%{--</g:link>--}%
-%{--</li>--}%
-%{--<li><a href="#" id="btnFormula"><i class="icon-file"></i>F. Polinómica</a></li>--}%
-%{--<li>--}%
-%{--<a href="${g.createLink(controller: 'contrato', action: 'polinomicaContrato', id: contrato?.id)}">--}%
-%{--<i class="icon-calendar"></i> F. Polinómica--}%
-%{--</a>--}%
-%{--</li>--}%
-
-%{--<li>--}%
-%{--<g:link controller="documentoProceso" action="list" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id]">--}%
-%{--<i class="icon-book"></i>Biblioteca--}%
-%{--</g:link>--}%
-%{--</li>--}%
-
-%{--<li>--}%
-%{--<g:link controller="planilla" action="list" id="${contrato?.id}">--}%
-%{--<i class=" icon-file-alt"></i>Planillas--}%
-%{--</g:link>--}%
-%{--</li>--}%
-
-%{--</ul>--}%
-
-%{--</div>--}%
-%{--</div>--}%
-
-%{--</div>--}%
-%{--</g:if>--}%
 
 
 <div class="modal hide fade mediumModal" id="modal-var" style="overflow: hidden">
@@ -513,12 +381,7 @@
 </div>
 
 
-
-%{--</div>--}%
-
-
 <div id="borrarContrato">
-
     <fieldset>
         <div class="span3">
             Está seguro de que desea borrar el contrato: <div style="font-weight: bold;">${contrato?.codigo} ?</div>
@@ -606,51 +469,32 @@
     });
 
     $("#plazo").keydown(function (ev) {
-
         return validarInt(ev);
-
     }).keyup(function () {
-
         var enteros = $(this).val();
-
     });
 
     $("#monto").keydown(function (ev) {
-
         return validarNum(ev);
-
     }).keyup(function () {
-
         var enteros = $(this).val();
-
     });
 
     $("#porcentajeAnticipo").keydown(function (ev) {
-
         return validarNum(ev);
-
     }).keyup(function () {
-
         var enteros = $(this).val();
-
         if (parseFloat(enteros) > 100) {
-
             $(this).val(100)
-
         }
         updateAnticipo();
-
     });
 
 
     $("#indirectos").keydown(function (ev) {
-
         return validarNum(ev);
-
     }).keyup(function () {
-
         var enteros = $(this).val();
-
         if (parseFloat(enteros) > 100) {
             $(this).val(100)
         }
@@ -658,41 +502,18 @@
 
 
     $("#anticipo").keydown(function (ev) {
-
         return validarNum(ev);
-
     }).keyup(function () {
-
         var enteros = $(this).val();
         updateAnticipo();
-//                        var porcentaje = $("#porcentajeAnticipo").val();
-//
-//                        var monto = $("#monto").val();
-//
-//                        var anticipoValor = (porcentaje * (monto)) / 100;
-//
-//                        $("#anticipo").val(number_format(anticipoValor, 2, ".", ""));
-
     }).click(function () {
         updateAnticipo();
-//                        var porcentaje = $("#porcentajeAnticipo").val();
-//
-//                        var monto = $("#monto").val();
-//
-//                        var anticipoValor = (porcentaje * (monto)) / 100;
-//
-//                        $("#anticipo").val(number_format(anticipoValor, 2, ".", ","));
-
     });
 
     $("#financiamiento").keydown(function (ev) {
-
         return validarNum(ev);
-
     }).keyup(function () {
-
         var enteros = $(this).val();
-
     });
 
 
@@ -772,7 +593,6 @@
     });
 
     $("#btn-nuevo").click(function () {
-
         location.href = "${createLink(action: 'registroContrato')}"
     });
 
@@ -790,7 +610,6 @@
     });
 
     $("#btn-aceptar").click(function () {
-
         if($(".indiceOferta").val()){
             $("#frm-registroContrato").submit();
         }else{
@@ -883,15 +702,11 @@
                         location.href = "${g.createLink(action: 'registroContrato')}";
                     }
                 });
-//
-
-//
             },
             "Cancelar" : function () {
                 $("#borrarContrato").dialog("close");
             }
         }
-
     });
 
     /* muestra la X en el botón de cerrar */
@@ -911,20 +726,11 @@
         $(".porcentajeAnticipo").change()
     });
 
-    //            $("#anticipo").val(number_format(anticipoValor, 2, ".", ","));
-    //            var monto = $("#monto").val().replace(",", "");
-    //            var anticipo = $("#anticipo").val().replace(",", "");
-    //            $("#monto").val(number_format(monto, 2, ".", ","));
-    //            $("#anticipo").val(number_format(anticipo, 2, ".", ","));
-
-
     $(".monto").change(function () {
         var montoValor = $(this).val()
         var r = (str_replace(",","",montoValor))
-//        console.log("rrr " + r)
         var porcentaje = $("#porcentajeAnticipo").val()
         var resultado = (r*(porcentaje/100))
-//        $("#anticipo").val(resultado)
         $("#anticipo").val(number_format(resultado, 2,"."))
     })
 
