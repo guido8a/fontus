@@ -516,6 +516,14 @@
 <script type="text/javascript">
 
 
+   $(".monto").change(function () {
+       var montoValor = $(this).val()
+       var porcentaje = $("#porcentajeAnticipo").val()
+       var resultado = montoValor*(porcentaje/100)
+       $("#anticipo").val(resultado)
+   })
+
+
 
     if('${contrato}'){
         cargarTablaObras(${contrato?.id})
