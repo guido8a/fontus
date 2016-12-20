@@ -36,7 +36,7 @@
         </div>
 
         <div class="tituloTree">
-            Volúmenes de la obra: ${obra.nombre + " (" + obra.codigo + ")"}
+            Volúmenes de la obra contratada: ${obra.nombre + " (" + obra.codigo + ")"}
             <input type="hidden" id="override" value="0">
         </div>
 
@@ -55,9 +55,8 @@
 
         <div class="row-fluid" style="margin-left: 0px">
             <div class="span3" style="width: 380px; margin-top: -20px;">
-                <b>Subpresupuesto:</b><g:select name="sbpr" id="sbpr" from="${janus.SubPresupuesto.findAllByIdGreaterThan(0, [sort: 'descripcion'])}" optionKey="id"
-                                                optionValue="descripcion" style="margin-left: 0px; width: 300px; font-size: 13px; font-weight: bold"/>
-                <g:if test="${duenoObra == 1}">
+                <b>Subpresupuesto:</b><g:select name="sbpr" id="sbpr" from="${janus.SubPresupuesto.findAllByIdGreaterThan(0, [sort: 'descripcion'])}"
+                        optionKey="id" optionValue="descripcion" style="margin-left: 0px; width: 300px; font-size: 13px; font-weight: bold"/>
                     <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto">
                         <i class="icon-plus"></i>
                     </a>
@@ -67,9 +66,6 @@
                     <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto">
                         <i class="icon-edit"></i>
                     </a>
-
-                </g:if>
-
             </div>
 
 
@@ -93,31 +89,13 @@
                         </a>
 
                     </g:if>
-                    <g:else>
-                        <g:if test="${persona?.departamento?.id == obra?.departamento?.id}">
-                            <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto">
-                                <i class="icon-plus"></i>
-                            </a>
-                            <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto">
-                                <i class="icon-minus"></i>
-                            </a>
-                            <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto">
-                                <i class="icon-edit"></i>
-                            </a>
-                        </g:if>
-                    </g:else>
                 </div>
             </div>
-        </div>
         </div>
 
         <div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: 0px">
             <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 60px">
-                %{--<div class="linea" style="height: 98%;"></div>--}%
-
-
-
-                    %{--Inicia registro de vlob--}%
+                    %{--Inicia registro de vocr--}%
                     <div class="span1" style="margin-left: 20px; width: 100px;">
                         <b>Código:</b>
                         <input type="text" style="width: 60px;;font-size: 12px" id="item_codigo" class="allCaps">
@@ -146,35 +124,25 @@
                     <div class="span1" style="margin-left: 10px;padding-top:0px; width: 25px;">
                         <input type="hidden" value="" id="vol_id">
 
-                        <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
-
+                        <g:if test="${contrato?.estado != 'R'}">
                             <a href="#" class="btn btn-primary" title="agregar" id="item_agregar" style="margin-top: 20px;">
                                 <i class="icon-plus"></i>
                             </a>
-
                         </g:if>
-                        <g:else>
-                            <g:if test="${obra.estado != 'R' && obra?.departamento?.id == persona?.departamento?.id}">
-                                <a href="#" class="btn btn-primary" title="agregar" id="item_agregar" style="margin-top: 20px;">
-                                    <i class="icon-plus"></i>
-                                </a>
-                            </g:if>
-                        </g:else>
-
                     </div>
                 </div>
             </div>
 
             <div class="borde_abajo" style="position: relative;float: left;width: 95%;padding-left: 45px">
                 <p class="css-vertical-text">Composición</p>
-
                 <div class="linea" style="height: 98%;"></div>
 
-                <div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle"></div>
+                <div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle">
+                    %{--detale de volúmenes de obra--}%
+                </div>
 
                 <div style="width: 99.7%;height: 30px;overflow-y: auto;float: right;text-align: right" id="total">
-                    <b>TOTAL:</b>
-
+                    <b>VALOR TOTAL DE LA OBRA:</b>
                     <div id="divTotal" style="width: 150px;float: right;height: 30px;font-weight: bold;font-size: 12px;margin-right: 20px"></div>
                 </div>
             </div>
@@ -183,14 +151,11 @@
         <div class="modal grande hide fade" id="modal-rubro" style="overflow: hidden;">
             <div class="modal-header btn-info">
                 <button type="button" class="close" data-dismiss="modal">×</button>
-
                 <h3 id="modalTitle"></h3>
             </div>
-
             <div class="modal-body" id="modalBody">
                 <bsc:buscador name="rubro.buscador.id" value="" accion="buscaRubro" controlador="volumenObra" campos="${campos}" label="Rubro" tipo="lista"/>
             </div>
-
             <div class="modal-footer" id="modalFooter">
             </div>
         </div>
@@ -200,7 +165,6 @@
                 <button type="button" class="close darker" data-dismiss="modal">
                     <i class="icon-remove-circle"></i>
                 </button>
-
                 <h3 id="modalTitle-sp"></h3>
             </div>
 
@@ -217,7 +181,6 @@
                     Está seguro que desea borrar el subpresupuesto?
                 </div>
             </fieldset>
-
         </div>
 
         <div id="borrarAreaDialog">
@@ -230,9 +193,7 @@
 
 
 
-
         <script type="text/javascript">
-
             var aviso = false;  //aviso de TR...
 
             function loading(div) {
@@ -248,16 +209,17 @@
                 }, 500);
                 return interval
             }
-            function cargarTabla() {
 
+            function cargarTabla() {
                 var interval = loading("detalle")
                 var datos = ""
                 if ($("#subPres_desc").val() * 1 > 0) {
-                    datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1
+                    datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1 + "&cntr=" + ${contrato.id}
                 } else {
-                    datos = "obra=${obra.id}&ord=" + 1
+                    datos = "obra=${obra.id}&ord=" + 1 + "&cntr=" + ${contrato.id}
                 }
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'tabla')}",
+                $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'tablaCntr')}",
+                %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'tabla')}",--}%
                     data     : datos,
                     success  : function (msg) {
                         clearInterval(interval)

@@ -516,12 +516,7 @@
 <script type="text/javascript">
 
 
-   $(".monto").change(function () {
-       var montoValor = $(this).val()
-       var porcentaje = $("#porcentajeAnticipo").val()
-       var resultado = montoValor*(porcentaje/100)
-       $("#anticipo").val(resultado)
-   })
+
 
 
 
@@ -898,6 +893,8 @@
                 }
             });
         }
+        $(".monto").change()
+        $(".porcentajeAnticipo").change()
     });
 
     //            $("#anticipo").val(number_format(anticipoValor, 2, ".", ","));
@@ -907,7 +904,16 @@
     //            $("#anticipo").val(number_format(anticipo, 2, ".", ","));
 
 
+    $(".monto").change(function () {
+        var montoValor = $(this).val()
+        var porcentaje = $("#porcentajeAnticipo").val()
+        var resultado = montoValor*(porcentaje/100)
+        $("#anticipo").val(resultado)
+    })
 
+    $(".porcentajeAnticipo").change(function () {
+        $(".monto").change()
+    })
 
 
     $("#ofertas").change(function () {

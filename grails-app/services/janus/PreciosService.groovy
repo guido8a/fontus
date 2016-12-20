@@ -517,10 +517,7 @@ class PreciosService {
      }
 
     def rbro_pcun_v4(obra,orden){
-
-
 //        println("ordenv4:" + orden)
-
         def cn = dbConnectionService.getConnection()
         def sql = "select * from rbro_pcun_v2(" + obra + ",0,0) order by vlobordn ${orden}"
         def result = []
@@ -530,11 +527,9 @@ class PreciosService {
         }
         cn.close()
         return result
-
     }
 
     def rbro_pcun_v5(obra, subpres, area, orden){
-
         println "ordenv3 obra: $obra, subpres: $subpres , orden: $orden"
 
         def cn = dbConnectionService.getConnection()
@@ -546,7 +541,21 @@ class PreciosService {
         }
         cn.close()
         return result
+    }
 
+    def rbro_pcun_cntr(obra, subpres, area, orden){
+        println "ordenv3 obra: $obra, subpres: $subpres , orden: $orden"
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select item__id, itemcdgo rbrocdgo, vocr__id vlob__id, itemnmbr rbronmbr, vocrordn vlobordn, " +
+                "sbpr__id, sbprdscr, area__id, areadscr,  from rbro_pcun_v2($obra, $subpres, $area) where sbpr__id= ${subpres} and area__id = ${area} order by vlobordn ${orden}"
+//        println "rbro_pcun_cntr " + sql
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
     }
 
 
