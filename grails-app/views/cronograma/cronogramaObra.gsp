@@ -85,12 +85,12 @@
                     Subpresupuesto: <g:select name="subpresupuesto" from="${subpres}" optionKey="id" optionValue="descripcion"
                                               style="width: 300px;font-size: 10px" id="subpres" value="${subpre}"
                                               noSelection="['-1': 'TODOS']"/>
+
+                    <span id="div_cmb_area"><g:select name="area" id="areaSp" from="${areas}" optionKey="id" optionValue="descripcion"
+                                                      style="font-size: 12px; width: 240px"/></span>
+
+
                     <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre">Cambiar</a>
-%{--
-                    <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
-                    <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre">Cambiar</a>
-                    </g:if>
---}%
 
                     <g:if test="${obra.estado != 'R'}">
                         <a href="#" class="btn" style="margin-top: -10px;" id="btnDesmarcar">Desmarcar todo</a>
@@ -484,6 +484,17 @@
 
         <script type="text/javascript">
 
+            $("#subpres").change(function () {
+                $.ajax({
+                    type    : "POST", url : "${g.createLink(controller: 'cronograma', action:'cargarAreas_ajax')}",
+                    data    : "sbpr=" + $("#subpres").val() + "&obra=" + ${obra.id},
+                    success : function (msg) {
+                        $("#div_cmb_area").html(msg)
+                    }
+                });
+            });
+
+
             //            var plot, redraw = false;
 
             function log(msg) {
@@ -721,7 +732,7 @@
                             buttons       : false
                         }
                     });
-                    location.href = "${createLink(action: 'cronogramaObra')}/${obra.id}?subpre=" + $("#subpres").val();
+                    location.href = "${createLink(action: 'cronogramaObra')}/${obra.id}?subpre=" + $("#subpres").val() + "&area=" + $("#areaCrono").val();
                 });
 
                 <g:if test="${obra.estado!='R'}">

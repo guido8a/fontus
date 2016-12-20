@@ -11,7 +11,8 @@ class CronogramaController extends janus.seguridad.Shield {
 
     def preciosService
     def arreglosService
-    def DbConnectionService
+//    def DbConnectionService
+    def dbConnectionService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -358,9 +359,9 @@ class CronogramaController extends janus.seguridad.Shield {
     }
 
     def cronogramaObra() {
-//        println "--- cronograma"
+//        println "--- cronograma" + params
         def cn = dbConnectionService.getConnection()
-//        def inicio = new Date()
+        def cn2 = dbConnectionService.getConnection()
         def obra = Obra.get(params.id)
         def subpres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
         def persona = Persona.get(session.usuario.id)
@@ -373,7 +374,9 @@ class CronogramaController extends janus.seguridad.Shield {
 
         def detalle
         if (subpre != "-1") {
-            detalle = VolumenesObra.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre), [sort: "orden"])
+            detalle = VolumenesObra.findAllByObraAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: "orden"])
+//            detalle = VolumenesObra.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre),[sort: "orden"])
+
         } else {
             detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         }
@@ -385,10 +388,19 @@ class CronogramaController extends janus.seguridad.Shield {
             preciosVlob = preciosService.rbro_pcun_v3(obra?.id, subpre)
         }
 
+        def areas = []
+        def lsta = []
+        if(subpre != '-1') {
+            lsta = []
+            cn.eachRow("select distinct area__id from vlob where obra__id = ${obra.id} and sbpr__id = ${subpre}".toString()) {d ->
+                lsta.add(d.area__id)
+            }
+            areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+        }
+        cn.close()
 
         def precios = [:]
         def pcun = [:]
-//        def indirecto = obra.totales / 100
 
         preciosService.ac_rbroObra(obra.id)
 
@@ -398,9 +410,6 @@ class CronogramaController extends janus.seguridad.Shield {
             pcun.put(dt.id.toString(), preciosVlob.find { it.vlob__id == dt.id}.pcun)
         }
 
-//        def fin = new Date()
-//        println "${TimeCategory.minus(fin, inicio)}"
-
         def tieneMatriz = false
         cn.eachRow("select count(*) cuenta from mfrb where obra__id = ${obra.id}".toString()) { d ->
             tieneMatriz = d.cuenta > 0
@@ -409,7 +418,7 @@ class CronogramaController extends janus.seguridad.Shield {
 
 
         return [detalle: detalle, precios: precios, pcun: pcun, obra: obra, subpres: subpres, subpre: subpre,
-                persona: persona, duenoObra: duenoObra, tieneMatriz: tieneMatriz]
+                persona: persona, duenoObra: duenoObra, tieneMatriz: tieneMatriz, areas: areas]
     }
 
     def cronogramaObra_antesPresupuestos() {
@@ -551,6 +560,16 @@ class CronogramaController extends janus.seguridad.Shield {
         dueno
     }
 
+    def cargarAreas_ajax() {
+        def cn = dbConnectionService.getConnection()
+        def lsta = []
+        cn.eachRow("select distinct area__id from vlob where obra__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
+            lsta.add(d.area__id)
+        }
+        def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+
+        [areas: areas]
+    }
 
 
 
