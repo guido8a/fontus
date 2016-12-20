@@ -58,6 +58,7 @@
         <g:if test="${contrato?.estado != 'R'}">
             <button class="btn" id="btn-aceptar"><i class="icon-save"></i> Guardar</button>
         </g:if>
+
         <button class="btn" id="btn-cancelar"><i class="icon-undo"></i> Cancelar</button>
         <g:if test="${contrato?.id}">
             <g:if test="${contrato?.id && contrato?.estado != 'R'}">
@@ -74,11 +75,11 @@
         <g:if test="${contrato?.id && contrato?.estado != 'R'}">
             <button class="btn" id="btn-registrar"><i class="icon-exclamation"></i> Registrar</button>
         </g:if>
-        <g:if test="${contrato}">
-            <g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">
-                <i class="icon-list-alt"></i> Ver Rubros
-            </g:link>
-        </g:if>
+    %{--<g:if test="${contrato}">--}%
+    %{--<g:link controller="volumenObra" class="btn btn-info" action="volObraContrato" id="${contrato?.id}">--}%
+    %{--<i class="icon-list-alt"></i> Ver Rubros--}%
+    %{--</g:link>--}%
+    %{--</g:if>--}%
 
     </div>
 </div>
@@ -98,15 +99,10 @@
 
     <fieldset class="" style="position: relative; border-bottom: 1px solid black;">
         <div class="span12" style="margin-top: 20px; margin-left: 40px;">
-
             <div class="span1 formato">Contrato N°</div>
-
             <div class="span3"><g:textField name="codigo" maxlength="20" class="codigo required caps" value="${contrato?.codigo}"/></div>
-
             <div class="span2 formato">Memo de Distribución</div>
-
             <div class="span3"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="20"/></div>
-
         </div> <!--DSAFSD-->
     </fieldset>
 
@@ -114,17 +110,15 @@
     <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
 
         <p class="css-vertical-text">Contratación</p>
-
         <div class="linea" style="height: 85%;"></div>
-
         <div class="span5" style="margin-top: 5px">
             <div class="span1 formato">Oferta</div>
-
             <div class="span3" id="div_ofertas">
                 <elm:select name="oferta.id" id="ofertas" from="${janus.pac.Oferta.list([sort: 'descripcion', order: 'asc'])}" optionKey="id"
                             optionValue="descripcion" noSelection="['-1': 'Seleccione']"
                             class="required" style="width: 300px"
-                            optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"/>
+                            optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"
+                            disabled="${contrato ? 'true' : 'false'}"/>
 
             </div>
         </div>
@@ -148,16 +142,16 @@
                     <th style="width: 120px;">
                         Provincia
                     </th>
-                    <th style="width: 110px;">
-                        Acciones
-                    </th>
-
+                    <g:if test="${contrato}">
+                        <th style="width: 110px;">
+                            Acciones
+                        </th>
+                    </g:if>
                 </tr>
                 </thead>
             </table>
             <div style="width: 99.7%;height: 150px;overflow-y: auto;float: right;" id="obras_oferta"></div>
         </div>
-
 
         <div class="span5" style="margin-top: 20px" align="center">
             <div class="span1 formato">Contratista</div>
@@ -167,7 +161,6 @@
                              style="width: 280px; margin-left: 25px;"/>
             </div>
         </div>
-
 
         <div class="span5" style="margin-top: 20px" align="center">
             <div class="span3 formato" style="margin-left: -15px">Fecha presentación de la Oferta</div>
@@ -197,11 +190,8 @@
         <div class="span12" style="margin-top: 10px">
 
             <div class="span2 formato">Tipo de contrato</div>
-
             <div class="span4" style="margin-left:-20px"><g:select from="${janus.pac.TipoContrato.list()}" name="tipoContrato.id" class="tipoContrato activo" value="${contrato?.tipoContratoId}" optionKey="id" optionValue="descripcion"/></div>
-
             <div class="span2 formato" style="margin-left:-20px">Fecha de Suscripción</div>
-
             <div class="span3"><elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo" value="${contrato?.fechaSubscripcion}"/></div>
 
         </div>
@@ -209,7 +199,6 @@
         <div class="span12" style="margin-top: 5px">
 
             <div class="span2 formato">Objeto del Contrato</div>
-
             <div class="span9" style="margin-left: -20px"><g:textArea name="objeto" class="activo" rows="5" cols="5" style="height: 79px; width: 900px; resize: none" value="${contrato?.objeto}"/></div>
 
         </div>
@@ -528,19 +517,18 @@
 
 
 
-
     if('${contrato}'){
-        cargarTablaObras()
+        cargarTablaObras(${contrato?.id})
     }
 
 
-    function cargarTablaObras () {
-
+    function cargarTablaObras (contrato) {
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'contrato', action: 'tablaObras_ajax')}",
             data:{
-                oferta: '${contrato?.oferta?.id}'
+                oferta: '${contrato?.oferta?.id}',
+                contrato: contrato
             },
             success: function (msg){
                 $("#obras_oferta").html(msg)
@@ -951,7 +939,8 @@
                 type: 'POST',
                 url: "${createLink(controller: 'contrato', action: 'tablaObras_ajax')}",
                 data:{
-                    oferta: idOferta
+                    oferta: idOferta,
+                    band: 1
                 },
                 success: function (msg){
                     $("#obras_oferta").html(msg)

@@ -999,7 +999,7 @@ class ContratoController extends janus.seguridad.Shield {
         def obrasConcurso
         def obrasContrato
 
-        println("-->> save" + params)
+//        println("-->> save" + params)
 
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
@@ -1036,12 +1036,7 @@ class ContratoController extends janus.seguridad.Shield {
             }//no existe el objeto
             contratoInstance.properties = params
             contratoInstance.periodoInec = indice
-
-            obrasContrato = ObraContrato.findAllByContrato(contratoInstance)
-            obrasContrato.each {
-                it.delete(flush: true)
-            }
-
+            contratoInstance.monto = params.monto.toDouble()
 
         }//es edit
         else {
@@ -1057,22 +1052,14 @@ class ContratoController extends janus.seguridad.Shield {
 
             contratoInstance = new Contrato(params)
             contratoInstance.periodoInec = indice
-
-
-
-
-
-
+            contratoInstance.monto = params.monto.toDouble()
         } //es create
 
 
-
-        oferta = Oferta.get(params."oferta.id")
-        obrasConcurso = ObraConcurso.findAllByConcurso(oferta.concurso)
-
-
-
-
+        if(!params.id){
+            oferta = Oferta.get(params."oferta.id")
+            obrasConcurso = ObraConcurso.findAllByConcurso(oferta.concurso)
+        }
 
 
 
@@ -1096,14 +1083,18 @@ class ContratoController extends janus.seguridad.Shield {
             return
         }else{
 
-            obrasConcurso.each {
-                def obraC = new ObraContrato()
-                obraC.contrato = contratoInstance
-                obraC.obra = it.obra
-                obraC.valor = it.valor
+            if(!params.id){
+                obrasConcurso.each {
+                    def obraC = new ObraContrato()
+                    obraC.contrato = contratoInstance
+                    obraC.obra = it.obra
+                    obraC.valor = it.valor
 
-                obraC.save(flush: true)
+                    obraC.save(flush: true)
+                }
             }
+
+
 
             if (params.id) {
                 flash.clase = "alert-success"
@@ -1317,12 +1308,20 @@ class ContratoController extends janus.seguridad.Shield {
 
     def tablaObras_ajax() {
 //        println("params tabla oferta " + params)
-        def oferta = Oferta.get(params.oferta)
-        def concurso = oferta.concurso
-        def obras = ObraConcurso.findAllByConcurso(concurso)
-//        def obras = ObraContrato.findAllByContrato(contrato)
+        def obras
+        def oferta
 
-        return [obras: obras, oferta: oferta]
+        if(params.contrato){
+            def contrato = Contrato.get(params.contrato)
+            obras = ObraContrato.findAllByContrato(contrato)
+            oferta = contrato.oferta
+        }else{
+            oferta = Oferta.get(params.oferta)
+            def concurso = oferta.concurso
+            obras = ObraConcurso.findAllByConcurso(concurso)
+        }
+
+        return [obras: obras, oferta: oferta, band: params.contrato]
     }
 
     def calcularMonto_ajax () {

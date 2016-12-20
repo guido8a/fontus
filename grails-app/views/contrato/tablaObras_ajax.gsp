@@ -7,27 +7,45 @@
 
 <table class="table table-bordered table-striped table-condensed table-hover">
     <tbody id="tabla_material">
-    <g:each in="${obras}" var="obra">
-        <tr>
-            <td style="width: 60px" >${obra?.obra?.codigo}</td>
-            <td style="width: 330px" >${obra?.obra?.nombre}</td>
-            <td style="width: 80px; text-align: right"><g:formatNumber number="${obra?.valor}" format="##,##0"
-                    minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-            <td style="width: 120px" title="${"Parroquia: " + obra?.obra?.parroquia?.nombre + " - Cantón: " +
-                    obra?.obra?.parroquia?.canton?.nombre}">${obra?.obra?.parroquia?.canton?.provincia?.nombre}</td>
-            <td  style="width: 110px">
-                <a href="#" class="btn btn-success btn-small copiarRubros" iden="${obra?.id}" title="Rubros contratados">
-                    <i class="icon-copy"></i>
-                </a>
-                <a href="#" class="btn btn-success btn-small cronograma" iden="${obra?.id}" title="Cronograma de la obra">
-                    <i class="icon-calendar"></i>
-                </a>
-                <a href="#" class="btn btn-success btn-small editarObra" iden="${obra?.id}" title="Editar Obra">
-                    <i class="icon-pencil"></i>
-                </a>
-            </td>
-        </tr>
-    </g:each>
+    %{--<g:if test="${band}">--}%
+        <g:each in="${obras}" var="obra">
+                <td style="width: 60px" >${obra?.obra?.codigo}</td>
+                <td style="width: 330px" >${obra?.obra?.nombre}</td>
+                <td style="width: 80px; text-align: right"><g:formatNumber number="${obra?.valor}" format="##,##0"
+                                                                           minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                <td style="width: 120px" title="${"Parroquia: " + obra?.obra?.parroquia?.nombre + " - Cantón: " +
+                        obra?.obra?.parroquia?.canton?.nombre}">${obra?.obra?.parroquia?.canton?.provincia?.nombre}</td>
+                <g:if test="${band}">
+                <td  style="width: 110px">
+                    <a href="#" class="btn btn-success btn-small copiarRubros" iden="${obra?.id}" title="Rubros contratados">
+                        <i class="icon-copy"></i>
+                    </a>
+                    <a href="#" class="btn btn-success btn-small cronograma" iden="${obra?.id}" title="Cronograma de la obra">
+                        <i class="icon-calendar"></i>
+                    </a>
+                    <a href="#" class="btn btn-success btn-small editarObra" iden="${obra?.id}" title="Editar Obra">
+                        <i class="icon-pencil"></i>
+                    </a>
+                </td>
+               </g:if>
+            </tr>
+        </g:each>
+    %{--</g:if>--}%
+    %{--<g:else>--}%
+        %{--<g:each in="${obras}" var="obra">--}%
+            %{--<tr>--}%
+                %{--<td style="width: 60px" >${obra?.obra?.codigo}</td>--}%
+                %{--<td style="width: 330px" >${obra?.obra?.nombre}</td>--}%
+                %{--<td style="width: 80px; text-align: right"><g:formatNumber number="${obra?.valor}" format="##,##0"--}%
+                                                                           %{--minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+                %{--<td style="width: 120px" title="${"Parroquia: " + obra?.obra?.parroquia?.nombre + " - Cantón: " +--}%
+                        %{--obra?.obra?.parroquia?.canton?.nombre}">${obra?.obra?.parroquia?.canton?.provincia?.nombre}</td>--}%
+                %{--<td  style="width: 110px">--}%
+                %{--</td>--}%
+            %{--</tr>--}%
+        %{--</g:each>--}%
+    %{--</g:else>--}%
+
     </tbody>
 </table>
 
