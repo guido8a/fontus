@@ -15,7 +15,7 @@
                                                                            minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                 <td style="width: 120px" title="${"Parroquia: " + obra?.obra?.parroquia?.nombre + " - Cantón: " +
                         obra?.obra?.parroquia?.canton?.nombre}">${obra?.obra?.parroquia?.canton?.provincia?.nombre}</td>
-                <g:if test="${band}">
+                <g:if test="${contrato}">
                 <td  style="width: 110px">
                     <a href="#" class="btn btn-success btn-small copiarRubros" iden="${obra?.id}" title="Rubros contratados">
                         <i class="icon-copy"></i>
@@ -79,15 +79,18 @@
                 obra: $(this).attr("iden"),
                 oferta: '${oferta?.id}'
             },
+            async: false,
             success: function (msg1){
+                console.log('retorna:', msg1)
                 if(msg1 == 'no'){
                     if (confirm("Esta seguro de copiar los rubros de esta obra hacia el contrato?")) {
                         $.ajax({
                             type: "POST",
-                            url: "${g.createLink(controller: 'contrato',action:'copiarRubros_ajax')}",
+                            url: "${g.createLink(controller: 'contrato', action:'copiarRubros_ajax')}",
                             data: {
                                 obra: obraC,
-                                oferta: '${oferta?.id}'
+                                oferta: '${oferta?.id}',
+                                contrato: ${contrato?:0}
                             },
                             success: function (msg) {
                                 if(msg == 'ok'){
@@ -101,7 +104,7 @@
                 }
             }
         })
-        var url = "${g.createLink(controller: 'volumenObra',action:'volObraContrato')}" + "/" + obraC
+        var url = "${g.createLink(controller: 'volumenObra', action:'volObraContrato')}" + "/" + obraC
         location.href = url;
     });
 

@@ -543,13 +543,19 @@ class PreciosService {
         return result
     }
 
-    def rbro_pcun_cntr(obra, subpres, area, orden){
-        println "ordenv3 obra: $obra, subpres: $subpres , orden: $orden"
+    def rbro_pcun_cntr(obra, sbpr, area, orden){
+        println "rbro_pcun_cntr obra: $obra, subpres: $sbpr , orden: $orden"
 
         def cn = dbConnectionService.getConnection()
-        def sql = "select item__id, itemcdgo rbrocdgo, vocr__id vlob__id, itemnmbr rbronmbr, vocrordn vlobordn, " +
-                "sbpr__id, sbprdscr, area__id, areadscr,  from rbro_pcun_v2($obra, $subpres, $area) where sbpr__id= ${subpres} and area__id = ${area} order by vlobordn ${orden}"
-//        println "rbro_pcun_cntr " + sql
+        def tx1 = sbpr != 0 ? "and vocr.sbpr__id = $sbpr and vocr.area__id = ${area}" : ""
+        def sql = "select vocr.item__id, itemcdgo rbrocdgo, vocr__id vlob__id, itemnmbr rbronmbr, vocrordn vlobordn, " +
+                "vocr.sbpr__id, sbprdscr, vocr.area__id, areadscr area, vocrpcun pcun, vocrcntd vlobcntd, vocrsbtt totl, " +
+                "unddcdgo " +
+                "from vocr, sbpr, area, item, undd where obcr__id = $obra and sbpr.sbpr__id = vocr.sbpr__id and " +
+                "area.area__id = vocr.area__id and item.item__id = vocr.item__id and undd.undd__id = item.undd__id " +
+                "$tx1 order by vlobordn ${orden}"
+
+        println "rbro_pcun_cntr " + sql
         def result = []
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())

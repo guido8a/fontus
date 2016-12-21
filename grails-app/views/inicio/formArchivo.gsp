@@ -62,8 +62,8 @@
             </div>
 
             <div class="row-fluid" style="margin-left: 0px">
-                <div class="span4">
-                    <a href="#" class="btn btn-success" id="btnSubmit">Subir</a>
+                <div class="span6">
+                    <a href="#" class="btn btn-success" id="btnSubmit" style="margin-left: 360px">Subir archivo a migrar</a>
                 </div>
             </div>
         </g:uploadForm>
@@ -89,10 +89,45 @@
                 <div class="row-fluid" style="margin-left: 0px">
                     <div class="span8">
                         <div class="span4"><b>Archivo de distribución geográfica:</b></div>
-                        <input type="file" class="required span4" id="file" name="file"/>
+                        <input type="file" class="required span4" id="fileGr" name="file"/>
                     </div>
-                    <div class="span2">
-                        <a href="#" class="btn btn-success" id="btnSubir">Subir</a>
+                    <div class="span4">
+                        <a href="#" class="btn btn-success" id="btnSubir">Subir archivo de distribución geográfica</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid" style="margin-left: 0px">
+            </div>
+        </g:uploadForm>
+
+        <g:uploadForm action="cambiarItem" method="post" name="cambiaItem">
+            <div id="list-grupo" class="span12" role="main" style="margin: 10px 0 0 0;">
+                <div class="row-fluid" style="margin: 0 0 20px 0;">
+                    <div class="span9">
+                        <h3>Cambiar Items conforme archivo</h3>
+                        Se corrigen códigos de ciertos items y se eliminan otros. la columna cambiar contiene ELIMINAR o
+                        el código por el cual debe ser reemplazado el item actual.
+                        Al reemplazar el código, se debe reemplarlo en el APU si existe y eliminarlo.
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <th>CODIGO</th>
+                                <th>COL B</th>
+                                <th>COL C</th>
+                                <th>COL D</th>
+                                <th>CAMBIAR</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row-fluid" style="margin-left: 0px">
+                    <div class="span8">
+                        <div class="span4"><b>Archivo con correcciones:</b></div>
+                        <input type="file" class="required span4" id="fileItem" name="file"/>
+                    </div>
+                    <div class="span4">
+                        <a href="#" class="btn btn-success" id="btnCorregir">Subir archivo con correcciones</a>
                     </div>
                 </div>
             </div>
@@ -122,6 +157,13 @@
                     if ($("#cargaProv").valid()) {
                         $(this).replaceWith(spinner);
                         $("#cargaProv").submit();
+                    }
+                });
+
+                $("#btnCorregir").click(function () {
+                    if ($("#cambiaItem").valid()) {
+                        $(this).replaceWith(spinner);
+                        $("#cambiaItem").submit();
                     }
                 });
             });

@@ -49,10 +49,22 @@ class VolumenObraController extends janus.seguridad.Shield {
     }
 
     def cargarAreas() {
-//        println("params" + params)
+        println("cargarAreas:" + params)
         def cn = dbConnectionService.getConnection()
         def lsta = []
         cn.eachRow("select distinct area__id from vlob where obra__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
+            lsta.add(d.area__id)
+        }
+        def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+
+        [areas: areas]
+    }
+
+    def cargarAreasCntr() {
+        println("cargarAreasCntr:" + params)
+        def cn = dbConnectionService.getConnection()
+        def lsta = []
+        cn.eachRow("select distinct area__id from vocr where obcr__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
             lsta.add(d.area__id)
         }
         def areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
@@ -108,8 +120,6 @@ class VolumenObraController extends janus.seguridad.Shield {
     def addItem() {
         println "addItem " + params
         def obra = Obra.get(params.obra)
-//        def rubro2 = Item.get(params.rubro)
-//        def rubro = Item.get(params.id)
         def rubro = Item.findByCodigoIlike(params.cod)
         def sbpr = SubPresupuesto.get(params.sub)
         def volumen
@@ -120,9 +130,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         else {
 
             volumen = new VolumenesObra()
-//            def v=VolumenesObra.findByItemAndObra(rubro,obra)
             def v = VolumenesObra.findAll("from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}")
-//            println "v "+v
             if (v.size() > 0) {
                 v = v.pop()
                 if (params.override == "1") {
@@ -137,7 +145,6 @@ class VolumenObraController extends janus.seguridad.Shield {
                 }
             }
         }
-//        println "volumn :" + volumen
 
         volumen.cantidad = params.cantidad.toDouble()
         volumen.orden = params.orden.toInteger()
@@ -154,6 +161,55 @@ class VolumenObraController extends janus.seguridad.Shield {
             preciosService.actualizaOrden(volumen, "insert")
             redirect(action: "tabla", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: params.ord, area: params.area])
         }
+    }
+
+    def addItemCntr() {
+        println "addItemCntr " + params
+        def obra = Obra.get(params.obra)
+        def rubro = Item.findByCodigoIlike(params.cod)
+        def sbpr = SubPresupuesto.get(params.sub)
+        def volumen
+
+/*
+        if (params.id)
+            volumen = VolumenesObra.get(params.id)
+        else {
+
+            volumen = new VolumenesObra()
+            def v = VolumenesObra.findAll("from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}")
+            if (v.size() > 0) {
+                v = v.pop()
+                if (params.override == "1") {
+                    v.cantidad += params.cantidad.toDouble()
+                    v.save(flush: true)
+                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: params.ord])
+                    return
+                } else {
+                    msg = "error"
+                    render msg
+                    return
+                }
+            }
+        }
+*/
+
+/*
+        volumen.cantidad = params.cantidad.toDouble()
+        volumen.orden = params.orden.toInteger()
+        volumen.subPresupuesto = SubPresupuesto.get(params.sub)
+        volumen.obra = obra
+        volumen.item = rubro
+        volumen.descripcion = params.dscr
+        volumen.area = Area.get(params.area)
+
+        if (!volumen.save(flush: true)) {
+            println "error volumen obra " + volumen.errors
+            render "error"
+        } else {
+            preciosService.actualizaOrden(volumen, "insert")
+*/
+            redirect(action: "tablaCntr", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: params.ord, area: params.area])
+//        }
     }
 
     def copiarItem() {
@@ -254,11 +310,12 @@ class VolumenObraController extends janus.seguridad.Shield {
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
         def subPresupuesto1 = SubPresupuesto.list()
-        def obra = Obra.get(params.obra)
-        def contrato = Obra.get(params.contrato)
+        def obra = ObraContrato.get(params.obra)
+        def contrato = obra.contrato
         def duenoObra = 0
         def valores
         def orden
+        def cntr = params.cntr
 
         if(params.area && params.area != 'null'){
             areaSel = params.area.toInteger()
@@ -271,40 +328,35 @@ class VolumenObraController extends janus.seguridad.Shield {
         }
 
         if (subPre && subPre != "-1" ) {
-            valores = preciosService.rbro_pcun_v5(obra.id, subPre, areaSel, orden)
+            valores = preciosService.rbro_pcun_cntr(obra.id, subPre, areaSel, orden)
         }
 
         if(subPre == 0) {
-            valores = preciosService.rbro_pcun_v4(obra.id, orden)
+            valores = preciosService.rbro_pcun_cntr(obra.id, subPre, areaSel, orden)
         }
 
         def lsta = []
-        cn.eachRow("select distinct sbpr__id from vlob where obra__id = ${obra.id}".toString()) {d ->
+        cn.eachRow("select distinct sbpr__id from vocr where obcr__id = ${obra.id}".toString()) {d ->
             lsta.add(d.sbpr__id)
         }
         def subPres = SubPresupuesto.findAllByIdInList(lsta, [sort: 'descripcion'])
         subPres += SubPresupuesto.get(0)
 
-        def estado = obra.estado
-
-        duenoObra = esDuenoObra(obra)? 1 : 0
-
-
         def areas = []
         if(subPre > 0) {
             lsta = []
-            cn.eachRow("select distinct area__id from vlob where obra__id = ${obra.id} and sbpr__id = ${subPre}".toString()) {d ->
+            cn.eachRow("select distinct area__id from vocr where obcr__id = ${obra.id} and sbpr__id = ${subPre}".toString()) {d ->
                 lsta.add(d.area__id)
             }
             areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
         }
         cn.close()
 
-        println "subPres: $subPres, subPre: $subPre, obra: $obra, valores: $valores, areaSel: $areaSel, areas: $areas, " +
-                "subPresupuesto1: $subPresupuesto1"
+        println "subPres: $subPres, subPre: $subPre, obcr: ${obra.id}, areaSel: $areaSel, " +
+                "subPresupuesto1: $subPresupuesto1, cntr: $cntr"
 
-        [subPres: subPres, subPre: subPre, obra: obra, valores: valores, areaSel: areaSel, areas: areas,
-         subPresupuesto1: subPresupuesto1, msg: params.msg, persona: persona, duenoObra: duenoObra]
+        [subPres: subPres, subPre: subPre, obra: obra.obra, valores: valores, areaSel: areaSel, areas: areas,
+         subPresupuesto1: subPresupuesto1, msg: params.msg, persona: persona, contrato: obra.contrato, obcr: obra.id]
     }
 
     def esDuenoObra(obra) {
@@ -474,7 +526,7 @@ class VolumenObraController extends janus.seguridad.Shield {
         def subPresupuesto1 = SubPresupuesto.list()
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
 
-        [obra: obcr.obra, subPresupuesto1: subPresupuesto1, contrato: obcr.contrato, campos: campos]
+        [obra: obcr.obra, subPresupuesto1: subPresupuesto1, contrato: obcr.contrato, campos: campos, obcr: obcr.id]
     }
 
     def tablaRubrosContrato_ajax() {

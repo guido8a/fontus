@@ -102,18 +102,22 @@
                         <input type="hidden" style="width: 60px" id="item_id">
                     </div>
 
-                    <div class="span8" style="margin-left: -20px;">
+                    <div class="span7" style="margin-left: -20px;">
                         <b>Rubro:</b>
-                        <input type="text" style="width: 720px;font-size: 12px" id="item_nombre" readonly="true">
+                        <input type="text" style="width: 620px;font-size: 12px" id="item_nombre" readonly="true">
                     </div>
 
                     <div class="span2" style="margin-left: -30px; width: 80px;">
                         <b>Unidad:</b>
-                        <input type="text" style="width: 60px" id="item_unidad" value="" readonly="true">
+                        <input type="text" style="width: 50px" id="item_unidad" value="" readonly="true">
                     </div>
                     <div class="span1" style="margin-left: 0px; width: 100px;">
                         <b>Cantidad:</b>
-                        <input type="text" style="width: 90px;text-align: right" id="item_cantidad" value="">
+                        <input type="text" style="width: 80px;text-align: right" id="item_cantidad" value="">
+                    </div>
+                    <div class="span1" style="margin-left: 0px; width: 100px;">
+                        <b>P. Unitario</b>
+                        <input type="text" style="width: 80px;text-align: right" id="item_pcun" value="">
                     </div>
 
                     <div class="span1" style="margin-left: 10px; width: 90px;">
@@ -214,9 +218,9 @@
                 var interval = loading("detalle")
                 var datos = ""
                 if ($("#subPres_desc").val() * 1 > 0) {
-                    datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1 + "&cntr=" + ${contrato.id}
+                    datos = "obra=${obcr}&sub=" + $("#subPres_desc").val() + "&ord=" + 1 + "&cntr=" + ${contrato.id}
                 } else {
-                    datos = "obra=${obra.id}&ord=" + 1 + "&cntr=" + ${contrato.id}
+                    datos = "obra=${obcr}&ord=" + 1 + "&cntr=" + ${contrato.id}
                 }
                 $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'tablaCntr')}",
                 %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'tabla')}",--}%
@@ -245,6 +249,7 @@
                 cargarTabla();
                 $("#vol_id").val("")
                 $("#calcular").click(function () {
+/*
                     if ($(this).hasClass("active")) {
                         $(this).removeClass("active")
                         $(".col_delete").show()
@@ -256,26 +261,14 @@
                         $(".col_delete").hide()
                         $(".col_precio").show()
                         $(".col_total").show()
+*/
                         var total = 0
-//                        var total1 = 0
 
                         $(".total").each(function () {
-//                    console.log($(this),$(this).html())
-
                             total += parseFloat(str_replace(",", "", $(this).html()))
                         })
-                        if ($("#subPres_desc").val() == "-1") {
-                            $.ajax({
-                                type    : "POST", url : "${g.createLink(controller: 'volumenObra', action:'setMontoObra')}",
-                                data    : "obra=${obra?.id}&monto=" + total,
-                                success : function (msg) {
-
-                                }
-                            });
-                        }
-
                         $("#divTotal").html(number_format(total, 2, ".", ","))
-                    }
+//                    }
                 });
 
                 $("#item_codigo").dblclick(function () {
@@ -285,7 +278,6 @@
                     $("#modal-rubro").modal("show");
                     $("#buscarDialog").unbind("click")
                     $("#buscarDialog").bind("click", enviar)
-
                 });
 
                 $("#reporteGrupos").click(function () {
@@ -716,7 +708,7 @@
                             datos += "&id=" + $("#vol_id").val()
 //                        //console.log(datos)
 
-                        $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'addItem')}",
+                        $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra', action:'addItemCntr')}",
                             data     : datos,
                             success  : function (msg) {
                                 if (msg != "error") {

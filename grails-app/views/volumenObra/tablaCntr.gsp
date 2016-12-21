@@ -9,26 +9,27 @@
     <div class="span-6" style="margin-bottom: 5px">
         <b>Subpresupuesto:</b>
         <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 300px;font-size: 12px; margin-right: 10px" id="subPres_desc" value="${subPre}"
+                  style="width: 400px;font-size: 12px; margin-right: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'Seleccione..']"/>
 
         <b>Area:</b>
         <span id="div_cmb_area"><g:select name="area" id="areaSp" from="${areas}" optionKey="id" optionValue="descripcion"
-                                         style="font-size: 12px; width: 240px"  value="${areaSel}"/>
+                                         style="font-size: 12px; width: 340px"  value="${areaSel}"/>
         </span>
 
-        <a href="#" class="btn btn-ajax btn-new btn-params" id="botonIr" title="Ir a detalle de volumenes de obra">
+        <a href="#" class="btn btn-ajax btn-new btn-params" id="botonIr" title="Ir a detalle de volumenes de obra" style="margin-top: -10px">
             <i class="icon-check"></i> Ir
         </a>
 
-        <a href="#" class="btn btn-ajax btn-new ${params.ord == '1'? 'active': ''}" id="ordenarAsc" title="Ordenar Ascendentemente">
+        <a href="#" class="btn btn-ajax btn-new ${params.ord == '1'? 'active': ''}" id="ordenarAsc" title="Ordenar Ascendentemente" style="margin-top: -10px">
             <i class="icon-arrow-up"></i>
         </a>
-        <a href="#" class="btn btn-ajax btn-new ${params.ord == '2'? 'active': ''}" id="ordenarDesc" title="Ordenar Descendentemente">
+        <a href="#" class="btn btn-ajax btn-new ${params.ord == '2'? 'active': ''}" id="ordenarDesc" title="Ordenar Descendentemente" style="margin-top: -10px">
             <i class="icon-arrow-down"></i>
         </a>
 
 
+%{--
         <a href="#" class="btn  " id="copiar_rubros">
             <i class="icon-copy"></i>
             Copiar Rubros
@@ -37,24 +38,8 @@
         <a href="#" class="btn  " id="imprimirSub">
             <i class="icon-print"></i>Imprimir
         </a>
+--}%
 
-        %{--<a href="#" class="btn  " id="imprimir_sub">--}%
-        %{--<i class="icon-print"></i>--}%
-        %{--Impr. Subpre.--}%
-        %{--</a>--}%
-        %{--<a href="#" class="btn  " id="imprimir_excel" style="margin-left:-7px">--}%
-        %{--<i class="icon-table"></i>--}%
-        %{--Excel--}%
-        %{--</a>--}%
-
-        %{--<a href="#" class="btn  " id="imprimir_sub_vae">--}%
-        %{--<i class="icon-print"></i>--}%
-        %{--Subpre. VAE--}%
-        %{--</a>--}%
-        %{--<a href="#" class="btn  " id="imprimir_vae_excel">--}%
-        %{--<i class="icon-table"></i>--}%
-        %{--VAE Excel--}%
-        %{--</a>--}%
     </div>
 </div>
 <table class="table table-bordered table-striped table-condensed table-hover">
@@ -81,9 +66,9 @@
         <th style="width: 80px">
             Cantidad
         </th>
-        <th class="col_precio" style="display: none;">Unitario</th>
-        <th class="col_total" style="display: none;">C.Total</th>
-        <g:if test="${obra.estado!='R' && duenoObra == 1}">
+        <th class="col_precio">Unitario</th>
+        <th class="col_total">C.Total</th>
+        <g:if test="${contrato.estado != 'R'}">
             <th style="width: 40px" class="col_delete"></th>
         </g:if>
     </tr>
@@ -93,7 +78,7 @@
     <g:each in="${valores}" var="val" status="j">
     %{--<tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">--}%
         <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}" item="${val}"
-            dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}" area="${val.area__id}">
+            sub="${val.sbpr__id}" cdgo="${val.item__id}" area="${val.area__id}">
 
             <td style="width: 20px" class="orden">${val.vlobordn}</td>
             <td style="width: 200px" class="sub">${val.sbprdscr.trim()}</td>
@@ -105,12 +90,12 @@
                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2"
                                 locale="ec"/>
             </td>
-            <td class="col_precio" style="display: none;text-align: right" id="i_${val.item__id}"><g:formatNumber
+            <td class="col_precio" style="text-align: right" id="i_${val.item__id}"><g:formatNumber
                     number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-            <td class="col_total total" style="display: none;text-align: right">
+            <td class="col_total total" style="text-align: right">
                 <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="2"  maxFractionDigits="2"  locale="ec"/>
             </td>
-            <g:if test="${obra.estado!='R' && duenoObra == 1}">
+            <g:if test="${contrato.estado!='R'}">
                 <td style="width: 40px;text-align: center" class="col_delete">
                     <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar"
                        iden="${val.vlob__id}">
@@ -443,9 +428,10 @@
         $("#divTotal").html("")
         $("#calcular").removeClass("active")
 
-        var datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1 + "&area=" + $("#areaSp").val()
+        var datos = "obra=${obcr}&sub=" + $("#subPres_desc").val() + "&ord=" + 1 + "&area=" + $("#areaSp").val() + "&cntr=" + ${contrato.id};
+        console.log(datos)
         var interval = loading("detalle")
-        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'tabla')}",
+        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'tablaCntr')}",
             data: datos,
             success: function (msg) {
                 clearInterval(interval)
@@ -455,9 +441,10 @@
     });
 
     $("#subPres_desc").change(function () {
+        console.log('cambia... sbpr')
         $.ajax({
-            type    : "POST", url : "${g.createLink(controller: 'volumenObra', action:'cargarAreas')}",
-            data    : "sbpr=" + $("#subPres_desc").val() + "&obra=" + ${obra.id},
+            type    : "POST", url : "${g.createLink(controller: 'volumenObra', action:'cargarAreasCntr')}",
+            data    : "sbpr=" + $("#subPres_desc").val() + "&obra=" + ${obcr},
             success : function (msg) {
                 $("#div_cmb_area").html(msg)
             }
@@ -469,11 +456,10 @@
 
     $(".item_row").dblclick(function () {
         $("#calcular").removeClass("active")
-        $(".col_delete").show()
-        $(".col_precio").hide()
-        $(".col_total").hide()
+//        $(".col_delete").show()
+//        $(".col_precio").hide()
+//        $(".col_total").hide()
         $("#divTotal").html("")
-        //$("#vol_id").val($(this).attr("id"))     /* gdo: id del registro a editar */
         $("#vol_id").val($(this).attr("id"))     /* gdo: id del registro a editar */
         $("#item_codigo").val($(this).find(".cdgo").html())
         $("#item_id").val($(this).attr("item"))
@@ -488,15 +474,7 @@
         $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
         $("#item_orden").val($(this).find(".orden").html())
         $("#item_unidad").val($(this).find(".col_unidad").html().toString().trim())
-
-         %{--$.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'cargaCombosEditar')}",--}%
-         %{--data: "id=" + $(this).attr("sub"),--}%
-         %{--success: function (msg) {--}%
-         %{--$("#div_cmb_sub").html(msg)--}%
-         %{--}--}%
-         %{--});--}%
-
-//        //console.log($(this).attr("id"))
+        $("#item_pcun").val($(this).find(".col_precio").html().toString().trim())
     });
 
     $(".borrarItem").click(function () {

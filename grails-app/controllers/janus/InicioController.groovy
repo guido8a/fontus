@@ -451,7 +451,7 @@ class InicioController extends janus.seguridad.Shield {
                 Workbook workbook = Workbook.getWorkbook(file, ws)
                 workbook.getNumberOfSheets().times { sheet ->
 
-                    /** ------------------- carga equipos ----------------- **/
+                    /** ------------------- carga registros ----------------- **/
                     if (sheet == 0) {  // primera hoja Equipo -- no tiene categoria
                         Sheet s = workbook.getSheet(sheet)
                         if (!s.getSettings().isHidden()) {
@@ -525,6 +525,123 @@ class InicioController extends janus.seguridad.Shield {
                                                 println "ERROR: $e"
                                             }
                                         }
+                                        contador++
+                                    }
+                                } //row ! empty
+                            } //rows.each
+                        } //sheet ! hidden
+                        htmlInfo += "<p>Se han cargado $contador registros<p>"
+                    }// sheet 0
+
+                } //sheets.each
+                if (contador > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente $contador registros</div>"
+                }
+
+                def str = doneHtml
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+                str += doneHtml
+
+                flash.message = str
+
+                println "DONE!! --> $str"
+                redirect(action: 'mensajeUpload')
+            } else {
+                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
+                redirect(action: 'formArchivo')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(action: 'formArchivo')
+//            println "NO FILE"
+        }
+    }
+
+    def cambiarItem() {
+        println "cambiarItem $params"
+        def contador = 0
+
+        def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xls") {
+                fileName = "xlsComposicion_" + new Date().format("yyyyMMdd_HHmmss")
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = ""
+                def file = new File(pathFile)
+                WorkbookSettings ws = new WorkbookSettings();
+                ws.setEncoding("Cp1252");
+                Workbook workbook = Workbook.getWorkbook(file, ws)
+                workbook.getNumberOfSheets().times { sheet ->
+
+                    /** ------------------- carga registros ----------------- **/
+                    if (sheet == 0) {  // datos a corregir
+                        Sheet s = workbook.getSheet(sheet)
+                        if (!s.getSettings().isHidden()) {
+                            println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+                            htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+                            Cell[] row = null
+
+                            s.getRows().times { j ->
+                                row = s.getRow(j)
+                                println row*.getContents()
+                                println row.length
+
+                                if (row.length >= 4) {
+                                    def cdgo = row[0].getContents().trim()
+                                    def nuevo = row[4].getContents().trim()
+                                    if (cdgo != "CODIGO") {  // no es el título
+                                        if(nuevo != "ELIMINAR") {
+                                            println "procesar $cdgo para cambiar código a $nuevo"
+                                        } else {
+                                            println "procesar $cdgo para eliminar"
+                                        }
+/*
+                                        def prov = Provincia.findByNombre(provnmbr)
+                                        if (!prov) {
+                                            prov = new Provincia()
+                                            prov.numero = provnmro
+                                            prov.nombre = provnmbr
+                                            try {
+                                                prov.save(flush: true)
+                                            } catch (DataIntegrityViolationException e) {
+                                                println "ERROR: $e"
+                                            }
+                                            prov.refresh()
+*/
                                         contador++
                                     }
                                 } //row ! empty

@@ -1052,7 +1052,7 @@ class ContratoController extends janus.seguridad.Shield {
 
             contratoInstance = new Contrato(params)
             contratoInstance.periodoInec = indice
-            contratoInstance.monto = params.monto.toDouble()
+            contratoInstance.monto = params.monto.replaceAll(",", "").toDouble()
         } //es create
 
 
@@ -1321,7 +1321,8 @@ class ContratoController extends janus.seguridad.Shield {
             obras = ObraConcurso.findAllByConcurso(concurso)
         }
 
-        return [obras: obras, oferta: oferta, band: params.contrato]
+        println "obras: $obras"
+        return [obras: obras, oferta: oferta, contrato: params.contrato]
     }
 
     def calcularMonto_ajax () {
@@ -1336,67 +1337,28 @@ class ContratoController extends janus.seguridad.Shield {
     }
 
     def copiarRubros_ajax (){
-
         println("copiarRubros_ajax: " + params)
-
-        def obra = Obra.get(params.obra)
-        println("obra " + obra)
-        def oferta = Oferta.get(params.oferta)
-        def contrato = Contrato.findByOferta(oferta)
-        def obraContrato = ObraContrato.findByContratoAndObra(contrato, obra)
-
-        def volumenes = VolumenesObra.findAllByObra(obra)
         def cn = dbConnectionService.getConnection()
-        def lista = []
-        def valores = preciosService.rbro_pcun_v4(obra.id, 'asc')
-        def vocr
-        def errores = ''
-        def area
+        def obcr = ObraContrato.get(params.obra)
 
-        valores.each {v->
-          area = VolumenesObra.findBySubPresupuestoAndItemAndObra(SubPresupuesto.get(v.sbpr__id), Item.get(v.item__id), obra).area
-          vocr = new VolumenContrato()
-          vocr.item = Item.get(v.item__id)
-          vocr.obraContrato = obraContrato
-          vocr.subPresupuesto = SubPresupuesto.get(v.sbpr__id)
-          vocr.volumenCantidad = (v.vlobcntd).toDouble()
-          vocr.volumenOrden = (v.vlobordn).toInteger()
-          vocr.volumenPrecio = (v.vlobpcun).toDouble()
-          vocr.volumenSubtotal = (v.totl).toDouble()
-          vocr.area = area
+        def sql = "insert into vocr(sbpr__id, item__id, obcr__id, vocrcntd, vocrordn, vocrpcun, vocrsbtt, vocrrtcr, area__id) " +
+                "select sbpr__id, item__id, ${params.obra}, vlobcntd, vlobordn, vlobpcun, vlobsbtt, vlobrtcr, area__id " +
+                "from vlob where obra__id = ${obcr.obra.id}"
+        println "insert de copiarRubros_ajax: $sql"
 
-          if(!vocr.save(flush: true)){
-              errores += vocr.errors
-          }else{
+        cn.execute(sql.toString())
+        cn.close()
 
-          }
-        }
-
-/*
-        if(errores == ''){
-            render "ok"
-        }else{
-            render "no"
-        }
-*/
+        params.id = obcr.id
         redirect controller: 'volumenObra', action: 'volObraContrato', params: params
     }
 
     def revisarRubros_ajax () {
+        println "revisarRubros_ajax $params"
+        def obraContrato = ObraContrato.get(params.obra)
+        def vocr = VolumenContrato.findAllByObraContrato(obraContrato)?.size() > 0
 
-        def obra = Obra.get(params.obra)
-        def oferta = Oferta.get(params.oferta)
-        def contrato = Contrato.findByOferta(oferta)
-        def obraContrato = ObraContrato.findByContratoAndObra(contrato, obra)
-
-        def obrasContrato = ObraContrato.findAllByContrato(contrato)
-        def vocr = VolumenContrato.findAllByObraContratoInList(obrasContrato)
-
-        if(vocr.obraContrato.contains(obraContrato)){
-            render "ok"
-        }else{
-            render "no"
-        }
+        render vocr? "ok" : "no"
     }
 
 
