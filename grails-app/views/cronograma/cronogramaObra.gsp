@@ -47,7 +47,7 @@
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
                     <a href="#" class="btn disabled" id="btnDeleteRubro">
                         <i class="icon-minus"></i>
-                        Eliminar Rubro
+                        Eliminar valores del Rubro
                     </a>
                     <a href="#" class="btn" id="btnDeleteCronograma">
                         <i class="icon-trash"></i>
@@ -89,8 +89,7 @@
                     <span id="div_cmb_area"><g:select name="area" id="areaCrono" from="${areas}" optionKey="id" optionValue="descripcion"
                                                       style="font-size: 12px; width: 240px"/></span>
 
-
-                    <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre">Cambiar</a>
+                    <a href="#" class="btn btn-ajax btn-new btn-params" style="margin-top: -10px;" id="btnSubpre"><i class="icon-check"></i> Ir</a>
 
                     <g:if test="${obra.estado != 'R'}">
                         <a href="#" class="btn" style="margin-top: -10px;" id="btnDesmarcar">Desmarcar todo</a>
@@ -1159,21 +1158,21 @@
                                 if (validar2()) {
                                     $btnOk.replaceWith(spinner);
 
-                                    $(".item_row.rowSelected").each(function () {
-                                        var id = $(this).data("id");
-                                        $.ajax({
-                                            async   : false,
-                                            type    : "POST",
-                                            url     : "${createLink(action:'deleteRubro_ajax')}",
-                                            data    : {
-                                                id : id
-                                            },
-                                            success : function (msg) {
-                                                $(".mes.rubro" + id).text("").data("val", 0);
-                                                updateTotales();
-                                            }
-                                        });
-                                    });
+                                    %{--$(".item_row.rowSelected").each(function () {--}%
+                                        %{--var id = $(this).data("id");--}%
+                                        %{--$.ajax({--}%
+                                            %{--async   : false,--}%
+                                            %{--type    : "POST",--}%
+                                            %{--url     : "${createLink(action:'deleteRubro_ajax')}",--}%
+                                            %{--data    : {--}%
+                                                %{--id : id--}%
+                                            %{--},--}%
+                                            %{--success : function (msg) {--}%
+                                                %{--$(".mes.rubro" + id).text("").data("val", 0);--}%
+                                                %{--updateTotales();--}%
+                                            %{--}--}%
+                                        %{--});--}%
+                                    %{--});--}%
 
                                     var dataAjax = "";
 

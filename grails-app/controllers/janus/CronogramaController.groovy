@@ -35,13 +35,18 @@ class CronogramaController extends janus.seguridad.Shield {
 //            println parts
             def per = parts[1].toString().toInteger()
             def vol = VolumenesObra.get(parts[0].toString().toLong())
-            /*
-            VolumenesObra volumenObra
-            Integer periodo
-            Double precio
-            Double porcentaje
-            Double cantidad
-             */
+
+            //delete
+            def ok1 = 0, no1 = 0
+            Cronograma.findAllByVolumenObra(vol).each { cr ->
+                try {
+                    cr.delete(flush: true)
+                    ok1++
+                } catch (DataIntegrityViolationException e) {
+                    no1++
+                }
+            }
+
             def cont = true
             def crono = Cronograma.findAllByVolumenObraAndPeriodo(vol, per)
             if (crono.size() == 1) {
@@ -49,7 +54,7 @@ class CronogramaController extends janus.seguridad.Shield {
             } else if (crono.size() == 0) {
                 crono = new Cronograma()
             } else {
-                println "cronogramaController, l 41: WTF MAS DE UN CRONOGRAMA volumen obra " + vol.id + " periodo " + per + " hay " + crono.size()
+                println "cronogramaController, l 41: MAS DE UN CRONOGRAMA volumen obra " + vol.id + " periodo " + per + " hay " + crono.size()
                 cont = false
             }
 
@@ -73,7 +78,7 @@ class CronogramaController extends janus.seguridad.Shield {
 
     def deleteRubro_ajax() {
 //
-//        println params
+        println ("delete " + params)
         def ok = 0, no = 0
         def vol = VolumenesObra.get(params.id)
         Cronograma.findAllByVolumenObra(vol).each { cr ->
