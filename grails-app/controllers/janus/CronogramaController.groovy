@@ -181,7 +181,7 @@ class CronogramaController extends janus.seguridad.Shield {
 
 //        def headers = ["Código", "Rubro", "Unidad", "Cantidad", "Unitario", "c.Total", "T."]
         def headers = ["Código": 15, "Rubro": 30, "Unidad": 10, "Cantidad": 15,
-                "Unitario": 15, "c.Total": 10, "T.": 5]
+                       "Unitario": 15, "c.Total": 10, "T.": 5]
 
 
         def col = 0
@@ -373,13 +373,20 @@ class CronogramaController extends janus.seguridad.Shield {
         }
 
         def detalle
-        if (subpre != "-1") {
-            detalle = VolumenesObra.findAllByObraAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: "orden"])
+
+        if (subpre != "-1")  {
+            if(params.area){
+                detalle = VolumenesObra.findAllByObraAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: "orden"])
 //            detalle = VolumenesObra.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre),[sort: "orden"])
+            }else{
+                detalle = VolumenesObra.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre),[sort: "orden"])
+            }
 
         } else {
             detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         }
+
+
 
         def preciosVlob
         if (subpre == '-1'){

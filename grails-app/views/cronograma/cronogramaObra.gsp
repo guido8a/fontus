@@ -86,7 +86,7 @@
                                               style="width: 300px;font-size: 10px" id="subpres" value="${subpre}"
                                               noSelection="['-1': 'TODOS']"/>
 
-                    <span id="div_cmb_area"><g:select name="area" id="areaSp" from="${areas}" optionKey="id" optionValue="descripcion"
+                    <span id="div_cmb_area"><g:select name="area" id="areaCrono" from="${areas}" optionKey="id" optionValue="descripcion"
                                                       style="font-size: 12px; width: 240px"/></span>
 
 
