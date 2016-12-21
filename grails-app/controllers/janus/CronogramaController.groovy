@@ -11,7 +11,6 @@ class CronogramaController extends janus.seguridad.Shield {
 
     def preciosService
     def arreglosService
-//    def DbConnectionService
     def dbConnectionService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -391,8 +390,6 @@ class CronogramaController extends janus.seguridad.Shield {
             detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         }
 
-
-
         def preciosVlob
         if (subpre == '-1'){
             preciosVlob = preciosService.rbro_pcun_v2(obra?.id)
@@ -428,9 +425,14 @@ class CronogramaController extends janus.seguridad.Shield {
         }
         cn.close()
 
+        def paraPlazo = detalle
+
+        if(!params.subpre && !params.area){
+            detalle = ''
+        }
 
         return [detalle: detalle, precios: precios, pcun: pcun, obra: obra, subpres: subpres, subpre: subpre,
-                persona: persona, duenoObra: duenoObra, tieneMatriz: tieneMatriz, areas: areas]
+                persona: persona, duenoObra: duenoObra, tieneMatriz: tieneMatriz, areas: areas, paraPlazo: paraPlazo]
     }
 
     def cronogramaObra_antesPresupuestos() {

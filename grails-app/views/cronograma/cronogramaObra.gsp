@@ -19,7 +19,8 @@
 
     <body>
         <g:set var="meses" value="${obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)}"/>
-        <g:set var="plazoOk" value="${detalle.findAll { it.dias > 0 }.size() > 0}"/>
+        %{--<g:set var="plazoOk" value="${detalle.findAll { it.dias > 0 }.size() > 0}"/>--}%
+        <g:set var="plazoOk" value="${paraPlazo.findAll { it.dias > 0 }.size() > 0}"/>
         %{--<g:set var="matrizOk" value="${obra.desgloseTransporte != null}"/>--}%
         <g:set var="matrizOk" value="${tieneMatriz}"/>
         <g:set var="sum" value="${0}"/>
@@ -83,8 +84,7 @@
 
                 <div style="margin-bottom: 5px;">
                     Subpresupuesto: <g:select name="subpresupuesto" from="${subpres}" optionKey="id" optionValue="descripcion"
-                                              style="width: 300px;font-size: 10px" id="subpres" value="${subpre}"
-                                              noSelection="['-1': 'TODOS']"/>
+                                              style="width: 300px;font-size: 10px" id="subpres" noSelection="['-1': 'TODOS']"/>
 
                     <span id="div_cmb_area"><g:select name="area" id="areaCrono" from="${areas}" optionKey="id" optionValue="descripcion"
                                                       style="font-size: 12px; width: 240px"/></span>
@@ -249,7 +249,8 @@
 
                             </g:each>
                         </tbody>
-                        <tfoot>
+                        <g:if test="${detalle != ''}">
+                            <tfoot>
                             <tr>
                                 <td></td>
                                 <td colspan="4">TOTAL PARCIAL</td>
@@ -304,7 +305,9 @@
                                 </g:each>
                                 <td></td>
                             </tr>
-                        </tfoot>
+                            </tfoot>
+                        </g:if>
+
                     </table>
                 </div>
             </g:if>
