@@ -4,7 +4,6 @@ class CronogramaContratoN {
 
 
     VolumenContrato volumenContrato
-    ObraContrato obraContrato
     int cronogramaPeriodo
     Double cronogramaCantidad
     Double cronogramaPorcentaje
@@ -20,7 +19,6 @@ class CronogramaContratoN {
         columns {
             id column: 'crct__id'
             volumenContrato column: 'vocr__id'
-            obraContrato column: 'obcr__id'
             cronogramaPeriodo column: 'crctprdo'
             cronogramaCantidad column: 'crctcntd'
             cronogramaPorcentaje column: 'crctprct'

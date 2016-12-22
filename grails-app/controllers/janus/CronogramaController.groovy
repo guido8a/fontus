@@ -588,4 +588,8 @@ class CronogramaController extends janus.seguridad.Shield {
 
 
 
+
+
+
+
 } //fin controller

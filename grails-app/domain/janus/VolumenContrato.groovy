@@ -6,10 +6,10 @@ class VolumenContrato {
     SubPresupuesto subPresupuesto
     Area   area
     Item item
-    Double volumenCantidad
+    double volumenCantidad
     int volumenOrden
-    Double volumenPrecio
-    Double volumenSubtotal
+    double volumenPrecio
+    double volumenSubtotal
     String volumenRuta
 
     static auditable = true
@@ -34,13 +34,10 @@ class VolumenContrato {
     }
 
     static constraints = {
-
-        volumenRuta(blank: true, nullable: true)
         obraContrato(blank: false, attributes: [title: 'obra'])
         item(blank: false, attributes: [title: 'item'])
         volumenCantidad(blank: false, attributes: [title: 'cantidad'])
         subPresupuesto(blank: false, attributes: [title: 'subPresupuesto'])
-
         volumenRuta(blank: true, nullable: true, maxSize: 1, inList: ['S', 'N'], attributes: [title: 'ruta critica'])
         area(blank: false, nullable: false )
     }

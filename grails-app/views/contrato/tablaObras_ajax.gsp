@@ -70,8 +70,14 @@
         });
     }
 
+    $(".cronograma").click(function () {
+        var obraC = $(this).attr("iden");
+        location.href="${createLink(controller: 'cronogramaContratoN', action: 'cronogramaContrato')}/" + obraC
+    });
+
+
     $(".copiarRubros").click(function () {
-        var obraC = $(this).attr("iden")
+        var obraC = $(this).attr("iden");
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'contrato', action: 'revisarRubros_ajax')}',
