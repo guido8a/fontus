@@ -159,11 +159,11 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
             valores = preciosService.rbro_pcun_cntr(obra.id, subpre, areaSel, "asc")
         }
 
-        if(subpre == 0) {
-            valores = preciosService.rbro_pcun_cntr(obra.id, subpre, areaSel, "asc")
+        if(subpre == "-1") {
+            valores = preciosService.rbro_pcun_cntr(obra.id, 0, 0, "asc")
         }
 
-        println("valores " + valores)
+//        println("valores " + valores)
 
         def areas = []
         def lsta = []
@@ -186,11 +186,9 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
             pcun.put(dt.id.toString(), valores.find { it.vlob__id == dt.id}?.pcun)
         }
 
-
-        println("precios " + precios)
-        println("pcun " + pcun)
-
-
+//
+//        println("precios " + precios)
+//        println("pcun " + pcun)
 
 
 //        def tieneMatriz = false
