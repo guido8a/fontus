@@ -562,7 +562,10 @@ class InicioController extends janus.seguridad.Shield {
 
     def cambiarItem() {
         println "cambiarItem $params"
+        def cn = dbConnectionService.getConnection()
         def contador = 0
+        def contadorCambia = 0
+        def noBorrar = "CODIGO|NOMBRE DEL ITEM||"
 
         def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
         new File(path).mkdirs()
@@ -607,6 +610,8 @@ class InicioController extends janus.seguridad.Shield {
                 Workbook workbook = Workbook.getWorkbook(file, ws)
                 workbook.getNumberOfSheets().times { sheet ->
 
+                def aBorrar = []
+
                     /** ------------------- carga registros ----------------- **/
                     if (sheet == 0) {  // datos a corregir
                         Sheet s = workbook.getSheet(sheet)
@@ -615,6 +620,9 @@ class InicioController extends janus.seguridad.Shield {
                             htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
                             Cell[] row = null
 
+                            def actual = 0
+                            def sql = ""
+
                             s.getRows().times { j ->
                                 row = s.getRow(j)
                                 println row*.getContents()
@@ -622,38 +630,73 @@ class InicioController extends janus.seguridad.Shield {
 
                                 if (row.length >= 4) {
                                     def cdgo = row[0].getContents().trim()
+                                    def dscr = row[1].getContents().trim()
                                     def nuevo = row[4].getContents().trim()
                                     if (cdgo != "CODIGO") {  // no es el título
-                                        if(nuevo != "ELIMINAR") {
-                                            println "procesar $cdgo para cambiar código a $nuevo"
-                                        } else {
-                                            println "procesar $cdgo para eliminar"
+                                        def cnta = cn.rows("select count(*) cnta from item where itemcdgo = '${cdgo}'".toString())[0].cnta
+                                        if(cnta){
+                                            actual = cn.rows("select item__id from item where itemcdgo = '${cdgo}'".toString())[0].item__id?:0
                                         }
-/*
-                                        def prov = Provincia.findByNombre(provnmbr)
-                                        if (!prov) {
-                                            prov = new Provincia()
-                                            prov.numero = provnmro
-                                            prov.nombre = provnmbr
-                                            try {
-                                                prov.save(flush: true)
-                                            } catch (DataIntegrityViolationException e) {
-                                                println "ERROR: $e"
+                                        if(actual && (nuevo != "ELIMINAR")) {
+                                            //1.  Si el código a cambiar ya existe toca actualizar rbro
+                                            //1.1 obtener el id del existente y (actual --> nuevo):
+                                            //    update rbro set item__id = c_nuevo where item__id = c_actual;
+                                            //    borrar el actual
+                                            //    delete from rbpc, itva, item el item c_actual;
+                                            //    delete from itva where item__id = c_actual;
+                                            //2. Si no existe solo se actualiza item
+                                            //   update item set itemcdgo = '$nuevo' where itemcdgo = '$cdgo';
+                                            cnta = cn.rows("select count(*) cnta from item where itemcdgo = '${nuevo}'".toString())[0].cnta
+                                            sql = "select coalesce(item__id, 0) item__id from item where itemcdgo = '${nuevo}'".toString()
+                                            println "... $sql"
+                                            if(cnta) {
+                                                def existe = cn.rows(sql)[0].item__id
+                                                print ".."
+                                                cn.execute("update rbro set item__id = $existe where item__id = $actual".toString())
+                                                aBorrar.add("delete from itva where item__id = $actual".toString())
+                                                aBorrar.add("delete from rbpc where item__id = $actual".toString())
+                                                aBorrar.add("delete from item where item__id = $actual".toString())
+                                            } else {
+                                                cn.execute("update item set itemcdgo = '${nuevo}' where item__id = $actual".toString())
                                             }
-                                            prov.refresh()
-*/
-                                        contador++
+                                            contadorCambia++
+                                        } else {
+                                            cnta = cn.rows("select count(*) cnta from rbro where item__id = '${actual}'".toString())[0].cnta
+                                            if(cnta == 0) {
+                                                aBorrar.add("delete from itva where item__id = $actual".toString())
+                                                aBorrar.add("delete from rbpc where item__id = $actual".toString())
+                                                aBorrar.add("delete from item where item__id = $actual".toString())
+                                                contador++
+                                            } else {
+                                                //xxxxxxxxxxxxxxxxxx
+                                                def rbro = cn.eachRow("select itemcdgo, itemnmbr from rbro,item where rbro.item__id = $actual and " +
+                                                      "item.item__id = rbrocdgo".toString()) { d ->
+                                                    noBorrar += "$cdgo|$dscr|${d.itemcdgo}|${d.itemnmbr}||"
+                                                }
+                                            }
+                                        }
                                     }
                                 } //row ! empty
+                                cn.close()
                             } //rows.each
                         } //sheet ! hidden
                         htmlInfo += "<p>Se han cargado $contador registros<p>"
                     }// sheet 0
 
+                    aBorrar.each { sql ->
+                        cn.execute(sql)
+                    }
+                    cn.close()
                 } //sheets.each
+
                 if (contador > 0) {
-                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente $contador registros</div>"
+                    doneHtml = "<div class='alert alert-success'>Se han eliminado correctamente $contador registros</div>"
                 }
+                if (contadorCambia > 0) {
+                    doneHtml += "<div class='alert alert-success'>Se han modificado correctamente $contadorCambia registros</div>"
+                }
+
+                doneHtml += "<div class='alert alert-success'>No se ha podido borrar <strong>${noBorrar.size()}</strong> items cuyos códigos son: $noBorrar</div>"
 
                 def str = doneHtml
                 str += htmlInfo
@@ -664,7 +707,7 @@ class InicioController extends janus.seguridad.Shield {
 
                 flash.message = str
 
-                println "DONE!! --> $str"
+//                println "DONE!! --> $str"
                 redirect(action: 'mensajeUpload')
             } else {
                 flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"

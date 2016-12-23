@@ -111,7 +111,7 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
 
 
     def cronogramaContrato () {
-//        println("params crono " + params)
+        println("params crono " + params)
 
         def cn = dbConnectionService.getConnection()
         def cn2 = dbConnectionService.getConnection()

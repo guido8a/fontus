@@ -100,6 +100,7 @@
                         <b>Código:</b>
                         <input type="text" style="width: 60px;;font-size: 12px" id="item_codigo" class="allCaps">
                         <input type="hidden" style="width: 60px" id="item_id">
+                        <input type="hidden" style="width: 60px" id="editar">
                     </div>
 
                     <div class="span7" style="margin-left: -20px;">
@@ -129,7 +130,7 @@
                         <input type="hidden" value="" id="vol_id">
 
                         <g:if test="${contrato?.estado != 'R'}">
-                            <a href="#" class="btn btn-primary" title="agregar" id="item_agregar" style="margin-top: 20px;">
+                            <a href="#" class="btn btn-primary" title="Agregar" id="item_agregar" style="margin-top: 20px;">
                                 <i class="icon-plus"></i>
                             </a>
                         </g:if>
@@ -678,11 +679,14 @@
                     var rubro = $("#item_id").val()
                     var cod = $("#item_codigo").val()
                     var sub = $("#sbpr").val()
-                    var dscr = $("#item_descripcion").val()
+                    var pcun = $("#item_pcun").val()
+//                    var dscr = $("#item_descripcion").val()
                     var area = $("#area").val()
 
                     var ord = 1
-//                    console.log('class', $("#ordenarDesc").hasClass('active'))
+
+                    console.log('rubro', rubro)
+
                     if($("#ordenarDesc").hasClass('active')){
                         ord = 2
                     } else {
@@ -701,8 +705,8 @@
 
                     if (msn.length == 0) {
                         var datos = "rubro=" + rubro + "&cantidad=" + cantidad + "&orden=" + orden + "&sub=" + sub +
-                                "&obra=${obra.id}" + "&cod=" + cod + "&ord=" + ord + '&override=' + $("#override").val() +
-                                "&dscr=" + dscr + "&area=" + area
+                                "&obra=${obcr}" + "&cod=" + cod + "&ord=" + ord + '&override=' + $("#override").val() +
+                                "&area=" + area + "&pcun=" + pcun + "&editar=" + $("#editar").val()
 //                        //console.log(datos)
                         if ($("#vol_id").val() * 1 > 0)
                             datos += "&id=" + $("#vol_id").val()
@@ -718,7 +722,7 @@
                                     $("#item_id").val("")
                                     $("#item_nombre").val("")
                                     $("#item_cantidad").val("")
-                                    $("#item_descripcion").val("")
+//                                    $("#item_descripcion").val("")
                                     $("#item_orden").val($("#item_orden").val() * 1 + 1)
                                     $("#override").val("0")
                                 } else {
@@ -736,6 +740,7 @@
                                     }
                                 }
                                 $("#item_agregar").show(500);
+                                $("#editar").val("0")
                             }
                         });
                     } else {

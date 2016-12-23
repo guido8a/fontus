@@ -1,5 +1,6 @@
 package janus
 
+import groovy.json.JsonSlurper
 import janus.pac.TipoProcedimiento
 
 class VolumenObraController extends janus.seguridad.Shield {
@@ -165,51 +166,40 @@ class VolumenObraController extends janus.seguridad.Shield {
 
     def addItemCntr() {
         println "addItemCntr " + params
-        def obra = Obra.get(params.obra)
-        def rubro = Item.findByCodigoIlike(params.cod)
-        def sbpr = SubPresupuesto.get(params.sub)
-        def volumen
+        def cn = dbConnectionService.getConnection()
+        def sql = "select count(*) cnta from vocr where obcr__id = ${params.obra} and sbpr__id = ${params.sub} and " +
+                "item__id = ${params.rubro}"
+        def existe = cn.rows(sql.toString())[0].cnta
+        def sbtt = Math.round(params.pcun.toDouble() * params.cantidad.toDouble() *100) / 100
+        def msg = ""
+        def cntd = ""
 
-/*
-        if (params.id)
-            volumen = VolumenesObra.get(params.id)
-        else {
-
-            volumen = new VolumenesObra()
-            def v = VolumenesObra.findAll("from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}")
-            if (v.size() > 0) {
-                v = v.pop()
-                if (params.override == "1") {
-                    v.cantidad += params.cantidad.toDouble()
-                    v.save(flush: true)
-                    redirect(action: "tabla", params: [obra: obra.id, sub: v.subPresupuesto.id, ord: params.ord])
-                    return
-                } else {
-                    msg = "error"
-                    render msg
-                    return
-                }
+        if(existe && params.editar != "1") {
+            if (params.override == "1") {
+                sql = "update vocr set vocrcntd = vocrcntd + ${params.cantidad}, vocrpcun = ${params.pcun} " +
+                        "where obcr__id = ${params.obra} and sbpr__id = ${params.sub} and " +
+                       "item__id = ${params.rubro}"
+            } else {
+                msg = "error"
+                render msg
+                return
             }
-        }
-*/
-
-/*
-        volumen.cantidad = params.cantidad.toDouble()
-        volumen.orden = params.orden.toInteger()
-        volumen.subPresupuesto = SubPresupuesto.get(params.sub)
-        volumen.obra = obra
-        volumen.item = rubro
-        volumen.descripcion = params.dscr
-        volumen.area = Area.get(params.area)
-
-        if (!volumen.save(flush: true)) {
-            println "error volumen obra " + volumen.errors
-            render "error"
+        } else if(params.editar == "1"){
+            sql = "update vocr set vocrcntd = ${params.cantidad}, vocrpcun = ${params.pcun}, vocrordn = ${params.orden} " +
+                    "where obcr__id = ${params.obra} and sbpr__id = ${params.sub} and " +
+                    "item__id = ${params.rubro}"
         } else {
-            preciosService.actualizaOrden(volumen, "insert")
-*/
-            redirect(action: "tablaCntr", params: [obra: obra.id, sub: volumen.subPresupuesto.id, ord: params.ord, area: params.area])
-//        }
+                sql = "insert into vocr(sbpr__id, item__id, obcr__id, vocrcntd, vocrordn, vocrpcun, " +
+                        "vocrsbtt, vocrrtcr, area__id) " +
+                        "values(${params.sub}, ${params.rubro}, ${params.obra}, ${params.cantidad}, ${params.orden}," +
+                        "${params.pcun}, ${sbtt}, 'N', ${params.area})"
+        }
+        cn.execute(sql.toString())
+        cn.close()
+
+        println "++sql: $sql"
+        preciosService.actualizaOrdenCntr(params.obra)
+        redirect(action: "tablaCntr", params: [obra: params.obra, sub: params.sub, ord: params.ord, area: params.area])
     }
 
     def copiarItem() {
@@ -378,7 +368,7 @@ class VolumenObraController extends janus.seguridad.Shield {
 
 
     def eliminarRubro() {
-        println "elm rubro " + params
+        println "eliminar rubro " + params
         def vol = VolumenesObra.get(params.id)
         def obra = vol.obra
         def orden = vol.orden
@@ -403,8 +393,22 @@ class VolumenObraController extends janus.seguridad.Shield {
             msg = "Error"
         }
         redirect(action: "tabla", params: [obra: obra.id, sub: vol.subPresupuesto.id, ord: 1, msg: msg])
+    }
 
+    def eliminarRubroCntr() {
+        println "eliminarCntr rubro " + params
+        def cn = dbConnectionService.getConnection()
+        def vocr = [:]
+        cn.eachRow("select obcr__id, sbpr__id, area__id from vocr where vocr__id = ${params.id}".toString()) { d ->
+            vocr.obcr = d.obcr__id
+            vocr.sbpr = d.sbpr__id
+            vocr.area = d.area__id
+        }
+        println "vocr: $vocr"
+        cn.execute("delete from vocr where vocr__id = ${params.id}".toString())
 
+        preciosService.actualizaOrdenCntr(vocr.obcr)
+        redirect(action: "tablaCntr", params: [obra: vocr.obcr, sub: vocr.sbpr, ord: params.ord, area: vocr.area])
     }
 
     def copiarRubros() {

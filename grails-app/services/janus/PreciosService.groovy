@@ -617,7 +617,7 @@ class PreciosService {
 
     def actualizaOrden(volumen, tipo) {
 
-        def vlob = VolumenesObra.findAll("from VolumenesObra where obra = ${volumen.obra.id} order by orden asc,id desc")
+        def vlob = VolumenesObra.findAll("from VolumenesObra where obra = ${volumen.obra.id} order by orden asc, id desc")
 //        println "actualizar orden !!!!! /n" + vlob
         def dist = 1
         def prev = null
@@ -640,13 +640,11 @@ class PreciosService {
                 } else {
                     prev = vlob[i]
                 }
-//                println "i=0 "+prev+" "+prev.orden
                 i++
 
             } else {
 
                 dist = vlob[i].orden - prev.orden
-//                println " ${i} prev "+prev.id+"  "+prev.orden+" i "+vlob[i].id+"  "+vlob[i].orden+"  dist  "+dist+" --- > "+i +"  actual !!! "+volumen.id
                 if (dist > 1) {
                     vlob[i].orden -= (dist - 1)
                     band = true
@@ -655,17 +653,9 @@ class PreciosService {
                         if (vlob[i].id.toInteger() != volumen.id.toInteger()) {
                             vlob[i].orden++
                         } else {
-//                            if(prev.orden>1){
-//                                prev.orden--
-//                                prev.save(flush: true)
-//                            }else{
-//                                vlob[i].orden++
-//                            }
-//                            println "intercambio "+prev.orden+" --- "+vlob[i].orden
                             def ordn = prev.orden
                             prev.orden = vlob[i].orden + 1
                             vlob[i].orden = ordn
-//                            println "intercambio fin "+prev.orden+" --- "+vlob[i].orden
                             prev.save(flush: true)
                         }
                         band = true
@@ -686,11 +676,15 @@ class PreciosService {
                         prev = vlob[i]
                 }
                 i++
-
             }
         }
+    }
 
 
+    def actualizaOrdenCntr(obra){
+        def  cn = dbConnectionService.getConnection()
+        cn.execute("select * from ordn_actl_cntr(${obra})".toString())
+        cn.close()
     }
 
     def ultimoDiaDelMes(fecha) {

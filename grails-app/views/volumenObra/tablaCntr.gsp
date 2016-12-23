@@ -77,7 +77,8 @@
 
     <g:each in="${valores}" var="val" status="j">
     %{--<tr class="item_row" id="${val.item__id}" item="${val}" sub="${val.sbpr__id}">--}%
-        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}" item="${val}"
+        %{--<tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}" item="${val}"--}%
+        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}" item="${val.item__id}"
             sub="${val.sbpr__id}" cdgo="${val.item__id}" area="${val.area__id}">
 
             <td style="width: 20px" class="orden">${val.vlobordn}</td>
@@ -468,19 +469,26 @@
         $("#area").val($(this).attr("area"))
         console.log('area', $("#area").val(), 'ok')
 
-        $("#item_descripcion").val($(this).attr("dscr"))
+//        $("#item_descripcion").val($(this).attr("dscr"))
 
         $("#item_nombre").val($(this).find(".nombre").html())
         $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
         $("#item_orden").val($(this).find(".orden").html())
         $("#item_unidad").val($(this).find(".col_unidad").html().toString().trim())
         $("#item_pcun").val($(this).find(".col_precio").html().toString().trim())
+        $("#editar").val("1")
     });
 
     $(".borrarItem").click(function () {
         if (confirm("Esta seguro de eliminar el rubro?")) {
-            $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
-                data: "id=" + $(this).attr("iden"),
+            var ord = 1
+            if($("#ordenarDesc").hasClass('active')){
+                ord = 2
+            } else {
+                ord = 1
+            }
+            $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubroCntr')}",
+                data: "id=" + $(this).attr("iden") + "&ord=" + ord,
                 success: function (msg) {
                     $("#detalle").html(msg)
                 }
@@ -497,9 +505,9 @@
         $("#divTotal").html("")
         $("#calcular").removeClass("active")
         var orden = 1;
-        var datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + orden
+        var datos = "obra=${obcr}&sub=" + $("#subPres_desc").val() + "&ord=" + orden + "&area=" + $("#areaSp").val()
         var interval = loading("detalle")
-        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'tabla')}",
+        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra', action:'tablaCntr')}",
             data: datos,
             success: function (msg) {
                 clearInterval(interval)
@@ -512,9 +520,9 @@
         $("#divTotal").html("")
         $("#calcular").removeClass("active")
         var orden = 2;
-        var datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + orden
+        var datos = "obra=${obcr}&sub=" + $("#subPres_desc").val() + "&ord=" + orden + "&area=" + $("#areaSp").val()
         var interval = loading("detalle")
-        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'tabla')}",
+        $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'tablaCntr')}",
             data: datos,
             success: function (msg) {
                 clearInterval(interval)
