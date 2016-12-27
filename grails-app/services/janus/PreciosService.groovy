@@ -544,7 +544,7 @@ class PreciosService {
     }
 
     def rbro_pcun_cntr(obra, sbpr, area, orden){
-        println "rbro_pcun_cntr obra: $obra, subpres: $sbpr , orden: $orden"
+//        println "rbro_pcun_cntr obra: $obra, subpres: $sbpr , orden: $orden"
 
         def cn = dbConnectionService.getConnection()
         def tx1 = sbpr != 0 ? "and vocr.sbpr__id = $sbpr and vocr.area__id = ${area}" : ""
@@ -555,7 +555,7 @@ class PreciosService {
                 "area.area__id = vocr.area__id and item.item__id = vocr.item__id and undd.undd__id = item.undd__id " +
                 "$tx1 order by vlobordn ${orden}"
 
-        println "rbro_pcun_cntr " + sql
+//        println "rbro_pcun_cntr " + sql
         def result = []
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())

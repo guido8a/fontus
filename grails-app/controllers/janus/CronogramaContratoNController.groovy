@@ -139,7 +139,7 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
         if (subpre != "-1")  {
             if(params.area){
 //                detalle = VolumenesObra.findAllByObraAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: "orden"])
-                detalle = VolumenContrato.findAllByObraContratoAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area))
+                detalle = VolumenContrato.findAllByObraContratoAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: 'volumenOrden'])
             }else{
                 detalle = VolumenContrato.findAllByObraContratoAndSubPresupuesto(obra, SubPresupuesto.get(subpre))
             }
@@ -216,12 +216,139 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
         def lsta = []
         def areas
 
-            cn.eachRow("select distinct area__id from vocr where obcr__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
-                lsta.add(d.area__id)
-            }
-            areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
+        cn.eachRow("select distinct area__id from vocr where obcr__id = ${params.obra} and sbpr__id = ${params.sbpr}".toString()) {d ->
+            lsta.add(d.area__id)
+        }
+        areas = Area.findAllByIdInList(lsta, [sort:"descripcion"])
         cn.close()
 
         [areas:areas]
     }
+
+
+
+    def guardarCronoContrato_ajax() {
+
+        println("params guardar contrato")
+
+        if (params.crono.class == java.lang.String) {
+            params.crono = [params.crono]
+        }
+
+        def errores = ''
+
+        params.crono.each { str ->
+            def parts = str.split("_")
+            def per = parts[1].toString().toInteger()
+            def vol = VolumenContrato.get(parts[0].toString().toLong())
+
+            def crono = CronogramaContratoN.findByVolumenContratoAndCronogramaPeriodo(vol,per)
+
+            if(crono){
+                crono.cronogramaPrecio = parts[2].toString().toDouble()
+                crono.cronogramaPorcentaje = parts[3].toString().toDouble()
+                crono.cronogramaCantidad = parts[4].toString().toDouble()
+
+                if(!crono.save(flush: true)){
+                    errores += crono.errors
+                }
+
+            }else{
+
+                crono = new CronogramaContratoN()
+                crono.volumenContrato = vol
+                crono.cronogramaPeriodo = per
+                crono.cronogramaPrecio = parts[2].toString().toDouble()
+                crono.cronogramaPorcentaje = parts[3].toString().toDouble()
+                crono.cronogramaCantidad = parts[4].toString().toDouble()
+
+                if(!crono.save(flush: true)){
+                    errores += crono.errors
+                }
+            }
+        }
+
+        if(errores != ''){
+            render "NO"
+        }else{
+            render "OK"
+        }
+
+        println("--> " + errores)
+
+    }
+
+
+    def rutaCriticaContrato_ajax () {
+
+
+        if (params.row.class == java.lang.String) {
+            params.row = [params.row]
+        }
+        def ruta = params.ruta
+        def ids = params.row
+        def errores = ""
+        def ok = ""
+
+        ids.each { id ->
+//            def vol = VolumenesObra.get(id.toLong())
+            def vol = VolumenContrato.get(id.toLong())
+            if (vol.volumenRuta != ruta) {
+                vol.volumenRuta = ruta
+                if (!vol.save(flush: true)) {
+                    if (errores != "") {
+                        errores += ","
+                    }
+                    errores += id
+                    println "error: " + vol.errors
+                } else {
+                    if (ok != "") {
+                        ok += ","
+                    }
+                    ok += id
+                }
+            } else {
+                if (ok != "") {
+                    ok += ","
+                }
+                ok += id
+            }
+        }
+        render ok + "_" + errores
+    }
+
+
+    def deleteRubroContrato_ajax () {
+//        println ("delete " + params)
+        def ok = 0, no = 0
+        def vol = VolumenContrato.get(params.id)
+        CronogramaContratoN.findAllByVolumenContrato(vol).each { cr ->
+            try {
+                cr.delete(flush: true)
+                ok++
+            } catch (DataIntegrityViolationException e) {
+                no++
+            }
+        }
+        render "ok:" + ok + "_no:" + no
+    }
+
+    def deleteCronogramaContrato_ajax () {
+//        println("params borrar crono" + params)
+        def ok = 0, no = 0
+        def obra = ObraContrato.get(params.obra)
+        VolumenContrato.findAllByObraContrato(obra).each { vo ->
+            CronogramaContratoN.findAllByVolumenContrato(vo).each { cr ->
+                try {
+                    cr.delete(flush: true)
+                    ok++
+                } catch (DataIntegrityViolationException e) {
+                    no++
+                }
+            }
+
+        }
+        render "ok:" + ok + "_no:" + no
+    }
+
 } //fin controller
