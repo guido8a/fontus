@@ -1358,13 +1358,10 @@ class Reportes5Controller {
         def texto
         def listaImp = [:]
 
-//        println("f " + f)
-
         if(resultado.toInteger() != 0){
 
 
             (1..f).any {t->
-//                println("t " + t)
                   if((seleccionado+1) != t){
                     inicio = finalImp
                     finalImp = (finalImp +100)
@@ -1374,10 +1371,6 @@ class Reportes5Controller {
                 }
             }
         }
-
-//        println("inicio imp " + inicio)
-//        println("final imp " + finalImp)
-
 
 
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by 1 limit 101 offset ${inicio}"
@@ -1410,7 +1403,6 @@ class Reportes5Controller {
             }else{
 
             }
-//            drow.createCell(clmn++).setCellValue("" + col)
         }
         fila++
 
@@ -1436,13 +1428,11 @@ class Reportes5Controller {
             fila2++
         }
 
-
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "MFPExcel.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
-
 
     }
 
@@ -1488,23 +1478,7 @@ class Reportes5Controller {
         }
 
 
-
         preciosService.ac_rbroObra(obra.id)
-
-//        detalle.each {
-//            it.refresh()
-//            def res = preciosService.precioUnitarioVolumenObraSinOrderBy("sum(parcial)+sum(parcial_t) precio ", obra.id, it.item.id)
-//
-//
-//            if(res["precio"][0] != null){
-//                precios.put(it.id.toString(), (res["precio"][0] + res["precio"][0] * indirecto).toDouble().round(2))
-//
-//            }else{
-//                precios.put(it.id.toString(), (0 * indirecto).toDouble().round(2))
-//
-//            }
-//        }
-
 
         detalle.each { dt ->
             precios.put(dt.id.toString(), valores.find { it.vlob__id == dt.id}?.totl)
@@ -1552,27 +1526,25 @@ class Reportes5Controller {
         document.add(preface);
         document.add(preface2);
         Paragraph pMeses = new Paragraph();
-        pMeses.add(new Paragraph("Obra: ${obra?.obra?.descripcion} (${meses} mes${meses == 1 ? '' : 'es'})", info))
+        pMeses.add(new Paragraph("Obra: ${obra?.obra?.nombre} : ${obra?.obra?.codigo} (${meses.toInteger()} mes${meses == 1 ? '' : 'es'})", info))
         addEmptyLine(pMeses, 1);
         document.add(pMeses);
 
-        Paragraph pRequirente = new Paragraph();
-        pRequirente.add(new Paragraph("Requirente: ${obra?.obra?.departamento?.direccion?.nombre + ' - ' + obra.obra?.departamento?.descripcion}", info))
-//        addEmptyLine(pRequirente, 1);
-        document.add(pRequirente);
+//        Paragraph pRequirente = new Paragraph();
+//        pRequirente.add(new Paragraph("Requirente: ${obra?.obra?.departamento?.direccion?.nombre + ' - ' + obra.obra?.departamento?.descripcion}", info))
+//        document.add(pRequirente);
 
 
-        Paragraph codigoObra = new Paragraph();
-        codigoObra.add(new Paragraph("Código de la Obra: ${obra?.obra?.codigo}", info))
-        document.add(codigoObra);
-
-        Paragraph docReferencia = new Paragraph();
-        docReferencia.add(new Paragraph("Doc. Referencia: ${obra?.obra?.oficioIngreso}", info))
-        document.add(docReferencia);
+//        Paragraph codigoObra = new Paragraph();
+//        codigoObra.add(new Paragraph("Código de la Obra: ${obra?.obra?.codigo}", info))
+//        document.add(codigoObra);
+//
+//        Paragraph docReferencia = new Paragraph();
+//        docReferencia.add(new Paragraph("Doc. Referencia: ${obra?.obra?.oficioIngreso}", info))
+//        document.add(docReferencia);
 
         Paragraph fecha = new Paragraph();
         fecha.add(new Paragraph("Fecha: ${printFecha(obra?.obra?.fechaCreacionObra)}", info))
-//        addEmptyLine(fecha, 1);
         document.add(fecha);
 
         Paragraph plazo = new Paragraph();
@@ -1621,17 +1593,8 @@ class Reportes5Controller {
 
         detalle.eachWithIndex { vol, s ->
             def cronos
-//            switch (tipo) {
-//                case "obra":
-//                    cronos = Cronograma.findAllByVolumenObra(vol)
-//                    break;
-//                case "contrato":
-//                    cronos = CronogramaContratoN.findAllByVolumenObra(vol)
-//                    break;
-//            }
 
             cronos = CronogramaContratoN.findAllByVolumenContrato(vol)
-
 
             def totalDolRow = 0, totalPrcRow = 0, totalCanRow = 0
             def parcial = Math.round(precios[vol.id.toString()] * vol.volumenCantidad*100)/100

@@ -31,7 +31,6 @@ class CronogramaController extends janus.seguridad.Shield {
         }
         params.crono.each { str ->
             def parts = str.split("_")
-//            println parts
             def per = parts[1].toString().toInteger()
             def vol = VolumenesObra.get(parts[0].toString().toLong())
 
@@ -74,6 +73,54 @@ class CronogramaController extends janus.seguridad.Shield {
         }
         render ok + "_" + saved
     }
+
+
+
+    def guardarCrono_ajax () {
+        if (params.crono.class == java.lang.String) {
+            params.crono = [params.crono]
+        }
+
+        def errores = ''
+
+        params.crono.each { str ->
+            def parts = str.split("_")
+            def per = parts[1].toString().toInteger()
+            def vol = VolumenesObra.get(parts[0].toString().toLong())
+
+            def crono = Cronograma.findByVolumenObraAndPeriodo(vol,per)
+
+            if(crono){
+                crono.precio = parts[2].toString().toDouble()
+                crono.porcentaje = parts[3].toString().toDouble()
+                crono.cantidad = parts[4].toString().toDouble()
+
+                if(!crono.save(flush: true)){
+                    errores += crono.errors
+                }
+
+            }else{
+
+                crono = new Cronograma()
+                crono.volumenObra = vol
+                crono.periodo = per
+                crono.precio = parts[2].toString().toDouble()
+                crono.porcentaje = parts[3].toString().toDouble()
+                crono.cantidad = parts[4].toString().toDouble()
+
+                if(!crono.save(flush: true)){
+                    errores += crono.errors
+                }
+            }
+        }
+
+        if(errores != ''){
+            render "NO"
+        }else{
+            render "OK"
+        }
+    }
+
 
     def deleteRubro_ajax() {
 //

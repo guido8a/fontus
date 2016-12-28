@@ -223,7 +223,7 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
 
     def guardarCronoContrato_ajax() {
 
-        println("params guardar contrato")
+//        println("params guardar contrato")
 
         if (params.crono.class == java.lang.String) {
             params.crono = [params.crono]
@@ -268,7 +268,7 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
             render "OK"
         }
 
-        println("--> " + errores)
+//        println("--> " + errores)
 
     }
 

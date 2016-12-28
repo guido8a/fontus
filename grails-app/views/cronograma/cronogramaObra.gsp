@@ -1038,20 +1038,22 @@
                             }
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(action:'saveCrono_ajax')}",
+                                %{--url     : "${createLink(action:'saveCrono_ajax')}",--}%
+                                url     : "${createLink(controller: 'cronograma', action:'guardarCrono_ajax')}",
                                 data    : dataAjax,
                                 success : function (msg) {
-                                    var parts = msg.split("_");
-                                    if (parts[0] == "OK") {
-                                        parts = parts[1].split(";");
-                                        for (i = 0; i < parts.length; i++) {
-                                            var p = parts[i].split(":");
-                                            var mes = p[0];
-                                            var id = p[1];
-                                            $(".dol.mes" + mes + ".rubro" + rubro).data("id", id);
-                                            $(".prct.mes" + mes + ".rubro" + rubro).data("id", id);
-                                            $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
-                                        }
+//                                    var parts = msg.split("_");
+                                    if (msg == "OK") {
+//                                    if (parts[0] == "OK") {
+//                                        parts = parts[1].split(";");
+//                                        for (i = 0; i < parts.length; i++) {
+//                                            var p = parts[i].split(":");
+//                                            var mes = p[0];
+//                                            var id = p[1];
+//                                            $(".dol.mes" + mes + ".rubro" + rubro).data("id", id);
+//                                            $(".prct.mes" + mes + ".rubro" + rubro).data("id", id);
+//                                            $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
+//                                        }
                                         updateTotales();
                                         $("#modal-cronograma").modal("hide");
                                     } else {
@@ -1230,21 +1232,23 @@
 
                                     $.ajax({
                                         type    : "POST",
-                                        url     : "${createLink(action:'saveCrono_ajax')}",
+                                        %{--url     : "${createLink(controller: 'cronograma', action:'saveCrono_ajax')}",--}%
+                                        url     : "${createLink(controller: 'cronograma', action:'guardarCrono_ajax')}",
                                         data    : dataAjax,
                                         success : function (msg) {
-                                            var parts = msg.split("_");
-                                            if (parts[0] == "OK") {
-                                                parts = parts[1].split(";");
-                                                for (var i = 0; i < parts.length; i++) {
-                                                    var p = parts[i].split(":");
-                                                    var mes = p[0];
-                                                    var id = p[1];
-                                                    var rubro = p[2];
-                                                    $(".dol.mes" + mes + ".rubro" + rubro).data("id", id);
-                                                    $(".prct.mes" + mes + ".rubro" + rubro).data("id", id);
-                                                    $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
-                                                }
+//                                            var parts = msg.split("_");
+                                            if (msg == "OK") {
+//                                            if (parts[0] == "OK") {
+//                                                parts = parts[1].split(";");
+//                                                for (var i = 0; i < parts.length; i++) {
+//                                                    var p = parts[i].split(":");
+//                                                    var mes = p[0];
+//                                                    var id = p[1];
+//                                                    var rubro = p[2];
+//                                                    $(".dol.mes" + mes + ".rubro" + rubro).data("id", id);
+//                                                    $(".prct.mes" + mes + ".rubro" + rubro).data("id", id);
+//                                                    $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
+//                                                }
                                                 updateTotales();
                                                 $("#modal-cronograma").modal("hide");
 
