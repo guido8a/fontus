@@ -622,7 +622,8 @@
         $(this).replaceWith(spinner);
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action: 'saveRegistrar')}",
+            %{--url     : "${createLink(action: 'saveRegistrar')}",--}%
+            url     : "${createLink(action: 'registrarContrato_ajax')}",
             data    : "id=${contrato?.id}",
             success : function (msg) {
                 var parts = msg.split("_");

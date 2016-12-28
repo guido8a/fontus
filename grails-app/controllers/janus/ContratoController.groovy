@@ -150,81 +150,192 @@ class ContratoController extends janus.seguridad.Shield {
         }
     }
 
-    def saveRegistrar() {
+//    def saveRegistrar() {
+//        def contrato = Contrato.get(params.id)
+//        def obra = contrato.obra
+//
+//        def errores = ""
+//
+//        //tiene q tener cronograma y formula polinomica
+//        def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
+//        def cronos = CronogramaContratoN.findAllByVolumenObraInList(detalle)
+////        println "suma de la obra: ${cronos.precio.sum()}, valor de la obra: ${contrato.monto}"
+//        if (cronos.precio.sum().round(2) != contrato.monto.round(2)) {
+//            errores += "<li>No cuadra los totales del cronograma ${cronos.precio.sum()} con el valor del contrato: ${contrato.monto}</li>"
+//        }
+//        def pcs = FormulaPolinomicaContractual.withCriteria {
+//            and {
+//                eq("contrato", contrato)
+//                or {
+//                    ilike("numero", "c%")
+//                    and {
+//                        ne("numero", "P0")
+//                        ne("numero", "p01")
+//                        ilike("numero", "p%")
+//                    }
+//                }
+//                order("numero", "asc")
+//            }
+//        }
+//        if (cronos.size() == 0 || pcs.size() == 0) {
+//            if (cronos.size() == 0) {
+//                errores += "<li>No ha generado el cronograma de contrato.</li>"
+//            }
+//            if (pcs.size() == 0) {
+//                errores += "<li>No ha generado la fórmula polinómica contractual.</li>"
+//            }
+//        }
+//        def crono = 0
+//        detalle.each {
+//            def tmp = CronogramaContratoN.findAllByVolumenObra(it)
+//            tmp.each { tm ->
+//                crono += tm.porcentaje
+////                crono += tm.precio
+//            }
+////            println "crono: $crono"
+//            if (!((crono.toDouble().round(2) <= 100.01) || (crono.toDouble().round(2) >= 99.99))) {
+//                errores += "<li>La suma de porcentajes del volumen de obra: ${it.item.codigo} (${crono.toDouble().round(2)}) en el cronograma contractual es diferente de 100%</li>"
+//            }
+//            crono = 0
+//        }
+//        def fps = FormulaPolinomicaContractual.findAllByContrato(contrato)
+////        println "fps "+fps
+//        def totalP = 0
+//        fps.each { fp ->
+//            if (fp.numero =~ "p") {
+////                println "sumo "+fp.numero+"  "+fp.valor
+//                totalP += fp.valor
+//            }
+//        }
+//
+//        def totalC = 0
+//        fps.each { fp ->
+//            if (fp.numero =~ "c") {
+////                println "sumo "+fp.numero+"  "+fp.valor
+//                totalC += fp.valor
+//            }
+//        }
+////        println "totp "+totalP
+//        if (totalP.toDouble().round(6) != 1.000) {
+//            errores += "<li>La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000</li>"
+//        }
+//        if (totalC.toDouble().round(6) != 1.000) {
+//            errores += "<li>La suma de los coeficientes de la Cuadrilla tipo (${totalC}) es diferente a 1.000</li>"
+//        }
+//
+//        //tiene q tener al menos 2 documentos: plano y justificativo de cantidad de obra
+//        def concurso = Concurso.findByObra(obra)
+//        def documentosContrato = DocumentoProceso.findAllByConcurso(concurso)
+//
+//        def planoContrato = documentosContrato.findAll { it.nombre.toLowerCase().contains("plano") }
+//        def justificativoContrato = documentosContrato.findAll { it.nombre.toLowerCase().contains("justificativo") }
+//        println "documentos: ${documentosContrato} planos: ${planoContrato}, justificativo: ${justificativoContrato}"
+//
+//        if (planoContrato.size() == 0) {
+//            errores += "<li>Debe cargar un documento a la biblioteca con nombre 'Plano'</li>"
+//        }
+//        if (justificativoContrato.size() == 0) {
+//            errores += "<li>Debe cargar un documento a la biblioteca con nombre 'Justificativo de cantidad de obra'</li>"
+//        }
+//
+//        if (errores == "") { //registra el contrato
+//            contrato.estado = "R"
+//            if (contrato.save(flush: true)) {
+//                render "ok"
+//            } else {
+//                render "no_" + renderErrors(bean: contrato)
+//            }
+////            render "no_no todavia"
+//        } else {
+//            render "no_<h5>No puede registrar el contrato</h5><ul>${errores}</ul>"
+//        }
+//    }
+
+
+
+
+    def registrarContrato_ajax () {
         def contrato = Contrato.get(params.id)
-        def obra = contrato.obra
+//        def obra = contrato.obra
+        def obras = ObraContrato.findAllByContrato(contrato)
 
         def errores = ""
 
         //tiene q tener cronograma y formula polinomica
-        def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
-        def cronos = CronogramaContratoN.findAllByVolumenObraInList(detalle)
-//        println "suma de la obra: ${cronos.precio.sum()}, valor de la obra: ${contrato.monto}"
-        if (cronos.precio.sum().round(2) != contrato.monto.round(2)) {
-            errores += "<li>No cuadra los totales del cronograma ${cronos.precio.sum()} con el valor del contrato: ${contrato.monto}</li>"
+        def detalle = VolumenContrato.findAllByObraContratoInList(obras, [sort: "volumenOrden"])
+        def cronos = CronogramaContratoN.findAllByVolumenContratoInList(detalle)
+
+//        println("cronos " + cronos)
+
+        if (cronos.cronogramaPrecio.sum().round(2) != contrato.monto.round(2)) {
+            errores += "<li>No cuadra los totales del cronograma ${cronos.cronogramaPrecio.sum()} con el valor del contrato: ${contrato.monto}</li>"
         }
-        def pcs = FormulaPolinomicaContractual.withCriteria {
-            and {
-                eq("contrato", contrato)
-                or {
-                    ilike("numero", "c%")
-                    and {
-                        ne("numero", "P0")
-                        ne("numero", "p01")
-                        ilike("numero", "p%")
-                    }
-                }
-                order("numero", "asc")
-            }
+//        def pcs = FormulaPolinomicaContractual.withCriteria {
+//            and {
+//                eq("contrato", contrato)
+//                or {
+//                    ilike("numero", "c%")
+//                    and {
+//                        ne("numero", "P0")
+//                        ne("numero", "p01")
+//                        ilike("numero", "p%")
+//                    }
+//                }
+//                order("numero", "asc")
+//            }
+//        }
+//        if (cronos.size() == 0 || pcs.size() == 0) {
+//            if (cronos.size() == 0) {
+//                errores += "<li>No ha generado el cronograma de contrato.</li>"
+//            }
+//            if (pcs.size() == 0) {
+//                errores += "<li>No ha generado la fórmula polinómica contractual.</li>"
+//            }
+//        }
+
+        if (cronos.size() == 0) {
+            errores += "<li>No ha generado el cronograma de contrato.</li>"
         }
-        if (cronos.size() == 0 || pcs.size() == 0) {
-            if (cronos.size() == 0) {
-                errores += "<li>No ha generado el cronograma de contrato.</li>"
-            }
-            if (pcs.size() == 0) {
-                errores += "<li>No ha generado la fórmula polinómica contractual.</li>"
-            }
-        }
+
+
+
         def crono = 0
         detalle.each {
-            def tmp = CronogramaContratoN.findAllByVolumenObra(it)
+            def tmp = CronogramaContratoN.findAllByVolumenContrato(it)
             tmp.each { tm ->
-                crono += tm.porcentaje
-//                crono += tm.precio
+                crono += tm.cronogramaPorcentaje
             }
-//            println "crono: $crono"
             if (!((crono.toDouble().round(2) <= 100.01) || (crono.toDouble().round(2) >= 99.99))) {
                 errores += "<li>La suma de porcentajes del volumen de obra: ${it.item.codigo} (${crono.toDouble().round(2)}) en el cronograma contractual es diferente de 100%</li>"
             }
             crono = 0
         }
-        def fps = FormulaPolinomicaContractual.findAllByContrato(contrato)
-//        println "fps "+fps
-        def totalP = 0
-        fps.each { fp ->
-            if (fp.numero =~ "p") {
-//                println "sumo "+fp.numero+"  "+fp.valor
-                totalP += fp.valor
-            }
-        }
 
-        def totalC = 0
-        fps.each { fp ->
-            if (fp.numero =~ "c") {
-//                println "sumo "+fp.numero+"  "+fp.valor
-                totalC += fp.valor
-            }
-        }
-//        println "totp "+totalP
-        if (totalP.toDouble().round(6) != 1.000) {
-            errores += "<li>La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000</li>"
-        }
-        if (totalC.toDouble().round(6) != 1.000) {
-            errores += "<li>La suma de los coeficientes de la Cuadrilla tipo (${totalC}) es diferente a 1.000</li>"
-        }
+//        def fps = FormulaPolinomicaContractual.findAllByContrato(contrato)
+//        def totalP = 0
+//        fps.each { fp ->
+//            if (fp.numero =~ "p") {
+//                totalP += fp.valor
+//            }
+//        }
+//
+//        def totalC = 0
+//        fps.each { fp ->
+//            if (fp.numero =~ "c") {
+//                totalC += fp.valor
+//            }
+//        }
+//
+//        if (totalP.toDouble().round(6) != 1.000) {
+//            errores += "<li>La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000</li>"
+//        }
+//        if (totalC.toDouble().round(6) != 1.000) {
+//            errores += "<li>La suma de los coeficientes de la Cuadrilla tipo (${totalC}) es diferente a 1.000</li>"
+//        }
 
         //tiene q tener al menos 2 documentos: plano y justificativo de cantidad de obra
-        def concurso = Concurso.findByObra(obra)
+//        def concurso = Concurso.findByObra(obra)
+        def concurso = contrato.oferta.concurso
         def documentosContrato = DocumentoProceso.findAllByConcurso(concurso)
 
         def planoContrato = documentosContrato.findAll { it.nombre.toLowerCase().contains("plano") }
@@ -245,7 +356,6 @@ class ContratoController extends janus.seguridad.Shield {
             } else {
                 render "no_" + renderErrors(bean: contrato)
             }
-//            render "no_no todavia"
         } else {
             render "no_<h5>No puede registrar el contrato</h5><ul>${errores}</ul>"
         }

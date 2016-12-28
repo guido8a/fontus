@@ -36,21 +36,21 @@
             <div class="span9 btn-group" role="navigation">
                 <g:if test="${contrato}">
                     <g:if test="${params.show == '1'}">
-                        <g:link controller="contrato" action="registroContrato" class="btn" params="[contrato: contrato.id]">
-                            <i class="icon-caret-left"></i>
+                        <g:link controller="contrato" action="registroContrato" class="btn" params="[contrato: contrato.id]" title="Regresar al contrato">
+                            <i class="icon-arrow-left"></i>
                             Regresar
                         </g:link>
                     </g:if>
                     <g:else>
                         <g:link controller="contrato" action="verContrato" class="btn" params="[contrato: contrato?.id]">
-                            <i class="icon-caret-left"></i>
+                            <i class="icon-arrow-left"></i>
                             Regresar
                         </g:link>
                     </g:else>
                 </g:if>
                 <g:else>
                     <g:link controller="concurso" action="list" class="btn">
-                        <i class="icon-caret-left"></i>
+                        <i class="icon-arrow-left"></i>
                         Regresar
                     </g:link>
                 </g:else>
