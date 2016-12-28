@@ -1645,7 +1645,7 @@ class Reportes5Controller {
             addCellTabla(tabla, new Paragraph(numero(parcial, 2), fontTd), [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tabla, new Paragraph('$', fontTd), [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
             meses.times { i ->
-                def prec = cronos.find { it.periodo == i + 1 }
+                def prec = cronos.find { it.cronogramaPeriodo == i + 1 }
                 totalDolRow += (prec ? prec.cronogramaPrecio : 0)
                 if (!totalMes[i]) {
                     totalMes[i] = 0
@@ -1658,7 +1658,7 @@ class Reportes5Controller {
             addCellTabla(tabla, new Paragraph(' ', fontTd), [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 6])
             addCellTabla(tabla, new Paragraph('%', fontTd), [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
             meses.times { i ->
-                def porc = cronos.find { it.periodo == i + 1 }
+                def porc = cronos.find { it.cronogramaPeriodo == i + 1 }
                 totalPrcRow += (porc ? porc.cronogramaPorcentaje : 0)
                 addCellTabla(tabla, new Paragraph(numero(porc?.cronogramaPorcentaje, 2), fontTd), [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             }
@@ -1667,7 +1667,7 @@ class Reportes5Controller {
             addCellTabla(tabla, new Paragraph(' ', fontTd), [border: Color.BLACK, bwb: borderWidth, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 6])
             addCellTabla(tabla, new Paragraph('F', fontTd), [border: Color.BLACK, bwb: borderWidth, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
             meses.times { i ->
-                def cant = cronos.find { it.periodo == i + 1 }
+                def cant = cronos.find { it.cronogramaPeriodo == i + 1 }
                 totalCanRow += (cant ? cant.cronogramaCantidad : 0)
                 addCellTabla(tabla, new Paragraph(numero(cant?.cronogramaCantidad, 2), fontTd), [border: Color.BLACK, bwb: borderWidth, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             }
