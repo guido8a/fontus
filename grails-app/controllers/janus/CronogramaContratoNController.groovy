@@ -138,7 +138,6 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
 
         if (subpre != "-1")  {
             if(params.area){
-//                detalle = VolumenesObra.findAllByObraAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: "orden"])
                 detalle = VolumenContrato.findAllByObraContratoAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: 'volumenOrden'])
             }else{
                 detalle = VolumenContrato.findAllByObraContratoAndSubPresupuesto(obra, SubPresupuesto.get(subpre))
@@ -149,11 +148,6 @@ class CronogramaContratoNController extends janus.seguridad.Shield {
         }
 
         def valores
-//        if (subpre == '-1'){
-//            preciosVlob = preciosService.rbro_pcun_v2(obra?.id)
-//        }else {
-//            preciosVlob = preciosService.rbro_pcun_v3(obra?.id, subpre)
-//        }
 
         if (subpre && subpre != "-1" ) {
             valores = preciosService.rbro_pcun_cntr(obra.id, subpre, areaSel, "asc")

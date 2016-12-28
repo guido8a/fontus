@@ -59,10 +59,10 @@
     </div>
 
     <div class="btn-group">
-        <a href="#" class="btn" id="btnGrafico">
-            <i class="icon-bar-chart"></i>
-            Gráficos de avance
-        </a>
+        %{--<a href="#" class="btn" id="btnGrafico">--}%
+            %{--<i class="icon-bar-chart"></i>--}%
+            %{--Gráficos de avance--}%
+        %{--</a>--}%
         <a href="#" id="btnReporte" class="btn"><i class="icon-print"></i>Imprimir</a>
     </div>
 </div>
@@ -1272,7 +1272,7 @@
         });
         </g:if>
         $("#btnReporte").click(function () {
-            location.href = "${createLink(controller: 'reportes2', action:'reporteCronogramaPdf', id:obra.id, params:[tipo:'obra'])}";
+            location.href = "${createLink(controller: 'reportes5', action:'reporteCronogramaContratoPdf')}/${obra.id}?subpre=" + $("#subpres").val() + "&area=" + $("#areaCrono").val();
             return false;
         });
 
