@@ -23,7 +23,7 @@
                     <a href="#" class="btn btn-success btn-small cronograma" iden="${obra?.id}" title="Cronograma de la obra">
                         <i class="icon-calendar"></i>
                     </a>
-                    <a href="#" class="btn btn-success btn-small editarObra" iden="${obra?.id}" title="Editar Obra">
+                    <a href="#" class="btn btn-success btn-small actualizarObra" iden="${obra?.id}" title="Actualizar valor de la Obra">
                         <i class="icon-pencil"></i>
                     </a>
                 </td>
@@ -112,6 +112,26 @@
         })
         var url = "${g.createLink(controller: 'volumenObra', action:'volObraContrato')}" + "/" + obraC
         location.href = url;
+    });
+
+    $(".actualizarObra").click(function () {
+        var obra = $(this).attr("iden");
+       $.ajax({
+           type:'POST',
+           url: "${createLink(controller: 'contrato', action: 'actualizarValorObra_ajax')}",
+           data:{
+                obra: obra
+           },
+           success: function (msg){
+               var parts = msg.split("_")
+                if(parts[0] == 'ok'){
+                    log("Valor de la obra actualizado correctamente!", false);
+                    cargarTablaObras(parts[1])
+                }else{
+                    log("Error al actualizar el valor de la obra", true)
+                }
+           }
+       })
     });
 
 </script>

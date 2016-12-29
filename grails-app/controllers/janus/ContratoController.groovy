@@ -255,8 +255,8 @@ class ContratoController extends janus.seguridad.Shield {
 
 
     def registrarContrato_ajax () {
+
         def contrato = Contrato.get(params.id)
-//        def obra = contrato.obra
         def obras = ObraContrato.findAllByContrato(contrato)
 
         def errores = ""
@@ -267,37 +267,26 @@ class ContratoController extends janus.seguridad.Shield {
 
 //        println("cronos " + cronos)
 
+
+        obras.each {ob->
+            def cn = dbConnectionService.getConnection()
+            def sql = "select sum(vocrsbtt) from vocr where obcr__id=${ob?.id}";
+            def res =  cn.firstRow(sql.toString())
+            cn.close()
+            def vl = res.values().first()
+            if(ob?.valor != vl){
+                errores += "<li>El valor: ${ob?.valor} de la obra ${ob?.obra?.codigo}, no coindice con los valores de sus volumenes de obra: ${vl}.</li>"
+            }
+        }
+
+
         if (cronos.cronogramaPrecio.sum().round(2) != contrato.monto.round(2)) {
             errores += "<li>No cuadra los totales del cronograma ${cronos.cronogramaPrecio.sum()} con el valor del contrato: ${contrato.monto}</li>"
         }
-//        def pcs = FormulaPolinomicaContractual.withCriteria {
-//            and {
-//                eq("contrato", contrato)
-//                or {
-//                    ilike("numero", "c%")
-//                    and {
-//                        ne("numero", "P0")
-//                        ne("numero", "p01")
-//                        ilike("numero", "p%")
-//                    }
-//                }
-//                order("numero", "asc")
-//            }
-//        }
-//        if (cronos.size() == 0 || pcs.size() == 0) {
-//            if (cronos.size() == 0) {
-//                errores += "<li>No ha generado el cronograma de contrato.</li>"
-//            }
-//            if (pcs.size() == 0) {
-//                errores += "<li>No ha generado la fórmula polinómica contractual.</li>"
-//            }
-//        }
 
         if (cronos.size() == 0) {
             errores += "<li>No ha generado el cronograma de contrato.</li>"
         }
-
-
 
         def crono = 0
         detalle.each {
@@ -311,30 +300,8 @@ class ContratoController extends janus.seguridad.Shield {
             crono = 0
         }
 
-//        def fps = FormulaPolinomicaContractual.findAllByContrato(contrato)
-//        def totalP = 0
-//        fps.each { fp ->
-//            if (fp.numero =~ "p") {
-//                totalP += fp.valor
-//            }
-//        }
-//
-//        def totalC = 0
-//        fps.each { fp ->
-//            if (fp.numero =~ "c") {
-//                totalC += fp.valor
-//            }
-//        }
-//
-//        if (totalP.toDouble().round(6) != 1.000) {
-//            errores += "<li>La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000</li>"
-//        }
-//        if (totalC.toDouble().round(6) != 1.000) {
-//            errores += "<li>La suma de los coeficientes de la Cuadrilla tipo (${totalC}) es diferente a 1.000</li>"
-//        }
 
         //tiene q tener al menos 2 documentos: plano y justificativo de cantidad de obra
-//        def concurso = Concurso.findByObra(obra)
         def concurso = contrato.oferta.concurso
         def documentosContrato = DocumentoProceso.findAllByConcurso(concurso)
 
@@ -1423,12 +1390,12 @@ class ContratoController extends janus.seguridad.Shield {
 
         if(params.contrato){
             def contrato = Contrato.get(params.contrato)
-            obras = ObraContrato.findAllByContrato(contrato)
+            obras = ObraContrato.findAllByContrato(contrato, [sort: 'obra', order: 'asc'])
             oferta = contrato.oferta
         }else{
             oferta = Oferta.get(params.oferta)
             def concurso = oferta.concurso
-            obras = ObraConcurso.findAllByConcurso(concurso)
+            obras = ObraConcurso.findAllByConcurso(concurso, [sort: 'obra', order: 'asc'])
         }
 
         println "obras: $obras"
@@ -1438,11 +1405,23 @@ class ContratoController extends janus.seguridad.Shield {
     def calcularMonto_ajax () {
         def oferta = Oferta.get(params.oferta)
         def concurso = oferta.concurso
-        def obras = ObraConcurso.findAllByConcurso(concurso)
+        def obras
         def montoTotal = 0
-        obras.each {
-            montoTotal += it.valor
+
+
+        if(params.contrato){
+            def contrato = Contrato.get(params.contrato)
+            obras = ObraContrato.findAllByContrato(contrato, [sort: 'obra', order: 'asc'])
+            obras.each {
+                montoTotal += it.valor
+            }
+        }else{
+            obras = ObraConcurso.findAllByConcurso(concurso)
+            obras.each {
+                montoTotal += it.valor
+            }
         }
+
         render montoTotal
     }
 
@@ -1469,6 +1448,21 @@ class ContratoController extends janus.seguridad.Shield {
         def vocr = VolumenContrato.findAllByObraContrato(obraContrato)?.size() > 0
 
         render vocr? "ok" : "no"
+    }
+
+    def actualizarValorObra_ajax () {
+        def obraContrato = ObraContrato.get(params.obra)
+        def cn = dbConnectionService.getConnection()
+        def sql = "select sum(vocrsbtt) from vocr where obcr__id=${obraContrato?.id}";
+        def res =  cn.firstRow(sql.toString())
+        cn.close()
+        def vl = res.values().first()
+        obraContrato.valor = vl
+        if(obraContrato.save(flush: true)){
+            render "ok_${obraContrato?.contrato?.id}"
+        }else{
+            render "no_"
+        }
     }
 
 

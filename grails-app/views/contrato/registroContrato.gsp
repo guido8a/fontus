@@ -778,10 +778,10 @@
                 type: 'POST',
                 url: "${createLink(controller: 'contrato', action: 'calcularMonto_ajax')}",
                 data:{
-                    oferta: idOferta
+                    oferta: idOferta,
+                    contrato: '${contrato?.id}'
                 },
                 success: function (msg){
-//                    console.log("msg " + msg)
                     $("#monto").val(number_format(msg, 2,"."));
                     $("#thTotal").html(number_format(msg, 2,"."))
                 }
@@ -808,7 +808,8 @@
             type: 'POST',
             url: "${createLink(controller: 'contrato', action: 'calcularMonto_ajax')}",
             data:{
-                oferta: idOferta
+                oferta: idOferta,
+                contrato: '${contrato?.id}'
             },
             success: function (msg){
                 $("#thTotal").html(number_format(msg, 2,"."))
