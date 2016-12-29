@@ -23,10 +23,12 @@
                     <a href="#" class="btn btn-success btn-small cronograma" iden="${obra?.id}" title="Cronograma de la obra">
                         <i class="icon-calendar"></i>
                     </a>
-                    <a href="#" class="btn btn-success btn-small actualizarObra" iden="${obra?.id}" title="Actualizar valor de la Obra">
-                        <i class="icon-pencil"></i>
-                    </a>
-                </td>
+                    <g:if test="${janus.Contrato.get(contrato).estado != 'R'}">
+                        <a href="#" class="btn btn-success btn-small actualizarObra" iden="${obra?.id}" title="Actualizar valor de la Obra">
+                            <i class="icon-pencil"></i>
+                        </a>
+                    </g:if>
+                 </td>
                </g:if>
             </tr>
         </g:each>
