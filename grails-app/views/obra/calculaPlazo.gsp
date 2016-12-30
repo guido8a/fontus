@@ -99,7 +99,7 @@
                     <div class="btn-group" style="margin-left: 10px;">
                         <a href="#" class="btn btn-info" id="btn-preview">
                             <i class="icon-eye-open"></i>
-                            Vista Previa
+                            Calcular Plazo
                         </a>
                     </div>
                 </div>

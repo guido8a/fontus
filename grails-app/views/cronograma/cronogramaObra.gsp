@@ -315,21 +315,20 @@
                 <g:if test="${meses == 0}">
                     <div class="alert alert-error">
                         <i class="icon-warning-sign icon-2x pull-left"></i>
-                        <h4>Error</h4>
+                        <h4>Aviso</h4>
                         La obra tiene una planificación de 0 meses...Por favor corrija esto para continuar con el cronograma.
                     </div>
                 </g:if>
                 <g:elseif test="${!plazoOk}">
                     <div class="alert alert-error">
                         <i class="icon-warning-sign icon-2x pull-left"></i>
-                        <h4>Error</h4>
+                        <h4>Falta definir el plazo de ejecución de la Obra</h4>
+                        <br/>
+                        <p>Para ingresar el cronograma es necesario que se haya definido el plazo de la obra.</p>
+                        <p>Haga clic en el botón "Calcular" para definir el plazo de la obra.</p>
 
                         <p>
-                            No se ha calculado el plazo de la obra.
-                        </p>
-
-                        <p>
-                            <g:link controller="obra" action="calculaPlazo" id="${obra.id}" class="btn btn-danger">Calcular</g:link>
+                            <g:link controller="obra" action="calculaPlazo" id="${obra.id}" class="btn btn-danger">Definir Plazo de la Obra</g:link>
                         </p>
                     </div>
                 </g:elseif>

@@ -602,10 +602,8 @@
 
             <g:if test="${matrizOk}">
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
-                    <div class="span1" style="margin-left: 0px; width: 100px;"><g:link action="calculaPlazo"
-                                                                                       id="${obra.id}"
-                                                                                       style="margin-left: 0px;"
-                                                                                       class="btn btn-info">Calcular</g:link></div>
+                    <div class="span1" style="margin-left: -20px; width: 120px;"><g:link action="calculaPlazo"
+                        id="${obra.id}" style="margin-left: 0px;" class="btn btn-info">Definir Plazo</g:link></div>
                 </g:if>
             </g:if>
 
@@ -1068,8 +1066,6 @@
                 <g:if test="${obra.desgloseTransporte == 'S' && existeRubros > 0}">
                     <p style="font-size: 14px; text-align: center;">Ya existe una matriz generada <b>con</b> desglose transporte
                     </p>
-                    <p style="font-size: 14px; text-align: center; color: #570000"><strong>Aviso</strong>: La matriz tiene <strong>${existeRubros}
-                    columnas</strong>. Ver la matriz tomará <strong>${tiempo} segundos </strong> aproximadamente</p>
                 </g:if>
                 <g:else>
                     <g:if test="${obra.desgloseTransporte == 'N'}">
@@ -1077,22 +1073,31 @@
                         </p>
                     </g:if>
                 </g:else>
+                <g:if test="${existeRubros > 0}">
+                <p style="font-size: 14px; text-align: center; color: #570000"><strong>Aviso</strong>: La matriz tiene <strong>${existeRubros}
+                columnas</strong>. Ver la matriz tomará <strong>${tiempo} segundos </strong> aproximadamente</p>
+                </g:if>
 
             %{--${sbprMF}--}%
-                <span style="margin-left: 100px;"><b>Generada para:</b></span>
-                <g:select name="matriz_gen" from="${sbprMF}" optionKey="key" optionValue="value"
-                          style="margin-right: 20px; width: 400px"></g:select>
 
                 %{--<g:each var="sb" in="${sbprMF}" status="i">--}%
                 %{--${sb.key} ${sb.value}<br/>--}%
                 %{--</g:each>--}%
 
-                <p style="margin-top: 20px">Desea volver a generar la matriz?, o generar una nueva matriz?</p>
+                %{--<p style="margin-top: 20px">Desea volver a generar la matriz?, o generar una nueva matriz?</p>--}%
                 %{--<a href="#" class="btn btn-info" id="no">NO <i class="icon-arrow-right"></i> Ver la Matriz existente</a>--}%
-                <a href="#" class="btn btn-info" id="no">Ver la Matriz existente</a>
                 %{--<a href="#" class="btn btn-danger" id="si">SI <i class="icon-arrow-right"></i> Generar Matriz</a>--}%
-                <a href="#" class="btn btn-danger" id="si">Generar Matriz</a>
-                <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Exportar Matriz a Excel</a>
+                <g:if test="${existeRubros > 0}">
+                    <span style="margin-left: 100px;"><b>Generada para:</b></span>
+                    <g:select name="matriz_gen" from="${sbprMF}" optionKey="key" optionValue="value"
+                              style="margin-right: 20px; width: 400px"></g:select>
+                    <a href="#" class="btn btn-info" id="no">Ver la Matriz existente</a>
+                    <a href="#" class="btn btn-success" id="imprimir_matriz"><i class="icon-print"></i> Exportar Matriz a Excel</a>
+                </g:if>
+                <g:else>
+                    <p>Generar la matriz de la fórmula polinómica, este proceso puede tomar algunos minutos dependiendo del tamaño de la obra</p>
+                </g:else>
+                <a href="#" class="btn btn-danger" id="si">Generar la Matriz</a>
                 <a href="#" class="btn btn-primary" id="cancela" style="margin-left: 50px;">Cancelar</a>
 
             </div>

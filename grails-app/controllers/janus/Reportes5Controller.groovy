@@ -831,7 +831,7 @@ class Reportes5Controller {
     }
 
     def imprimirCoeficientes() {
-
+        println "imprimirCoeficientes params: $params"
         def obra = Obra.get(params.id)
 
         def baos = new ByteArrayOutputStream()
@@ -877,21 +877,19 @@ class Reportes5Controller {
 
         document.add(headersTitulo)
 
-        def sql = "SELECT DISTINCT\n" +
-//                "  v.voit__id id,\n" +
-//                "  i.item__id iid,\n" +
-                "  i.itemcdgo codigo,\n" +
-                "  i.itemnmbr item,\n" +
-                "  v.voitcoef aporte,\n" +
-                "  v.voitpcun precio,\n" +
-                "  g.grpodscr grupo\n" +
-                "FROM vlobitem v\n" +
-                "  INNER JOIN item i ON v.item__id = i.item__id\n" +
-                "  INNER JOIN grpo g ON v.voitgrpo = g.grpo__id\n" +
-                "WHERE v.obra__id = ${params.id}\n" +
-                "      AND voitgrpo IN (1, 2)\n" + //cambiar aqui si hay que filtrar solo mano de obra o no: 1:formula polinomica, 2:mano de obra
-                "ORDER BY g.grpodscr, i.itemnmbr;"
+        def sql = "SELECT itemcdgo codigo, item.itemnmbr item, grpodscr grupo, valor aporte " +
+                "from item, dprt, sbgr, mfcl, mfvl, grpo " +
+                "where mfcl.obra__id = ${params.id} and " +
+                "mfcl.clmndscr = item.item__id || '_T' and " +
+                "dprt.dprt__id = item.dprt__id and sbgr.sbgr__id = dprt.sbgr__id and " +
+                "sbgr.grpo__id <> 2 and grpo.grpo__id = sbgr.grpo__id and " +
+                "mfvl.obra__id = mfcl.obra__id and mfvl.sbpr__id = mfcl.sbpr__id and " +
+                "mfvl.clmncdgo = mfcl.clmncdgo and " +
+                "mfvl.codigo = 'sS3' and item.item__id not in (select item__id from itfp, fpob " +
+                "where itfp.fpob__id = fpob.fpob__id and obra__id = ${params.id}) " +
+                "order by valor desc"
 
+        println "sql: $sql"
         def tablaDatos = new PdfPTable(3);
         tablaDatos.setWidthPercentage(100);
         tablaDatos.setWidths(arregloEnteros([15, 77, 8]))

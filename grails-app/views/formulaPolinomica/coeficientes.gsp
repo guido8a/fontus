@@ -128,7 +128,7 @@
                 <i class="icon-trash"></i>
                 Reiniciar la Fórmula Polinomica
             </a>
-            <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir" title="Imprimir la Fórmula Polinómica" style="margin-top: -10px;">
+            <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir" title="Imprimir aportes a la Fórmula Polinómica" style="margin-top: -10px;">
                 <i class="icon-print"></i>
                 Imprimir aportes
             </g:link>

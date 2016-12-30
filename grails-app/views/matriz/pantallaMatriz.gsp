@@ -192,7 +192,7 @@
     </div>
 </div>
 
-<div class="modal hide fade mediumModal" id="modal-imprimir" style=";overflow: hidden;">
+<div class="modal hide fade" id="modal-imprimir" style=";overflow: hidden;">
     <div class="modal-header btn-primary">
         <button type="button" class="close" data-dismiss="modal">×</button>
 
@@ -203,9 +203,9 @@
     <div class="modal-body" id="modal_body_impresion">
         <div id="msg_impr">
 
-            <span style="margin-left: 0px;">Seleccione el rango de la impresión: </span>
+            <span style="margin-left: 0px;">Rango de columnas de la Matriz a exportar: </span>
             <g:select name="seccion_matriz" from="${listaImpresion}" optionKey="key" optionValue="value"
-                      style="margin-right: 20px; width: 400px" id="seleccionadoImpresion"/>
+                      style="margin-right: 20px; width: 240px" id="seleccionadoImpresion"/>
 
             <div style="float: right">
                 <a href="#" class="btn btn-success" id="imprimirSeleccionado"><i class="icon-print"></i> Generar Excel</a>
@@ -230,11 +230,11 @@
 
     $("#imprimir_matriz").click(function () {
         if(${existeRubros.toInteger() != 0}){
-            $("#modal_title_impresion").html("Imprimir matriz");
+            $("#modal_title_impresion").html("Exportar Matriz a Excel");
             $("#msg_impr").show();
             $("#modal-imprimir").modal("show")
         }else{
-            alert("No existen datos para imprimir!")
+            alert("No existen datos para exportar!")
         }
     });
 

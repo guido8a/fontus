@@ -428,7 +428,6 @@ class CronogramaController extends janus.seguridad.Shield {
         if (subpre != "-1")  {
             if(params.area){
                 detalle = VolumenesObra.findAllByObraAndSubPresupuestoAndArea(obra, SubPresupuesto.get(subpre),Area.get(params.area), [sort: "orden"])
-//            detalle = VolumenesObra.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre),[sort: "orden"])
             }else{
                 detalle = VolumenesObra.findAllByObraAndSubPresupuesto(obra, SubPresupuesto.get(subpre),[sort: "orden"])
             }
@@ -462,6 +461,7 @@ class CronogramaController extends janus.seguridad.Shield {
 
         //TODO: mostrar precio unitario, armar respuesta como pcun_totl desde preciosService.rbro_pcun_v2_item
         detalle.each { dt ->
+            println "${dt.id}"
             precios.put(dt.id.toString(), preciosVlob.find { it.vlob__id == dt.id}.totl)
             pcun.put(dt.id.toString(), preciosVlob.find { it.vlob__id == dt.id}.pcun)
         }
