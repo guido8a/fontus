@@ -6,6 +6,6 @@
 --%>
 
 <div class="span2 formato" style="margin-left: -1px">Indices 30 días antes de la presentación de la oferta</div>
-<div class="span3">
+<div class="span2">
 <g:select name="periodoValidez.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}" class="indiceOferta activo" value="${periodoValidez?.id}" optionValue="descripcion" optionKey="id"/>
 </div>

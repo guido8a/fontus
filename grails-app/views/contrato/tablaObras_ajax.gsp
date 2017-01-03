@@ -7,7 +7,6 @@
 
 <table class="table table-bordered table-striped table-condensed table-hover">
     <tbody id="tabla_material">
-    %{--<g:if test="${band}">--}%
         <g:each in="${obras}" var="obra">
                 <td style="width: 60px" >${obra?.obra?.codigo}</td>
                 <td style="width: 330px" >${obra?.obra?.nombre}</td>
@@ -32,22 +31,6 @@
                </g:if>
             </tr>
         </g:each>
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-        %{--<g:each in="${obras}" var="obra">--}%
-            %{--<tr>--}%
-                %{--<td style="width: 60px" >${obra?.obra?.codigo}</td>--}%
-                %{--<td style="width: 330px" >${obra?.obra?.nombre}</td>--}%
-                %{--<td style="width: 80px; text-align: right"><g:formatNumber number="${obra?.valor}" format="##,##0"--}%
-                                                                           %{--minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
-                %{--<td style="width: 120px" title="${"Parroquia: " + obra?.obra?.parroquia?.nombre + " - Cantón: " +--}%
-                        %{--obra?.obra?.parroquia?.canton?.nombre}">${obra?.obra?.parroquia?.canton?.provincia?.nombre}</td>--}%
-                %{--<td  style="width: 110px">--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-        %{--</g:each>--}%
-    %{--</g:else>--}%
-
     </tbody>
 </table>
 

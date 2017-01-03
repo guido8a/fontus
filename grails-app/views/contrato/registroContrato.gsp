@@ -51,7 +51,6 @@
 
 <div class="row">
 
-    %{--<div class="span12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;height: 35px;">--}%
     <div class="span12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;">
         <button class="btn" id="btn-lista"><i class="icon-book"></i> Lista</button>
         <button class="btn" id="btn-nuevo"><i class="icon-plus"></i> Nuevo</button>
@@ -114,10 +113,8 @@
                             class="required" style="width: 300px"
                             optionClass="${{ it.monto + "_" + it.plazo + "_" + it.proveedor.nombre + "_" + it?.fechaEntrega?.format('dd-MM-yyyy')}}" value="${contrato?.oferta?.id}"
                             disabled="${contrato ? 'true' : 'false'}"/>
-
             </div>
         </div>
-
 
 
         <div class="" style="float: right; width: 700px" align="center">
@@ -208,7 +205,7 @@
 
             <div class="span2 formato">Multa por retraso de obra</div>
 
-            <div class="span3">
+            <div class="span2">
                 <g:textField name="multaRetraso" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaRetraso, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
@@ -216,10 +213,20 @@
 
             <div class="span2 formato">Multa por no presentación de planilla</div>
 
-            <div class="span3">
+            <div class="span2">
                 <g:textField name="multaPlanilla" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaPlanilla, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
+
+
+
+            <div class="span2 formato" style="margin-left: -30px;">Multa por no acatar disposiciones del fiscalizador</div>
+
+            <div class="span2">
+                <g:textField name="multaDisposiciones" class="number required" style="width: 50px"
+                             value="${g.formatNumber(number: contrato?.multaDisposiciones, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
+            </div>
+
 
         </div>
 
@@ -227,17 +234,26 @@
 
             <div class="span2 formato">Multa por incumplimiento del cronograma</div>
 
-            <div class="span3">
+            <div class="span2">
                 <g:textField name="multaIncumplimiento" class="number required" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaIncumplimiento, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
             </div>
 
-            <div class="span2 formato">Multa por no acatar disposiciones del fiscalizador</div>
 
-            <div class="span3">
-                <g:textField name="multaDisposiciones" class="number required" style="width: 50px"
-                             value="${g.formatNumber(number: contrato?.multaDisposiciones, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/> x 1000
-            </div>
+            <div class="span2 formato">Plazo</div>
+
+            <div class="span2"><g:textField name="plazo" class="plazo activo" style="width: 50px" maxlength="4"
+                                            value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/> Días</div>
+
+            <g:if test="${contrato?.codigo != null}">
+                <div class="span2 formato" style="margin-left: -30px">Indices 30 días antes de la presentación de la oferta</div>
+                <div class="span2"><g:select name="periodoValidez.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}" class="indiceOferta activo" value="${contrato?.periodoInec?.id}" optionValue="descripcion" optionKey="id"/></div>
+            </g:if>
+            <g:else>
+                <div class="span4" style="margin-left: -30px" id="filaIndice">
+                </div>
+            </g:else>
+
 
         </div>
 
@@ -247,15 +263,6 @@
 
             <div class="span3"><g:textField name="monto" class="monto activo"
                                             value="${g.formatNumber(number: contrato?.monto, maxFractionDigits: 2, minFractionDigits: 2, locale: 'ec')}"/></div>
-
-            <div class="span2 formato">Plazo</div>
-
-            <div class="span3"><g:textField name="plazo" class="plazo activo" style="width: 50px" maxlength="4"
-                                            value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/> Días</div>
-
-        </div>
-
-        <div class="span12" style="margin-top: 10px">
 
             <div class="span2 formato">Anticipo sin reajuste</div>
 
@@ -270,15 +277,6 @@
                              value="${g.formatNumber(number: contrato?.anticipo, maxFractionDigits: 2, minFractionDigits: 2, locale: 'ec')}"/>
             </div>
 
-
-            <g:if test="${contrato?.codigo != null}">
-                <div class="span2 formato">Indices 30 días antes de la presentación de la oferta</div>
-                <div class="span3"><g:select name="periodoValidez.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}" class="indiceOferta activo" value="${contrato?.periodoInec?.id}" optionValue="descripcion" optionKey="id"/></div>
-            </g:if>
-            <g:else>
-                <div class="span6" id="filaIndice">
-                </div>
-            </g:else>
 
         </div>
 
@@ -318,23 +316,21 @@
                         </g:link>
 
                     </li>
+                    %{--<li>--}%
 
-                    <li>
-
-                        <g:link action="copiarPolinomica" id="${contrato?.id}"><i class="icon-superscript"></i> F. polinómica</g:link>
-                    </li>
-
+                        %{--<g:link action="copiarPolinomica" id="${contrato?.id}"><i class="icon-superscript"></i> F. polinómica</g:link>--}%
+                    %{--</li>--}%
                     <li>
                         <g:link controller="documentoProceso" action="list" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id, show: 1]">
                             <i class="icon-book"></i> Biblioteca
                         </g:link>
                     </li>
 
-                    <li>
-                        <g:link controller="contrato" action="asignar" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id, show: 1]">
-                            <i class="icon-plus"></i> Asignar F. Polinómica
-                        </g:link>
-                    </li>
+                    %{--<li>--}%
+                        %{--<g:link controller="contrato" action="asignar" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id, show: 1]">--}%
+                            %{--<i class="icon-plus"></i> Asignar F. Polinómica--}%
+                        %{--</g:link>--}%
+                    %{--</li>--}%
                 </ul>
 
             </div>
@@ -402,18 +398,18 @@
 
     function cargarTablaObras (contrato) {
         var ofertaC = ${contrato?.oferta?.id}
-        $.ajax({
-            type: 'POST',
-            url: "${createLink(controller: 'contrato', action: 'tablaObras_ajax')}",
-            data:{
-                oferta: '${contrato?.oferta?.id}',
-                contrato: contrato
-            },
-            success: function (msg){
-                $("#obras_oferta").html(msg);
-                calcularMonto(ofertaC)
-            }
-        });
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'contrato', action: 'tablaObras_ajax')}",
+                    data:{
+                        oferta: '${contrato?.oferta?.id}',
+                        contrato: contrato
+                    },
+                    success: function (msg){
+                        $("#obras_oferta").html(msg);
+                        calcularMonto(ofertaC)
+                    }
+                });
     }
 
     function updateAnticipo() {
@@ -792,7 +788,6 @@
             var parts = cl.split("_");
             var m = parts[0];
             var p = parts[1];
-//            $("#monto").val(number_format(m, 2,"."));
             $("#plazo").val(p);
         }
         else {

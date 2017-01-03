@@ -1037,19 +1037,10 @@ class ContratoController extends janus.seguridad.Shield {
 
     def getIndice() {
 
-
         def fechaOferta = Oferta.get(params.id).fechaEntrega?.format('dd-MM-yyyy')
-
-//        println("fechaOferta " + fechaOferta)
-
         def fechaOfertaMenos = (Oferta.get(params.id).fechaEntrega - 30).format("dd-MM-yyyy")
         def fechaOfertaSin = (Oferta.get(params.id).fechaEntrega - 30)
-
-//        println("fechaNueva " + fechaOfertaMenos)
-
         def idFecha = PeriodoValidez.findByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(fechaOfertaSin, fechaOfertaSin)
-
-//        println("-->" + idFecha.id)
 
         return [fechaOferta: fechaOferta, periodoValidez: idFecha]
 
@@ -1463,6 +1454,15 @@ class ContratoController extends janus.seguridad.Shield {
         }else{
             render "no_"
         }
+    }
+
+    def tablaVerObras_ajax () {
+        def obras
+
+            def contrato = Contrato.get(params.contrato)
+            obras = ObraContrato.findAllByContrato(contrato, [sort: 'obra', order: 'asc'])
+
+        return [obras: obras, contrato: contrato]
     }
 
 
