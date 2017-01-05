@@ -1865,8 +1865,8 @@ class PlanillaController extends janus.seguridad.Shield {
 
                     def planillaPorAsociar = Planilla.get(params.asociada)
                     planillaInstance.padreCosto = planillaPorAsociar
-                println("params asociada " + params.asociada)
-                println("padre " + planillaInstance.padreCosto)
+                    println("params asociada " + params.asociada)
+                    println("padre " + planillaInstance.padreCosto)
                     break;
             }
 
@@ -1912,6 +1912,62 @@ class PlanillaController extends janus.seguridad.Shield {
             default:
                 redirect(action: 'list', id: planillaInstance.contratoId)
         }
+    }
+
+    def saveAnticipo () {
+//        println("-----> " + params)
+        def contrato = Contrato.get(params."contrato.id")
+        def porcentaje = contrato.porcentajeAnticipo
+        def tipoAnticipo = TipoPlanilla.findByCodigo("A")
+        def errores = ""
+
+        def obras = ObraContrato.findAllByContrato(contrato)
+
+        obras.each {p->
+            def planilla = Planilla.findByObraContrato(p)
+            if(planilla){
+                planilla.numero = params.numero
+                planilla.tipoPlanilla = tipoAnticipo
+                planilla.fechaIngreso = new Date().parse("dd-MM-yyyy", params.fechaIngreso)
+                planilla.fechaOficioEntradaPlanilla = new Date().parse("dd-MM-yyyy", params.fechaOficioEntradaPlanilla)
+                planilla.descripcion = params.descripcion
+                planilla.observaciones = params.observaciones
+
+            }else{
+                planilla = new Planilla()
+                planilla.obraContrato = ObraContrato.get(p.id)
+                planilla.numero = params.numero
+                planilla.tipoPlanilla = tipoAnticipo
+                planilla.fechaIngreso = new Date().parse("dd-MM-yyyy", params.fechaIngreso)
+                planilla.fechaOficioEntradaPlanilla = new Date().parse("dd-MM-yyyy", params.fechaOficioEntradaPlanilla)
+                planilla.descripcion = params.descripcion
+                planilla.observaciones = params.observaciones
+                planilla.valor = (ObraContrato.get(p.id).valor * (porcentaje/100))
+            }
+
+            if(!planilla.save(flush: true)){
+                errores += planilla.errors
+            }else{
+
+            }
+        }
+
+
+        if(errores == ""){
+            flash.clase = "alert-success"
+            def str = "<h4>La información de la Planilla de Anticipo se guardó correctamente" + "</h4>"
+            flash.message = str
+            redirect(controller: 'planilla', action: 'nuevoAnticipo', id: contrato?.id)
+            return
+        }else{
+            flash.clase = "alert-error"
+            def str = "<h4>No se pudo guardar la información de la Planilla de Anticipo " + "</h4>"
+            flash.message = str
+            redirect(controller: 'planilla', action: 'nuevoAnticipo', id: contrato?.id)
+            return
+        }
+
+
     }
 
     def deleteReajuste() {
@@ -4287,7 +4343,7 @@ class PlanillaController extends janus.seguridad.Shield {
         def pAnterior = Planilla.findAllByContratoAndTipoPlanillaAndFechaPresentacionLessThan(p.contrato,
                 TipoPlanilla.findByCodigo('P'), p.fechaPresentacion, [sort: 'fechaPresentacion'])
         if(pAnterior) {
-           pa = pAnterior.last()
+            pa = pAnterior.last()
         }
         if(pa){
 //            def po = PlanillaPo.findAllByPlanilla(pa, [sort: 'periodo']).last()
@@ -4862,14 +4918,14 @@ class PlanillaController extends janus.seguridad.Shield {
 
     def errorDiasLaborables(cntr, anio, mnsj){
         /** muestra el rror de no definidos diaas laborables **/
-            def url = g.createLink(controller: "planilla", action: "list", id: cntr.id)
-            def url2 = g.createLink(controller: "diaLaborable", action: "calendario", params: [anio: anio ?: ""])
-            def link = "<a href='${url}' class='btn btn-danger'>Lista de planillas</a>"
-            link += "&nbsp;&nbsp;&nbsp;"
-            link += "<a href='${url2}' class='btn btn-primary'>Configurar días laborables</a>"
-            flash.message = mnsj
-            redirect(action: "errores", params: [link: link])
-            return
+        def url = g.createLink(controller: "planilla", action: "list", id: cntr.id)
+        def url2 = g.createLink(controller: "diaLaborable", action: "calendario", params: [anio: anio ?: ""])
+        def link = "<a href='${url}' class='btn btn-danger'>Lista de planillas</a>"
+        link += "&nbsp;&nbsp;&nbsp;"
+        link += "<a href='${url2}' class='btn btn-primary'>Configurar días laborables</a>"
+        flash.message = mnsj
+        redirect(action: "errores", params: [link: link])
+        return
     }
 
     def insertaMulta(prmt) {
@@ -5085,7 +5141,7 @@ class PlanillaController extends janus.seguridad.Shield {
 
 
                     pems = PeriodoEjecucion.findAllByContratoAndFechaInicioGreaterThanEqualsAndFechaFinLessThanEqualsAndTipo(plnl.contrato,
-                       plnl.fechaInicio, fcfm, 'P')
+                            plnl.fechaInicio, fcfm, 'P')
 
                     parcial = 0.0
                     total = totalCr
@@ -5177,8 +5233,8 @@ class PlanillaController extends janus.seguridad.Shield {
                 insertaRjpl(prmt)
 */
 
-                //probar hasta aqui: debe insertar bien el primer periordo en rjpl id: 193, valores iguales al actual
-                //
+            //probar hasta aqui: debe insertar bien el primer periordo en rjpl id: 193, valores iguales al actual
+            //
 
 
 //                prdo++
@@ -5263,7 +5319,7 @@ class PlanillaController extends janus.seguridad.Shield {
                     insertaRjpl(prmt)
                 }
 */
-                /**************** fina anterior ******************/
+            /**************** fina anterior ******************/
 /*
             }
             else // se planilla un solo mes
@@ -5667,6 +5723,204 @@ class PlanillaController extends janus.seguridad.Shield {
         prmt.valorPo = dsct1
 //                println "inserta segunda parte: $prmt"
         insertaRjpl(prmt)
+    }
+
+
+    def nuevoAnticipo () {
+
+//        println "form... planillas: $params"
+        def contrato = Contrato.get(params.id)
+//        def obra = contrato.obra
+        def obrasContrato = ObraContrato.findAllByContrato(contrato)
+        def tipoPlanilla = TipoPlanilla.findByCodigo("A")
+        def planillas = Planilla.findAllByObraContratoInListAndTipoPlanilla(obrasContrato,tipoPlanilla)
+        println("planillas " + planillas)
+        def planilla
+        def fecha2
+        def fecha1
+        if(planillas){
+            planilla = planillas.first()
+            fecha2 = new Date().parse("dd-MM-yyyy", planilla.fechaOficioEntradaPlanilla.format("dd-MM-yyyy"))
+            fecha1 = new Date().parse("dd-MM-yyyy", planilla.fechaIngreso.format("dd-MM-yyyy"))
+
+        }
+
+
+//        println("contrato "  + contrato)
+
+
+//        def hayPlanillas = false;
+//        def planillaInstance = new Planilla(params)
+//        planillaInstance.contrato = contrato
+//        if (params.id) {
+//            planillaInstance = Planilla.get(params.id)
+//            hayPlanillas = true
+//        }
+//
+//        def tiposPlanilla = []
+//        tiposPlanilla = TipoPlanilla.findAllByCodigoInList(["A", "P","C", "Q", "L", "O"], [sort: 'codigo', order: "asc"])
+//
+//        def anticipo = TipoPlanilla.findByCodigo('A')
+//        def avance = TipoPlanilla.findByCodigo('P')
+//        def liquidacion = TipoPlanilla.findByCodigo('Q')
+//        def liquidacionReajuste = TipoPlanilla.findByCodigo('L')
+//        def costoPorcentaje = TipoPlanilla.findByCodigo('C')
+//        def resumenMateriales = TipoPlanilla.findByCodigo('M')
+//        def obrasAdicionales  = TipoPlanilla.findByCodigo('O')
+//
+//
+//
+//        def pla = Planilla.findByContratoAndTipoPlanilla(contrato, anticipo)
+//        def anticipoPagado = false
+//        def esAnticipo = false
+//        if (!pla) {
+//            esAnticipo = false
+//        } else {
+//            if (pla.fechaMemoPagoPlanilla) {
+//                anticipoPagado = true
+//                tiposPlanilla -= pla.tipoPlanilla
+//            }
+//        }
+//
+//        def cPlanillas = Planilla.findAllByContrato(contrato, [sort: 'fechaInicio']).size()
+//        def planillasAvance = Planilla.findAllByContratoAndTipoPlanilla(contrato, avance, [sort: "fechaInicio"])
+//
+////        println "---- cPlanillas: $cPlanillas, planillasAvance: $planillasAvance"
+//
+//        def liquidado = false
+//
+//        if (cPlanillas == 0) {
+//            tiposPlanilla = TipoPlanilla.findAllByCodigo('A')
+////            println "3: " + tiposPlanilla.codigo
+//            esAnticipo = true
+//        } else {
+//            if (pla) {
+//                tiposPlanilla -= pla.tipoPlanilla
+////                println "4: " + tiposPlanilla.codigo
+//            }
+//            def pll = Planilla.findByContratoAndTipoPlanilla(contrato, liquidacion)
+//            if (pll) {
+//                tiposPlanilla -= avance
+//                tiposPlanilla -= liquidacion
+////                println "5: " + tiposPlanilla.codigo
+//            }
+//            def plr = Planilla.findByContratoAndTipoPlanilla(contrato, liquidacionReajuste)
+//            if (plr) {
+//                tiposPlanilla -= plr.tipoPlanilla
+//                liquidado = true
+//            }
+//            def plc = Planilla.findByContratoAndTipoPlanilla(contrato, costoPorcentaje)
+//            if (plc) {
+//                def plcs = Planilla.findAllByContratoAndTipoPlanilla(contrato, costoPorcentaje)
+//                def tt = plcs.sum { it.valor }
+//                println "total planillas C + %: ${tt}"
+//                if (tt >= (contrato.monto * 0.1).round(2)) {
+//                    tiposPlanilla -= plc.tipoPlanilla
+//                }
+//            }
+//            def poa = Planilla.findByContratoAndTipoPlanilla(contrato, obrasAdicionales)
+//            if (poa) {
+//                tiposPlanilla -= poa.tipoPlanilla
+//            }
+//        }
+//
+//        def periodosEjec
+//        if(planillasAvance.size() == 0) {
+//            periodosEjec = PeriodoEjecucion.findAllByContratoAndTipo(contrato, 'P', [sort: "fechaFin"])
+//        } else {
+//            def hasta = planillasAvance[-1].fechaFin
+//            periodosEjec = PeriodoEjecucion.findAllByContratoAndTipoAndFechaInicioGreaterThan(contrato, 'P', hasta, [sort: "fechaFin"])
+//        }
+//        def finalObra = null
+//        if (periodosEjec.size() > 0) {
+//            finalObra = periodosEjec.last().fechaFin
+//        }
+//
+//
+//        def costo = false
+//        if (planillasAvance.size() > 0) {
+//            if (planillasAvance.last().fechaFin == finalObra) {
+//                def plp = Planilla.findByContratoAndTipoPlanilla(contrato, avance)
+//                tiposPlanilla -= plp.tipoPlanilla
+//            }
+//            planillasAvance.each { pa ->
+//                if (pa.fechaMemoPagoPlanilla == null) {
+//                    def costos = Planilla.findAllByPadreCosto(pa)
+//                    if (costos.size() == 0) {
+//                        costo = true
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (tiposPlanilla.find { it.codigo == "P" }) {
+//            tiposPlanilla -= liquidacionReajuste
+//        }
+//
+//        if (!params.id) {
+//            planillaInstance.numero = cPlanillas + 1
+//        }
+//
+//        def periodos = ponePeriodos(tiposPlanilla, contrato, anticipo, periodosEjec, finalObra)
+//        println "retorna periodos: $periodos"
+//
+//        def now = new Date()
+//        def maxDatePres = "new Date(${now.format('yyyy')},${now.format('MM').toInteger() - 1},"
+//        if (now.format("dd").toInteger() > 14) {
+//            maxDatePres += "14"
+//        } else {
+//            maxDatePres += now.format("dd")
+//        }
+//        maxDatePres += ")"
+//
+//        def minDatePres = "new Date(${now.format('yyyy')},${now.format('MM').toInteger() - 1},1)"
+//        def fiscalizadorAnterior
+//        if (planillasAvance.size() > 0) {
+//            fiscalizadorAnterior = planillasAvance.last().fiscalizadorId
+//        }
+//
+        def fechaMax
+        if (contrato.fechaSubscripcion)
+            fechaMax = contrato.fechaSubscripcion.plus(720)
+        else
+            fechaMax = new Date()
+//
+//        def suspensiones = Modificaciones.withCriteria {
+//            eq("obra", obra)
+//            eq("tipo", "S")
+//            le("fechaInicio", new Date().clearTime())
+//            or {
+//                isNull("fechaFin")
+//                gt("fechaFin", new Date().clearTime())
+//            }
+//        }
+//        def ini = Modificaciones.withCriteria {
+//            eq("obra", obra)
+//            eq("tipo", "S")
+//            le("fechaInicio", new Date().clearTime())
+//            or {
+//                isNull("fechaFin")
+//                gt("fechaFin", new Date().clearTime())
+//            }
+//            projections {
+//                min("fechaInicio")
+//            }
+//        }
+//
+//        tiposPlanilla = tiposPlanilla.sort{it.nombre}
+//
+//        def tiposPlan = TipoPlanilla.findAllByCodigoInList(["P", "Q", "O"])
+//        def planillasAvanceAsociada = Planilla.findAllByContratoAndTipoPlanillaInList(contrato, tiposPlan, [sort: 'fechaInicio'])
+//
+//        def formulasVarias = FormulaPolinomicaReajuste.findAllByContrato(contrato)
+//
+//
+//        return [planillaInstance: planillaInstance, contrato: contrato, tipos: tiposPlanilla, obra: contrato.oferta.concurso.obra,
+//                periodos        : periodos, esAnticipo: esAnticipo, anticipoPagado: anticipoPagado, maxDatePres: maxDatePres,
+//                minDatePres     : minDatePres, fiscalizadorAnterior: fiscalizadorAnterior, liquidado: liquidado, fechaMax: fechaMax,
+//                suspensiones:suspensiones, ini:ini, planillas: planillasAvanceAsociada, formulas: formulasVarias]
+
+        return[contrato: contrato, fechaMax: fechaMax, planilla: planilla, fecha1: fecha1, fecha2: fecha2]
     }
 
 }

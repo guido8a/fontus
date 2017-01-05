@@ -321,16 +321,26 @@
                     %{--</li>--}%
 
                     <li>
-                        <g:if test="${contrato.obra?.tipo != 'D'}">
-                            <g:link controller="planilla" action="list" id="${contrato?.id}">
-                                <i class=" icon-file-alt"></i> Planillas
-                            </g:link>
-                        </g:if>
+                        %{--<g:if test="${contrato.obra?.tipo != 'D'}">--}%
+                            %{--<g:link controller="planilla" action="list" id="${contrato?.id}">--}%
+                                %{--<i class=" icon-file-alt"></i> Planillas--}%
+                            %{--</g:link>--}%
+                        %{--</g:if>--}%
                     %{--<g:else>--}%
                     %{--<g:link controller="planilla" action="listDirecta" id="${contrato?.id}">--}%
                     %{--<i class=" icon-file-alt"></i> Planillas Directas--}%
                     %{--</g:link>--}%
                     %{--</g:else>--}%
+
+
+                    %{--<g:if test="${contrato.obra?.tipo != 'D'}">--}%
+                        <g:link controller="planilla" action="nuevoAnticipo" id="${contrato?.id}">
+                            <i class=" icon-file-alt"></i> Anticipo
+                        </g:link>
+                    %{--</g:if>--}%
+
+
+
                     </li>
 
                     %{--<li>--}%

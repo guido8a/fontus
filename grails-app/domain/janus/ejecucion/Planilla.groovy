@@ -1,6 +1,7 @@
 package janus.ejecucion
 
 import janus.Contrato
+import janus.ObraContrato
 import janus.Persona
 
 class Planilla {
@@ -60,7 +61,7 @@ class Planilla {
 
     Planilla padreCosto
 
-    Double avanceFisico
+    Double avanceFisico = 0
 
     PeriodosInec periodoAnticipo
 
@@ -75,6 +76,8 @@ class Planilla {
 
 
     FormulaPolinomicaReajuste formulaPolinomicaReajuste
+
+    ObraContrato obraContrato
 
     static auditable = true
     static mapping = {
@@ -152,6 +155,8 @@ class Planilla {
             noPago column: 'plnlnopg'
             noPagoValor column: 'plnlnpvl'
 
+            obraContrato column: 'obcr__id'
+
 //            imprimeReajueste column: 'plnlimid'
         }
     }
@@ -209,6 +214,7 @@ class Planilla {
         logPagos(blank: true, nullable: true,size: 1..255)
         formulaPolinomicaReajuste(blank: true, nullable: true)
         noPago(blank: true, nullable: true)
+
     }
 
     String toString() {
