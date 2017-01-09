@@ -5923,4 +5923,33 @@ class PlanillaController extends janus.seguridad.Shield {
         return[contrato: contrato, fechaMax: fechaMax, planilla: planilla, fecha1: fecha1, fecha2: fecha2]
     }
 
+    def pagoAnticipo_ajax () {
+
+        def contrato = Contrato.get(params.id)
+//        def tipoTramite = TipoTramite.findAllByCodigo("PDPG")
+        def tipoTramite = TipoTramite.findByCodigo("PDPG")
+        def roles = DepartamentoTramite.findAllByTipoTramite(tipoTramite)
+        def especial = "DE"
+        def fiscalizador = "PARA"
+        def envian
+        def reciben
+        def adminContrato = contrato.administrador
+        def fiscContrato = contrato.fiscalizador
+        def personas
+
+        roles.each { rol ->
+            personas = Persona.findAllByDepartamento(rol.departamento)
+
+            if (rol.rolTramite.codigo.trim() == especial.trim()) {
+                personas = [adminContrato]
+            }
+            if (rol.rolTramite.codigo.trim() == fiscalizador?.trim()) {
+                personas = [fiscContrato]
+            }
+        }
+
+        println("personas " + personas)
+
+        }
+
 }

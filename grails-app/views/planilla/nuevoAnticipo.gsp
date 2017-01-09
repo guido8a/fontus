@@ -78,6 +78,10 @@
             <i class="icon-save"></i>
             Guardar
         </a>
+        <a href="#" id="btnPago" class="btn btn-info">
+            <i class="icon-save"></i>
+            Pedir Pago
+        </a>
         %{--</g:if>--}%
     </div>
 </div>
@@ -454,12 +458,72 @@
 %{--</div>--}%
 %{--</g:else>--}%
 
+
+<div class="modal hide fade mediumModal" id="modal-Planilla">
+    <div class="modal-header" id="modalHeader">
+        <button type="button" class="close darker" data-dismiss="modal">
+            <i class="icon-remove-circle"></i>
+        </button>
+
+        <h3 id="modalTitle"></h3>
+    </div>
+
+    <div class="modal-body" id="modalBody">
+    </div>
+
+    <div class="modal-footer" id="modalFooter">
+    </div>
+</div>
+
+
 <script type="text/javascript">
 
     $("#btnRegresar").click(function () {
         location.href="${createLink(controller: 'contrato', action: 'verContrato')}?contrato=" + '${contrato?.id}'
     });
 
+    $("#btnPago").click(function () {
+            var $btn = $(this);
+//            var tipo = $btn.data("tipo").toString();
+            $.ajax({
+                type: "POST",
+                url: "${createLink(action:'pagoAnticipo_ajax')}",
+                data: {
+//                    id: $btn.data("id"),
+//                    tipo: tipo
+                    contrato: '${contrato?.id}'
+                },
+                success: function (msg) {
+                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+
+                    btnSave.click(function () {
+                        submitForm(btnSave);
+                        return false;
+                    });
+                    $("#modalTitle").html($btn.text());
+
+                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+
+                    if (msg == "NO") {
+                        $("#modalBody").html("Ha ocurrido un error: No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador.");
+                        btnOk.text("Aceptar");
+                        $("#modalFooter").html("").append(btnOk);
+                    } else {
+                        $("#modalBody").html(msg);
+                        if (msg.startsWith("No")) {
+                            btnOk.text("Aceptar");
+                            $("#modalFooter").html("").append(btnOk);
+                        } else {
+                            $("#modalFooter").html("").append(btnOk).append(btnSave);
+                        }
+                    }
+
+                    $("#modal-Planilla").modal("show");
+                }
+            });
+            return false;
+    });
 
     %{--function validarNum(ev) {--}%
     %{--/*--}%
