@@ -678,7 +678,7 @@ class Reportes3Controller {
         WritableFont font = new WritableFont(WritableFont.TIMES, 12)
         WritableCellFormat formatXls = new WritableCellFormat(font)
         def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+        WritableSheet sheet = workbook.createSheet(rubro.codigo, 0)
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.NO_BOLD, false);
