@@ -31,10 +31,10 @@ fieldset {
 
         <div class="btn-group" data-toggle="buttons-radio">
             <a href="#" id="a" class="orden btn active">
-                Alfabético
+                Por nombre de Item
             </a>
             <a href="#" id="n" class="orden btn">
-                Numérico
+                Por código
             </a>
         </div>
     </fieldset>

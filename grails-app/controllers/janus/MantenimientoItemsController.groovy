@@ -1681,6 +1681,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def actualizarVae_ajax() {
+        println "actualizarVae_ajax, params: $params"
         if (params.item instanceof java.lang.String) {
             params.item = [params.item]
         }
@@ -1697,7 +1698,7 @@ class MantenimientoItemsController extends Shield {
 
             def vaeItems = VaeItems.get(id_itva);
             vaeItems.porcentaje = nuevoVae.toDouble();
-//            println "nuevo vae: " + vaeItems.porcentaje
+            println "nuevo vae: " + vaeItems.porcentaje
 
             if (!vaeItems.save(flush: true)) {
                 println "mantenimiento items controller l 928: " + "error " + parts
